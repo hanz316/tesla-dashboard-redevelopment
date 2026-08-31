@@ -10,6 +10,7 @@ option(BUILD_HOST_TOOLS "Build the host simulator and tests" ON)
 option(BUILD_FLYTHINGS_DEVICE "Build the T113 FlyThings libzkgui.so" OFF)
 
 add_library(dashboard_core
+    src/core/dashboard_product.cpp
     src/core/original_mcu_adapter.cpp
     src/core/protocol_parser.cpp
     src/core/source_adapters.cpp
@@ -34,6 +35,11 @@ if(BUILD_HOST_TOOLS)
     target_link_libraries(dashboard_stale_tests PRIVATE dashboard_core)
     target_compile_options(dashboard_stale_tests PRIVATE -Wall -Wextra -Wpedantic)
     add_test(NAME dashboard_stale_tests COMMAND dashboard_stale_tests)
+
+    add_executable(dashboard_product_tests tests/dashboard_product_tests.cpp)
+    target_link_libraries(dashboard_product_tests PRIVATE dashboard_core)
+    target_compile_options(dashboard_product_tests PRIVATE -Wall -Wextra -Wpedantic)
+    add_test(NAME dashboard_product_tests COMMAND dashboard_product_tests)
 
     find_package(PkgConfig QUIET)
     if(PkgConfig_FOUND)
