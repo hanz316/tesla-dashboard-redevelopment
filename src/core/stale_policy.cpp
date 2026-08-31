@@ -31,6 +31,8 @@ StaleSummary invalidateStale(
 
     EXPIRE(state.speed, timeouts.motion_ms);
     EXPIRE(state.gear, timeouts.motion_ms);
+    EXPIRE(state.turn_signal_left, timeouts.motion_ms);
+    EXPIRE(state.turn_signal_right, timeouts.motion_ms);
 
     EXPIRE(state.door_fl, timeouts.closures_ms);
     EXPIRE(state.door_fr, timeouts.closures_ms);
