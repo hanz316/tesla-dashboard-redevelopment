@@ -66,6 +66,7 @@ RuntimeSnapshot DeviceRuntime::snapshot() {
     result.state = adapter_.state();
     result.parser = adapter_.parserStats();
     result.adapter = adapter_.adapterStats();
+    result.health = adapter_.health();
     result.uart_connected = uart_fd_ >= 0;
     pthread_mutex_unlock(&mutex_);
     return result;
@@ -81,17 +82,23 @@ void DeviceRuntime::readLoop() {
     while (running_) {
         const ssize_t count = read(uart_fd_, buffer, sizeof(buffer));
         if (count > 0) {
+            const std::uint64_t now_ms = monotonicMilliseconds();
             pthread_mutex_lock(&mutex_);
             adapter_.feed(
                 buffer,
                 static_cast<std::size_t>(count),
-                monotonicMilliseconds());
+                now_ms);
             pthread_mutex_unlock(&mutex_);
             continue;
         }
         if (count < 0 && errno != EAGAIN && errno != EINTR) {
             break;
         }
+        // Keep the freshness policy active even while no bytes arrive:
+        // stale signals are invalidated and the source health is tracked.
+        pthread_mutex_lock(&mutex_);
+        adapter_.tick(monotonicMilliseconds());
+        pthread_mutex_unlock(&mutex_);
         usleep(20000);
     }
 }

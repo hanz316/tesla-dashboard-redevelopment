@@ -1,4 +1,5 @@
 #include "dashboard/original_mcu_adapter.h"
+#include "dashboard/source_adapters.h"
 
 #include <cmath>
 #include <cstdint>
@@ -112,6 +113,82 @@ void shortPayloadNeverPublishesInvalidData() {
     CHECK(adapter.adapterStats().short_payloads == 1);
 }
 
+void tickInvalidatesStaleSignalsAndTracksHealth() {
+    dashboard::OriginalMcuAdapter adapter;
+    const auto frame = makeFrame(0x04, {88, 0, 0, 0, 0, 0, 150, 1, 71, 0, 0, 0, 0});
+    adapter.feed(frame.data(), frame.size(), 1000);
+    CHECK(adapter.state().speed.valid);
+    CHECK(adapter.health().status == dashboard::DataSourceStatus::Connected);
+
+    // Within the freshness window the signal stays valid.
+    adapter.tick(1500);
+    CHECK(adapter.state().speed.valid);
+
+    // Past the driving freshness window the signal is invalidated and the
+    // source falls back to Offline.
+    adapter.tick(3000);
+    CHECK(!adapter.state().speed.valid);
+    CHECK(adapter.health().status == dashboard::DataSourceStatus::Offline);
+}
+
+void resetClearsStateAndStats() {
+    dashboard::OriginalMcuAdapter adapter;
+    const auto frame = makeFrame(0x04, {88, 0, 0, 0, 0, 0, 150, 1, 71, 0, 0, 0, 0});
+    adapter.feed(frame.data(), frame.size(), 1000);
+    CHECK(adapter.state().speed.valid);
+    CHECK(adapter.parserStats().valid_packets == 1);
+
+    adapter.reset();
+    CHECK(!adapter.state().speed.valid);
+    CHECK(adapter.parserStats().valid_packets == 0);
+    CHECK(adapter.parserStats().bytes_received == 0);
+    CHECK(adapter.health().status == dashboard::DataSourceStatus::Offline);
+}
+
+void frameListenerReceivesParsedFrames() {
+    dashboard::OriginalMcuAdapter adapter;
+    int received = 0;
+    std::uint8_t seen_command = 0;
+    adapter.setFrameListener([&](const dashboard::ProtocolFrame& frame, std::uint64_t ts) {
+        ++received;
+        seen_command = frame.command;
+        CHECK(ts == 4242);
+    });
+
+    const auto frame = makeFrame(0x04, {88, 0, 0, 0, 0, 0, 150, 1, 71, 0, 0, 0, 0});
+    adapter.feed(frame.data(), frame.size(), 4242);
+    CHECK(received == 1);
+    CHECK(seen_command == 0x04);
+}
+
+void simulationAdapterUpdatesAndStales() {
+    dashboard::SimulationAdapter sim;
+    CHECK(sim.health().status == dashboard::DataSourceStatus::Offline);
+
+    sim.setDriving(88, dashboard::Gear::Drive, 71, 406, 1000);
+    CHECK(sim.health().status == dashboard::DataSourceStatus::Connected);
+    CHECK(sim.state().speed.valid && sim.state().speed.value == 88);
+    CHECK(sim.state().gear.value == dashboard::Gear::Drive);
+    CHECK(sim.state().soc.value == 71);
+    CHECK(sim.state().range.value == 406);
+    CHECK(sim.state().speed.source == dashboard::SignalSource::Simulation);
+
+    sim.setDoors(true, false, false, false, true, false, 1010);
+    CHECK(sim.state().door_fl.value);
+    CHECK(sim.state().frunk.value);
+    CHECK(!sim.state().door_fr.value);
+
+    sim.setTires(2.5F, 2.6F, 2.7F, 2.8F, 1020);
+    CHECK(std::fabs(sim.state().tire_rl.value - 2.70F) < 0.001F);
+
+    sim.tick(3000);
+    CHECK(!sim.state().speed.valid);
+    CHECK(sim.health().status == dashboard::DataSourceStatus::Offline);
+
+    sim.disconnect(4000);
+    CHECK(sim.health().status == dashboard::DataSourceStatus::Offline);
+}
+
 }  // namespace
 
 int main() {
@@ -121,6 +198,10 @@ int main() {
     adapterDecodesGearAndConfigurableDoors();
     adapterDecodesTiresAndTemperature();
     shortPayloadNeverPublishesInvalidData();
+    tickInvalidatesStaleSignalsAndTracksHealth();
+    resetClearsStateAndStats();
+    frameListenerReceivesParsedFrames();
+    simulationAdapterUpdatesAndStales();
 
     if (failures != 0) {
         std::cerr << failures << " test(s) failed\n";

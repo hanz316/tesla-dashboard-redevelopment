@@ -39,6 +39,22 @@ char openMarker(const dashboard::Signal<bool>& value) {
     return value.valid && value.value ? 'O' : '-';
 }
 
+const char* sourceStatus(const dashboard::DataSourceHealth& health) {
+    switch (health.status) {
+        case dashboard::DataSourceStatus::Connected:
+            return "DATA";
+        case dashboard::DataSourceStatus::Connecting:
+            return "WAIT";
+        case dashboard::DataSourceStatus::Error:
+            return "ERR";
+        case dashboard::DataSourceStatus::Offline:
+            return "STALE";
+        case dashboard::DataSourceStatus::Disabled:
+        default:
+            return "OFF";
+    }
+}
+
 }  // namespace
 
 REGISTER_ACTIVITY(mainActivity);
@@ -114,7 +130,7 @@ void mainActivity::updateDashboard() {
         std::snprintf(
             text,
             sizeof(text),
-            "Doors %c%c%c%c F%c T%c %s P:%llu CRC:%llu U:%llu",
+            "Doors %c%c%c%c F%c T%c %s %s P:%llu CRC:%llu U:%llu",
             openMarker(snapshot.state.door_fl),
             openMarker(snapshot.state.door_fr),
             openMarker(snapshot.state.door_rl),
@@ -122,6 +138,7 @@ void mainActivity::updateDashboard() {
             openMarker(snapshot.state.frunk),
             openMarker(snapshot.state.trunk),
             snapshot.uart_connected ? "UART" : "NO UART",
+            sourceStatus(snapshot.health),
             static_cast<unsigned long long>(snapshot.parser.valid_packets),
             static_cast<unsigned long long>(snapshot.parser.checksum_errors),
             static_cast<unsigned long long>(snapshot.adapter.unknown_commands));

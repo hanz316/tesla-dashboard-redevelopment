@@ -11,6 +11,7 @@ struct RuntimeSnapshot {
     VehicleState state;
     ProtocolParserStats parser;
     AdapterStats adapter;
+    DataSourceHealth health;
     bool uart_connected{false};
 };
 

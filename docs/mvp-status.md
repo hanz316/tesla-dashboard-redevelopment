@@ -2,6 +2,38 @@
 
 状态：`HARDWARE_VALIDATED`。Build 0.1 的任务已经完成，不再作为当前开发目标。
 
+## Build 0.2 当前状态
+
+状态：`IN_PROGRESS`。目标是产品化数据层：统一数据源抽象、信号新鲜度
+管理和多数据源接入准备。Build 0.1 的功能保持兼容，不删除、不重写。
+
+### 已实现
+
+- `IDataSource` 接口：`name / source / state / health / tick`
+- `SimulationAdapter`：driving/doors/tires 注入与 `disconnect`
+- `CommanderAdapter` / `PhoneBridgeAdapter`：占位数据源
+- `VehicleState` 扩展：trip、lighting、speed limit、AP/ADAS、电池/电机、
+  转向/踏板/轮速等信号
+- `FreshnessPolicy` + `Signal::invalidateIfStale`：
+  driving 1 s、vehicle 2 s、lighting 3 s、tire/temperature 30 s
+- `OriginalMcuAdapter::tick/reset`、frame listener、`DataSourceHealth`
+- `ProtocolParser::reset`
+- 实机 `DeviceRuntime` 每轮空读调用 `tick()`，UI 显示数据源状态
+  （`DATA` / `STALE` / `ERR`），保持原 1920×480 布局
+
+### 验证
+
+- Mac 构建 + 单元测试：通过（覆盖 parser、adapter、stale invalidation、
+  reset、frame listener、SimulationAdapter）
+- T113 交叉编译：通过；`libzkgui.so` 仍只引用 `open/read/close`，无 `write`
+
+### 待办（按依赖顺序）
+
+1. 实车录制静止/逐门/逐档位/轮胎 session，确认 door 与 tire mapping。
+2. 从录制数据反推 lighting、speed limit、AP/ADAS command 解码。
+3. UART Record/Replay 数据源 + Developer Mode。
+4. 最终产品 UI 与多主题。
+
 ## 已完成
 
 ### 数据层
