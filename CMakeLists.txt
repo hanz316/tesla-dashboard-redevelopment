@@ -111,4 +111,18 @@ if(BUILD_FLYTHINGS_DEVICE)
         -fno-exceptions -fno-rtti
     )
     target_link_options(uart_rx_toggle PRIVATE -static)
+
+    add_executable(fb_calibrate tools/fb_calibrate.cpp)
+    target_compile_options(fb_calibrate PRIVATE
+        -Os -Wall -Wextra -Wpedantic -fstack-protector-strong
+        -fno-exceptions -fno-rtti
+    )
+    target_link_options(fb_calibrate PRIVATE -static)
+
+    add_executable(fb_touch_draw tools/fb_touch_draw.cpp)
+    target_compile_options(fb_touch_draw PRIVATE
+        -Os -Wall -Wextra -Wpedantic -fstack-protector-strong
+        -fno-exceptions -fno-rtti
+    )
+    target_link_options(fb_touch_draw PRIVATE -static)
 endif()

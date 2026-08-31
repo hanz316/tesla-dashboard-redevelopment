@@ -18,6 +18,7 @@
 #include <SDL_ttf.h>
 
 #include <algorithm>
+#include <cstdlib>
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
@@ -33,6 +34,126 @@ constexpr int kUiMs = 100;
 constexpr std::uint64_t kStaleFeedWindowMs = 2500;
 
 const char* kFontPath = "/System/Library/Fonts/Supplemental/Arial.ttf";
+
+// Physical screen is trapezoidal (wider in the middle, tapering at the
+// top and bottom corners). These are the corner cut amounts in logical
+// 1920x480 pixels; tune with --shape tl,tr,bl,br.
+struct ScreenShape {
+    // Calibrated on hardware (finger trace + user confirmation):
+    // symmetric trapezoid, wider at the bottom.
+    // top edge: x 116..1804 (1688 wide), bottom edge: x 51..1869 (1818 wide)
+    int top_l{116};
+    int top_r{116};
+    int bottom_l{51};
+    int bottom_r{51};
+};
+
+ScreenShape g_shape;
+
+void adbWriteShape(const ScreenShape& shape) {
+    const char* adb = std::getenv("ADB_BIN");
+    std::string adb_path =
+        adb != nullptr && adb[0] != '\0'
+            ? adb
+            : "/Users/hanssmacbookair/Library/Android/sdk/platform-tools/adb";
+    char cmd[512];
+    std::snprintf(
+        cmd, sizeof(cmd),
+        "%s -s 10.0.0.216:5555 shell "
+        "\"echo %d,%d,%d,%d > /tmp/screen_shape.txt\"",
+        adb_path.c_str(),
+        shape.top_l, shape.top_r, shape.bottom_l, shape.bottom_r);
+    const int rc = std::system(cmd);
+    if (rc != 0) {
+        std::fprintf(stderr, "adb write failed (rc=%d): %s\n", rc, cmd);
+    }
+}
+
+void drawCalibration(SDL_Renderer* renderer, ScreenShape& shape) {
+    // White background
+    SDL_SetRenderDrawColor(renderer, 235, 235, 235, 255);
+    SDL_RenderClear(renderer);
+    // Mask
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    const int h = kHeight;
+    for (int y = 0; y < h; ++y) {
+        const int xl = shape.top_l + (shape.bottom_l - shape.top_l) * y / h;
+        if (xl > 0) {
+            SDL_RenderDrawLine(renderer, 0, y, xl, y);
+        }
+        const int xr =
+            kWidth - shape.top_r -
+            (shape.bottom_r - shape.top_r) * y / h;
+        if (xr < kWidth) {
+            SDL_RenderDrawLine(renderer, kWidth, y, xr, y);
+        }
+    }
+    // Handles
+    const int hs = 18;
+    const SDL_Point handles[4] = {
+        {shape.top_l, 0},
+        {kWidth - shape.top_r, 0},
+        {shape.bottom_l, h},
+        {kWidth - shape.bottom_r, h},
+    };
+    SDL_SetRenderDrawColor(renderer, 220, 40, 40, 255);
+    for (const auto& pt : handles) {
+        SDL_Rect r{pt.x - hs / 2, pt.y - hs / 2, hs, hs};
+        SDL_RenderFillRect(renderer, &r);
+    }
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    for (const auto& pt : handles) {
+        SDL_Rect r{pt.x - hs / 2 + 3, pt.y - hs / 2 + 3, hs - 6, hs - 6};
+        SDL_RenderFillRect(renderer, &r);
+    }
+}
+
+int handleDrag(
+    SDL_Renderer* renderer,
+    ScreenShape& shape,
+    int mx,
+    int my,
+    int& active_handle) {
+    const int h = kHeight;
+    const SDL_Point handles[4] = {
+        {shape.top_l, 0},
+        {kWidth - shape.top_r, 0},
+        {shape.bottom_l, h},
+        {kWidth - shape.bottom_r, h},
+    };
+    const int ids[4] = {0, 1, 2, 3};
+    if (active_handle < 0) {
+        for (int i = 0; i < 4; ++i) {
+            const int dx = mx - handles[i].x;
+            const int dy = my - handles[i].y;
+            if (dx * dx + dy * dy <= 40 * 40) {
+                active_handle = i;
+                break;
+            }
+        }
+    }
+    if (active_handle >= 0) {
+        switch (active_handle) {
+            case 0:
+                shape.top_l = std::max(0, std::min(500, mx));
+                break;
+            case 1:
+                shape.top_r = std::max(0, std::min(500, kWidth - mx));
+                break;
+            case 2:
+                shape.bottom_l = std::max(0, std::min(500, mx));
+                break;
+            case 3:
+                shape.bottom_r = std::max(0, std::min(500, kWidth - mx));
+                break;
+            default:
+                break;
+        }
+        adbWriteShape(shape);
+        return 1;
+    }
+    return 0;
+}
 
 struct GearTextures {
     SDL_Texture* park{nullptr};
@@ -100,6 +221,31 @@ void drawTexture(
     SDL_RenderCopy(renderer, texture, nullptr, &dst);
 }
 
+// Draws the trapezoid bezel mask: everything outside the visible screen
+// shape is filled with black so UI elements stay inside the safe area.
+void drawShapeMask(SDL_Renderer* renderer) {
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    const int h = kHeight;
+    // top-left triangle
+    for (int y = 0; y < h; ++y) {
+        const int x_limit =
+            g_shape.top_l +
+            (g_shape.bottom_l - g_shape.top_l) * y / h;
+        if (x_limit > 0) {
+            SDL_RenderDrawLine(renderer, 0, y, x_limit, y);
+        }
+    }
+    // top-right triangle
+    for (int y = 0; y < h; ++y) {
+        const int x_limit =
+            kWidth - g_shape.top_r -
+            (g_shape.bottom_r - g_shape.top_r) * y / h;
+        if (x_limit < kWidth) {
+            SDL_RenderDrawLine(renderer, kWidth, y, x_limit, y);
+        }
+    }
+}
+
 const char* gearImageName(dashboard::Gear gear) {
     switch (gear) {
         case dashboard::Gear::Park:
@@ -158,8 +304,11 @@ std::vector<std::uint8_t> makeFrame(
 int main(int argc, char** argv) {
     bool screenshot_mode = false;
     bool dump_state = false;
+    bool calibrate_mode = false;
     const char* screenshot_path = "/tmp/dashboard_simulator.png";
     const char* replay_path = "captures/uart-record-realcar-geardoor.bin";
+    ScreenShape shape;
+    g_shape = shape;
     for (int i = 1; i < argc; ++i) {
         if (std::strcmp(argv[i], "--screenshot") == 0) {
             screenshot_mode = true;
@@ -168,6 +317,14 @@ int main(int argc, char** argv) {
             }
         } else if (std::strcmp(argv[i], "--dump-state") == 0) {
             dump_state = true;
+        } else if (std::strcmp(argv[i], "--calibrate") == 0) {
+            calibrate_mode = true;
+        } else if (std::strcmp(argv[i], "--shape") == 0 &&
+                   i + 4 < argc) {
+            g_shape.top_l = std::atoi(argv[++i]);
+            g_shape.top_r = std::atoi(argv[++i]);
+            g_shape.bottom_l = std::atoi(argv[++i]);
+            g_shape.bottom_r = std::atoi(argv[++i]);
         } else {
             replay_path = argv[i];
         }
@@ -189,8 +346,8 @@ int main(int argc, char** argv) {
         "Tesla Dashboard Simulator (1920x480)",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        1152,
-        288,
+        kWidth,
+        kHeight,
         SDL_WINDOW_RESIZABLE);
     if (window == nullptr) {
         std::fprintf(stderr, "SDL_CreateWindow: %s\n", SDL_GetError());
@@ -207,6 +364,19 @@ int main(int argc, char** argv) {
     }
     SDL_RenderSetLogicalSize(renderer, kWidth, kHeight);
     SDL_ShowWindow(window);
+
+    SDL_Texture* offscreen = nullptr;
+    if (screenshot_mode) {
+        offscreen = SDL_CreateTexture(
+            renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_TARGET,
+            kWidth, kHeight);
+        if (offscreen == nullptr) {
+            std::fprintf(stderr, "SDL_CreateTexture(target): %s\n",
+                         SDL_GetError());
+            return 1;
+        }
+        SDL_SetRenderTarget(renderer, offscreen);
+    }
 
     std::fprintf(stderr, "[sim] open fonts\n");
     TTF_Font* font_big =
@@ -245,6 +415,7 @@ int main(int argc, char** argv) {
     SDL_Color red{230, 80, 80, 255};
 
     bool running = true;
+    int active_handle = -1;
     bool synthetic = !has_replay;
     bool feed_frozen = false;
     std::uint64_t next_ui_ms = 0;
@@ -267,6 +438,18 @@ int main(int argc, char** argv) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 running = false;
+            } else if (calibrate_mode && event.type == SDL_MOUSEBUTTONDOWN &&
+                       event.button.button == SDL_BUTTON_LEFT) {
+                handleDrag(
+                    renderer, g_shape, event.button.x, event.button.y,
+                    active_handle);
+            } else if (calibrate_mode && event.type == SDL_MOUSEMOTION &&
+                       (event.motion.state & SDL_BUTTON_LMASK)) {
+                handleDrag(
+                    renderer, g_shape, event.motion.x, event.motion.y,
+                    active_handle);
+            } else if (calibrate_mode && event.type == SDL_MOUSEBUTTONUP) {
+                active_handle = -1;
             } else if (event.type == SDL_KEYDOWN) {
                 switch (event.key.keysym.sym) {
                     case SDLK_ESCAPE:
@@ -297,6 +480,41 @@ int main(int argc, char** argv) {
 
         const std::uint64_t now_ms =
             static_cast<std::uint64_t>(SDL_GetTicks());
+
+        if (calibrate_mode) {
+            drawCalibration(renderer, g_shape);
+            char label[128];
+            std::snprintf(
+                label, sizeof(label),
+                "trapezoid: TL=%d TR=%d BL=%d BR=%d  (drag handles; "
+                "writes to device /tmp/screen_shape.txt)",
+                g_shape.top_l, g_shape.top_r,
+                g_shape.bottom_l, g_shape.bottom_r);
+            TTF_Font* font_small =
+                TTF_OpenFontIndex(kFontPath, 30, 0);
+            if (font_small != nullptr) {
+                SDL_Texture* tex = renderText(
+                    renderer, font_small, label, SDL_Color{30, 30, 30, 255});
+                drawTexture(renderer, tex, 30, 6);
+                destroyTexture(tex);
+                TTF_CloseFont(font_small);
+            }
+            SDL_RenderPresent(renderer);
+            if (screenshot_mode) {
+                SDL_Surface* surface = SDL_CreateRGBSurfaceWithFormat(
+                    0, kWidth, kHeight, 32, SDL_PIXELFORMAT_RGBA32);
+                if (surface != nullptr) {
+                    SDL_RenderReadPixels(
+                        renderer, nullptr, SDL_PIXELFORMAT_RGBA32,
+                        surface->pixels, surface->pitch);
+                    SDL_SaveBMP(surface, screenshot_path);
+                    SDL_FreeSurface(surface);
+                }
+                running = false;
+            }
+            SDL_Delay(16);
+            continue;
+        }
 
         // Feed data (replay or synthetic), unless user froze the feed.
         if (!feed_frozen) {
@@ -456,6 +674,7 @@ int main(int argc, char** argv) {
             drawTexture(renderer, health_tex, 60, 445);
             destroyTexture(health_tex);
 
+            drawShapeMask(renderer);
             SDL_RenderPresent(renderer);
             ++render_count;
             if (dump_state && dump_done == 0 &&
@@ -489,15 +708,8 @@ int main(int argc, char** argv) {
                 running = false;
             }
             if (screenshot_mode && render_count >= 3) {
-                int out_w = 0;
-                int out_h = 0;
-                SDL_GetRendererOutputSize(renderer, &out_w, &out_h);
-                if (out_w <= 0 || out_h <= 0) {
-                    out_w = kWidth;
-                    out_h = kHeight;
-                }
                 SDL_Surface* surface = SDL_CreateRGBSurfaceWithFormat(
-                    0, out_w, out_h, 32, SDL_PIXELFORMAT_RGBA32);
+                    0, kWidth, kHeight, 32, SDL_PIXELFORMAT_RGBA32);
                 if (surface != nullptr) {
                     SDL_RenderReadPixels(
                         renderer, nullptr, SDL_PIXELFORMAT_RGBA32,
@@ -506,7 +718,7 @@ int main(int argc, char** argv) {
                     SDL_FreeSurface(surface);
                     std::fprintf(stderr,
                                  "[sim] screenshot saved: %s (%dx%d)\n",
-                                 screenshot_path, out_w, out_h);
+                                 screenshot_path, kWidth, kHeight);
                 }
                 running = false;
             }
@@ -519,6 +731,10 @@ int main(int argc, char** argv) {
     destroyTexture(gears.reverse);
     destroyTexture(gears.neutral);
     destroyTexture(gears.drive);
+    if (offscreen != nullptr) {
+        SDL_SetRenderTarget(renderer, nullptr);
+        SDL_DestroyTexture(offscreen);
+    }
     TTF_CloseFont(font_big);
     TTF_CloseFont(font_label);
     TTF_CloseFont(font_small);
