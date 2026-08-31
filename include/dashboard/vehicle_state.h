@@ -20,6 +20,11 @@ struct VehicleState {
     Signal<std::uint8_t> soc;
     Signal<std::uint16_t> range;
 
+    // Reserved for the shared Safety Layer. No protocol source is fabricated:
+    // until a verified adapter publishes these, valid remains false.
+    Signal<bool> turn_signal_left;
+    Signal<bool> turn_signal_right;
+
     // The original application reads a 24-bit value here, but its physical
     // scale still needs a real-car recording.  Keep it truthful as raw data.
     Signal<std::uint32_t> distance_raw;
