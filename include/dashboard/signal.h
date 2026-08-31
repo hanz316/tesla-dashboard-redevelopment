@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <limits>
 
 namespace dashboard {
 
@@ -58,6 +59,23 @@ struct Signal {
         timestamp_ms = next_timestamp_ms;
         source = SignalSource::Unavailable;
         quality = SignalQuality::Unknown;
+    }
+
+    std::uint64_t ageMs(std::uint64_t now_ms) const {
+        if (!valid) {
+            return std::numeric_limits<std::uint64_t>::max();
+        }
+        return now_ms >= timestamp_ms ? now_ms - timestamp_ms : 0;
+    }
+
+    bool isStale(std::uint64_t now_ms, std::uint64_t timeout_ms) const {
+        return valid && ageMs(now_ms) > timeout_ms;
+    }
+
+    void invalidateIfStale(std::uint64_t now_ms, std::uint64_t timeout_ms) {
+        if (isStale(now_ms, timeout_ms)) {
+            invalidate(now_ms);
+        }
     }
 };
 

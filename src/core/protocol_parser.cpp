@@ -6,6 +6,11 @@ namespace dashboard {
 
 constexpr std::uint8_t ProtocolParser::kHeader;
 
+void ProtocolParser::reset() {
+    buffer_.clear();
+    stats_ = ProtocolParserStats{};
+}
+
 std::uint8_t ProtocolParser::checksum(
     std::uint8_t command,
     const std::uint8_t* payload,

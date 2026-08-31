@@ -28,6 +28,7 @@ public:
     std::vector<ProtocolFrame> feed(const std::uint8_t* data, std::size_t size);
     const ProtocolParserStats& stats() const { return stats_; }
     std::size_t bufferedBytes() const { return buffer_.size(); }
+    void reset();
 
     static std::uint8_t checksum(
         std::uint8_t command,

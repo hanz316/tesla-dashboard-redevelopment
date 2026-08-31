@@ -1,11 +1,13 @@
 #pragma once
 
+#include "dashboard/data_source.h"
 #include "dashboard/protocol_parser.h"
-#include "dashboard/vehicle_state.h"
 
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <functional>
+#include <utility>
 
 namespace dashboard {
 
@@ -28,6 +30,7 @@ struct TireByteMapping {
 struct OriginalMcuConfig {
     DoorBitMapping doors;
     TireByteMapping tires;
+    SignalSource signal_source{SignalSource::OriginalMcu};
 };
 
 struct AdapterStats {
@@ -36,8 +39,11 @@ struct AdapterStats {
     std::uint64_t unknown_commands{0};
 };
 
-class OriginalMcuAdapter {
+class OriginalMcuAdapter : public IDataSource {
 public:
+    using FrameListener =
+        std::function<void(const ProtocolFrame&, std::uint64_t timestamp_ms)>;
+
     explicit OriginalMcuAdapter(OriginalMcuConfig config = OriginalMcuConfig{});
 
     void feed(
@@ -46,7 +52,15 @@ public:
         std::uint64_t timestamp_ms);
     void applyFrame(const ProtocolFrame& frame, std::uint64_t timestamp_ms);
 
-    const VehicleState& state() const { return state_; }
+    const char* name() const override { return "OriginalMcuAdapter"; }
+    SignalSource source() const override { return config_.signal_source; }
+    const VehicleState& state() const override { return state_; }
+    const DataSourceHealth& health() const override { return health_; }
+    void tick(std::uint64_t now_ms) override;
+    void reset();
+    void setFrameListener(FrameListener listener) {
+        frame_listener_ = std::move(listener);
+    }
     const ProtocolParserStats& parserStats() const { return parser_.stats(); }
     const AdapterStats& adapterStats() const { return stats_; }
 
@@ -67,6 +81,8 @@ private:
     ProtocolParser parser_;
     VehicleState state_;
     AdapterStats stats_;
+    DataSourceHealth health_;
+    FrameListener frame_listener_;
 };
 
 }  // namespace dashboard
