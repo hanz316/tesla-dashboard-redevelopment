@@ -1,4 +1,6 @@
-# Build 0.1 MVP 状态
+# Build 0.1 硬件验证状态
+
+状态：`HARDWARE_VALIDATED`。Build 0.1 的任务已经完成，不再作为当前开发目标。
 
 ## 已完成
 
@@ -38,14 +40,22 @@
 - 目标格式：ELF 32-bit LSB ARM EABI5 shared object
 - 临时 bundle：`dist/temporary-adb`
 
-## 未完成/不能宣称完成
+## Build 0.1 已完成的实机验证
 
-- 没有在仪表实机运行，因为 Type-C 未枚举、ADB 无设备。
-- 没有实机 UART 录制，因此 door/tire 物理位置尚未最终确认。
-- 没有核对实机 base library 的精确 ABI；第一次 deploy 前必须核对。
-- 没有实机 backup；当前只有两个 OTA 原包和提取副本。
-- 当前 UI 复用原布局，不是最终重设计 UI。
-- recording/replay/simulation UI 属于 Phase 3；当前只有 host deterministic simulation。
+- Wi-Fi ADB 已连接真实仪表。
+- 自定义库从 `/tmp` 启动成功。
+- 实机 base library ABI 已核对。
+- `/dev/ttyS5` 只读 FD 已核对。
+- framebuffer 已读取并验证。
+- SPI NOR 和关键系统目录已备份。
+- 断电回滚 stock 已验证。
+
+## 仍属于后续 Build 的工作
+
+- 当前 UI 复用原布局，不是最终产品 UI。
+- door/tire 物理位置仍需真实车辆逐项确认。
+- UART Record/Replay/Developer Mode 尚未完成。
+- 多主题、Trip、Warning、PhoneBridge 等按产品化 Roadmap 开发。
 
 ## 下一可执行里程碑
 

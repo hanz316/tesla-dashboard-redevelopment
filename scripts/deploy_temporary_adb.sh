@@ -33,16 +33,16 @@ if [[ ! -f "$bundle_dir/EasyUI.cfg" \
   exit 1
 fi
 
-device_arch="$("$adb_bin" -s "$device_serial" shell 'uname -m' | tr -d '\r')"
-case "$device_arch" in
-  armv7l|armv7*) ;;
+device_model="$("$adb_bin" -s "$device_serial" shell 'getprop ro.product.model' | tr -d '\r')"
+case "$device_model" in
+  *T113*|*t113*) ;;
   *)
-    echo "Refusing deployment: expected ARMv7 device, got '$device_arch'." >&2
+    echo "Refusing deployment: expected T113 device, got '$device_model'." >&2
     exit 1
     ;;
 esac
 
-"$adb_bin" -s "$device_serial" exec-out 'cat /tmp/EasyUI.cfg 2>/dev/null' \
+"$adb_bin" -s "$device_serial" shell 'cat /tmp/EasyUI.cfg 2>/dev/null' \
   > "$predeploy_dir/EasyUI.cfg" || true
 "$adb_bin" -s "$device_serial" shell 'getprop' > "$predeploy_dir/getprop.txt"
 "$adb_bin" -s "$device_serial" shell 'mount' > "$predeploy_dir/mounts.txt"

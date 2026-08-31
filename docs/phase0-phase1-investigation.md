@@ -2,6 +2,8 @@
 
 调查日期：2026-08-30（America/Toronto）
 
+更新：2026-08-31 已通过 Wi-Fi ADB 连接实机并完成 SPI NOR、`/res`、`/etc`、`/lib`、`/late`、`/bin`、`/sbin`、`/system`、`/data` 备份。Type-C 仍不能枚举，但已不再阻塞系统读取。最新证据见 `hardware-validation-2026-08-31.md`。
+
 ## 1. 结论摘要
 
 该设备不是 Android 应用仪表，而是 Allwinner T113 上运行的 FlyThings/EasyUI Linux 应用。OTA 包不是整机固件，而是 `/res` 类应用分区内容：UI、`libzkgui.so`、应用附带库、工具和翻译资源。启动入口由 `EasyUI.cfg` 指向 `/res/lib/libzkgui.so`。

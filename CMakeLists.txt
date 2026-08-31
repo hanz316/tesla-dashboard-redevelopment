@@ -57,4 +57,12 @@ if(BUILD_FLYTHINGS_DEVICE)
     )
     target_link_options(zkgui PRIVATE -Wl,-z,relro,-z,now)
     set_target_properties(zkgui PROPERTIES OUTPUT_NAME zkgui)
+
+    add_executable(device_base64 tools/device_base64.cpp)
+    target_compile_options(device_base64 PRIVATE
+        -Os -Wall -Wextra -Wpedantic -fstack-protector-strong
+        -fno-exceptions -fno-rtti -fno-unwind-tables
+        -fno-asynchronous-unwind-tables
+    )
+    target_link_options(device_base64 PRIVATE -static)
 endif()

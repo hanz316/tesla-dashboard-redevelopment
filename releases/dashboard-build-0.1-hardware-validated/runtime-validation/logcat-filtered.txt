@@ -1,0 +1,83 @@
+01-01 00:03:00.770 D/zkgui   (  203): register control: zk_imageanim
+01-01 00:03:00.770 D/zkgui   (  203): register control: zk_textview
+01-01 00:03:00.770 D/zkgui   (  203): register control: zk_checkbox
+01-01 00:03:00.770 D/zkgui   (  203): register control: zk_pointer
+01-01 00:03:00.770 D/zkgui   (  203): register control: zk_seekbar
+01-01 00:03:00.770 D/zkgui   (  203): register control: zk_circlebar
+01-01 00:03:00.770 D/zkgui   (  203): register control: zk_radiogroup
+01-01 00:03:00.770 D/zkgui   (  203): register control: zk_button
+01-01 00:03:00.770 D/zkgui   (  203): register control: zk_listview
+01-01 00:03:00.770 D/zkgui   (  203): register control: zk_cameraview
+01-01 00:03:00.770 D/zkgui   (  203): register control: zk_slidetext
+01-01 00:03:00.770 D/zkgui   (  203): register control: zk_videoview
+01-01 00:03:00.770 D/zkgui   (  203): register control: zk_edittext
+01-01 00:03:00.770 D/zkgui   (  203): register control: zk_painter
+01-01 00:03:00.770 D/zkgui   (  203): register control: zk_diagram
+01-01 00:03:00.770 D/zkgui   (  203): register control: zk_qrcode
+01-01 00:03:00.770 D/zkgui   (  203): register control: zk_digitalclock
+01-01 00:03:00.770 D/zkgui   (  203): register control: zk_pagewindow
+01-01 00:03:00.770 D/zkgui   (  203): register control: zk_slidewindow
+01-01 00:03:00.770 D/zkgui   (  203): register control: zk_scrollwindow
+01-01 00:03:00.770 D/zkgui   (  203): register control: zk_window
+01-01 00:03:00.771 D/zkgui   (  203): once thread start...
+01-01 00:03:00.771 D/zkgui   (  203): once thread end...
+01-01 00:03:00.772 E/zkgui   (  203): initEasyUICfg ok!
+01-01 00:03:00.772 D/zkhardware(  203): mRatio: 2.450000, mMinBrightness: 10, mMaxBrightness: 100, maxBrightness: 255, mBrightness: 100
+01-01 00:03:00.772 D/zkhardware(  203): initPinMap: enmap 0, dirmap 0, levelmap 0
+01-01 00:03:00.772 D/zkhardware(  203): hw system para 0
+01-01 00:03:00.772 D/zknet   (  203): WifiManager addWifiListener 0x4048e014 size: 1
+01-01 00:03:00.772 D/zknet   (  203): LTE4GManager addLTE4GPowerStateListener 0x4048e01c size: 1
+01-01 00:03:00.773 D/zkgui   (  203): Build time: Jan 17 2024
+01-01 00:03:00.774 D/zkgui   (  203): Ex code: de_GE, language: 德语
+01-01 00:03:00.774 D/zkgui   (  203): Ex code: el_RU, language: 俄罗斯语
+01-01 00:03:00.774 D/zkgui   (  203): Ex code: fa_FR, language: 法语
+01-01 00:03:00.774 D/zkgui   (  203): Ex code: ft_TR, language: 中文繁体
+01-01 00:03:00.774 D/zkgui   (  203): Ex code: pu_PO, language: 葡萄牙语
+01-01 00:03:00.774 D/zkgui   (  203): Ex code: ri_JA, language: 日语
+01-01 00:03:00.774 D/zkgui   (  203): Ex code: xi_SP, language: 西班牙语
+01-01 00:03:00.774 D/zkgui   (  203): Ex code: yi_IT, language: 意大利语
+01-01 00:03:01.001 D/zkgui   (  203): registerActivity name: mainActivity OK!
+01-01 00:03:01.009 D/zkgui   (  203): registerActivity name: WifiSettingActivity OK!
+01-01 00:03:01.009 D/zkgui   (  203): registerActivity name: UpgradeActivity OK!
+01-01 00:03:01.009 D/zkgui   (  203): registerActivity name: LanguageSettingActivity OK!
+01-01 00:03:01.009 D/zkgui   (  203): registerActivity name: ZKSettingActivity OK!
+01-01 00:03:01.009 D/zkgui   (  203): registerActivity name: EthernetSettingActivity OK!
+01-01 00:03:01.009 D/zkgui   (  203): registerActivity name: DeveloperSettingActivity OK!
+01-01 00:03:01.009 D/zkgui   (  203): registerActivity name: PowerOffActivity OK!
+01-01 00:03:01.009 D/zkgui   (  203): registerActivity name: NetSettingActivity OK!
+01-01 00:03:01.009 D/zkgui   (  203): registerActivity name: SoftApSettingActivity OK!
+01-01 00:03:01.009 D/zkgui   (  203): registerActivity name: TouchCalibrationActivity OK!
+01-01 00:03:01.009 D/zkgui   (  203): registerActivity name: LTE4GSettingActivity OK!
+01-01 00:03:01.010 D/zkgui   (  203): mConnectFD = 17 .
+01-01 00:03:01.010 D/zkgui   (  203): MountMonitor addMountListener pListener: 0x403c86c8
+01-01 00:03:01.181 E/zkgui   (  203): name: front_remind not found value !!!
+01-01 00:03:01.228 D/zkgui   (  203): load image file /res/ui/home/back_gears_remind.png fail!!!
+01-01 00:03:01.257 D/zkgui   (  203): load image file /res/ui/home/forward_gears_remind.png fail!!!
+01-01 00:03:01.409 D/zkgui   (  203): load image file /res/ui/home/right_speed_max.png fail!!!
+01-01 00:03:01.625 D/zkgui   (  203): registerTimerListener
+01-01 00:03:02.773 D/zknet   (  203): enableWifi status 4, enable 1
+01-01 00:03:02.773 D/zknet   (  203): handleWifiEnable event = 2
+01-01 00:03:02.773 D/zknet   (  203): handleWifiEnable wifi enabling...
+01-01 00:03:02.773 D/zknet   (  203): set Wifi Enable !!!
+01-01 00:03:02.773 D/zknet   (  203): ControlThread enter !!!
+01-01 00:03:02.773 D/zknet   (  203): performEnableWifi...
+01-01 00:03:02.773 E/zknet   (  203): ctrl_interface != wlan0
+01-01 00:03:02.775 E/zknet   (  203):  the wifi.interface is primary_iface = wlan0 
+01-01 00:03:02.777 D/zknet   (  203): performEnableWifi ok!
+01-01 00:03:02.780 D/zknet   (  203): handleWifiEnable event = 0
+01-01 00:03:02.780 D/zknet   (  203): handleWifiEnable wifi enabled...
+01-01 00:03:02.780 D/zknet   (  203): updateNetChannel channel = 1, mNetChannel = 0
+01-01 00:03:02.780 D/zknet   (  203): doCommand: SCAN
+01-01 00:03:02.780 D/zknet   (  203): EventThread enter !!!
+01-01 00:03:02.783 D/zknet   (  203): [EventThread]:[CTRL-EVENT-SCAN-STARTED ]!!!
+01-01 00:03:02.784 D/zknet   (  203): [EventThread]:[CTRL-EVENT-BSS-REMOVED 4 12:36:aa:0a:8b:6a]!!!
+01-01 00:03:02.784 D/zknet   (  203): [EventThread]:[CTRL-EVENT-BSS-REMOVED 10 46:2f:f7:fd:0c:2d]!!!
+01-01 00:03:02.784 D/zknet   (  203): [EventThread]:[CTRL-EVENT-SCAN-RESULTS ]!!!
+01-01 00:03:02.784 D/zknet   (  203): doCommand: BSS RANGE=ALL MASK=0x1986
+01-01 00:03:02.785 D/zknet   (  203): doCommand: STATUS
+01-01 00:03:02.786 D/zknet   (  203): is completed, but no bssid: 12:36:aa:0a:8b:6d
+01-01 00:03:02.787 D/zknet   (  203): doCommand: AP_SCAN 1
+01-01 00:03:02.787 D/zknet   (  203): doCommand: SAVE_CONFIG
+01-01 00:03:05.773 D/zknet   (  203): handleLTE4GPowerState state = 3
+01-01 00:03:05.773 D/zknet   (  203): 4g power state 2, req power 0
+01-01 00:03:06.776 D/zknet   (  203): handleLTE4GPowerState state = 2

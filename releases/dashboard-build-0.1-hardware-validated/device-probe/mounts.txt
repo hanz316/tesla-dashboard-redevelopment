@@ -1,0 +1,11 @@
+rootfs / rootfs rw,size=121396k,nr_inodes=30349 0 0
+tmpfs /dev tmpfs rw,nosuid,relatime,size=123444k,nr_inodes=30861,mode=755 0 0
+tmpfs /tmp tmpfs rw,nosuid,relatime,size=123444k,nr_inodes=30861,mode=755 0 0
+devpts /dev/pts devpts rw,relatime,mode=600,ptmxmode=000 0 0
+proc /proc proc rw,relatime 0 0
+sysfs /sys sysfs rw,relatime 0 0
+/dev/block/mtdblock2 /res squashfs ro,noatime,nodiratime 0 0
+/dev/block/mtdblock3 /late squashfs ro,noatime,nodiratime 0 0
+/dev/block/mtdblock5 /data jffs2 rw,noatime,nodiratime 0 0
+none /sys/kernel/config configfs rw,relatime 0 0
+adb /dev/usb-ffs/adb functionfs rw,relatime 0 0

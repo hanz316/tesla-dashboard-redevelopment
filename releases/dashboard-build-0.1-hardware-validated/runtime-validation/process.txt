@@ -1,0 +1,120 @@
+running
+USER     PID   PPID  VSIZE  RSS     WCHAN    PC         NAME
+0         1     0     896    652   00000001 00000000 S /sbin/init
+0         2     0     0      0     00000001 00000000 S kthreadd
+0         3     2     0      0     00000001 00000000 I rcu_gp
+0         4     2     0      0     00000001 00000000 I rcu_par_gp
+0         5     2     0      0     00000001 00000000 I kworker/0:0-pm
+0         6     2     0      0     00000001 00000000 I kworker/0:0H-kblockd
+0         7     2     0      0     00000001 00000000 I kworker/u4:0-events_unbound
+0         8     2     0      0     00000001 00000000 I mm_percpu_wq
+0         9     2     0      0     00000001 00000000 S ksoftirqd/0
+0         10    2     0      0     00000001 00000000 I rcu_preempt
+0         11    2     0      0     00000001 00000000 S migration/0
+0         12    2     0      0     00000001 00000000 S cpuhp/0
+0         13    2     0      0     00000001 00000000 S cpuhp/1
+0         14    2     0      0     00000001 00000000 S migration/1
+0         15    2     0      0     00000001 00000000 S ksoftirqd/1
+0         16    2     0      0     00000001 00000000 I kworker/1:0-mm_percpu_wq
+0         17    2     0      0     00000001 00000000 I kworker/1:0H-kblockd
+0         18    2     0      0     00000001 00000000 S rcu_tasks_kthre
+0         19    2     0      0     00000001 00000000 I kworker/0:1-events
+0         20    2     0      0     00000001 00000000 I kworker/1:1-rcu_gp
+0         21    2     0      0     00000001 00000000 S oom_reaper
+0         22    2     0      0     00000001 00000000 I writeback
+0         23    2     0      0     00000001 00000000 S kcompactd0
+0         24    2     0      0     00000001 00000000 I kworker/u4:1-events_unbound
+0         30    2     0      0     00000001 00000000 I kblockd
+0         31    2     0      0     00000001 00000000 S ion_system_heap
+0         32    2     0      0     00000001 00000000 S watchdogd
+0         33    2     0      0     00000001 00000000 S spi0
+0         34    2     0      0     00000001 00000000 I cfg80211
+0         44    2     0      0     00000001 00000000 S vsync proc 0
+0         45    2     0      0     00000001 00000000 S vsync proc 1
+0         46    2     0      0     00000001 00000000 S kswapd0
+0         47    2     0      0     00000001 00000000 I kworker/0:2-rcu_gp
+0         48    2     0      0     00000001 00000000 S tvd detect
+0         49    2     0      0     00000001 00000000 I ipv6_addrconf
+0         50    2     0      0     00000001 00000000 S tve detect
+0         51    2     0      0     00000001 00000000 I kworker/1:2-ipv6_addrconf
+0         53    1     916    672   00000001 00000000 S /sbin/ueventd
+0         56    2     0      0     00000001 00000000 S jffs2_gcd_mtd5
+0         58    1     2384   1368  00000000 00000000 S /bin/vold
+1036      59    1     3512   1488  00000000 00000000 S /bin/logd
+0         71    2     0      0     00000001 00000000 I kworker/1:1H
+0         76    2     0      0     00000001 00000000 I kworker/0:1H
+0         79    2     0      0     00000001 00000000 I goodix_wq
+0         81    2     0      0     00000001 00000000 S irq/37-mmc0
+0         82    2     0      0     00000001 00000000 S irq/196-4020000
+0         83    2     0      0     00000001 00000000 S irq/38-mmc1
+0         90    1     3588   1608  00000001 00000000 S /late/bin/wpa_supplicant
+0         91    2     0      0     00000001 00000000 I kworker/1:2H-kblockd
+0         92    2     0      0     00000001 00000000 S RTW_XMIT_THREAD
+0         93    2     0      0     00000001 00000000 S RTW_RECV_THREAD
+0         94    2     0      0     00000001 00000000 S RTW_CMD_THREAD
+0         95    2     0      0     00000001 00000000 S RTWHALXT
+0         96    2     0      0     00000001 00000000 S ksdioirqd/mmc1
+0         97    2     0      0     00000001 00000000 S RTWHALXT
+0         106   1     980    776   00000001 00000000 S /bin/sh
+0         107   1     980    776   00000001 00000000 S /bin/sh
+0         108   106   3564   1052  00000001 00000000 S /res/bin/blink
+0         109   107   11348  3696  00000001 00000000 S /res/bin/lylinkapp_ab
+0         110   2     0      0     00000001 00000000 I kworker/0:2H-kblockd
+0         111   2     0      0     00000001 00000000 I kworker/0:3H
+0         121   1     1908   736   00000000 00000000 S /bin/adbd
+0         126   2     0      0     00000001 00000000 I kworker/1:3H
+0         127   108   5024   2360  00000000 00000000 S /res/bin/blink
+0         143   1     1424   1180  00000001 00000000 S /res/bin/mdnsd
+0         161   2     0      0     00000001 00000000 I kworker/u4:2-events_unbound
+0         203   1     27240  3664  00000000 00000000 S /bin/zkgui
+0         219   109   12048  1380  00000000 00000000 S /res/bin/lylinkapp_ab
+0         229   121   972    768   00000001 00000000 S /bin/sh
+0         232   229   984    656   00000000 00000000 R ps
+Name:	zkgui_ui
+Umask:	0000
+State:	S (sleeping)
+Tgid:	203
+Ngid:	0
+Pid:	203
+PPid:	1
+TracerPid:	0
+Uid:	0	0	0	0
+Gid:	0	0	0	0
+FDSize:	256
+Groups:	 
+VmPeak:	   27852 kB
+VmSize:	   27240 kB
+VmLck:	       0 kB
+VmPin:	       0 kB
+VmHWM:	    3668 kB
+VmRSS:	    3664 kB
+RssAnon:	     664 kB
+RssFile:	       0 kB
+RssShmem:	    3000 kB
+VmData:	    1636 kB
+VmStk:	     132 kB
+VmExe:	       8 kB
+VmLib:	    4340 kB
+VmPTE:	      32 kB
+VmSwap:	       0 kB
+CoreDumping:	0
+THP_enabled:	0
+Threads:	9
+SigQ:	0/1896
+SigPnd:	0000000000000000
+ShdPnd:	0000000000000000
+SigBlk:	0000000000000000
+SigIgn:	0000000000001000
+SigCgt:	0000000000000000
+CapInh:	0000000000000000
+CapPrm:	0000003fffffffff
+CapEff:	0000003fffffffff
+CapBnd:	0000003fffffffff
+CapAmb:	0000000000000000
+NoNewPrivs:	0
+Speculation_Store_Bypass:	unknown
+Cpus_allowed:	3
+Cpus_allowed_list:	0-1
+voluntary_ctxt_switches:	681
+nonvoluntary_ctxt_switches:	39
+203 (zkgui_ui) S 1 203 0 0 -1 4194560 2987 0 0 0 70 23 0 0 20 0 9 0 18067 27893760 916 4294967295 65536 70700 3198561680 0 0 0 0 4096 0 0 0 0 17 1 0 0 0 0 0 138716 139263 1671168 3198561924 3198561935 3198561935 3198562289 0

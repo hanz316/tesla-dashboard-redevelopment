@@ -10,4 +10,6 @@
 /vendor/
 __pycache__/
 *.pyc
+*.swp
+/releases/**/runtime-validation/logcat.txt
 .DS_Store

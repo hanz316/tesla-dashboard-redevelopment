@@ -1,6 +1,8 @@
 # Tesla 第三方仪表重新开发
 
-当前版本：`0.1.0`（Phase 0/1 调查完成，Phase 2 MVP 已构建，等待实机验证）
+当前稳定基线：`dashboard-build-0.1-hardware-validated`
+
+当前开发阶段：Build 0.2 产品化重新开发。
 
 本仓库以原仪表 MCU 为第一版车辆数据源，数据链严格分层：
 
@@ -17,10 +19,11 @@
 - 已确认平台为 Allwinner T113、32-bit ARM EABI5、musl hard-float、FlyThings/EasyUI。
 - 已确认车辆 UART 为 `/dev/ttyS5`、38400 baud；协议帧为 `2E CMD LEN PAYLOAD CHECKSUM`。
 - 已实现只读 `OriginalMcuAdapter` 和带来源、质量、时间戳、单位的 `VehicleState`。
-- Mac 端单元测试通过；T113 目标 `libzkgui.so` 交叉编译成功。
+- Mac 端单元测试通过；T113 目标 `libzkgui.so` 交叉编译成功并已在真实仪表运行。
 - 目标库只引用 `open/read`，不引用 `write`；代码没有车辆控制发送 API。
-- 已生成 `/tmp` ADB 临时运行 bundle；未刷写、未部署到实机。
-- 当前 Mac 没有枚举到仪表，ADB 也没有设备，因此实机备份和上机验证仍待完成。
+- `/tmp` ADB 临时运行、进程映射、UART FD、日志和 framebuffer 已验证。
+- 32 MiB SPI NOR 六分区原始备份和关键系统文件备份已完成。
+- 断电恢复 stock 应用已验证。
 
 详细证据见：
 
@@ -28,6 +31,7 @@
 - `docs/protocol-table.md`
 - `docs/safe-deployment.md`
 - `docs/mvp-status.md`
+- `docs/hardware-validation-2026-08-31.md`
 
 ## 构建与验证
 

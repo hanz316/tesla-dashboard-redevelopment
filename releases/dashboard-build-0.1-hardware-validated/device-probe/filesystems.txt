@@ -1,0 +1,53 @@
+drwxr-xr-x 0        0                 1970-01-01 00:00 bin
+drwxrwx--x 0        0                 1970-01-01 00:00 data
+drwxr-xr-x 0        0                 1970-01-01 00:00 dev
+drwxr-xr-x 0        0                 2024-03-13 08:45 etc
+-rwxrwxr-x 0        0              80 2022-02-09 10:10 init
+drwxr-xr-x 0        0                 2024-03-11 07:45 late
+drwxr-xr-x 0        0                 2024-03-13 08:45 lib
+drwxrwxr-x 0        0                 1970-01-01 00:00 mnt
+dr-xr-xr-x 0        0                 1970-01-01 00:00 proc
+drwxrwx--- 1000     1000              2026-01-14 10:20 res
+drwxr-xr-x 0        0                 2024-03-13 08:45 sbin
+dr-xr-xr-x 0        0                 1970-01-01 00:00 sys
+drwxrwxr-x 0        0                 2024-03-13 08:45 system
+drwxr-xr-x 0        0                 1970-01-01 00:02 tmp
+drwxrwx--- 1000     1000              2025-09-25 01:34 bin
+drwxrwx--- 1000     1000              2026-01-14 10:20 etc
+drwxrwx--- 1000     1000              2026-01-14 10:20 font
+drwxrwx--- 1000     1000              2025-09-25 01:34 lib
+drwxrwx--- 1000     1000              2026-01-14 10:20 tr
+drwxrwx--- 1000     1000              2025-09-25 01:34 ui
+-rwxr--r-- 0        0             449 2024-03-11 07:45 build.prop
+-rwxrwxr-x 0        0            1014 2024-03-11 07:45 cedarc.conf
+-rwxrwxr-x 0        0            4339 2024-03-11 07:45 cedarx.conf
+-rw-rw-r-- 0        0            2242 2024-03-11 07:45 cedarx_h264.conf
+-rwxr--r-- 0        0             136 2024-03-11 07:45 default.prop
+drwxr-xr-x 0        0                 2024-03-13 08:45 font
+-rwxrwxr-x 0        0            3487 2024-03-11 07:45 init.rc
+-rw-rw-r-- 0        0              24 2024-03-11 07:45 ld-musl-armhf.path
+-rwxrwxr-x 0        0             677 2024-03-11 07:45 mkshrc
+-rwxr--r-- 0        0              46 2024-03-11 07:45 resolv.conf
+-rwxrwxr-x 0        0             104 2024-03-11 07:45 ts.conf
+-rwxrwxr-x 0        0             491 2024-03-11 07:45 ueventd.rc
+-rwxr--r-- 0        0             984 2024-03-11 07:45 vold.fstab
+drwxr-xr-x 0        0                 2024-03-13 08:45 wifi
+-rw-rw-rw- 0        0             728 1970-01-01 00:00 awequal.conf
+drw-rw-rw- 0        0                 1999-12-31 12:39 blink
+-rw-rw-rw- 0        0             332 1970-01-01 00:00 hostapd.conf
+drwxr-x--x 0        0                 1970-01-01 00:00 local
+drwxr-xr-x 0        0                 1999-12-31 00:00 lylink
+drwxrwx--t 1000     9998              1970-01-01 00:00 misc
+-rw-rw-rw- 1000     1000           68 1970-01-01 00:00 preferences.json
+drwx------ 0        0                 1970-01-01 00:03 property
+drw-rw-rw- 0        0                 1970-01-01 00:00 run
+-rw-rw-rw- 0        0             223 1970-01-01 00:00 udhcpd.conf
+-rw-rw-rw- 0        0             942 1970-01-01 00:00 zkapp.cfg
+drwxr-xr-x 0        0                 1970-01-01 00:00 lylink
+-rw-rw-rw- 0        0              32 1970-01-01 00:00 lylink.lic
+srwxrwxrwx 0        0                 1970-01-01 00:00 lylinks
+srwxrwxrwx 0        0                 1970-01-01 00:02 wpa_ctrl_57-1
+drwxr-xr-x 0        0                 1970-01-01 00:00 extsd
+drwxrwxrwx 0        0                 1970-01-01 00:00 sdnand
+drwxr-xr-x 0        0                 1970-01-01 00:00 usb1
+drwxr-xr-x 0        0                 1970-01-01 00:00 usbotg

@@ -1,0 +1,2 @@
+default via 10.80.6.248 dev wlan0 
+10.80.6.0/24 dev wlan0 proto kernel scope link src 10.80.6.196 
