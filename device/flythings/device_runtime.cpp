@@ -91,6 +91,15 @@ void DeviceRuntime::readLoop() {
                 static_cast<std::size_t>(count),
                 now_ms);
             pthread_mutex_unlock(&mutex_);
+            // Raw UART recording (diagnostic only, tmpfs).
+            // Enabled while /tmp/uart_record exists.
+            if (access("/tmp/uart_record", F_OK) == 0) {
+                FILE* rec = fopen("/tmp/uart_recording.bin", "a");
+                if (rec != nullptr) {
+                    std::fwrite(buffer, 1, static_cast<std::size_t>(count), rec);
+                    std::fclose(rec);
+                }
+            }
             continue;
         }
         if (count < 0 && errno != EAGAIN && errno != EINTR) {
