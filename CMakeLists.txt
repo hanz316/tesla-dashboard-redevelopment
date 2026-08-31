@@ -71,4 +71,11 @@ if(BUILD_FLYTHINGS_DEVICE)
         -fno-asynchronous-unwind-tables
     )
     target_link_options(device_base64 PRIVATE -static)
+
+    add_executable(uart_rx_toggle tools/uart_rx_toggle.cpp)
+    target_compile_options(uart_rx_toggle PRIVATE
+        -Os -Wall -Wextra -Wpedantic -fstack-protector-strong
+        -fno-exceptions -fno-rtti
+    )
+    target_link_options(uart_rx_toggle PRIVATE -static)
 endif()
