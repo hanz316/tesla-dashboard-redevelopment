@@ -47,6 +47,29 @@ if(BUILD_HOST_TOOLS)
         pkg_check_modules(SDL2_TTF QUIET SDL2_ttf)
         pkg_check_modules(SDL2_IMAGE QUIET SDL2_image)
     endif()
+
+    if(SDL2_FOUND AND SDL2_TTF_FOUND)
+        add_executable(dashboard_product_simulator
+            apps/product_simulator/main.cpp
+        )
+        target_link_libraries(dashboard_product_simulator PRIVATE dashboard_core)
+        target_include_directories(dashboard_product_simulator PRIVATE
+            ${SDL2_INCLUDE_DIRS}
+            ${SDL2_TTF_INCLUDE_DIRS}
+        )
+        target_link_directories(dashboard_product_simulator PRIVATE
+            ${SDL2_LIBRARY_DIRS}
+            ${SDL2_TTF_LIBRARY_DIRS}
+        )
+        target_link_libraries(dashboard_product_simulator PRIVATE
+            ${SDL2_LIBRARIES}
+            ${SDL2_TTF_LIBRARIES}
+        )
+        target_compile_options(dashboard_product_simulator PRIVATE
+            -Wall -Wextra -Wpedantic
+        )
+    endif()
+
     if(SDL2_FOUND AND SDL2_TTF_FOUND AND SDL2_IMAGE_FOUND)
         add_executable(dashboard_simulator_gui
             apps/simulator_gui/product_main.cpp
