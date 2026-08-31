@@ -149,6 +149,10 @@ struct SafetyLayerState {
     bool soc_available{false};
     std::uint8_t soc_percent{0};
     bool soc_verified{false};
+    bool turn_left_available{false};
+    bool turn_left_active{false};
+    bool turn_right_available{false};
+    bool turn_right_active{false};
     const WarningItem* top_warning{nullptr};
 };
 
