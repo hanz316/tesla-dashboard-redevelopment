@@ -21,8 +21,8 @@ Checksum  1 byte  ~(Command + Length + sum(Payload)) & 0xFF
 
 | CMD | 字段 | 解码 | 状态 |
 |---:|---|---|---|
-| `0x01` | gear | `(payload[4] >> 4)`: `0=P,1=R,2=N,3=D` | CONFIRMED |
-| `0x01` | door FL | `payload[3] bit 0` | LIKELY / NEEDS REAL CAR TEST |
+| `0x01` | gear | `(payload[4] >> 4)`: `0=P,4=D` 实车确认（Park→Drive） | CONFIRMED |
+| `0x01` | door FL | `payload[3] bit 0`（实车关门确认） | CONFIRMED |
 | `0x01` | door FR | `payload[3] bit 2` | LIKELY / NEEDS REAL CAR TEST |
 | `0x01` | door RL | `payload[3] bit 1` | LIKELY / NEEDS REAL CAR TEST |
 | `0x01` | door RR | `payload[3] bit 3` | LIKELY / NEEDS REAL CAR TEST |

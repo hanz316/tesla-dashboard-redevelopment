@@ -41,6 +41,15 @@
 | 主温 | PASS（22°C） |
 | 原始录制 | `captures/uart-record-realcar-*.bin`，协议表已更新 |
 
+### Door / Gear mapping 实车确认（2026-08-31，用户关门 + 挂 D）
+
+- 驾驶员门从开→关：doors `100000` → `000000`。**payload[3] bit0 = FL（驾驶员门）CONFIRMED**
+- 挂 D 挡：gear nibble `(payload[4]>>4)` 从 0（Park）→ 4（Drive）。
+  **0=Park、4=Drive CONFIRMED**
+- 事件录制：`captures/uart-record-realcar-geardoor.bin`（147,902 B）
+  SHA-256 `dd6341937fdb02e02444d6777f25f82fa4682173803123fbeaa2ed61f22d93c1`
+- 其余车门（FR/RL/RR/trunk/frunk）位仍为 LIKELY，可用同类动作逐项确认。
+
 ### SOC 已知问题（MCU 数据本身）
 
 - `0x04[8]` 恒定上报 97，**stock 原厂仪表也一直显示 97**，与 Tesla 实际
