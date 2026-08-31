@@ -6,9 +6,7 @@
 namespace dashboard {
 namespace {
 
-ThemePalette darkPalette() {
-    return ThemePalette{};
-}
+ThemePalette darkPalette() { return ThemePalette{}; }
 
 ThemePalette graphitePalette() {
     ThemePalette p;
@@ -62,14 +60,11 @@ DashboardTheme ThemeManager::resolvedTheme(bool night) const {
 
 ThemePalette ThemeManager::palette(bool night) const {
     switch (resolvedTheme(night)) {
-        case DashboardTheme::Graphite:
-            return graphitePalette();
-        case DashboardTheme::Light:
-            return lightPalette();
+        case DashboardTheme::Graphite: return graphitePalette();
+        case DashboardTheme::Light: return lightPalette();
         case DashboardTheme::Dark:
         case DashboardTheme::Auto:
-        default:
-            return darkPalette();
+        default: return darkPalette();
     }
 }
 
@@ -81,13 +76,11 @@ void PageManager::setPage(DashboardPage page) {
 }
 
 void PageManager::next() {
-    const int value = (static_cast<int>(page_) + 1) % 7;
-    setPage(static_cast<DashboardPage>(value));
+    setPage(static_cast<DashboardPage>((static_cast<int>(page_) + 1) % 7));
 }
 
 void PageManager::previous() {
-    const int current = static_cast<int>(page_);
-    setPage(static_cast<DashboardPage>((current + 6) % 7));
+    setPage(static_cast<DashboardPage>((static_cast<int>(page_) + 6) % 7));
 }
 
 void PageManager::tick(std::uint32_t delta_ms, bool motion_enabled) {
@@ -96,10 +89,9 @@ void PageManager::tick(std::uint32_t delta_ms, bool motion_enabled) {
         return;
     }
     if (transition_progress_ >= 1.0F) return;
-    const float duration_ms = 320.0F;
     transition_progress_ = std::min(
         1.0F,
-        transition_progress_ + static_cast<float>(delta_ms) / duration_ms);
+        transition_progress_ + static_cast<float>(delta_ms) / 320.0F);
 }
 
 float MotionEngine::animate(
@@ -117,10 +109,7 @@ float MotionEngine::animate(
     const float tau = channel == MotionChannel::Speed ? 85.0F : 160.0F;
     const float alpha = 1.0F - std::exp(-dt / tau);
     state.value += (target - state.value) * alpha;
-
-    if (std::fabs(target - state.value) < 0.05F) {
-        state.value = target;
-    }
+    if (std::fabs(target - state.value) < 0.05F) state.value = target;
     return state.value;
 }
 
@@ -139,56 +128,42 @@ void WarningManager::evaluate(
         !inputs.vehicle_link_has_data ||
         inputs.vehicle_link_age_ms > 5000) {
         warnings_.push_back(WarningItem{
-            "vehicle-data-lost",
-            "VEHICLE DATA LOST",
+            "vehicle-data-lost", "VEHICLE DATA LOST",
             "Core vehicle telemetry unavailable",
-            WarningSeverity::Critical,
-            true});
+            WarningSeverity::Critical, true});
         return;
     }
 
     const bool moving = state.speed.valid && state.speed.value > 0;
     if (moving && state.trunk.valid && state.trunk.value) {
         warnings_.push_back(WarningItem{
-            "trunk-open-moving",
-            "TRUNK OPEN",
+            "trunk-open-moving", "TRUNK OPEN",
             "Stop safely and close the trunk",
-            WarningSeverity::Warning,
-            true});
+            WarningSeverity::Warning, true});
     }
     if (moving && state.frunk.valid && state.frunk.value) {
         warnings_.push_back(WarningItem{
-            "frunk-open-moving",
-            "FRUNK OPEN",
+            "frunk-open-moving", "FRUNK OPEN",
             "Stop safely and close the frunk",
-            WarningSeverity::Critical,
-            true});
+            WarningSeverity::Critical, true});
     }
     if (moving && anyOpen(state)) {
         warnings_.push_back(WarningItem{
-            "door-open-moving",
-            "DOOR OPEN",
+            "door-open-moving", "DOOR OPEN",
             "A closure is open while moving",
-            WarningSeverity::Warning,
-            true});
+            WarningSeverity::Warning, true});
     }
 
-    const Signal<std::uint8_t>& soc =
-        state.actual_soc.valid ? state.actual_soc : state.soc;
-    if (state.actual_soc.valid && soc.value <= 5) {
+    if (state.actual_soc.valid && state.actual_soc.value <= 5) {
         warnings_.push_back(WarningItem{
-            "soc-critical",
-            "BATTERY VERY LOW",
+            "soc-critical", "BATTERY VERY LOW",
             "Charge as soon as possible",
-            WarningSeverity::Critical,
-            true});
-    } else if (state.actual_soc.valid && soc.value <= 12) {
+            WarningSeverity::Critical, true});
+    } else if (state.actual_soc.valid && state.actual_soc.value <= 12) {
         warnings_.push_back(WarningItem{
-            "soc-low",
-            "BATTERY LOW",
+            "soc-low", "BATTERY LOW",
             "Plan a charging stop",
-            WarningSeverity::Caution,
-            true});
+            WarningSeverity::Caution, true});
     }
 }
 
@@ -220,9 +195,7 @@ ContextDecision ContextRouter::decide(
         result.suggested_page = DashboardPage::Pulse;
         return result;
     }
-    if (product.media.available) {
-        result.card = ContextCardKind::Media;
-    }
+    if (product.media.available) result.card = ContextCardKind::Media;
     return result;
 }
 
@@ -245,6 +218,10 @@ SafetyLayerState buildSafetyLayer(
         result.soc_verified = false;
     }
 
+    result.turn_left_available = state.turn_signal_left.valid;
+    result.turn_left_active = state.turn_signal_left.valid && state.turn_signal_left.value;
+    result.turn_right_available = state.turn_signal_right.valid;
+    result.turn_right_active = state.turn_signal_right.valid && state.turn_signal_right.value;
     result.top_warning = warnings.highest();
     return result;
 }
