@@ -58,6 +58,38 @@ sendProtocolTo(int port, uint8_t command, const uint8_t* payload, uint16_t len)
 
 新 MVP 不实现发送 API；目标进程以 `O_RDONLY` 打开 `/dev/ttyS5`，链接符号中不存在 `write`。所有控制 command 在 Phase 0-4 禁止执行。
 
+## 实车录制观察（2026-08-31，静止通电）
+
+录制：`captures/uart-record-realcar-1.bin`（19,779 B / 2,356 帧）
+与 `captures/uart-record-realcar-2.bin`（31,392 B / 3,736 帧，约 93 s）。
+
+```text
+174bb0f5db4cd7f6fb9dcfa2681983ead799c5f7a5c27cea06ec340647b0e047  uart-record-realcar-1.bin
+476bd931477004c8914865f51c092e2d9454df38b0c683298b0e2f72c1a3abd9  uart-record-realcar-2.bin
+```
+
+（`captures/` 不入 git；文件在本机 + 上述 SHA-256，需要时上传 Release。）
+
+解析结果：**0 丢弃、0 checksum 错误**；帧率约 40 fps。
+
+| CMD | 帧数占比 | 实测长度 | 观察 |
+|---:|---:|---:|---|
+| `0x0D` | 49% | 1 | 心跳，payload 多为 `01`，约 20 Hz |
+| `0x04` | 12% | 17 | speed=LE16[0..1]、range=LE16[6..7]、SOC=[8]、distance=LE24[10..12]、**[13..14] 为约 26 Hz 递增时间计数** |
+| `0x15` | 12% | 4 | 全零，含义未知 |
+| `0x02` | 8% | 5 | `0000004400`，含义未知 |
+| `0x07` | 6% | 4 | 主温 `(payload[0]>>1)-40`；[1..2] 缓慢变化（另一温度/状态） |
+| `0x05` | 2% | 6 | [4..5] 递增，疑似计数 |
+| `0x01` | 2% | 9 | gear=`payload[4]>>4`（0=Park）；doors=`payload[3]` bit0=FL（录制时车门开，bit0=1 吻合） |
+| `0x11` | 1% | 5 | `0000020000` 稳定 |
+| `0x12` | 1% | 5 | 静止时全零（胎压未上报） |
+| `0x13` `0x03` `0x31` | 各 1% | 2/1/9 | 稳定，含义未知 |
+| `0x38` | 1% | 6 | `010200000000` 稳定（AP/ADAS 静止态） |
+| `0x0F` | <1% | 1 | `00` |
+
+静止实测信号：speed=0、gear=Park、SOC=97%、range=254 km、driver door=open、
+主温 22°C。door/tire 物理位置仍需逐项动作确认。
+
 ## Door mapping 说明
 
 原程序从 `payload[3]` 提取六个 bit 的顺序是 `4,0,2,5,1,3`，与 `trunk, FL, FR, frunk, RL, RR` 的常见布局高度吻合。由于没有实车逐门录制，这六个位置在代码中保留可配置 mapping，质量标记为 `Inferred`，不会伪装成 `Confirmed`。

@@ -23,6 +23,26 @@
 | UART 数据流 | 待车通电验证（当前 bytes=0，车处于关闭状态） |
 | Speed/Gear/SOC/Range/Doors/Tire | `NEEDS_REAL_CAR_ACTION`（车通电后验证） |
 
+## 实车通电验证（2026-08-31 16:2x，车通电静止）
+
+车通电后仪表重启，/tmp 清空回到 stock；重新部署 Build 0.2 后：
+
+| 项目 | 结果 |
+|---|---|
+| UART 数据流 | **PASS**（约 40 fps，bytes 持续增长） |
+| 帧解析 | **PASS**（2,356+3,736 帧，0 CRC 错误，0 丢弃） |
+| 数据源状态 | **PASS**（health=Connected，UI 显示 DATA） |
+| Speed | PASS（静止 0 km/h） |
+| Gear | PASS（Park） |
+| SOC | PASS（97%） |
+| Range | PASS（254 km） |
+| Doors | PASS 初步（driver door=open，bit0=FL 吻合；需关门动作复核） |
+| Tire Pressure | 静止未上报（全零），需行驶/特定条件 |
+| 主温 | PASS（22°C） |
+| 原始录制 | `captures/uart-record-realcar-*.bin`，协议表已更新 |
+
+## 重要发现：framebuffer 读取方法
+
 ## 重要发现：framebuffer 读取方法
 
 **`adb shell cat /dev/fb0 > local.raw` 会损坏二进制内容**（产生伪色块），
