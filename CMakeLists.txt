@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(tesla_dashboard_redevelopment VERSION 0.1.0 LANGUAGES CXX)
+project(tesla_dashboard_redevelopment VERSION 0.2.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -12,6 +12,7 @@ option(BUILD_FLYTHINGS_DEVICE "Build the T113 FlyThings libzkgui.so" OFF)
 add_library(dashboard_core
     src/core/original_mcu_adapter.cpp
     src/core/protocol_parser.cpp
+    src/core/stale_policy.cpp
 )
 set_target_properties(dashboard_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(dashboard_core PUBLIC include)
@@ -27,6 +28,11 @@ if(BUILD_HOST_TOOLS)
     target_link_libraries(dashboard_tests PRIVATE dashboard_core)
     target_compile_options(dashboard_tests PRIVATE -Wall -Wextra -Wpedantic)
     add_test(NAME dashboard_tests COMMAND dashboard_tests)
+
+    add_executable(dashboard_stale_tests tests/stale_policy_tests.cpp)
+    target_link_libraries(dashboard_stale_tests PRIVATE dashboard_core)
+    target_compile_options(dashboard_stale_tests PRIVATE -Wall -Wextra -Wpedantic)
+    add_test(NAME dashboard_stale_tests COMMAND dashboard_stale_tests)
 endif()
 
 if(BUILD_FLYTHINGS_DEVICE)

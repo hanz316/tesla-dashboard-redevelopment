@@ -1,5 +1,7 @@
 #include "device_runtime.h"
 
+#include "dashboard/stale_policy.h"
+
 #include <cerrno>
 #include <cstdint>
 #include <fcntl.h>
@@ -12,6 +14,7 @@ namespace flythings {
 namespace {
 
 constexpr const char* kVehicleUart = "/dev/ttyS5";
+constexpr std::uint64_t kUartHealthyWindowMs = 2500;
 
 }  // namespace
 
@@ -36,6 +39,12 @@ bool DeviceRuntime::start() {
     if (!openVehicleUart()) {
         return false;
     }
+
+    pthread_mutex_lock(&mutex_);
+    last_rx_ms_ = 0;
+    rx_bytes_ = 0;
+    read_errors_ = 0;
+    pthread_mutex_unlock(&mutex_);
 
     running_ = true;
     if (pthread_create(&thread_, nullptr, &DeviceRuntime::threadEntry, this) != 0) {
@@ -62,12 +71,28 @@ void DeviceRuntime::stop() {
 
 RuntimeSnapshot DeviceRuntime::snapshot() {
     RuntimeSnapshot result;
+    const std::uint64_t now_ms = monotonicMilliseconds();
+
     pthread_mutex_lock(&mutex_);
     result.state = adapter_.state();
     result.parser = adapter_.parserStats();
     result.adapter = adapter_.adapterStats();
     result.uart_connected = uart_fd_ >= 0;
+    result.last_rx_ms = last_rx_ms_;
+    result.has_rx = last_rx_ms_ != 0;
+    result.rx_bytes = rx_bytes_;
+    result.read_errors = read_errors_;
     pthread_mutex_unlock(&mutex_);
+
+    if (result.has_rx && now_ms >= result.last_rx_ms) {
+        result.rx_age_ms = now_ms - result.last_rx_ms;
+    }
+    result.uart_healthy =
+        result.uart_connected && result.has_rx &&
+        result.rx_age_ms <= kUartHealthyWindowMs;
+
+    const StaleSummary stale = invalidateStale(result.state, now_ms);
+    result.stale_signals = stale.expired_signals;
     return result;
 }
 
@@ -81,24 +106,33 @@ void DeviceRuntime::readLoop() {
     while (running_) {
         const ssize_t count = read(uart_fd_, buffer, sizeof(buffer));
         if (count > 0) {
+            const std::uint64_t now_ms = monotonicMilliseconds();
             pthread_mutex_lock(&mutex_);
-            adapter_.feed(
-                buffer,
-                static_cast<std::size_t>(count),
-                monotonicMilliseconds());
+            adapter_.feed(buffer, static_cast<std::size_t>(count), now_ms);
+            last_rx_ms_ = now_ms;
+            rx_bytes_ += static_cast<std::uint64_t>(count);
             pthread_mutex_unlock(&mutex_);
             continue;
         }
         if (count < 0 && errno != EAGAIN && errno != EINTR) {
+            pthread_mutex_lock(&mutex_);
+            ++read_errors_;
+            pthread_mutex_unlock(&mutex_);
             break;
         }
         usleep(20000);
     }
+
+    pthread_mutex_lock(&mutex_);
+    if (uart_fd_ >= 0) {
+        close(uart_fd_);
+        uart_fd_ = -1;
+    }
+    pthread_mutex_unlock(&mutex_);
 }
 
 bool DeviceRuntime::openVehicleUart() {
-    // O_RDONLY is intentional: Phase 0-2 have no path that can transmit a
-    // command to the original MCU or vehicle.
+    // O_RDONLY is intentional. There is still no transmit/control path.
     uart_fd_ = open(kVehicleUart, O_RDONLY | O_NOCTTY | O_NONBLOCK);
     if (uart_fd_ < 0) {
         return false;
