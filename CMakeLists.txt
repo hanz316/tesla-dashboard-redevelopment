@@ -33,6 +33,39 @@ if(BUILD_HOST_TOOLS)
     target_link_libraries(dashboard_stale_tests PRIVATE dashboard_core)
     target_compile_options(dashboard_stale_tests PRIVATE -Wall -Wextra -Wpedantic)
     add_test(NAME dashboard_stale_tests COMMAND dashboard_stale_tests)
+
+    find_package(PkgConfig QUIET)
+    if(PkgConfig_FOUND)
+        pkg_check_modules(SDL2 QUIET sdl2)
+        pkg_check_modules(SDL2_TTF QUIET SDL2_ttf)
+        pkg_check_modules(SDL2_IMAGE QUIET SDL2_image)
+    endif()
+    if(SDL2_FOUND AND SDL2_TTF_FOUND AND SDL2_IMAGE_FOUND)
+        add_executable(dashboard_simulator_gui
+            apps/simulator_gui/main.cpp
+            apps/simulator_gui/replay_source.cpp
+        )
+        target_link_libraries(dashboard_simulator_gui PRIVATE dashboard_core)
+        target_include_directories(dashboard_simulator_gui PRIVATE
+            apps/simulator_gui
+            ${SDL2_INCLUDE_DIRS}
+            ${SDL2_TTF_INCLUDE_DIRS}
+            ${SDL2_IMAGE_INCLUDE_DIRS}
+        )
+        target_link_directories(dashboard_simulator_gui PRIVATE
+            ${SDL2_LIBRARY_DIRS}
+            ${SDL2_TTF_LIBRARY_DIRS}
+            ${SDL2_IMAGE_LIBRARY_DIRS}
+        )
+        target_link_libraries(dashboard_simulator_gui PRIVATE
+            ${SDL2_LIBRARIES}
+            ${SDL2_TTF_LIBRARIES}
+            ${SDL2_IMAGE_LIBRARIES}
+        )
+        target_compile_options(dashboard_simulator_gui PRIVATE
+            -Wall -Wextra -Wpedantic
+        )
+    endif()
 endif()
 
 if(BUILD_FLYTHINGS_DEVICE)

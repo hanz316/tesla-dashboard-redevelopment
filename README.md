@@ -44,6 +44,30 @@ ctest --test-dir build --output-on-failure
 ./build/dashboard_simulator
 ```
 
+### 1920×480 图形模拟器（开发平台）
+
+与 T113 实机共用同一份 `dashboard_core`；可用真实 UART 录制回放或合成
+数据驱动，用于先开发/预览 UI、动画与功能，再上车验证：
+
+```bash
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+cmake --build build --parallel --target dashboard_simulator_gui
+
+# 交互窗口（1920×480 逻辑，1152×288 窗口）
+./build/dashboard_simulator_gui captures/uart-record-realcar-geardoor.bin
+
+# 无头模式：渲染 3 帧存 BMP（CI/验证用）
+./build/dashboard_simulator_gui --screenshot /tmp/dash.bmp <recording>
+
+# 无头模式：回放约 1.2s 后打印解析状态（数据链路验证）
+./build/dashboard_simulator_gui --dump-state <recording>
+```
+
+快捷键：`Space` 切换回放/合成、`S` 冻结数据（观察 stale → `--`）、
+`↑/↓` 调整合成速度、`Esc` 退出。
+
+依赖：`brew install sdl2 sdl2_ttf sdl2_image pkgconf`
+
 T113 目标：
 
 ```bash
