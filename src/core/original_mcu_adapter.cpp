@@ -5,20 +5,21 @@
 namespace dashboard {
 namespace {
 
-constexpr SignalSource kSource = SignalSource::OriginalMcu;
-
 void updateBoolean(
     Signal<bool>& signal,
     bool value,
     std::uint64_t timestamp_ms,
+    SignalSource source,
     SignalQuality quality) {
-    signal.update(value, timestamp_ms, kSource, quality, Unit::None);
+    signal.update(value, timestamp_ms, source, quality, Unit::None);
 }
 
 }  // namespace
 
 OriginalMcuAdapter::OriginalMcuAdapter(OriginalMcuConfig config)
-    : config_(std::move(config)) {}
+    : config_(std::move(config)) {
+    health_.status = DataSourceStatus::Offline;
+}
 
 void OriginalMcuAdapter::feed(
     const std::uint8_t* data,
@@ -27,6 +28,19 @@ void OriginalMcuAdapter::feed(
     const auto frames = parser_.feed(data, size);
     for (const auto& frame : frames) {
         applyFrame(frame, timestamp_ms);
+    }
+    if (!frames.empty()) {
+        health_.status = DataSourceStatus::Connected;
+        health_.last_update_ms = timestamp_ms;
+        health_.packets += frames.size();
+    }
+    health_.errors = parser_.stats().checksum_errors + stats_.short_payloads;
+}
+
+void OriginalMcuAdapter::tick(std::uint64_t now_ms) {
+    if (health_.status == DataSourceStatus::Connected &&
+        now_ms > health_.last_update_ms + 2500) {
+        health_.status = DataSourceStatus::Offline;
     }
 }
 
@@ -82,7 +96,7 @@ void OriginalMcuAdapter::applyCommand01(
     state_.gear.update(
         gear,
         timestamp_ms,
-        kSource,
+        source(),
         gear == Gear::Unknown ? SignalQuality::Unknown : SignalQuality::Confirmed,
         Unit::None);
 
@@ -91,31 +105,37 @@ void OriginalMcuAdapter::applyCommand01(
         state_.door_fl,
         bit(doors, config_.doors.door_fl),
         timestamp_ms,
+        source(),
         SignalQuality::Inferred);
     updateBoolean(
         state_.door_fr,
         bit(doors, config_.doors.door_fr),
         timestamp_ms,
+        source(),
         SignalQuality::Inferred);
     updateBoolean(
         state_.door_rl,
         bit(doors, config_.doors.door_rl),
         timestamp_ms,
+        source(),
         SignalQuality::Inferred);
     updateBoolean(
         state_.door_rr,
         bit(doors, config_.doors.door_rr),
         timestamp_ms,
+        source(),
         SignalQuality::Inferred);
     updateBoolean(
         state_.frunk,
         bit(doors, config_.doors.frunk),
         timestamp_ms,
+        source(),
         SignalQuality::Inferred);
     updateBoolean(
         state_.trunk,
         bit(doors, config_.doors.trunk),
         timestamp_ms,
+        source(),
         SignalQuality::Inferred);
 }
 
@@ -130,19 +150,19 @@ void OriginalMcuAdapter::applyCommand04(
     state_.speed.update(
         littleEndian16(frame.payload, 0),
         timestamp_ms,
-        kSource,
+        source(),
         SignalQuality::Confirmed,
         Unit::KilometerPerHour);
     state_.range.update(
         littleEndian16(frame.payload, 6),
         timestamp_ms,
-        kSource,
+        source(),
         SignalQuality::Confirmed,
         Unit::Kilometer);
     state_.soc.update(
         frame.payload[8],
         timestamp_ms,
-        kSource,
+        source(),
         SignalQuality::Confirmed,
         Unit::Percent);
 
@@ -153,7 +173,7 @@ void OriginalMcuAdapter::applyCommand04(
     state_.distance_raw.update(
         distance,
         timestamp_ms,
-        kSource,
+        source(),
         SignalQuality::Inferred,
         Unit::Raw);
 }
@@ -169,13 +189,13 @@ void OriginalMcuAdapter::applyCommand07(
     state_.temperature_primary.update(
         static_cast<std::int16_t>((frame.payload[0] >> 1U) - 40),
         timestamp_ms,
-        kSource,
+        source(),
         SignalQuality::Inferred,
         Unit::Celsius);
     state_.temperature_secondary.update(
         static_cast<std::int16_t>(frame.payload[1]) - 25,
         timestamp_ms,
-        kSource,
+        source(),
         SignalQuality::Inferred,
         Unit::Celsius);
 }
@@ -200,13 +220,13 @@ void OriginalMcuAdapter::applyCommand12(
     }
 
     state_.tire_fl.update(
-        pressure[0], timestamp_ms, kSource, SignalQuality::Confirmed, Unit::Bar);
+        pressure[0], timestamp_ms, source(), SignalQuality::Confirmed, Unit::Bar);
     state_.tire_fr.update(
-        pressure[1], timestamp_ms, kSource, SignalQuality::Confirmed, Unit::Bar);
+        pressure[1], timestamp_ms, source(), SignalQuality::Confirmed, Unit::Bar);
     state_.tire_rl.update(
-        pressure[2], timestamp_ms, kSource, SignalQuality::Confirmed, Unit::Bar);
+        pressure[2], timestamp_ms, source(), SignalQuality::Confirmed, Unit::Bar);
     state_.tire_rr.update(
-        pressure[3], timestamp_ms, kSource, SignalQuality::Confirmed, Unit::Bar);
+        pressure[3], timestamp_ms, source(), SignalQuality::Confirmed, Unit::Bar);
 }
 
 std::uint16_t OriginalMcuAdapter::littleEndian16(

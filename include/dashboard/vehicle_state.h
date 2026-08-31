@@ -38,6 +38,45 @@ struct VehicleState {
 
     Signal<std::int16_t> temperature_primary;
     Signal<std::int16_t> temperature_secondary;
+
+    // ---------- Commander / deep-Tesla signals (reserved, Build 0.2+) ----------
+    // Populated by CommanderAdapter once the Commander SDK lands; the UI
+    // reads these through the same Signal contract and never needs to know
+    // the transport.
+
+    // Driving / power
+    Signal<float> accelerator_position;
+    Signal<float> front_motor_power;    // kW
+    Signal<float> rear_motor_power;     // kW
+    Signal<float> total_motor_power;    // kW
+
+    // Battery / BMS
+    Signal<float> pack_voltage;         // V
+    Signal<float> pack_current;         // A
+    Signal<float> pack_power;           // kW
+    Signal<float> energy_remaining;     // kWh
+    Signal<float> energy_full_estimate; // kWh
+    Signal<std::uint8_t> actual_soc;    // real SOC from Tesla (vs MCU's)
+    Signal<float> battery_temperature;  // °C
+    Signal<float> max_cell_voltage;     // V
+    Signal<float> min_cell_voltage;     // V
+    Signal<float> cell_delta;           // V
+
+    // DC/DC
+    Signal<float> dcdc_input_voltage;
+    Signal<float> dcdc_output_voltage;
+    Signal<float> dcdc_output_current;
+    Signal<float> dcdc_output_power;
+
+    // Brakes
+    Signal<float> brake_temp_fl;
+    Signal<float> brake_temp_fr;
+    Signal<float> brake_temp_rl;
+    Signal<float> brake_temp_rr;
+
+    // Climate
+    Signal<float> ambient_temperature;  // °C
+    Signal<float> cabin_temperature;    // °C
 };
 
 inline const char* gearName(Gear gear) {

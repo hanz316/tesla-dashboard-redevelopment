@@ -12,6 +12,7 @@ option(BUILD_FLYTHINGS_DEVICE "Build the T113 FlyThings libzkgui.so" OFF)
 add_library(dashboard_core
     src/core/original_mcu_adapter.cpp
     src/core/protocol_parser.cpp
+    src/core/source_adapters.cpp
     src/core/stale_policy.cpp
 )
 set_target_properties(dashboard_core PROPERTIES POSITION_INDEPENDENT_CODE ON)

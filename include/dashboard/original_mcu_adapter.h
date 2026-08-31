@@ -1,7 +1,7 @@
 #pragma once
 
+#include "dashboard/data_source.h"
 #include "dashboard/protocol_parser.h"
-#include "dashboard/vehicle_state.h"
 
 #include <array>
 #include <cstddef>
@@ -28,6 +28,7 @@ struct TireByteMapping {
 struct OriginalMcuConfig {
     DoorBitMapping doors;
     TireByteMapping tires;
+    SignalSource signal_source{SignalSource::OriginalMcu};
 };
 
 struct AdapterStats {
@@ -36,7 +37,7 @@ struct AdapterStats {
     std::uint64_t unknown_commands{0};
 };
 
-class OriginalMcuAdapter {
+class OriginalMcuAdapter : public IDataSource {
 public:
     explicit OriginalMcuAdapter(OriginalMcuConfig config = OriginalMcuConfig{});
 
@@ -49,6 +50,12 @@ public:
     const VehicleState& state() const { return state_; }
     const ProtocolParserStats& parserStats() const { return parser_.stats(); }
     const AdapterStats& adapterStats() const { return stats_; }
+
+    // IDataSource
+    const char* name() const override { return "OriginalMcuAdapter"; }
+    SignalSource source() const override { return config_.signal_source; }
+    const DataSourceHealth& health() const override { return health_; }
+    void tick(std::uint64_t now_ms) override;
 
     // Deliberately no send/control API.  Phase 0-2 are strictly read-only.
 
@@ -67,6 +74,7 @@ private:
     ProtocolParser parser_;
     VehicleState state_;
     AdapterStats stats_;
+    DataSourceHealth health_;
 };
 
 }  // namespace dashboard
