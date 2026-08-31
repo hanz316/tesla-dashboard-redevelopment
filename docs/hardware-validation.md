@@ -41,6 +41,15 @@
 | 主温 | PASS（22°C） |
 | 原始录制 | `captures/uart-record-realcar-*.bin`，协议表已更新 |
 
+### SOC 已知问题（MCU 数据本身）
+
+- `0x04[8]` 恒定上报 97，**stock 原厂仪表也一直显示 97**，与 Tesla 实际
+  电量（用户报告 63%）不一致 —— 第三方 MCU 固件缺陷，不是解码错误。
+- Range（`0x04[6..7]`）为实时数据：观察期内 254→253→251 km 随用电下降，
+  与车辆显示一致（±1 km）。
+- 处理策略：MCU 的 SOC 标记为不可信；未来由 Commander 提供真实 SOC，
+  经 source arbitration 覆盖（Primary=Commander for soc）。
+
 ## 重要发现：framebuffer 读取方法
 
 ## 重要发现：framebuffer 读取方法

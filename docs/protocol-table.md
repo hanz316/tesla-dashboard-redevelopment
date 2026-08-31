@@ -90,6 +90,10 @@ sendProtocolTo(int port, uint8_t command, const uint8_t* payload, uint16_t len)
 静止实测信号：speed=0、gear=Park、SOC=97%、range=254 km、driver door=open、
 主温 22°C。door/tire 物理位置仍需逐项动作确认。
 
+**SOC 可信度：NOT_TRUSTED**。`0x04[8]` 恒定 97，stock 原厂仪表同样恒定
+显示 97，与 Tesla 实际电量（63%）不一致；range 为实时值（254→251 km）。
+SOC 字段解码正确但数据源本身不可信，未来由 Commander 的真实 SOC 覆盖。
+
 ## Door mapping 说明
 
 原程序从 `payload[3]` 提取六个 bit 的顺序是 `4,0,2,5,1,3`，与 `trunk, FL, FR, frunk, RL, RR` 的常见布局高度吻合。由于没有实车逐门录制，这六个位置在代码中保留可配置 mapping，质量标记为 `Inferred`，不会伪装成 `Confirmed`。
