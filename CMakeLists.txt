@@ -43,7 +43,7 @@ if(BUILD_HOST_TOOLS)
     endif()
     if(SDL2_FOUND AND SDL2_TTF_FOUND AND SDL2_IMAGE_FOUND)
         add_executable(dashboard_simulator_gui
-            apps/simulator_gui/main.cpp
+            apps/simulator_gui/product_main.cpp
             apps/simulator_gui/replay_source.cpp
         )
         target_link_libraries(dashboard_simulator_gui PRIVATE dashboard_core)
