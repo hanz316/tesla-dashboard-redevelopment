@@ -50,12 +50,24 @@
 结论：
 
 ```text
-BLE_GATT_CENTRAL = LIKELY
+BLE_GATT_CENTRAL = LIKELY（栈层）/ 应用层 API 未开放通用 GATT client
 ```
 
-理由：栈层具备 LE 连接 + GATT 客户端能力；剩余不确定项是应用侧
-`BLINK_*` 命令是否开放任意 GATT service（如 FFF0/FFF1）的通用查询，
-需一次受控 BLE 扫描/服务发现测试确认（只读，不涉及 Commander 控制）。
+理由与证据：
+
+- 栈层（blink）：具备 `hci_le_create_connection`、`hci_le_connection_update`、
+  GATT service search / characteristic query / notification / indication，
+  以及 HiCar LE（LE ADV + REG_UUID）。
+- 应用层（stock `bt::` API）：仅暴露 classic 协议（A2DP/HFP/SPP/HID/PBAP、
+  scan/pair/connect），**没有通用 GATT client API**（无 `bt::gatt_*`）。
+- HiCar 的 BLE 走专用 libhicar + blink 内部 LE 支持，不开放给普通应用。
+
+含义：
+
+- Commander 原生 BLE（仪表直接连 FFF0/FFF1）需要扩展 blink/lylink 应用层
+  协议或新增 GATT client API —— 属于平台/协议工程，可由 Commander 线程
+  与仪表线程联合设计，我做 T113 验证。
+- **PhoneBridge 是正式 fallback**：手机做 BLE Central，仪表经 Wi-Fi 收数据。
 
 ## 库/API 支持
 
