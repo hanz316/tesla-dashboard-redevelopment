@@ -221,6 +221,249 @@ void drawTexture(
     SDL_RenderCopy(renderer, texture, nullptr, &dst);
 }
 
+void drawCentered(
+    SDL_Renderer* renderer,
+    SDL_Texture* texture,
+    int cx,
+    int cy) {
+    if (texture == nullptr) {
+        return;
+    }
+    int w = 0;
+    int h = 0;
+    SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
+    SDL_Rect dst{cx - w / 2, cy - h / 2, w, h};
+    SDL_RenderCopy(renderer, texture, nullptr, &dst);
+}
+
+void fillRoundedRect(
+    SDL_Renderer* renderer,
+    int x,
+    int y,
+    int w,
+    int h,
+    int radius) {
+    SDL_Rect body{x + radius, y, w - 2 * radius, h};
+    SDL_RenderFillRect(renderer, &body);
+    body = SDL_Rect{x, y + radius, w, h - 2 * radius};
+    SDL_RenderFillRect(renderer, &body);
+    for (int cy = 0; cy < radius; ++cy) {
+        for (int cx = 0; cx < radius; ++cx) {
+            const int dx = radius - 1 - cx;
+            const int dy = radius - 1 - cy;
+            if (dx * dx + dy * dy <= radius * radius) {
+                SDL_RenderDrawPoint(renderer, x + cx, y + cy);
+                SDL_RenderDrawPoint(renderer, x + w - 1 - cx, y + cy);
+                SDL_RenderDrawPoint(renderer, x + cx, y + h - 1 - cy);
+                SDL_RenderDrawPoint(renderer, x + w - 1 - cx, y + h - 1 - cy);
+            }
+        }
+    }
+}
+
+// Premium dashboard layout (UI v1, dark Tesla-style).
+void renderPremium(
+    SDL_Renderer* renderer,
+    TTF_Font* font_speed,
+    TTF_Font* font_medium,
+    TTF_Font* font_small,
+    TTF_Font* font_tiny,
+    const dashboard::VehicleState& state,
+    bool uart_connected,
+    bool has_rx,
+    std::uint64_t rx_age_ms,
+    const char* mode_label) {
+    SDL_Color white{242, 244, 246, 255};
+    SDL_Color dim{138, 148, 158, 255};
+    SDL_Color blue{61, 155, 255, 255};
+    SDL_Color green{61, 214, 140, 255};
+    SDL_Color amber{245, 166, 35, 255};
+    SDL_Color red{229, 72, 77, 255};
+
+    // Background
+    SDL_SetRenderDrawColor(renderer, 10, 14, 18, 255);
+    SDL_RenderClear(renderer);
+
+    // Subtle top accent line (inside the trapezoid top edge).
+    SDL_SetRenderDrawColor(renderer, 26, 34, 42, 255);
+    SDL_RenderDrawLine(renderer, 150, 4, 1770, 4);
+
+    // ---- Speed (left, large) ----
+    char text[64];
+    std::snprintf(text, sizeof(text), "%s",
+                  state.speed.valid
+                      ? std::to_string(state.speed.value).c_str()
+                      : "--");
+    SDL_Texture* tex = renderText(
+        renderer, font_speed, text, state.speed.valid ? white : dim);
+    drawCentered(renderer, tex, 430, 170);
+    destroyTexture(tex);
+    tex = renderText(renderer, font_small, "km/h", dim);
+    drawCentered(renderer, tex, 430, 330);
+    destroyTexture(tex);
+
+    // ---- Gear pill ----
+    const char* gear_txt = "?";
+    if (state.gear.valid) {
+        gear_txt = dashboard::gearName(state.gear.value);
+    }
+    SDL_SetRenderDrawColor(renderer, 24, 32, 40, 255);
+    fillRoundedRect(renderer, 130, 342, 140, 84, 16);
+    SDL_SetRenderDrawColor(renderer, 38, 50, 62, 255);
+    SDL_Rect border{130, 342, 140, 84};
+    SDL_RenderDrawRect(renderer, &border);
+    tex = renderText(renderer, font_medium, gear_txt, blue);
+    drawCentered(renderer, tex, 200, 384);
+    destroyTexture(tex);
+
+    // ---- Center top: gear state / status ----
+    const char* status = "NO DATA";
+    SDL_Color status_color = dim;
+    if (state.gear.valid) {
+        switch (state.gear.value) {
+            case dashboard::Gear::Park:
+                status = "PARK";
+                status_color = white;
+                break;
+            case dashboard::Gear::Reverse:
+                status = "REVERSE";
+                status_color = red;
+                break;
+            case dashboard::Gear::Neutral:
+                status = "NEUTRAL";
+                status_color = white;
+                break;
+            case dashboard::Gear::Drive:
+                status = "DRIVE";
+                status_color = green;
+                break;
+            default:
+                break;
+        }
+    }
+    tex = renderText(renderer, font_small, status, status_color);
+    drawCentered(renderer, tex, 960, 52);
+    destroyTexture(tex);
+
+    // ---- Center: doors ----
+    std::string doors_text = "DOORS --";
+    SDL_Color doors_color = dim;
+    const bool any_valid =
+        state.door_fl.valid || state.door_fr.valid ||
+        state.door_rl.valid || state.door_rr.valid ||
+        state.frunk.valid || state.trunk.valid;
+    if (any_valid) {
+        std::string opened;
+        bool open = false;
+        if (state.door_fl.valid && state.door_fl.value) { open = true; opened += " FL"; }
+        if (state.door_fr.valid && state.door_fr.value) { open = true; opened += " FR"; }
+        if (state.door_rl.valid && state.door_rl.value) { open = true; opened += " RL"; }
+        if (state.door_rr.valid && state.door_rr.value) { open = true; opened += " RR"; }
+        if (state.frunk.valid && state.frunk.value) { open = true; opened += " FRUNK"; }
+        if (state.trunk.valid && state.trunk.value) { open = true; opened += " TRUNK"; }
+        doors_text = open ? ("OPEN" + opened) : "ALL CLOSED";
+        doors_color = open ? amber : green;
+    }
+    tex = renderText(renderer, font_medium, doors_text.c_str(), doors_color);
+    drawCentered(renderer, tex, 960, 150);
+    destroyTexture(tex);
+
+    // ---- Center bottom: tires ----
+    auto tire = [&](const dashboard::Signal<float>& s) -> std::string {
+        if (!s.valid) {
+            return "--";
+        }
+        char buf[16];
+        std::snprintf(buf, sizeof(buf), "%.1f", s.value);
+        return buf;
+    };
+    std::snprintf(
+        text, sizeof(text), "FL %s   FR %s   RL %s   RR %s  bar",
+        tire(state.tire_fl).c_str(), tire(state.tire_fr).c_str(),
+        tire(state.tire_rl).c_str(), tire(state.tire_rr).c_str());
+    tex = renderText(renderer, font_tiny, text,
+                     (state.tire_fl.valid || state.tire_fr.valid ||
+                      state.tire_rl.valid || state.tire_rr.valid)
+                         ? dim
+                         : dim);
+    drawCentered(renderer, tex, 960, 432);
+    destroyTexture(tex);
+
+    // ---- Right: SOC ----
+    std::snprintf(text, sizeof(text), "%s",
+                  state.soc.valid
+                      ? (std::to_string(state.soc.value) + "%").c_str()
+                      : "--%");
+    tex = renderText(renderer, font_speed, text, state.soc.valid ? white : dim);
+    drawCentered(renderer, tex, 1490, 170);
+    destroyTexture(tex);
+
+    // Battery bar
+    const int bar_x = 1360;
+    const int bar_y = 320;
+    const int bar_w = 260;
+    const int bar_h = 16;
+    SDL_SetRenderDrawColor(renderer, 28, 36, 44, 255);
+    fillRoundedRect(renderer, bar_x, bar_y, bar_w, bar_h, 8);
+    if (state.soc.valid) {
+        const int fill_w = std::max(
+            4, bar_w * std::min(100, static_cast<int>(state.soc.value)) / 100);
+        SDL_SetRenderDrawColor(renderer, 61, 155, 255, 255);
+        fillRoundedRect(renderer, bar_x, bar_y, fill_w, bar_h, 8);
+    }
+
+    // Range
+    std::snprintf(text, sizeof(text), "%s",
+                  state.range.valid
+                      ? (std::to_string(state.range.value) + " km").c_str()
+                      : "-- km");
+    tex = renderText(renderer, font_medium, text, state.range.valid ? white : dim);
+    drawCentered(renderer, tex, 1490, 385);
+    destroyTexture(tex);
+
+    // ---- Top right: temperature ----
+    if (state.temperature_primary.valid) {
+        std::snprintf(text, sizeof(text), "%d°C",
+                      static_cast<int>(state.temperature_primary.value));
+        tex = renderText(renderer, font_small, text, dim);
+        drawCentered(renderer, tex, 1700, 48);
+        destroyTexture(tex);
+    }
+
+    // ---- Bottom right: clock ----
+    const std::time_t now = std::time(nullptr);
+    std::tm local{};
+    localtime_r(&now, &local);
+    std::strftime(text, sizeof(text), "%H:%M", &local);
+    tex = renderText(renderer, font_medium, text, white);
+    drawCentered(renderer, tex, 1730, 434);
+    destroyTexture(tex);
+
+    // ---- Bottom left: UART health ----
+    const char* health = "UART LOST";
+    SDL_Color health_color = red;
+    if (uart_connected) {
+        if (!has_rx) {
+            health = "UART WAIT";
+            health_color = amber;
+        } else if (rx_age_ms <= kStaleFeedWindowMs) {
+            health = "UART OK";
+            health_color = green;
+        } else {
+            health = "UART STALE";
+            health_color = amber;
+        }
+    }
+    tex = renderText(renderer, font_tiny, health, health_color);
+    drawCentered(renderer, tex, 210, 438);
+    destroyTexture(tex);
+
+    // Mode label (debug)
+    tex = renderText(renderer, font_tiny, mode_label, dim);
+    drawCentered(renderer, tex, 960, 470);
+    destroyTexture(tex);
+}
+
 // Draws the trapezoid bezel mask: everything outside the visible screen
 // shape is filled with black so UI elements stay inside the safe area.
 void drawShapeMask(SDL_Renderer* renderer) {
@@ -381,9 +624,14 @@ int main(int argc, char** argv) {
     std::fprintf(stderr, "[sim] open fonts\n");
     TTF_Font* font_big =
         TTF_OpenFontIndex(kFontPath, 180, 0);
+    TTF_Font* font_speed =
+        TTF_OpenFontIndex(kFontPath, 170, 0);
     TTF_Font* font_label = TTF_OpenFontIndex(kFontPath, 42, 0);
+    TTF_Font* font_medium = TTF_OpenFontIndex(kFontPath, 44, 0);
     TTF_Font* font_small = TTF_OpenFontIndex(kFontPath, 30, 0);
-    if (font_big == nullptr || font_label == nullptr || font_small == nullptr) {
+    TTF_Font* font_tiny = TTF_OpenFontIndex(kFontPath, 24, 0);
+    if (font_big == nullptr || font_label == nullptr || font_small == nullptr ||
+        font_speed == nullptr || font_medium == nullptr || font_tiny == nullptr) {
         std::fprintf(stderr, "TTF_OpenFont: %s\n", TTF_GetError());
         return 1;
     }
@@ -556,123 +804,14 @@ int main(int argc, char** argv) {
                     ? now_ms - last_feed_ms
                     : now_ms - last_feed_ms;
 
-            SDL_SetRenderDrawColor(renderer, 10, 10, 12, 255);
-            SDL_RenderClear(renderer);
-
-            // Speed
-            char speed_text[16];
-            std::snprintf(speed_text, sizeof(speed_text), "%s",
-                          state.speed.valid
-                              ? std::to_string(state.speed.value).c_str()
-                              : "--");
-            SDL_Texture* speed_tex = renderText(
-                renderer, font_big, speed_text,
-                state.speed.valid ? white : dim);
-            drawTexture(renderer, speed_tex, 260, 80, 1);
-            destroyTexture(speed_tex);
-
-            // Gear image below speed
-            SDL_Texture* gear_tex = nullptr;
-            if (state.gear.valid) {
-                switch (state.gear.value) {
-                    case dashboard::Gear::Park: gear_tex = gears.park; break;
-                    case dashboard::Gear::Reverse: gear_tex = gears.reverse; break;
-                    case dashboard::Gear::Neutral: gear_tex = gears.neutral; break;
-                    case dashboard::Gear::Drive: gear_tex = gears.drive; break;
-                    default: break;
-                }
-            }
-            if (gear_tex != nullptr) {
-                drawTexture(renderer, gear_tex, 120, 280);
-            } else {
-                SDL_Texture* no_gear = renderText(
-                    renderer, font_label, "NO GEAR", dim);
-                drawTexture(renderer, no_gear, 120, 300);
-                destroyTexture(no_gear);
-            }
-
-            // SOC
-            char soc_text[16];
-            std::snprintf(soc_text, sizeof(soc_text), "%s",
-                          state.soc.valid
-                              ? (std::to_string(state.soc.value) + "%").c_str()
-                              : "--%");
-            SDL_Texture* soc_tex = renderText(
-                renderer, font_big, soc_text,
-                state.soc.valid ? white : dim);
-            drawTexture(renderer, soc_tex, 1580, 80);
-            destroyTexture(soc_tex);
-
-            // Range
-            char range_text[32];
-            std::snprintf(range_text, sizeof(range_text), "%s",
-                          state.range.valid
-                              ? (std::to_string(state.range.value) + " km").c_str()
-                              : "-- km");
-            SDL_Texture* range_tex = renderText(
-                renderer, font_label, range_text,
-                state.range.valid ? white : dim);
-            drawTexture(renderer, range_tex, 1580, 250);
-            destroyTexture(range_tex);
-
-            // Doors
-            std::string doors_text = "DOORS --";
-            const bool any_valid =
-                state.door_fl.valid || state.door_fr.valid ||
-                state.door_rl.valid || state.door_rr.valid ||
-                state.frunk.valid || state.trunk.valid;
-            if (any_valid) {
-                bool open = false;
-                std::string opened;
-                if (state.door_fl.valid && state.door_fl.value) { open = true; opened += " FL"; }
-                if (state.door_fr.valid && state.door_fr.value) { open = true; opened += " FR"; }
-                if (state.door_rl.valid && state.door_rl.value) { open = true; opened += " RL"; }
-                if (state.door_rr.valid && state.door_rr.value) { open = true; opened += " RR"; }
-                if (state.frunk.valid && state.frunk.value) { open = true; opened += " FRUNK"; }
-                if (state.trunk.valid && state.trunk.value) { open = true; opened += " TRUNK"; }
-                doors_text = open ? ("OPEN" + opened) : "ALL CLOSED";
-            }
-            doors_text += "  " +
-                std::string(uartLabel(connected, last_feed_ms != 0, rx_age));
-            SDL_Texture* doors_tex = renderText(
-                renderer, font_small, doors_text.c_str(), white);
-            drawTexture(renderer, doors_tex, 60, 420);
-            destroyTexture(doors_tex);
-
-            // Tires
-            char tires_text[96];
+            char mode_label[64];
             std::snprintf(
-                tires_text, sizeof(tires_text),
-                "FL %s  FR %s  RL %s  RR %s",
-                state.tire_fl.valid ? "2.60" : "--",
-                state.tire_fr.valid ? "2.60" : "--",
-                state.tire_rl.valid ? "2.60" : "--",
-                state.tire_rr.valid ? "2.60" : "--");
-            SDL_Texture* tires_tex = renderText(
-                renderer, font_small, tires_text, dim);
-            drawTexture(renderer, tires_tex, 700, 420);
-            destroyTexture(tires_tex);
-
-            // Clock
-            SDL_Texture* clock_tex = renderText(
-                renderer, font_label, formatClock().c_str(), white);
-            drawTexture(renderer, clock_tex, 1760, 410);
-            destroyTexture(clock_tex);
-
-            // Health footer
-            char health_text[96];
-            std::snprintf(
-                health_text, sizeof(health_text),
-                "mode: %s  feed: %s  pkts: %llu  crc: %llu  unknown: %llu",
+                mode_label, sizeof(mode_label), "%s / %s",
                 synthetic ? "SYNTH" : "REPLAY",
-                feed_frozen ? "FROZEN" : "LIVE",
-                static_cast<unsigned long long>(parser.valid_packets),
-                static_cast<unsigned long long>(parser.checksum_errors),
-                static_cast<unsigned long long>(adapter.adapterStats().unknown_commands));
-            SDL_Texture* health_tex = renderText(
-                renderer, font_small, health_text, red);
-            drawTexture(renderer, health_tex, 60, 445);
-            destroyTexture(health_tex);
+                feed_frozen ? "FROZEN" : "LIVE");
+            renderPremium(
+                renderer, font_speed, font_medium, font_small, font_tiny,
+                state, connected, last_feed_ms != 0, rx_age, mode_label);
 
             drawShapeMask(renderer);
             SDL_RenderPresent(renderer);
