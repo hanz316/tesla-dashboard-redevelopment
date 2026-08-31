@@ -1,6 +1,7 @@
 #include "device_runtime.h"
 
 #include <cerrno>
+#include <cstdio>
 #include <cstdint>
 #include <fcntl.h>
 #include <termios.h>
@@ -79,6 +80,7 @@ void* DeviceRuntime::threadEntry(void* context) {
 
 void DeviceRuntime::readLoop() {
     std::uint8_t buffer[1024];
+    std::uint64_t last_report_ms = 0;
     while (running_) {
         const ssize_t count = read(uart_fd_, buffer, sizeof(buffer));
         if (count > 0) {
@@ -96,8 +98,56 @@ void DeviceRuntime::readLoop() {
         }
         // Keep the freshness policy active even while no bytes arrive:
         // stale signals are invalidated and the source health is tracked.
+        const std::uint64_t now_ms = monotonicMilliseconds();
         pthread_mutex_lock(&mutex_);
-        adapter_.tick(monotonicMilliseconds());
+        adapter_.tick(now_ms);
+        if (now_ms >= last_report_ms + 5000) {
+            const auto& ps = adapter_.parserStats();
+            const auto& as = adapter_.adapterStats();
+            FILE* log = fopen("/tmp/dashboard_runtime.log", "a");
+            if (log != nullptr) {
+                std::fprintf(
+                    log,
+                    "t=%llu bytes=%llu frames=%llu crc=%llu discard=%llu "
+                    "applied=%llu short=%llu unknown=%llu health=%d\n",
+                    static_cast<unsigned long long>(now_ms),
+                    static_cast<unsigned long long>(ps.bytes_received),
+                    static_cast<unsigned long long>(ps.valid_packets),
+                    static_cast<unsigned long long>(ps.checksum_errors),
+                    static_cast<unsigned long long>(ps.discarded_bytes),
+                    static_cast<unsigned long long>(as.applied_packets),
+                    static_cast<unsigned long long>(as.short_payloads),
+                    static_cast<unsigned long long>(as.unknown_commands),
+                    static_cast<int>(adapter_.health().status));
+                const auto& st = adapter_.state();
+                std::fprintf(
+                    log,
+                    "  sig speed=%u gear=%d soc=%u range=%u doors=%d%d%d%d%d%d "
+                    "tires=%.2f/%.2f/%.2f/%.2f temp=%d/%d\n",
+                    st.speed.valid ? static_cast<unsigned>(st.speed.value) : 0U,
+                    st.gear.valid ? static_cast<int>(st.gear.value) : -1,
+                    st.soc.valid ? static_cast<unsigned>(st.soc.value) : 0U,
+                    st.range.valid ? static_cast<unsigned>(st.range.value) : 0U,
+                    st.door_fl.valid && st.door_fl.value ? 1 : 0,
+                    st.door_fr.valid && st.door_fr.value ? 1 : 0,
+                    st.door_rl.valid && st.door_rl.value ? 1 : 0,
+                    st.door_rr.valid && st.door_rr.value ? 1 : 0,
+                    st.frunk.valid && st.frunk.value ? 1 : 0,
+                    st.trunk.valid && st.trunk.value ? 1 : 0,
+                    st.tire_fl.valid ? static_cast<double>(st.tire_fl.value) : 0.0,
+                    st.tire_fr.valid ? static_cast<double>(st.tire_fr.value) : 0.0,
+                    st.tire_rl.valid ? static_cast<double>(st.tire_rl.value) : 0.0,
+                    st.tire_rr.valid ? static_cast<double>(st.tire_rr.value) : 0.0,
+                    st.temperature_primary.valid
+                        ? static_cast<int>(st.temperature_primary.value)
+                        : 0,
+                    st.temperature_secondary.valid
+                        ? static_cast<int>(st.temperature_secondary.value)
+                        : 0);
+                std::fclose(log);
+            }
+            last_report_ms = now_ms;
+        }
         pthread_mutex_unlock(&mutex_);
         usleep(20000);
     }
