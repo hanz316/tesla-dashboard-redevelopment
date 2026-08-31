@@ -1,0 +1,13 @@
+/artifacts/firmware/*_appfs/
+/artifacts/firmware/*_rootfs/
+/artifacts/firmware/*_package/
+/build/
+/build-t113/
+/captures/
+/dist/
+/sdk/
+/toolchains/
+/vendor/
+__pycache__/
+*.pyc
+.DS_Store
