@@ -3,23 +3,17 @@
 #include "dashboard/signal.h"
 
 #include <cstdint>
+#include <vector>
 
 namespace dashboard {
 
-enum class Gear : std::uint8_t {
-    Unknown = 0,
-    Park,
-    Reverse,
-    Neutral,
-    Drive,
-};
+enum class Gear : std::uint8_t { Unknown = 0, Park, Reverse, Neutral, Drive };
+enum class AutopilotState : std::uint8_t { Unknown = 0, Off, Available, Active, Warning };
 
-enum class AutopilotState : std::uint8_t {
-    Unknown = 0,
-    Off,
-    Available,
-    Active,
-    Warning,
+enum class SurroundingPositionMode : std::uint8_t {
+    None = 0,
+    Coarse,
+    Precise,
 };
 
 struct FreshnessPolicy {
@@ -39,8 +33,6 @@ struct VehicleState {
     Signal<std::uint16_t> range;
     Signal<std::uint32_t> odometer;
 
-    // The original application reads a 24-bit value here, but its physical
-    // scale still needs a real-car recording.  Keep it truthful as raw data.
     Signal<std::uint32_t> distance_raw;
     Signal<float> trip_distance;
     Signal<std::uint64_t> trip_time;
@@ -56,7 +48,13 @@ struct VehicleState {
     Signal<bool> frunk;
     Signal<bool> trunk;
 
+    Signal<bool> turn_signal_left;
+    Signal<bool> turn_signal_right;
+    Signal<bool> hazards;
     Signal<bool> headlights;
+    Signal<bool> high_beam;
+    Signal<bool> position_light;
+    Signal<bool> brake_light;
     Signal<bool> auto_light;
     Signal<std::uint32_t> lighting_raw;
 
@@ -67,6 +65,9 @@ struct VehicleState {
 
     Signal<std::int16_t> temperature_primary;
     Signal<std::int16_t> temperature_secondary;
+    Signal<float> ambient_temperature;
+    Signal<float> cabin_temperature;
+    Signal<float> battery_temperature;
 
     Signal<std::uint16_t> speed_limit;
     Signal<bool> overspeed;
@@ -74,46 +75,68 @@ struct VehicleState {
     Signal<bool> blind_spot_left;
     Signal<bool> blind_spot_right;
     Signal<bool> front_dead_zone;
+    Signal<bool> front_vehicle_present;
+    Signal<bool> left_vehicle_present;
+    Signal<bool> right_vehicle_present;
     Signal<bool> surrounding_vehicle_left;
     Signal<bool> surrounding_vehicle_right;
+    Signal<SurroundingPositionMode> surrounding_position_mode;
     Signal<std::uint32_t> road_visualization_raw;
 
+    // Commander / enhanced telemetry. These remain invalid until a real source updates them.
+    Signal<float> accelerator_position;
+    Signal<float> front_motor_power;
+    Signal<float> rear_motor_power;
     Signal<float> battery_power;
     Signal<float> battery_voltage;
     Signal<float> battery_current;
-    Signal<float> front_motor_power;
-    Signal<float> rear_motor_power;
-    Signal<float> battery_temperature;
-    Signal<float> front_motor_temperature;
-    Signal<float> rear_motor_temperature;
+    Signal<std::uint8_t> actual_soc;
+    Signal<float> energy_remaining;
+    Signal<float> energy_full_estimate;
+    Signal<float> energy_reserve;
+    Signal<float> total_charged_energy;
+    Signal<float> total_discharged_energy;
+    Signal<bool> battery_heating;
+    Signal<float> max_cell_voltage;
+    Signal<float> min_cell_voltage;
+    Signal<float> cell_delta;
+    std::vector<Signal<float>> cell_voltages;
+    Signal<float> dcdc_input_voltage;
+    Signal<float> dcdc_output_voltage;
+    Signal<float> dcdc_output_current;
+    Signal<float> dcdc_output_power;
+    Signal<float> brake_temp_fl;
+    Signal<float> brake_temp_fr;
+    Signal<float> brake_temp_rl;
+    Signal<float> brake_temp_rr;
+    Signal<float> hvac_blower_rpm;
+    Signal<float> hvac_power_demand;
+
+    // Future Raw CAN fields.
     Signal<float> steering_angle;
     Signal<float> steering_rate;
-    Signal<float> accelerator_position;
-    Signal<float> brake_position;
     Signal<float> yaw_rate;
     Signal<float> wheel_speed_fl;
     Signal<float> wheel_speed_fr;
     Signal<float> wheel_speed_rl;
     Signal<float> wheel_speed_rr;
+    Signal<float> motor_rpm_front;
+    Signal<float> motor_rpm_rear;
+    Signal<float> front_motor_temperature;
+    Signal<float> rear_motor_temperature;
+    Signal<float> brake_position;
 
-    void invalidateStale(
-        std::uint64_t now_ms,
-        const FreshnessPolicy& policy = FreshnessPolicy{});
+    void invalidateStale(std::uint64_t now_ms,
+                         const FreshnessPolicy& policy = FreshnessPolicy{});
 };
 
 inline const char* gearName(Gear gear) {
     switch (gear) {
-        case Gear::Park:
-            return "P";
-        case Gear::Reverse:
-            return "R";
-        case Gear::Neutral:
-            return "N";
-        case Gear::Drive:
-            return "D";
-        case Gear::Unknown:
-        default:
-            return "?";
+        case Gear::Park: return "P";
+        case Gear::Reverse: return "R";
+        case Gear::Neutral: return "N";
+        case Gear::Drive: return "D";
+        default: return "?";
     }
 }
 
