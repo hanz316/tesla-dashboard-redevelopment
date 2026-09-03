@@ -70,6 +70,7 @@ void adapterDecodesMvpSignals() {
     CHECK(state.speed.valid && state.speed.value == 300);
     CHECK(state.range.valid && state.range.value == 400);
     CHECK(state.soc.valid && state.soc.value == 73);
+    CHECK(state.soc.quality == dashboard::SignalQuality::Estimated);
     CHECK(state.distance_raw.valid && state.distance_raw.value == 0x123456);
     CHECK(state.speed.timestamp_ms == 4242);
     CHECK(state.speed.source == dashboard::SignalSource::OriginalMcu);
@@ -77,17 +78,30 @@ void adapterDecodesMvpSignals() {
 
 void adapterDecodesGearAndConfigurableDoors() {
     dashboard::OriginalMcuAdapter adapter;
-    const auto frame = makeFrame(0x01, {0, 0, 0, 0x35, 0x30});
+    // 2026-08-31 real-car validation confirmed high nibble 4 = Drive.
+    const auto frame = makeFrame(0x01, {0, 0, 0, 0x35, 0x40});
     adapter.feed(frame.data(), frame.size(), 5000);
     const auto& state = adapter.state();
+    CHECK(state.gear.valid);
     CHECK(state.gear.value == dashboard::Gear::Drive);
+    CHECK(state.gear.quality == dashboard::SignalQuality::Confirmed);
     CHECK(state.door_fl.value);
     CHECK(state.door_fr.value);
     CHECK(!state.door_rl.value);
     CHECK(!state.door_rr.value);
     CHECK(state.frunk.value);
     CHECK(state.trunk.value);
-    CHECK(state.door_fl.quality == dashboard::SignalQuality::Inferred);
+    CHECK(state.door_fl.quality == dashboard::SignalQuality::Confirmed);
+    CHECK(state.door_fr.quality == dashboard::SignalQuality::Inferred);
+}
+
+void adapterDoesNotGuessUnconfirmedGearCodes() {
+    dashboard::OriginalMcuAdapter adapter;
+    const auto frame = makeFrame(0x01, {0, 0, 0, 0, 0x30});
+    adapter.feed(frame.data(), frame.size(), 5010);
+    CHECK(adapter.state().gear.valid);
+    CHECK(adapter.state().gear.value == dashboard::Gear::Unknown);
+    CHECK(adapter.state().gear.quality == dashboard::SignalQuality::Unknown);
 }
 
 void adapterDecodesTiresAndTemperature() {
@@ -120,14 +134,12 @@ void tickInvalidatesStaleSignalsAndTracksHealth() {
     CHECK(adapter.state().speed.valid);
     CHECK(adapter.health().status == dashboard::DataSourceStatus::Connected);
 
-    // Within the freshness window the signal stays valid.
     adapter.tick(1500);
     CHECK(adapter.state().speed.valid);
 
-    // Past the driving freshness window the signal is invalidated and the
-    // source falls back to Offline.
     adapter.tick(3000);
     CHECK(!adapter.state().speed.valid);
+    CHECK(adapter.state().speed.stale);
     CHECK(adapter.health().status == dashboard::DataSourceStatus::Offline);
 }
 
@@ -196,6 +208,7 @@ int main() {
     parserRejectsBadChecksumAndResynchronizes();
     adapterDecodesMvpSignals();
     adapterDecodesGearAndConfigurableDoors();
+    adapterDoesNotGuessUnconfirmedGearCodes();
     adapterDecodesTiresAndTemperature();
     shortPayloadNeverPublishesInvalidData();
     tickInvalidatesStaleSignalsAndTracksHealth();
