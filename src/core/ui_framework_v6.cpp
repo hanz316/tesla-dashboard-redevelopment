@@ -3,6 +3,16 @@
 #include <algorithm>
 
 namespace dashboard {
+namespace {
+
+const Signal<std::uint8_t>* trustedSoc(const VehicleState& state) {
+    if (state.actual_soc.valid && !state.actual_soc.stale) return &state.actual_soc;
+    if (state.soc.valid && !state.soc.stale && state.soc.quality != SignalQuality::Estimated)
+        return &state.soc;
+    return nullptr;
+}
+
+}  // namespace
 
 PageManagerV6::PageManagerV6(DashboardPageV6 initial) {
     state_.current = initial;
@@ -63,22 +73,25 @@ SafetyLayerV6 buildSafetyLayerV6(const VehicleState& state, const WarningManager
     SafetyLayerV6 out;
     out.speed_available = state.speed.valid && !state.speed.stale;
     out.speed_kph = out.speed_available ? state.speed.value : 0;
-    out.gear_available = state.gear.valid && !state.gear.stale;
+    out.gear_available = state.gear.valid && !state.gear.stale && state.gear.value != Gear::Unknown;
     out.gear = out.gear_available ? state.gear.value : Gear::Unknown;
-    const Signal<std::uint8_t>& soc = state.actual_soc.valid && !state.actual_soc.stale ? state.actual_soc : state.soc;
-    out.soc_available = soc.valid && !soc.stale;
-    out.soc_percent = out.soc_available ? soc.value : 0;
+    const Signal<std::uint8_t>* soc = trustedSoc(state);
+    out.soc_available = soc != nullptr;
+    out.soc_percent = soc ? soc->value : 0;
     out.hazards = state.hazards.valid && !state.hazards.stale && state.hazards.value;
     out.left_indicator = out.hazards || (state.turn_signal_left.valid && !state.turn_signal_left.stale && state.turn_signal_left.value);
     out.right_indicator = out.hazards || (state.turn_signal_right.valid && !state.turn_signal_right.stale && state.turn_signal_right.value);
     out.warning = warnings.evaluate(state);
 
     if (out.warning.code == WarningCode::VehicleDataLost ||
-        ((!state.speed.valid || state.speed.stale) && (!state.gear.valid || state.gear.stale))) {
+        ((!state.speed.valid || state.speed.stale) &&
+         (!state.gear.valid || state.gear.stale || state.gear.value == Gear::Unknown))) {
         out.availability = DataAvailabilityLevel::CoreVehicleDataLost;
     } else if (!out.speed_available || !out.gear_available || !out.soc_available) {
         out.availability = DataAvailabilityLevel::IndividualSignalUnavailable;
-    } else if (!state.battery_power.valid && !state.front_motor_power.valid && !state.rear_motor_power.valid) {
+    } else if ((!state.battery_power.valid || state.battery_power.stale) &&
+               (!state.front_motor_power.valid || state.front_motor_power.stale) &&
+               (!state.rear_motor_power.valid || state.rear_motor_power.stale)) {
         out.availability = DataAvailabilityLevel::EnhancedModuleUnavailable;
     } else {
         out.availability = DataAvailabilityLevel::Available;
@@ -96,7 +109,9 @@ HorizonContextRailState buildHorizonContextRail(const VehicleState& vehicle,
         return out;
     }
 
-    if (vehicle.trip_distance.valid || vehicle.trip_time.valid || vehicle.average_speed.valid) {
+    if ((vehicle.trip_distance.valid && !vehicle.trip_distance.stale) ||
+        (vehicle.trip_time.valid && !vehicle.trip_time.stale) ||
+        (vehicle.average_speed.valid && !vehicle.average_speed.stale)) {
         out.mode = HorizonContextRailState::Mode::Trip;
         out.trip_distance_available = vehicle.trip_distance.valid && !vehicle.trip_distance.stale;
         out.trip_distance_km = out.trip_distance_available ? vehicle.trip_distance.value : 0.0F;
@@ -107,11 +122,11 @@ HorizonContextRailState buildHorizonContextRail(const VehicleState& vehicle,
         return out;
     }
 
-    const Signal<std::uint8_t>& soc = vehicle.actual_soc.valid && !vehicle.actual_soc.stale ? vehicle.actual_soc : vehicle.soc;
-    if (soc.valid || vehicle.range.valid) {
+    const Signal<std::uint8_t>* soc = trustedSoc(vehicle);
+    if (soc || (vehicle.range.valid && !vehicle.range.stale)) {
         out.mode = HorizonContextRailState::Mode::Battery;
-        out.soc_available = soc.valid && !soc.stale;
-        out.soc = out.soc_available ? soc.value : 0;
+        out.soc_available = soc != nullptr;
+        out.soc = soc ? soc->value : 0;
         out.range_available = vehicle.range.valid && !vehicle.range.stale;
         out.range_km = out.range_available ? vehicle.range.value : 0;
         return out;
