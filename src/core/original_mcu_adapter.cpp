@@ -85,20 +85,19 @@ void OriginalMcuAdapter::applyCommand01(
         return;
     }
 
+    // Real-car action validation on 2026-08-31 confirmed 0=Park and 4=Drive.
+    // R/N remain unconfirmed here and therefore are not guessed as production truth.
     const std::uint8_t gear_code = frame.payload[4] >> 4;
     Gear gear = Gear::Unknown;
+    SignalQuality gear_quality = SignalQuality::Unknown;
     switch (gear_code) {
         case 0:
             gear = Gear::Park;
+            gear_quality = SignalQuality::Confirmed;
             break;
-        case 1:
-            gear = Gear::Reverse;
-            break;
-        case 2:
-            gear = Gear::Neutral;
-            break;
-        case 3:
+        case 4:
             gear = Gear::Drive;
+            gear_quality = SignalQuality::Confirmed;
             break;
         default:
             break;
@@ -107,7 +106,7 @@ void OriginalMcuAdapter::applyCommand01(
         gear,
         timestamp_ms,
         source(),
-        gear == Gear::Unknown ? SignalQuality::Unknown : SignalQuality::Confirmed,
+        gear_quality,
         Unit::None);
 
     const std::uint8_t doors = frame.payload[3];
@@ -116,7 +115,7 @@ void OriginalMcuAdapter::applyCommand01(
         bit(doors, config_.doors.door_fl),
         timestamp_ms,
         source(),
-        SignalQuality::Inferred);
+        config_.doors.door_fl == 0 ? SignalQuality::Confirmed : SignalQuality::Inferred);
     updateBoolean(
         state_.door_fr,
         bit(doors, config_.doors.door_fr),
@@ -169,11 +168,15 @@ void OriginalMcuAdapter::applyCommand04(
         source(),
         SignalQuality::Confirmed,
         Unit::Kilometer);
+
+    // Byte mapping is confirmed, but two real-car recordings showed this value
+    // frozen at 97 while Tesla actual SOC was ~63%. Preserve it for diagnostics
+    // and fallback experiments, but never mark it as trusted actual SOC.
     state_.soc.update(
         frame.payload[8],
         timestamp_ms,
         source(),
-        SignalQuality::Confirmed,
+        SignalQuality::Estimated,
         Unit::Percent);
 
     const std::uint32_t distance =
