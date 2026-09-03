@@ -18,6 +18,7 @@ add_library(dashboard_core
     src/core/replay.cpp
     src/core/ui_framework_v6.cpp
     src/core/horizon_v6.cpp
+    src/core/v6_asset_catalog.cpp
 )
 set_target_properties(dashboard_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(dashboard_core PUBLIC include)
