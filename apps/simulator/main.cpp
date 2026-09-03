@@ -37,7 +37,8 @@ int main() {
     const auto command04 = makeFrame(
         0x04,
         {88, 0, 0, 0, 0, 0, 150, 1, 71, 0, 0x34, 0x12, 0});
-    const auto command01 = makeFrame(0x01, {0, 0, 0, 0x01, 0x30});
+    // Real-car confirmed gear nibble: 0 = Park, 4 = Drive.
+    const auto command01 = makeFrame(0x01, {0, 0, 0, 0x01, 0x40});
     const auto command12 = makeFrame(0x12, {0, 116, 114, 112, 118});
 
     adapter.feed(command04.data(), command04.size(), 1000);
