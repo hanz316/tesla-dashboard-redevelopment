@@ -27,14 +27,12 @@ static ReplayRecord makeRecord(std::uint64_t timestamp_ms, std::uint8_t command,
 int main() {
     std::vector<ReplayRecord> records;
 
-    // 0x01: payload[4] high nibble 4 = Drive, confirmed by real-car action test.
     records.push_back(makeRecord(1000, 0x01, {0, 0, 0, 0x01, 0x40, 0, 0, 0, 0}));
 
-    // 0x04: speed 72, range 284, MCU SOC byte 97 (known-untrusted), distance raw 0x010203.
     std::vector<std::uint8_t> p04(13, 0);
     p04[0] = 72;
     p04[1] = 0;
-    p04[6] = 0x1c; // 284 LE
+    p04[6] = 0x1c;
     p04[7] = 0x01;
     p04[8] = 97;
     p04[10] = 0x03;
@@ -65,12 +63,29 @@ int main() {
         replay.setRate(2.0F);
         assert(replay.rate() == 2.0F);
         replay.restart(10000);
-        replay.tick(10050); // 50ms wall * 2 = 100ms recording
+        replay.tick(10050);
         assert(replay.state().speed.valid && replay.state().speed.value == 72);
+
+        replay.pause();
         replay.seek(1000, 12000);
-        assert(replay.cursor() == 0);
-        replay.tick(12000);
+        assert(replay.cursor() == 1);
         assert(replay.state().gear.valid && replay.state().gear.value == Gear::Drive);
+        assert(!replay.state().speed.valid);
+
+        // Paused tick uses recording time rather than host wall time, so the
+        // reconstructed gear sample does not become stale simply because host
+        // time is 12 seconds.
+        replay.tick(30000);
+        assert(replay.state().gear.valid && replay.state().gear.value == Gear::Drive);
+    }
+
+    {
+        ReplayAdapter replay;
+        replay.load(records);
+        replay.seek(1100, 50000);
+        assert(replay.cursor() == 2);
+        assert(replay.state().gear.valid && replay.state().gear.value == Gear::Drive);
+        assert(replay.state().speed.valid && replay.state().speed.value == 72);
     }
 
     {
