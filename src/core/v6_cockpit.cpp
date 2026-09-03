@@ -4,9 +4,19 @@
 #include <cmath>
 
 namespace dashboard {
+namespace {
+
+const Signal<std::uint8_t>* trustedSoc(const VehicleState& state) {
+    if (state.actual_soc.valid && !state.actual_soc.stale) return &state.actual_soc;
+    if (state.soc.valid && !state.soc.stale && state.soc.quality != SignalQuality::Estimated)
+        return &state.soc;
+    return nullptr;
+}
+
+}  // namespace
 
 WarningState WarningManager::evaluate(const VehicleState& s) const {
-    const bool speed_known = s.speed.valid;
+    const bool speed_known = s.speed.valid && !s.speed.stale;
     const bool moving = speed_known && s.speed.value > 0;
 
     if (!s.speed.valid && s.speed.stale)
@@ -26,13 +36,13 @@ WarningState WarningManager::evaluate(const VehicleState& s) const {
         return {WarningCode::TrunkOpenMoving, WarningSeverity::Warning, true};
 
     const auto low_tire = [](const Signal<float>& t) {
-        return t.valid && t.value > 0.0F && t.value < 2.2F;
+        return t.valid && !t.stale && t.value > 0.0F && t.value < 2.2F;
     };
     if (low_tire(s.tire_fl) || low_tire(s.tire_fr) || low_tire(s.tire_rl) || low_tire(s.tire_rr))
         return {WarningCode::LowTire, WarningSeverity::Caution, true};
 
-    const Signal<std::uint8_t>& soc = s.actual_soc.valid ? s.actual_soc : s.soc;
-    if (soc.valid && soc.value <= 10)
+    const Signal<std::uint8_t>* soc = trustedSoc(s);
+    if (soc && soc->value <= 10)
         return {WarningCode::LowSoc, WarningSeverity::Caution, true};
 
     return {};
@@ -93,52 +103,57 @@ bool AssetManager::isResident(const std::string& id) const {
 }
 
 void VehicleVisualModel::updateFrom(const VehicleState& s) {
-    door_fl = s.door_fl.valid && s.door_fl.value;
-    door_fr = s.door_fr.valid && s.door_fr.value;
-    door_rl = s.door_rl.valid && s.door_rl.value;
-    door_rr = s.door_rr.valid && s.door_rr.value;
-    frunk = s.frunk.valid && s.frunk.value;
-    trunk = s.trunk.valid && s.trunk.value;
-    headlights = s.headlights.valid && s.headlights.value;
-    high_beam = s.high_beam.valid && s.high_beam.value;
-    brake_lights = s.brake_light.valid && s.brake_light.value;
-    left_indicator = (s.hazards.valid && s.hazards.value) ||
-                     (s.turn_signal_left.valid && s.turn_signal_left.value);
-    right_indicator = (s.hazards.valid && s.hazards.value) ||
-                      (s.turn_signal_right.valid && s.turn_signal_right.value);
-    front_axle_active = s.front_motor_power.valid && std::fabs(s.front_motor_power.value) > 0.5F;
-    rear_axle_active = s.rear_motor_power.valid && std::fabs(s.rear_motor_power.value) > 0.5F;
-    if (s.battery_power.valid) energy_halo = std::max(-1.0F, std::min(1.0F, s.battery_power.value / 250.0F));
+    door_fl = s.door_fl.valid && !s.door_fl.stale && s.door_fl.value;
+    door_fr = s.door_fr.valid && !s.door_fr.stale && s.door_fr.value;
+    door_rl = s.door_rl.valid && !s.door_rl.stale && s.door_rl.value;
+    door_rr = s.door_rr.valid && !s.door_rr.stale && s.door_rr.value;
+    frunk = s.frunk.valid && !s.frunk.stale && s.frunk.value;
+    trunk = s.trunk.valid && !s.trunk.stale && s.trunk.value;
+    headlights = s.headlights.valid && !s.headlights.stale && s.headlights.value;
+    high_beam = s.high_beam.valid && !s.high_beam.stale && s.high_beam.value;
+    brake_lights = s.brake_light.valid && !s.brake_light.stale && s.brake_light.value;
+    left_indicator = (s.hazards.valid && !s.hazards.stale && s.hazards.value) ||
+                     (s.turn_signal_left.valid && !s.turn_signal_left.stale && s.turn_signal_left.value);
+    right_indicator = (s.hazards.valid && !s.hazards.stale && s.hazards.value) ||
+                      (s.turn_signal_right.valid && !s.turn_signal_right.stale && s.turn_signal_right.value);
+    front_axle_active = s.front_motor_power.valid && !s.front_motor_power.stale &&
+                        std::fabs(s.front_motor_power.value) > 0.5F;
+    rear_axle_active = s.rear_motor_power.valid && !s.rear_motor_power.stale &&
+                       std::fabs(s.rear_motor_power.value) > 0.5F;
+    if (s.battery_power.valid && !s.battery_power.stale)
+        energy_halo = std::max(-1.0F, std::min(1.0F, s.battery_power.value / 250.0F));
     else energy_halo = 0.0F;
 }
 
 HorizonSceneState buildHorizonScene(const VehicleState& s, const WarningManager& warnings) {
     HorizonSceneState out;
     out.vehicle.updateFrom(s);
-    out.speed_available = s.speed.valid;
-    out.speed = s.speed.valid ? s.speed.value : 0;
-    out.gear_available = s.gear.valid;
-    out.gear = s.gear.valid ? s.gear.value : Gear::Unknown;
-    const Signal<std::uint8_t>& soc = s.actual_soc.valid ? s.actual_soc : s.soc;
-    out.soc_available = soc.valid;
-    out.soc = soc.valid ? soc.value : 0;
-    out.range_available = s.range.valid;
-    out.range = s.range.valid ? s.range.value : 0;
+    out.speed_available = s.speed.valid && !s.speed.stale;
+    out.speed = out.speed_available ? s.speed.value : 0;
+    out.gear_available = s.gear.valid && !s.gear.stale && s.gear.value != Gear::Unknown;
+    out.gear = out.gear_available ? s.gear.value : Gear::Unknown;
+    const Signal<std::uint8_t>* soc = trustedSoc(s);
+    out.soc_available = soc != nullptr;
+    out.soc = soc ? soc->value : 0;
+    out.range_available = s.range.valid && !s.range.stale;
+    out.range = out.range_available ? s.range.value : 0;
     out.warning = warnings.evaluate(s);
 
-    out.surrounding.front = s.front_vehicle_present.valid && s.front_vehicle_present.value;
-    out.surrounding.left = (s.left_vehicle_present.valid && s.left_vehicle_present.value) ||
-                           (s.surrounding_vehicle_left.valid && s.surrounding_vehicle_left.value);
-    out.surrounding.right = (s.right_vehicle_present.valid && s.right_vehicle_present.value) ||
-                            (s.surrounding_vehicle_right.valid && s.surrounding_vehicle_right.value);
+    out.surrounding.front = s.front_vehicle_present.valid && !s.front_vehicle_present.stale &&
+                            s.front_vehicle_present.value;
+    out.surrounding.left = (s.left_vehicle_present.valid && !s.left_vehicle_present.stale && s.left_vehicle_present.value) ||
+                           (s.surrounding_vehicle_left.valid && !s.surrounding_vehicle_left.stale && s.surrounding_vehicle_left.value);
+    out.surrounding.right = (s.right_vehicle_present.valid && !s.right_vehicle_present.stale && s.right_vehicle_present.value) ||
+                            (s.surrounding_vehicle_right.valid && !s.surrounding_vehicle_right.stale && s.surrounding_vehicle_right.value);
     out.surrounding.precise_positions_available =
-        s.surrounding_position_mode.valid && s.surrounding_position_mode.value == SurroundingPositionMode::Precise;
+        s.surrounding_position_mode.valid && !s.surrounding_position_mode.stale &&
+        s.surrounding_position_mode.value == SurroundingPositionMode::Precise;
 
     if (out.warning.code == WarningCode::VehicleDataLost) out.mode = HorizonMode::DataDegraded;
-    else if (s.blind_spot_left.valid && s.blind_spot_left.value) out.mode = HorizonMode::LeftBlindSpot;
-    else if (s.blind_spot_right.valid && s.blind_spot_right.value) out.mode = HorizonMode::RightBlindSpot;
-    else if (s.autopilot_state.valid && s.autopilot_state.value == AutopilotState::Active) out.mode = HorizonMode::ApActive;
-    else if (s.autopilot_state.valid && s.autopilot_state.value == AutopilotState::Available) out.mode = HorizonMode::ApAvailable;
+    else if (s.blind_spot_left.valid && !s.blind_spot_left.stale && s.blind_spot_left.value) out.mode = HorizonMode::LeftBlindSpot;
+    else if (s.blind_spot_right.valid && !s.blind_spot_right.stale && s.blind_spot_right.value) out.mode = HorizonMode::RightBlindSpot;
+    else if (s.autopilot_state.valid && !s.autopilot_state.stale && s.autopilot_state.value == AutopilotState::Active) out.mode = HorizonMode::ApActive;
+    else if (s.autopilot_state.valid && !s.autopilot_state.stale && s.autopilot_state.value == AutopilotState::Available) out.mode = HorizonMode::ApAvailable;
     else out.mode = HorizonMode::Normal;
     return out;
 }
