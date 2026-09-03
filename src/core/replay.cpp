@@ -116,6 +116,7 @@ void ReplayAdapter::load(std::vector<ReplayRecord> records) {
     adapter_.reset();
     health_ = {};
     health_.status = records_.empty() ? DataSourceStatus::Offline : DataSourceStatus::Connected;
+    recording_start_ms_ = records_.empty() ? 0 : records_.front().timestamp_ms;
 }
 
 void ReplayAdapter::setRate(float rate) {
@@ -125,7 +126,8 @@ void ReplayAdapter::setRate(float rate) {
 
 void ReplayAdapter::play(std::uint64_t now_ms) {
     if (records_.empty()) return;
-    recording_start_ms_ = cursor_ < records_.size() ? records_[cursor_].timestamp_ms : records_.back().timestamp_ms;
+    if (cursor_ >= records_.size()) return;
+    recording_start_ms_ = currentRecordingTimestamp();
     wall_start_ms_ = now_ms;
     playing_ = true;
     health_.status = DataSourceStatus::Connected;
@@ -154,23 +156,35 @@ void ReplayAdapter::rebuildTo(std::size_t end_exclusive) {
 }
 
 void ReplayAdapter::seek(std::uint64_t recording_timestamp_ms, std::uint64_t now_ms) {
-    auto it = std::lower_bound(records_.begin(), records_.end(), recording_timestamp_ms,
-        [](const ReplayRecord& record, std::uint64_t timestamp) { return record.timestamp_ms < timestamp; });
+    // Rebuild all frames at or before the target so paused seek immediately
+    // exposes the state of the selected recording time. The next tick resumes
+    // from the first frame after the target, using the recording timeline.
+    auto it = std::upper_bound(records_.begin(), records_.end(), recording_timestamp_ms,
+        [](std::uint64_t timestamp, const ReplayRecord& record) {
+            return timestamp < record.timestamp_ms;
+        });
     rebuildTo(static_cast<std::size_t>(it - records_.begin()));
     recording_start_ms_ = recording_timestamp_ms;
     wall_start_ms_ = now_ms;
+    if (cursor_ >= records_.size()) playing_ = false;
 }
 
 std::uint64_t ReplayAdapter::currentRecordingTimestamp() const {
     if (records_.empty()) return 0;
-    if (cursor_ == 0) return records_.front().timestamp_ms;
+    if (cursor_ == 0) return recording_start_ms_;
     return records_[std::min(cursor_ - 1, records_.size() - 1)].timestamp_ms;
 }
 
 void ReplayAdapter::tick(std::uint64_t now_ms) {
-    if (!playing_ || records_.empty() || cursor_ >= records_.size()) {
-        adapter_.tick(now_ms);
-        if (cursor_ >= records_.size() && !records_.empty()) playing_ = false;
+    if (records_.empty()) {
+        health_.status = DataSourceStatus::Offline;
+        return;
+    }
+
+    if (!playing_ || cursor_ >= records_.size()) {
+        // Never compare recording sample timestamps with host wall-clock time.
+        adapter_.tick(currentRecordingTimestamp());
+        if (cursor_ >= records_.size()) playing_ = false;
         return;
     }
 
