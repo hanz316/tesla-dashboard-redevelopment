@@ -14,6 +14,10 @@ add_library(dashboard_core
     src/core/protocol_parser.cpp
     src/core/vehicle_state.cpp
     src/core/v6_cockpit.cpp
+    src/core/dashboard_services.cpp
+    src/core/replay.cpp
+    src/core/ui_framework_v6.cpp
+    src/core/horizon_v6.cpp
 )
 set_target_properties(dashboard_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(dashboard_core PUBLIC include)
@@ -34,6 +38,21 @@ if(BUILD_HOST_TOOLS)
     target_link_libraries(dashboard_v6_tests PRIVATE dashboard_core)
     target_compile_options(dashboard_v6_tests PRIVATE -Wall -Wextra -Wpedantic)
     add_test(NAME dashboard_v6_tests COMMAND dashboard_v6_tests)
+
+    add_executable(dashboard_services_tests tests/dashboard_services_tests.cpp)
+    target_link_libraries(dashboard_services_tests PRIVATE dashboard_core)
+    target_compile_options(dashboard_services_tests PRIVATE -Wall -Wextra -Wpedantic)
+    add_test(NAME dashboard_services_tests COMMAND dashboard_services_tests)
+
+    add_executable(dashboard_ui_v6_tests tests/ui_framework_v6_tests.cpp)
+    target_link_libraries(dashboard_ui_v6_tests PRIVATE dashboard_core)
+    target_compile_options(dashboard_ui_v6_tests PRIVATE -Wall -Wextra -Wpedantic)
+    add_test(NAME dashboard_ui_v6_tests COMMAND dashboard_ui_v6_tests)
+
+    add_executable(dashboard_replay_tests tests/replay_tests.cpp)
+    target_link_libraries(dashboard_replay_tests PRIVATE dashboard_core)
+    target_compile_options(dashboard_replay_tests PRIVATE -Wall -Wextra -Wpedantic)
+    add_test(NAME dashboard_replay_tests COMMAND dashboard_replay_tests)
 endif()
 
 if(BUILD_FLYTHINGS_DEVICE)
