@@ -1,0 +1,75 @@
+{
+  "manifest": "v6-vehicle",
+  "version": 1,
+  "description": "Asset id -> file mapping shared by the device runtime and the Mac previewer.",
+  "canvas": { "width": 356, "height": 236 },
+  "images": {
+    "vehicle.base": "assets/rendered/vehicle/base/000.png",
+    "vehicle.shadow": "assets/rendered/vehicle/base/000.png"
+  },
+  "sequences": {
+    "vehicle.door.fl": {
+      "dir": "assets/rendered/vehicle/door_fl",
+      "frames": 16,
+      "fps": 24,
+      "mode": "to_state"
+    },
+    "vehicle.door.fr": {
+      "dir": "assets/rendered/vehicle/door_fr",
+      "frames": 16,
+      "fps": 24,
+      "mode": "to_state"
+    },
+    "vehicle.door.rl": {
+      "dir": "assets/rendered/vehicle/door_rl",
+      "frames": 16,
+      "fps": 24,
+      "mode": "to_state"
+    },
+    "vehicle.door.rr": {
+      "dir": "assets/rendered/vehicle/door_rr",
+      "frames": 16,
+      "fps": 24,
+      "mode": "to_state"
+    },
+    "vehicle.frunk": {
+      "dir": "assets/rendered/vehicle/frunk",
+      "frames": 14,
+      "fps": 24,
+      "mode": "to_state"
+    },
+    "vehicle.trunk": {
+      "dir": "assets/rendered/vehicle/trunk",
+      "frames": 14,
+      "fps": 24,
+      "mode": "to_state"
+    },
+    "vehicle.indicator.left": {
+      "dir": "assets/rendered/vehicle/indicator_left",
+      "frames": 12,
+      "fps": 12,
+      "mode": "loop"
+    },
+    "vehicle.indicator.right": {
+      "dir": "assets/rendered/vehicle/indicator_right",
+      "frames": 12,
+      "fps": 12,
+      "mode": "loop"
+    },
+    "vehicle.hazard": {
+      "dir": "assets/rendered/vehicle/hazard",
+      "frames": 12,
+      "fps": 12,
+      "mode": "loop"
+    }
+  },
+  "overlays": {
+    "vehicle.brake": "assets/rendered/vehicle/brake_on/000.png",
+    "vehicle.headlight": "assets/rendered/vehicle/headlight_on/000.png"
+  },
+  "notes": [
+    "Paths are repo-relative; on device they resolve under the deployed asset root.",
+    "Frames are placeholder engineering art until the Blender render replaces them.",
+    "Every sequence uses the same 356x236 canvas and anchor (see tools/assets/verify_alignment.py)."
+  ]
+}

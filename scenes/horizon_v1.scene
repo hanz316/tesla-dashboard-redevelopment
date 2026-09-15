@@ -1,0 +1,409 @@
+{
+  "scene": "horizon",
+  "version": 1,
+  "canvas": {
+    "width": 1920,
+    "height": 480,
+    "safe_area": {
+      "top_corner_cut": 116,
+      "bottom_corner_cut": 51
+    }
+  },
+  "manifest": "assets/manifest.json",
+  "nodes": [
+    {
+      "id": "env.gradient",
+      "type": "vector",
+      "shape": "vgradient",
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 480,
+      "z": 0,
+      "from": "#0A0E12",
+      "to": "#141B21"
+    },
+    {
+      "id": "env.glow",
+      "type": "vector",
+      "shape": "radial",
+      "x": 620,
+      "y": 40,
+      "width": 900,
+      "height": 400,
+      "z": 1,
+      "from": "#1B2833",
+      "to": "#0A0E12",
+      "opacity": 0.55
+    },
+    {
+      "id": "vehicle",
+      "type": "vehicle_visual",
+      "x": 650,
+      "y": 34,
+      "width": 720,
+      "height": 400,
+      "z": 10,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "asset": "vehicle.base",
+      "parts": {
+        "door_fl": {
+          "sequence": "vehicle.door.fl",
+          "bind": "door_fl"
+        },
+        "door_fr": {
+          "sequence": "vehicle.door.fr",
+          "bind": "door_fr"
+        },
+        "door_rl": {
+          "sequence": "vehicle.door.rl",
+          "bind": "door_rl"
+        },
+        "door_rr": {
+          "sequence": "vehicle.door.rr",
+          "bind": "door_rr"
+        },
+        "frunk": {
+          "sequence": "vehicle.frunk",
+          "bind": "frunk"
+        },
+        "trunk": {
+          "sequence": "vehicle.trunk",
+          "bind": "trunk"
+        }
+      },
+      "overlays": [
+        {
+          "id": "brake",
+          "asset": "vehicle.brake",
+          "bind": "brake",
+          "z": 12
+        },
+        {
+          "id": "headlight",
+          "asset": "vehicle.headlight",
+          "bind": "headlight",
+          "z": 12
+        }
+      ],
+      "indicators": {
+        "left": {
+          "sequence": "vehicle.indicator.left",
+          "bind": "indicator_left"
+        },
+        "right": {
+          "sequence": "vehicle.indicator.right",
+          "bind": "indicator_right"
+        }
+      }
+    },
+    {
+      "id": "speed",
+      "type": "text",
+      "x": 430,
+      "y": 170,
+      "width": 300,
+      "height": 220,
+      "z": 20,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "bind": "speed",
+      "format": "{}",
+      "font": 170,
+      "bold": true,
+      "align": "center",
+      "color": "#F2F4F6",
+      "color_when": [
+        {
+          "when": {
+            "signal": "speed",
+            "valid": false
+          },
+          "color": "#5A646E"
+        }
+      ]
+    },
+    {
+      "id": "speed.unit",
+      "type": "text",
+      "x": 430,
+      "y": 330,
+      "width": 200,
+      "height": 40,
+      "z": 20,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "text": "km/h",
+      "font": 30,
+      "align": "center",
+      "color": "#8A949E"
+    },
+    {
+      "id": "gear",
+      "type": "text",
+      "x": 200,
+      "y": 384,
+      "width": 140,
+      "height": 84,
+      "z": 20,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "shape": "roundrect",
+      "fill": "#182028",
+      "stroke": "#26323E",
+      "bind": "gear",
+      "value_map": {
+        "1": "P",
+        "2": "R",
+        "3": "N",
+        "4": "D"
+      },
+      "format": "{}",
+      "font": 48,
+      "align": "center",
+      "color": "#3D9BFF",
+      "text_when": [
+        {
+          "when": {
+            "signal": "gear",
+            "valid": false
+          },
+          "text": "--"
+        }
+      ]
+    },
+    {
+      "id": "status",
+      "type": "text",
+      "x": 960,
+      "y": 52,
+      "width": 400,
+      "height": 44,
+      "z": 20,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "bind": "gear",
+      "value_map": {
+        "1": "PARK",
+        "2": "REVERSE",
+        "3": "NEUTRAL",
+        "4": "DRIVE"
+      },
+      "format": "{}",
+      "font": 40,
+      "align": "center",
+      "color": "#F2F4F6",
+      "color_when": [
+        {
+          "when": {
+            "signal": "gear",
+            "equals": 4
+          },
+          "color": "#3DD68C"
+        },
+        {
+          "when": {
+            "signal": "gear",
+            "equals": 2
+          },
+          "color": "#E5484D"
+        }
+      ]
+    },
+    {
+      "id": "doors",
+      "type": "text",
+      "x": 960,
+      "y": 150,
+      "width": 700,
+      "height": 60,
+      "z": 20,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "bind": "closures",
+      "format": "{}",
+      "font": 44,
+      "align": "center",
+      "color": "#3DD68C",
+      "color_when": [
+        {
+          "when": {
+            "signal": "any_door_open",
+            "equals": true
+          },
+          "color": "#F5A623"
+        },
+        {
+          "when": {
+            "signal": "closures_valid",
+            "equals": false
+          },
+          "color": "#8A949E"
+        }
+      ]
+    },
+    {
+      "id": "soc",
+      "type": "text",
+      "x": 1490,
+      "y": 170,
+      "width": 320,
+      "height": 220,
+      "z": 20,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "bind": "soc",
+      "format": "{}%",
+      "font": 170,
+      "bold": true,
+      "align": "center",
+      "color": "#F2F4F6",
+      "color_when": [
+        {
+          "when": {
+            "signal": "soc.trusted",
+            "equals": false
+          },
+          "color": "#5A646E"
+        }
+      ],
+      "text_when": [
+        {
+          "when": {
+            "signal": "soc.trusted",
+            "equals": false
+          },
+          "text": "--%"
+        }
+      ]
+    },
+    {
+      "id": "soc.bar",
+      "type": "vector",
+      "shape": "roundrect",
+      "x": 1360,
+      "y": 320,
+      "width": 260,
+      "height": 16,
+      "z": 20,
+      "radius": 8,
+      "fill": "#1C242C",
+      "progress": {
+        "signal": "soc",
+        "color": "#3D9BFF"
+      }
+    },
+    {
+      "id": "range",
+      "type": "text",
+      "x": 1490,
+      "y": 385,
+      "width": 320,
+      "height": 60,
+      "z": 20,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "bind": "range",
+      "format": "{} km",
+      "font": 44,
+      "align": "center",
+      "color": "#F2F4F6",
+      "color_when": [
+        {
+          "when": {
+            "signal": "range",
+            "valid": false
+          },
+          "color": "#5A646E"
+        }
+      ]
+    },
+    {
+      "id": "temperature",
+      "type": "text",
+      "x": 1700,
+      "y": 48,
+      "width": 200,
+      "height": 40,
+      "z": 20,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "bind": "temperature_primary",
+      "format": "{}°C",
+      "font": 30,
+      "align": "center",
+      "color": "#8A949E"
+    },
+    {
+      "id": "clock",
+      "type": "text",
+      "x": 1730,
+      "y": 434,
+      "width": 220,
+      "height": 60,
+      "z": 20,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "source": "clock",
+      "format": "%H:%M",
+      "font": 44,
+      "align": "center",
+      "color": "#F2F4F6"
+    },
+    {
+      "id": "uart.health",
+      "type": "text",
+      "x": 210,
+      "y": 438,
+      "width": 300,
+      "height": 40,
+      "z": 20,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "bind": "uart_health",
+      "format": "{}",
+      "font": 24,
+      "align": "center",
+      "color": "#3DD68C",
+      "color_when": [
+        {
+          "when": {
+            "signal": "uart_health",
+            "equals": "UART STALE"
+          },
+          "color": "#F5A623"
+        },
+        {
+          "when": {
+            "signal": "uart_health",
+            "equals": "UART LOST"
+          },
+          "color": "#E5484D"
+        }
+      ]
+    }
+  ]
+}

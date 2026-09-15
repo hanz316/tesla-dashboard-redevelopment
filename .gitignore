@@ -13,3 +13,18 @@ __pycache__/
 *.swp
 /releases/**/runtime-validation/logcat.txt
 .DS_Store
+
+# --- vehicle asset pipeline ---
+# Blender scratch/caches and per-render temp output
+assets/**/*.blend1
+assets/**/*.blend2
+assets/source/blender/*.blend
+assets/rendered/**/_supersampled/
+*.blend1
+*.crash.txt
+
+# Mac previewer output (regenerate with tools/preview/scene_preview.py)
+/assets/preview/
+
+# Supersampled intermediates from the Blender render (regenerable, large)
+assets/rendered/**/*_ss/
