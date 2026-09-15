@@ -1,0 +1,33 @@
+{
+  "_comment": "Maps model node/mesh names to the canonical dashboard part names. Matching is case-insensitive substring; first match wins.",
+  "canonical_parts": [
+    "Body", "Glass", "Interior",
+    "Door_FL", "Door_FR", "Door_RL", "Door_RR",
+    "Frunk", "Trunk",
+    "Wheel_FL", "Wheel_FR", "Wheel_RL", "Wheel_RR",
+    "Headlight_L", "Headlight_R", "Taillight_L", "Taillight_R"
+  ],
+  "mappings": {
+    "Body": ["body", "shell", "chassis", "exterior", "car_body", "model3", "model_3", "tesla"],
+    "Glass": ["glass", "window", "windshield", "windscreen", "winds", "front_glass", "rear_glass"],
+    "Interior": ["interior", "cabin", "cockpit", "dashboard", "seat"],
+    "Door_FL": ["door_fl", "fl_door", "front_left_door", "door_front_left", "door_lf", "doorfl", "frontdoorleft"],
+    "Door_FR": ["door_fr", "fr_door", "front_right_door", "door_front_right", "door_rf", "doorfr", "frontdoorright"],
+    "Door_RL": ["door_rl", "rl_door", "rear_left_door", "door_rear_left", "door_lr", "doorrl", "reardoorleft"],
+    "Door_RR": ["door_rr", "rr_door", "rear_right_door", "door_rear_right", "door_rr", "doorrr", "reardoorright"],
+    "Frunk": ["frunk", "front_trunk", "hood", "bonnet"],
+    "Trunk": ["trunk", "tailgate", "boot", "rear_hatch", "hatch"],
+    "Wheel_FL": ["wheel_fl", "fl_wheel", "front_left_wheel", "tyre_fl", "tire_fl", "wheel_lf"],
+    "Wheel_FR": ["wheel_fr", "fr_wheel", "front_right_wheel", "tyre_fr", "tire_fr", "wheel_rf"],
+    "Wheel_RL": ["wheel_rl", "rl_wheel", "rear_left_wheel", "tyre_rl", "tire_rl", "wheel_lr"],
+    "Wheel_RR": ["wheel_rr", "rr_wheel", "rear_right_wheel", "tyre_rr", "tire_rr"],
+    "Headlight_L": ["headlight_l", "headlight_left", "lamp_front_left", "head_l"],
+    "Headlight_R": ["headlight_r", "headlight_right", "lamp_front_right", "head_r"],
+    "Taillight_L": ["taillight_l", "taillight_left", "brake_light_left", "tail_l"],
+    "Taillight_R": ["taillight_r", "taillight_right", "brake_light_right", "tail_r"]
+  },
+  "notes": [
+    "Generic tokens such as 'door' with no side are reported as ambiguous and need manual review.",
+    "Never run destructive mesh surgery automatically: produce a report first."
+  ]
+}

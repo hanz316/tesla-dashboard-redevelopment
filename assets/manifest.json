@@ -1,71 +1,83 @@
 {
   "manifest": "v6-vehicle",
-  "version": 1,
-  "description": "Asset id -> file mapping shared by the device runtime and the Mac previewer.",
+  "version": 2,
+  "description": "Vehicle asset source selection + id -> path mapping shared by the device runtime and the Mac previewer. All paths are relative to the SELECTED source root.",
   "canvas": { "width": 356, "height": 236 },
+  "vehicle_source": {
+    "mode": "auto",
+    "production_allows_placeholder": false,
+    "active": {
+      "rendered_model3": { "root": "assets/rendered/vehicle" },
+      "placeholder": { "root": "assets/rendered/placeholder" }
+    },
+    "notes": [
+      "auto: use RENDERED_MODEL3 when a MODEL3_SOURCE.json marker exists, else fall back to PLACEHOLDER for developer preview only.",
+      "Production Horizon must run with mode=rendered_model3 (or auto with the marker present)."
+    ]
+  },
   "images": {
-    "vehicle.base": "assets/rendered/vehicle/base/000.png",
-    "vehicle.shadow": "assets/rendered/vehicle/base/000.png"
+    "vehicle.base": "base/000.png",
+    "vehicle.shadow": "base/000.png"
   },
   "sequences": {
     "vehicle.door.fl": {
-      "dir": "assets/rendered/vehicle/door_fl",
+      "dir": "door_fl",
       "frames": 16,
       "fps": 24,
       "mode": "to_state"
     },
     "vehicle.door.fr": {
-      "dir": "assets/rendered/vehicle/door_fr",
+      "dir": "door_fr",
       "frames": 16,
       "fps": 24,
       "mode": "to_state"
     },
     "vehicle.door.rl": {
-      "dir": "assets/rendered/vehicle/door_rl",
+      "dir": "door_rl",
       "frames": 16,
       "fps": 24,
       "mode": "to_state"
     },
     "vehicle.door.rr": {
-      "dir": "assets/rendered/vehicle/door_rr",
+      "dir": "door_rr",
       "frames": 16,
       "fps": 24,
       "mode": "to_state"
     },
     "vehicle.frunk": {
-      "dir": "assets/rendered/vehicle/frunk",
+      "dir": "frunk",
       "frames": 14,
       "fps": 24,
       "mode": "to_state"
     },
     "vehicle.trunk": {
-      "dir": "assets/rendered/vehicle/trunk",
+      "dir": "trunk",
       "frames": 14,
       "fps": 24,
       "mode": "to_state"
     },
     "vehicle.indicator.left": {
-      "dir": "assets/rendered/vehicle/indicator_left",
+      "dir": "indicator_left",
       "frames": 12,
       "fps": 12,
       "mode": "loop"
     },
     "vehicle.indicator.right": {
-      "dir": "assets/rendered/vehicle/indicator_right",
+      "dir": "indicator_right",
       "frames": 12,
       "fps": 12,
       "mode": "loop"
     },
     "vehicle.hazard": {
-      "dir": "assets/rendered/vehicle/hazard",
+      "dir": "hazard",
       "frames": 12,
       "fps": 12,
       "mode": "loop"
     }
   },
   "overlays": {
-    "vehicle.brake": "assets/rendered/vehicle/brake_on/000.png",
-    "vehicle.headlight": "assets/rendered/vehicle/headlight_on/000.png"
+    "vehicle.brake": "brake_on/000.png",
+    "vehicle.headlight": "headlight_on/000.png"
   },
   "notes": [
     "Paths are repo-relative; on device they resolve under the deployed asset root.",

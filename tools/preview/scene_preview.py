@@ -25,6 +25,9 @@ try:
 except ImportError:
     sys.exit("Pillow required: pip3 install pillow")
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import vehicle_asset_provider  # noqa: E402
+
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 FONT_REG = "/System/Library/Fonts/Supplemental/Arial.ttf"
 FONT_BOLD = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
@@ -246,16 +249,18 @@ def draw_vector(img, node, state):
                    fill=hex_to_rgb(node.get("fill", "#000000")))
 
 
-def resolve_asset_path(manifest, asset_id):
+def resolve_asset_path(provider, asset_id):
+    manifest = provider.manifest
     if asset_id in manifest.get("images", {}):
-        return os.path.join(REPO_ROOT, manifest["images"][asset_id])
+        return provider.path_for(manifest["images"][asset_id])
     if asset_id in manifest.get("overlays", {}):
-        return os.path.join(REPO_ROOT, manifest["overlays"][asset_id])
+        return provider.path_for(manifest["overlays"][asset_id])
     return None
 
 
-def sequence_frame(manifest, seq_id, bind, state, t_norm=1.0):
+def sequence_frame(provider, seq_id, bind, state, t_norm=1.0):
     """Picks the frame for a to_state / loop sequence."""
+    manifest = provider.manifest
     seq = manifest.get("sequences", {}).get(seq_id)
     if seq is None:
         return None
@@ -269,7 +274,7 @@ def sequence_frame(manifest, seq_id, bind, state, t_norm=1.0):
         if not (sig.valid and sig.value):
             return None
         idx = frames - 1
-    path = os.path.join(REPO_ROOT, seq["dir"], f"{idx:03d}.png")
+    path = provider.path_for(os.path.join(seq["dir"], f"{idx:03d}.png"))
     return path if os.path.isfile(path) else None
 
 
@@ -280,10 +285,10 @@ def paste_scaled(base, path, x, y, w, h):
     base.alpha_composite(img, (int(x), int(y)))
 
 
-def draw_vehicle_visual(img, node, state, manifest, t_norm):
+def draw_vehicle_visual(img, node, state, provider, t_norm):
     x, y = node.get("x", 0), node.get("y", 0)
     w, h = node.get("width", 356), node.get("height", 236)
-    asset = resolve_asset_path(manifest, node.get("asset", ""))
+    asset = resolve_asset_path(provider, node.get("asset", ""))
     if asset and os.path.isfile(asset):
         paste_scaled(img, asset, x, y, w, h)
     else:
@@ -291,7 +296,7 @@ def draw_vehicle_visual(img, node, state, manifest, t_norm):
         d.rounded_rectangle([x, y, x + w, y + h], radius=14,
                             outline=(90, 100, 110, 120), width=2)
     for part in node.get("parts", {}).values():
-        path = sequence_frame(manifest, part["sequence"], part.get("bind"),
+        path = sequence_frame(provider, part["sequence"], part.get("bind"),
                               state, t_norm)
         if path:
             paste_scaled(img, path, x, y, w, h)
@@ -299,11 +304,11 @@ def draw_vehicle_visual(img, node, state, manifest, t_norm):
         sig = state.signal(ov["bind"]) if ov.get("bind") else Signal(True, True)
         if not (sig.valid and sig.value):
             continue
-        path = resolve_asset_path(manifest, ov["asset"])
+        path = resolve_asset_path(provider, ov["asset"])
         if path and os.path.isfile(path):
             paste_scaled(img, path, x, y, w, h)
     for side, part in node.get("indicators", {}).items():
-        path = sequence_frame(manifest, part["sequence"], part.get("bind"),
+        path = sequence_frame(provider, part["sequence"], part.get("bind"),
                               state, t_norm)
         if path:
             paste_scaled(img, path, x, y, w, h)
@@ -323,7 +328,24 @@ def apply_safe_area(img, canvas):
     return img
 
 
-def render(scene, manifest, raw_state, out_path, t_norm=1.0):
+def draw_dev_banner(img, text):
+    """Marks a preview as developer/placeholder output so it can never be
+    mistaken for a production asset."""
+    d = ImageDraw.Draw(img, "RGBA")
+    font = load_font(20, bold=True)
+    pad = 8
+    bbox = d.textbbox((0, 0), text, font=font)
+    w = bbox[2] - bbox[0] + pad * 2
+    h = bbox[3] - bbox[1] + pad * 2
+    x, y = 130, 8
+    d.rounded_rectangle([x, y, x + w, y + h], radius=6,
+                        fill=(120, 60, 0, 190), outline=(255, 170, 60, 230))
+    d.text((x + pad, y + pad - bbox[1]), text, font=font,
+           fill=(255, 220, 170, 255))
+
+
+def render(scene, provider, raw_state, out_path, t_norm=1.0,
+           banner=None):
     canvas = scene["canvas"]
     img = Image.new("RGBA", (canvas["width"], canvas["height"]), (0, 0, 0, 255))
     state = State(raw_state)
@@ -335,14 +357,14 @@ def render(scene, manifest, raw_state, out_path, t_norm=1.0):
         elif ntype == "text":
             draw_text(img, node, state)
         elif ntype == "vehicle_visual":
-            draw_vehicle_visual(img, node, state, manifest, t_norm)
+            draw_vehicle_visual(img, node, state, provider, t_norm)
         elif ntype == "image":
-            path = resolve_asset_path(manifest, node.get("asset", ""))
+            path = resolve_asset_path(provider, node.get("asset", ""))
             if path and os.path.isfile(path):
                 paste_scaled(img, path, node.get("x", 0), node.get("y", 0),
                              node.get("width", 0), node.get("height", 0))
         elif ntype == "image_anim":
-            path = sequence_frame(manifest, node.get("sequence"),
+            path = sequence_frame(provider, node["sequence"],
                                   node.get("bind"), state, t_norm)
             if path:
                 paste_scaled(img, path, node.get("x", 0), node.get("y", 0),
@@ -356,6 +378,8 @@ def render(scene, manifest, raw_state, out_path, t_norm=1.0):
                 draw_text(img, child, state) if child.get("type") == "text" \
                     else draw_vector(img, child, state)
     apply_safe_area(img, canvas)
+    if banner:
+        draw_dev_banner(img, banner)
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     img.convert("RGB").save(out_path)
     return out_path
@@ -372,6 +396,11 @@ def main():
                                                   "preview"))
     ap.add_argument("--t", type=float, default=1.0,
                     help="animation phase 0..1 for looping sequences")
+    ap.add_argument("--require-model3", action="store_true",
+                    help="production-like check: refuse to preview with the "
+                         "engineering placeholder vehicle")
+    ap.add_argument("--allow-placeholder", action="store_true",
+                    help="developer preview: permit the placeholder fallback")
     args = ap.parse_args()
 
     if args.list_states:
@@ -381,17 +410,30 @@ def main():
 
     with open(args.scene) as fh:
         scene = json.load(fh)
-    manifest_path = os.path.join(REPO_ROOT, scene.get("manifest",
-                                                      "assets/manifest.json"))
-    with open(manifest_path) as fh:
-        manifest = json.load(fh)
+    manifest_path = os.path.join(REPO_ROOT,
+                                 scene.get("manifest", "assets/manifest.json"))
+    provider = vehicle_asset_provider.load_provider(REPO_ROOT, manifest_path)
+    # Preview defaults to allowing the placeholder; --require-model3 turns
+    # that off so CI can assert the real asset exists.
+    allow_placeholder = args.allow_placeholder or not args.require_model3
+    try:
+        kind, root = provider.resolve(allow_placeholder=allow_placeholder)
+    except RuntimeError as exc:
+        sys.exit(f"[preview] vehicle asset error: {exc}")
+
+    banner = None
+    if kind == vehicle_asset_provider.PLACEHOLDER:
+        banner = "DEV PREVIEW - ENGINEERING PLACEHOLDER VEHICLE (not production art)"
+    print(f"[preview] vehicle source: {kind} -> {os.path.relpath(root, REPO_ROOT)}")
+    if provider.warning:
+        print(f"[preview] WARNING: {provider.warning}")
 
     states = list(MOCK_STATES) if args.all_states else [args.state]
     for name in states:
         if name not in MOCK_STATES:
             sys.exit(f"unknown state: {name} (see --list-states)")
         out = os.path.join(args.out, f"{scene['scene']}_{name}.png")
-        render(scene, manifest, MOCK_STATES[name], out, args.t)
+        render(scene, provider, MOCK_STATES[name], out, args.t, banner)
         print(f"[preview] {name:10} -> {out}")
 
 

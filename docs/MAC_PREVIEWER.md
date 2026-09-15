@@ -32,6 +32,8 @@ python3 tools/preview/scene_preview.py --all-states     # 输出全部场景到 
 已支持：
 
 - 读取 `*.scene` 与 `assets/manifest.json`
+- **VehicleAssetProvider**：自动在 `RENDERED_MODEL3` 与 `PLACEHOLDER` 之间
+  选择；`--require-model3` 可强制生产语义（无正式资产即**拒绝渲染**）
 - 节点类型：`vector`（垂直渐变/径向辉光/圆角矩形+进度）、`text`、
   `image`、`image_anim`、`vehicle_visual`、`group`
 - 绑定：`bind` / `valid` / `trusted` 后缀、`value_map`、`format`、
@@ -45,6 +47,8 @@ python3 tools/preview/scene_preview.py --all-states     # 输出全部场景到 
 
 - Mock **只存在于预览器**（`MOCK_STATES`）与 Developer Mode
 - 生产运行时**禁止**自动显示假数据；信号无效时只能显示 `--`/不可用
+- 生产 Horizon **禁止**使用占位车辆：`--require-model3` 会直接报错退出
+- 使用占位车辆时预览图会绘制 `DEV PREVIEW` 横幅
 - 预览器输出目录 `assets/preview/` 不提交（见 `.gitignore`）
 
 ## 4. 与设备端的关系

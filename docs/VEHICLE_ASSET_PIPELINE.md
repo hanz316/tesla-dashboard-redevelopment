@@ -1,7 +1,12 @@
-# 车辆资产生产管线（Blender → PNG 序列 → 运行时）
+# 车辆资产生产管线（正式 Model 3 → Blender → PNG 序列 → 运行时）
 
 状态：管线已建立，**除 Blender 渲染步骤外全部本地验证通过**。
 Blender 当前**未安装**（本仓库不自动安装），装上后即可端到端运行。
+
+> **策略（2026-09-15 更新）**：正式车辆**必须**来自高质量 Tesla Model 3
+> 3D 母体，经 Blender 离线渲染。**禁止**用 cube/polygon 程序化"猜着建一辆
+> Tesla"当作正式视觉资产；程序化 primitive 仅作为单元测试占位（PLACEHOLDER）。
+> 候选模型与许可证审查见 `docs/MODEL3_ASSET_CANDIDATES.md`。
 
 ---
 
@@ -9,10 +14,16 @@ Blender 当前**未安装**（本仓库不自动安装），装上后即可端�
 
 ```
 assets/
+  ATTRIBUTION.md                # 第三方资产署名（CC-BY 必需）
   source/blender/
-    model3.blend                # 由 build_model3_scene.py 生成（含全部 action）
-    model3.manifest.json        # action → 对象/帧范围，渲染脚本据此驱动
-  rendered/vehicle/
+    model3_master.blend         # 正式母体（import_model3.py 生成）
+    model3_import_report.json   # 导入/归一化/命名报告
+    model3.blend                # (legacy) 占位场景，仅用于管线测试
+    model3.manifest.json        # action → 对象/帧范围
+  source/downloads/             # 下载的第三方模型（git-ignored）
+  rendered/vehicle/             # 正式渲染产物（git-ignored，体积大）
+    MODEL3_SOURCE.json          # 存在即代表"正式资产已就位"
+  rendered/placeholder/         # 工程占位帧（提交，供开发预览）
     base/000.png                # 静态车辆（合成基底）
     door_fl/000..015.png        # 门开动画（16 帧）
     door_fr/ door_rl/ door_rr/
@@ -24,11 +35,40 @@ assets/
 tools/
   blender/build_model3_scene.py      # 构建场景 + 全部 action → model3.blend
   blender/render_vehicle_assets.py   # --action/--all 自动渲染 + 降采样 + 预算
+  blender/import_model3.py           # FBX/OBJ/GLB/GLTF/BLEND 导入归一化
+  blender/part_report.py             # FBX/BLEND 深度拆件报告（不做破坏性切割）
+  assets/find_model3.py              # 候选检索 + 许可证/重复/风险标记
+  assets/inspect_model.py            # glTF/GLB/OBJ 拆件检测（无需 Blender）
+  assets/part_mapping.json           # 原始命名 → 标准部件名映射
   assets/generate_placeholder_frames.py  # 无 Blender 的占位渲染（同契约）
   assets/check_budget.py             # RAM/解码预算闸门
   assets/verify_alignment.py         # 画布/锚点/相机漂移校验
   assets/pack_atlas.py               # 可选：序列 → 图集
 ```
+
+## 1.1 资产来源选择（VehicleAssetProvider）
+
+运行时/预览器通过 `assets/manifest.json` 的 `vehicle_source` 选择资产集：
+
+```jsonc
+"vehicle_source": {
+  "mode": "auto",                       // auto | rendered_model3 | placeholder
+  "production_allows_placeholder": false,
+  "active": {
+    "rendered_model3": { "root": "assets/rendered/vehicle" },
+    "placeholder":    { "root": "assets/rendered/placeholder" }
+  }
+}
+```
+
+规则：
+
+- `auto`：`assets/rendered/vehicle/MODEL3_SOURCE.json` 存在 → 用
+  **RENDERED_MODEL3**；否则回退 **PLACEHOLDER**（**仅开发者预览**）
+- 生产构建：`mode=rendered_model3`，或 `auto` 且 marker 存在；
+  **禁止**占位车辆进入生产 Horizon
+- 占位预览图会带 `DEV PREVIEW - ENGINEERING PLACEHOLDER VEHICLE` 横幅，
+  不可能被误认为正式美术
 
 ---
 

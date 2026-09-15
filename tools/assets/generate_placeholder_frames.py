@@ -28,7 +28,10 @@ except ImportError:
     sys.exit("Pillow required: pip3 install pillow")
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-DEFAULT_OUT = os.path.join(REPO_ROOT, "assets", "rendered", "vehicle")
+# Placeholder art is kept in its own tree so the runtime can tell it apart
+# from real Blender renders (assets/rendered/vehicle). Production must never
+# ship the placeholder tree.
+DEFAULT_OUT = os.path.join(REPO_ROOT, "assets", "rendered", "placeholder")
 
 CANVAS_W, CANVAS_H = 356, 236
 SS = 3                      # supersample, matching the Blender pipeline
