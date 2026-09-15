@@ -290,6 +290,26 @@ def _assign_action(owner, action):
         pass
 
 
+def iter_fcurves(action):
+    """Yield F-Curves of an action across Blender versions.
+
+    Blender < 4.4 keeps them on ``action.fcurves``. Blender 4.4+ / 5.x moved
+    to slotted actions, where curves live in
+    ``action.layers[*].strips[*].channelbags[*].fcurves``. ``action.fcurves``
+    was removed entirely in 5.x, so both paths are needed.
+    """
+    legacy = getattr(action, "fcurves", None)
+    if legacy is not None:
+        for fcurve in legacy:
+            yield fcurve
+        return
+    for layer in getattr(action, "layers", []):
+        for strip in getattr(layer, "strips", []):
+            for channelbag in getattr(strip, "channelbags", []):
+                for fcurve in getattr(channelbag, "fcurves", []):
+                    yield fcurve
+
+
 def _key_rotation(obj, action, degrees_by_frame, axis=2):
     """axis: 0=X, 1=Y, 2=Z."""
     _assign_action(obj, action)
@@ -299,7 +319,7 @@ def _key_rotation(obj, action, degrees_by_frame, axis=2):
         rot[axis] = math.radians(deg)
         obj.rotation_euler = rot
         obj.keyframe_insert(data_path="rotation_euler", frame=frame)
-    for fcurve in action.fcurves:
+    for fcurve in iter_fcurves(action):
         for kp in fcurve.keyframe_points:
             kp.interpolation = "BEZIER"
 

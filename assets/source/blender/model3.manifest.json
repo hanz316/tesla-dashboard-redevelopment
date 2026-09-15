@@ -1,0 +1,130 @@
+{
+  "generated_by": "tools/blender/build_model3_scene.py",
+  "blend": "../../../tmp/test_model3.blend",
+  "camera": "Camera_Horizon",
+  "canvas": {
+    "width": 356,
+    "height": 236,
+    "supersample": 3
+  },
+  "objects": [
+    "Body",
+    "Body_Sill_L",
+    "Body_Sill_R",
+    "Brake_L",
+    "Brake_R",
+    "Door_FL",
+    "Door_FR",
+    "Door_RL",
+    "Door_RR",
+    "Frunk",
+    "Glass",
+    "Headlight_L",
+    "Headlight_R",
+    "Indicator_L",
+    "Indicator_R",
+    "Interior",
+    "Trunk",
+    "Wheel_FL",
+    "Wheel_FL_Rim",
+    "Wheel_FR",
+    "Wheel_FR_Rim",
+    "Wheel_RL",
+    "Wheel_RL_Rim",
+    "Wheel_RR",
+    "Wheel_RR_Rim"
+  ],
+  "actions": {
+    "Door_FL_Open": {
+      "objects": [
+        "Door_FL"
+      ],
+      "channel": "rotation",
+      "first": 1,
+      "last": 16
+    },
+    "Door_FR_Open": {
+      "objects": [
+        "Door_FR"
+      ],
+      "channel": "rotation",
+      "first": 1,
+      "last": 16
+    },
+    "Door_RL_Open": {
+      "objects": [
+        "Door_RL"
+      ],
+      "channel": "rotation",
+      "first": 1,
+      "last": 16
+    },
+    "Door_RR_Open": {
+      "objects": [
+        "Door_RR"
+      ],
+      "channel": "rotation",
+      "first": 1,
+      "last": 16
+    },
+    "Frunk_Open": {
+      "objects": [
+        "Frunk"
+      ],
+      "channel": "rotation",
+      "first": 1,
+      "last": 14
+    },
+    "Trunk_Open": {
+      "objects": [
+        "Trunk"
+      ],
+      "channel": "rotation",
+      "first": 1,
+      "last": 14
+    },
+    "Brake_On": {
+      "objects": [
+        "Brake_L",
+        "Brake_R"
+      ],
+      "channel": "emission",
+      "first": 1,
+      "last": 1
+    },
+    "Headlight_On": {
+      "objects": [
+        "Headlight_L",
+        "Headlight_R"
+      ],
+      "channel": "emission",
+      "first": 1,
+      "last": 1
+    },
+    "Indicator_Left": {
+      "objects": [
+        "Indicator_L"
+      ],
+      "channel": "emission",
+      "first": 1,
+      "last": 12
+    },
+    "Indicator_Right": {
+      "objects": [
+        "Indicator_R"
+      ],
+      "channel": "emission",
+      "first": 1,
+      "last": 12
+    },
+    "Hazard": {
+      "objects": [
+        "Indicator_L",
+        "Indicator_R"
+      ],
+      "channel": "emission",
+      "first": 1,
+      "last": 12
+    }
+  }
+}

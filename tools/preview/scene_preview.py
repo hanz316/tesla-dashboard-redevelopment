@@ -285,9 +285,22 @@ def paste_scaled(base, path, x, y, w, h):
     base.alpha_composite(img, (int(x), int(y)))
 
 
-def draw_vehicle_visual(img, node, state, provider, t_norm):
+def draw_vehicle_visual(img, node, state, provider, t_norm,
+                        vehicle_image=None):
     x, y = node.get("x", 0), node.get("y", 0)
     w, h = node.get("width", 356), node.get("height", 236)
+    if vehicle_image:
+        # A/B checkpoint mode: composite a rendered vehicle instead of the
+        # provider asset. Aspect ratio is preserved inside the node box.
+        veh = Image.open(vehicle_image).convert("RGBA")
+        scale = min(w / veh.width, h / veh.height)
+        new_size = (max(1, int(veh.width * scale)),
+                    max(1, int(veh.height * scale)))
+        veh = veh.resize(new_size, Image.LANCZOS)
+        ox = int(x + (w - new_size[0]) / 2)
+        oy = int(y + (h - new_size[1]) / 2)
+        img.alpha_composite(veh, (ox, oy))
+        return
     asset = resolve_asset_path(provider, node.get("asset", ""))
     if asset and os.path.isfile(asset):
         paste_scaled(img, asset, x, y, w, h)
@@ -345,7 +358,7 @@ def draw_dev_banner(img, text):
 
 
 def render(scene, provider, raw_state, out_path, t_norm=1.0,
-           banner=None):
+           banner=None, vehicle_image=None):
     canvas = scene["canvas"]
     img = Image.new("RGBA", (canvas["width"], canvas["height"]), (0, 0, 0, 255))
     state = State(raw_state)
@@ -357,7 +370,8 @@ def render(scene, provider, raw_state, out_path, t_norm=1.0,
         elif ntype == "text":
             draw_text(img, node, state)
         elif ntype == "vehicle_visual":
-            draw_vehicle_visual(img, node, state, provider, t_norm)
+            draw_vehicle_visual(img, node, state, provider, t_norm,
+                                vehicle_image)
         elif ntype == "image":
             path = resolve_asset_path(provider, node.get("asset", ""))
             if path and os.path.isfile(path):
@@ -401,6 +415,11 @@ def main():
                          "engineering placeholder vehicle")
     ap.add_argument("--allow-placeholder", action="store_true",
                     help="developer preview: permit the placeholder fallback")
+    ap.add_argument("--vehicle-image", default=None,
+                    help="A/B checkpoint: composite this rendered vehicle PNG "
+                         "into the scene instead of the provider asset")
+    ap.add_argument("--out-name", default=None,
+                    help="override the output filename prefix")
     args = ap.parse_args()
 
     if args.list_states:
@@ -432,8 +451,10 @@ def main():
     for name in states:
         if name not in MOCK_STATES:
             sys.exit(f"unknown state: {name} (see --list-states)")
-        out = os.path.join(args.out, f"{scene['scene']}_{name}.png")
-        render(scene, provider, MOCK_STATES[name], out, args.t, banner)
+        filename = (args.out_name or f"{scene['scene']}_{name}") + ".png"
+        out = os.path.join(args.out, filename)
+        render(scene, provider, MOCK_STATES[name], out, args.t, banner,
+               args.vehicle_image)
         print(f"[preview] {name:10} -> {out}")
 
 

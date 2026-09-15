@@ -31,9 +31,16 @@ assets/rendered/**/*_ss/
 
 # Downloaded third-party models: never commit (licence + size). Keep the
 # SHA-256 in assets/ATTRIBUTION.md instead.
+# NOTE: both spellings are listed because the actual directory is
+# `download/` (singular) while earlier docs referred to `downloads/`.
+assets/source/download/
 assets/source/downloads/
 assets/source/blender/*_master.blend1
 
 # Real Blender renders of the Model 3 (regenerable, can get large).
 # Keep them local; the runtime/previewer read them from here when present.
 assets/rendered/vehicle/
+
+# A/B working renders (regenerable). Frozen checkpoint copies live in
+# assets/checkpoints/ and ARE committed.
+assets/rendered/ab/
