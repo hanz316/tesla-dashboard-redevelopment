@@ -420,6 +420,10 @@ def main():
                          "into the scene instead of the provider asset")
     ap.add_argument("--out-name", default=None,
                     help="override the output filename prefix")
+    ap.add_argument("--vehicle-box", default=None,
+                    help="override the vehicle_visual box for this render, "
+                         "format WxH@X,Y (checkpoint framing only; the scene "
+                         "file itself is not modified)")
     args = ap.parse_args()
 
     if args.list_states:
@@ -448,6 +452,21 @@ def main():
         print(f"[preview] WARNING: {provider.warning}")
 
     states = list(MOCK_STATES) if args.all_states else [args.state]
+
+    # Optional vehicle-box override (checkpoint framing).
+    if args.vehicle_box:
+        try:
+            size_part, pos_part = args.vehicle_box.split("@")
+            bw, bh = (int(v) for v in size_part.lower().split("x"))
+            bx, by = (int(v) for v in pos_part.split(","))
+        except Exception:
+            sys.exit("--vehicle-box must look like 860x440@530,22")
+        for node in scene["nodes"]:
+            if node.get("type") == "vehicle_visual":
+                node["x"], node["y"] = bx, by
+                node["width"], node["height"] = bw, bh
+        print(f"[preview] vehicle box override: {bw}x{bh} at ({bx},{by})")
+
     for name in states:
         if name not in MOCK_STATES:
             sys.exit(f"unknown state: {name} (see --list-states)")

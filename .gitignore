@@ -44,3 +44,7 @@ assets/rendered/vehicle/
 # A/B working renders (regenerable). Frozen checkpoint copies live in
 # assets/checkpoints/ and ARE committed.
 assets/rendered/ab/
+
+# HMI vehicle-visual working renders (full resolution, regenerable).
+# Review-sized copies ARE committed under assets/checkpoints/.
+assets/rendered/hmi/
