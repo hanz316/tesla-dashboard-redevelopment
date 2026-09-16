@@ -78,3 +78,7 @@ assets/rendered/horizon_redesign/
 # Photoreal material study renders (regenerable via
 # tools/blender/render_vehicle_photoreal.py + build_photoreal_comparison.py).
 assets/rendered/photoreal/
+
+# HDRI selection round 2 working renders (regenerable; review copies live in
+# assets/checkpoints/hdri_selection_round2_2026-09-16/).
+assets/rendered/hdri_round2/

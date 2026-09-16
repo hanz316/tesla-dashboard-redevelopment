@@ -95,3 +95,25 @@ unverifiable HDRI must never enter this pipeline.
 
 Rejected candidates are recorded in `docs/VEHICLE_PHOTOREAL_STUDY.md` §1 so a
 future round does not re-evaluate the same files.
+
+### HDRI selection round 2 — all evaluated environments
+
+All Poly Haven, all **CC0 1.0**, all retrieved 2026-09-16. Full evaluation and
+the reason each one was kept or dropped is in
+`docs/HDRI_SELECTION_ROUND2.md`.
+
+| Asset | Author | Poly Haven slug / URL |
+|---|---|---|
+| Marry Hall | Sergej Majboroda | https://polyhaven.com/a/marry_hall |
+| Photo Studio 01 | Sergej Majboroda | https://polyhaven.com/a/photo_studio_01 |
+| Story Studio 02 | Grzegorz Wronkowski | https://polyhaven.com/a/story_studio_02 |
+| Monochrome Studio 01 | Grzegorz Wronkowski | https://polyhaven.com/a/monochrome_studio_01 |
+| Monochrome Studio 03 | Grzegorz Wronkowski | https://polyhaven.com/a/monochrome_studio_03 |
+| PAV Studio 01 | Grzegorz Wronkowski | https://polyhaven.com/a/pav_studio_01 |
+| PAV Studio 02 | Grzegorz Wronkowski | https://polyhaven.com/a/pav_studio_02 |
+| Brown Photostudio 04 | Sergej Majboroda | https://polyhaven.com/a/brown_photostudio_04 |
+| Brown Photostudio 05 | Sergej Majboroda | https://polyhaven.com/a/brown_photostudio_05 |
+| Studio Kontrast 03 | Grzegorz Wronkowski | https://polyhaven.com/a/studio_kontrast_03 |
+
+Resolutions: 1024×512 (1k, screening) and 2048×1024 (2k, final renders).
+Local paths: `assets/source/hdri/<slug>_{1k,2k}.hdr` (git-ignored).
