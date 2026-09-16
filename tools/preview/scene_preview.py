@@ -447,6 +447,14 @@ def main():
     banner = None
     if kind == vehicle_asset_provider.PLACEHOLDER:
         banner = "DEV PREVIEW - ENGINEERING PLACEHOLDER VEHICLE (not production art)"
+    if args.vehicle_image:
+        # Checkpoint mode: the vehicle that actually gets composited is the
+        # render passed on the command line, so the provider banner would be
+        # describing a different asset and stamping it on a real Model 3
+        # render is simply wrong.
+        banner = None
+        print("[preview] checkpoint mode: provider placeholder banner "
+              "suppressed because --vehicle-image was supplied")
     print(f"[preview] vehicle source: {kind} -> {os.path.relpath(root, REPO_ROOT)}")
     if provider.warning:
         print(f"[preview] WARNING: {provider.warning}")

@@ -44,7 +44,31 @@ def check_image(path, label=None):
     return ok, decoded_mb, (w, h)
 
 
-def check_sequence(directory, prefix=""):
+def _union_alpha_bbox(files):
+    """Union of the non-transparent bbox across every frame.
+
+    The generated sequences keep one fixed canvas + anchor so frames align,
+    which means most of the canvas is empty margin. A runtime that uploads a
+    sprite (or an atlas cell) only pays for this box, so the budget tool has to
+    report it separately or it overstates decode cost.
+    """
+    lo_x = lo_y = 10 ** 9
+    hi_x = hi_y = -1
+    for path in files:
+        img = Image.open(path).convert("RGBA")
+        bbox = img.getchannel("A").getbbox()
+        if bbox is None:
+            continue
+        lo_x = min(lo_x, bbox[0])
+        lo_y = min(lo_y, bbox[1])
+        hi_x = max(hi_x, bbox[2])
+        hi_y = max(hi_y, bbox[3])
+    if hi_x < 0:
+        return None
+    return (lo_x, lo_y, hi_x, hi_y)
+
+
+def check_sequence(directory, prefix="", alpha_crop=False):
     files = []
     pat = re.compile(rf"^{re.escape(prefix)}(\d+)\.(png|jpg|jpeg)$", re.I)
     for f in sorted(os.listdir(directory)):
@@ -73,6 +97,23 @@ def check_sequence(directory, prefix=""):
           f"({share*100:.0f}% of 30fps budget)")
     print(f"  storage = {n*first_bytes/1024:.1f} KB")
 
+    if alpha_crop:
+        bbox = _union_alpha_bbox(files)
+        if bbox is None:
+            print("  alpha-crop: whole sequence is fully transparent")
+        else:
+            cw = bbox[2] - bbox[0]
+            chh = bbox[3] - bbox[1]
+            crop_mb = cw * chh * 4 / 1024 / 1024
+            crop_host = 0.227 * (cw * chh) / baseline_px
+            crop_device = crop_host * A7_DECODE_FACTOR
+            crop_share = crop_device / FRAME_BUDGET_MS
+            print(f"  alpha-crop union bbox = {cw}x{chh} at "
+                  f"{bbox[0]},{bbox[1]} ({cw*chh/(w*h)*100:.0f}% of canvas px)")
+            print(f"  cropped decoded per frame = {crop_mb:.3f} MB")
+            print(f"  cropped device decode estimate = {crop_device:.1f} "
+                  f"ms/frame ({crop_share*100:.0f}% of 30fps budget)")
+
     ok = True
     if total_mb > MAX_SEQUENCE_DECODED_MB:
         print(f"  NOTE full-decode {total_mb:.2f}MB > "
@@ -95,12 +136,15 @@ def main():
     ap.add_argument("--sequence", action="store_true",
                     help="treat each path as a directory of frames")
     ap.add_argument("--prefix", default="")
+    ap.add_argument("--alpha-crop", action="store_true",
+                    help="also report the union non-transparent bbox across "
+                         "the sequence (what a sprite upload really costs)")
     args = ap.parse_args()
 
     all_ok = True
     for p in args.paths:
         if args.sequence or os.path.isdir(p):
-            all_ok &= check_sequence(p, args.prefix)
+            all_ok &= check_sequence(p, args.prefix, args.alpha_crop)
         else:
             ok, _, _ = check_image(p)
             all_ok &= ok

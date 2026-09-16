@@ -1,7 +1,9 @@
 # 车辆资产生产管线（正式 Model 3 → Blender → PNG 序列 → 运行时）
 
-状态：管线已建立，**除 Blender 渲染步骤外全部本地验证通过**。
-Blender 当前**未安装**（本仓库不自动安装），装上后即可端到端运行。
+状态：管线已建立并**端到端跑通**。
+Blender 5.2.2 LTS 已安装（`/Applications/Blender.app/Contents/MacOS/Blender`，
+不在 PATH 里，脚本用 `BLENDER=` 覆盖）。V2 车漆/反射摄影棚见
+`docs/VEHICLE_VISUAL_V2.md`，门动画见 `docs/DOOR_ANIMATION_PROTOTYPE.md`。
 
 > **策略（2026-09-15 更新）**：正式车辆**必须**来自高质量 Tesla Model 3
 > 3D 母体，经 Blender 离线渲染。**禁止**用 cube/polygon 程序化"猜着建一辆

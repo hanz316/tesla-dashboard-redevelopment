@@ -48,3 +48,13 @@ assets/rendered/ab/
 # HMI vehicle-visual working renders (full resolution, regenerable).
 # Review-sized copies ARE committed under assets/checkpoints/.
 assets/rendered/hmi/
+
+# Vehicle Visual V2 working renders (2200x1520, regenerable via
+# tools/blender/render_v2_checkpoint.sh). Review copies live in
+# assets/checkpoints/vehicle_visual_v2_2026-09-16/.
+assets/rendered/v2/
+
+# Door_FL benchmark sequences (3 widths x 3 frame rates, regenerable via
+# tools/blender/render_door_benchmark.sh). The GIF/MP4/filmstrip review copies
+# live in assets/checkpoints/door_fl_2026-09-16/.
+assets/rendered/door_fl/
