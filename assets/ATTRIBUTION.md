@@ -64,3 +64,34 @@ Two third-party Tesla Model 3 models were obtained for the A/B evaluation.
 `tools/assets/generate_placeholder_frames.py` emits the neutral placeholder
 used for pipeline tests and developer preview only. It is not third-party
 art and must never appear in a production Horizon.
+
+### Studio HDRIs — dark automotive studio lighting (evaluated + used)
+
+Lighting/environment maps for the photoreal material study. Both are **CC0**
+(public domain dedication): no attribution is legally required, but Poly Haven
+asks for credit and the provenance is recorded here anyway because an
+unverifiable HDRI must never enter this pipeline.
+
+| Field | Value |
+|---|---|
+| Title | Studio Kontrast 01 (**used** for the study) |
+| Author | Grzegorz Wronkowski |
+| Source | https://polyhaven.com/a/studio_kontrast_01 |
+| Download | https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/2k/studio_kontrast_01_2k.hdr |
+| License | CC0 1.0 (https://creativecommons.org/publicdomain/zero/1.0/) |
+| Resolution | 1024×512 (1k, evaluation) and 2048×1024 (2k, render) |
+| Retrieved | 2026-09-16 |
+| Local path | `assets/source/hdri/studio_kontrast_01_2k.hdr` (git-ignored) |
+
+| Field | Value |
+|---|---|
+| Title | Brown Photostudio 02 (evaluated, not selected) |
+| Author | Sergej Majboroda |
+| Source | https://polyhaven.com/a/brown_photostudio_02 |
+| License | CC0 1.0 |
+| Resolution | 1024×512 (1k) and 2048×1024 (2k) |
+| Retrieved | 2026-09-16 |
+| Local path | `assets/source/hdri/brown_photostudio_02_2k.hdr` (git-ignored) |
+
+Rejected candidates are recorded in `docs/VEHICLE_PHOTOREAL_STUDY.md` §1 so a
+future round does not re-evaluate the same files.

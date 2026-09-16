@@ -35,6 +35,10 @@ assets/rendered/**/*_ss/
 # `download/` (singular) while earlier docs referred to `downloads/`.
 assets/source/download/
 assets/source/downloads/
+
+# Studio HDRIs for the photoreal lighting study (large; provenance, licence and
+# URL are recorded in assets/ATTRIBUTION.md, regenerable from Poly Haven).
+assets/source/hdri/
 assets/source/blender/*_master.blend1
 
 # Real Blender renders of the Model 3 (regenerable, can get large).
@@ -70,3 +74,7 @@ assets/rendered/door_fl_v3/
 # Horizon redesign review renders (regenerable; the committed copies live in
 # assets/checkpoints/horizon_redesign_2026-09-16/).
 assets/rendered/horizon_redesign/
+
+# Photoreal material study renders (regenerable via
+# tools/blender/render_vehicle_photoreal.py + build_photoreal_comparison.py).
+assets/rendered/photoreal/
