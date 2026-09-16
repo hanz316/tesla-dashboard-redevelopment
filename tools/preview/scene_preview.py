@@ -33,7 +33,23 @@ FONT_REG = "/System/Library/Fonts/Supplemental/Arial.ttf"
 FONT_BOLD = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
 FALLBACK_FONT = "/System/Library/Fonts/Supplemental/Verdana.ttf"
 
-# Preview-only mock states. Production never uses these.
+# Named typographic roles. Real automotive HMI typography is part of the
+# design, not an implementation detail, so scenes refer to a role instead of
+# an absolute path. DIN is the instrumentation face; Helvetica Neue Light /
+# UltraLight carries the large calm numerals; SF Pro carries small labels.
+FONT_ROLES = {
+    "display": ("/System/Library/Fonts/Supplemental/DIN Alternate Bold.ttf", 0),
+    "display_condensed":
+        ("/System/Library/Fonts/Supplemental/DIN Condensed Bold.ttf", 0),
+    "ultralight": ("/System/Library/Fonts/HelveticaNeue.ttc", 5),
+    "light": ("/System/Library/Fonts/HelveticaNeue.ttc", 7),
+    "medium": ("/System/Library/Fonts/HelveticaNeue.ttc", 0),
+    "bold": ("/System/Library/Fonts/HelveticaNeue.ttc", 1),
+    "system": ("/System/Library/Fonts/SFNS.ttf", 0),
+}
+_FONT_CACHE = {}
+
+# Mock states required by the Horizon redesign review. Preview only.
 MOCK_STATES = {
     "parked": {
         "speed": 0, "gear": 1, "soc": 97, "range": 253,
@@ -67,6 +83,39 @@ MOCK_STATES = {
         "closures": "DOORS --", "uart_health": "UART LOST",
     },
 }
+
+MOCK_STATES.update({
+    "normal_drive": {
+        "speed": 88, "gear": 4, "soc": 63, "soc_trusted": True,
+        "range": 253, "range_trusted": True,
+        "temperature_primary": 22,
+        "uart_health": "UART OK",
+        "closures": "ALL CLOSED",
+    },
+    "door_fl_open": {
+        "speed": 0, "gear": 1, "soc": 63, "soc_trusted": True,
+        "range": 253, "range_trusted": True,
+        "door_fl": True,
+        "temperature_primary": 22,
+        "uart_health": "UART OK",
+        "closures": "OPEN FL",
+    },
+    # No telemetry at all: every value must render as unavailable rather than
+    # as a stale or invented number.
+    "uart_lost": {
+        "uart_health": "UART LOST",
+    },
+    # SOC known-untrusted (the real MCU reports a stuck 97%). The percentage
+    # must be suppressed; range is still allowed because it is trusted.
+    "soc_untrusted": {
+        "speed": 88, "gear": 4, "soc": 97, "soc_trusted": False,
+        "range": 253, "range_trusted": True,
+        "temperature_primary": 22,
+        "uart_health": "UART OK",
+        "closures": "ALL CLOSED",
+    },
+})
+
 
 
 # ---------------------------------------------------------------- data model
@@ -165,13 +214,25 @@ def resolve_value(node, state):
 
 # ----------------------------------------------------------------- rendering
 
-def load_font(size, bold=False):
-    for path in ((FONT_BOLD, FONT_REG) if bold else (FONT_REG, FALLBACK_FONT)):
+def load_font(size, bold=False, role=None):
+    key = (role, size, bold)
+    if key in _FONT_CACHE:
+        return _FONT_CACHE[key]
+    candidates = []
+    if role and role in FONT_ROLES:
+        candidates.append(FONT_ROLES[role])
+    candidates += [((FONT_BOLD if bold else FONT_REG), 0)]
+    candidates.append((FALLBACK_FONT, 0))
+    for path, index in candidates:
         try:
-            return ImageFont.truetype(path, size)
+            font = ImageFont.truetype(path, size, index=index)
+            _FONT_CACHE[key] = font
+            return font
         except Exception:
             continue
-    return ImageFont.load_default()
+    font = ImageFont.load_default()
+    _FONT_CACHE[key] = font
+    return font
 
 
 def hex_to_rgb(value, alpha=255):
@@ -181,21 +242,68 @@ def hex_to_rgb(value, alpha=255):
     return (int(value[0:2], 16), int(value[2:4], 16), int(value[4:6], 16), alpha)
 
 
+def alpha_when(node, state, default_key="alpha"):
+    """Conditional opacity - how contextual UI appears and disappears."""
+    for rule in node.get("alpha_when", []):
+        if condition_holds(rule["when"], state):
+            return rule["alpha"]
+    return node.get(default_key, 1.0)
+
+
+def resolve_color(node, state, default_key="color"):
+    color = pick_color(node, state, default_key)
+    alpha = alpha_when(node, state)
+    return hex_to_rgb(color, max(0, min(255, int(round(alpha * 255)))))
+
+
 def draw_text(img, node, state):
     text, valid = resolve_value(node, state)
-    color = pick_color(node, state)
+    alpha = alpha_when(node, state)
     if not valid:
-        color = node.get("invalid_color", "#5A646E")
-    font = load_font(node.get("font", 32), node.get("bold", False))
+        text = node.get("invalid_text", text)
+        alpha *= node.get("invalid_alpha", 1.0)
+        color = node.get("invalid_color", pick_color(node, state))
+    else:
+        color = pick_color(node, state)
+    font = load_font(node.get("font", 32), node.get("bold", False),
+                     node.get("font_role"))
     draw = ImageDraw.Draw(img)
     x = node.get("x", 0)
     y = node.get("y", 0)
     anchor_map = {"center": "mm", "left": "lm", "right": "rm"}
     anchor = anchor_map.get(node.get("align", "center"), "mm")
+    fill = hex_to_rgb(color, max(0, min(255, int(round(alpha * 255)))))
+    if alpha <= 0.0 or text == "":
+        return
     shadow = node.get("shadow", True)
+    tracking = node.get("tracking", 0)
+    if tracking:
+        # PIL has no letter-spacing, so draw glyph by glyph. Needed because
+        # wide-tracked small capitals are most of the "OEM" read.
+        total = 0
+        widths = []
+        for ch in text:
+            w = draw.textlength(ch, font=font)
+            widths.append(w)
+            total += w + tracking
+        total -= tracking
+        if anchor == "mm":
+            cx = x - total / 2.0
+        elif anchor == "rm":
+            cx = x - total
+        else:
+            cx = x
+        for ch, w in zip(text, widths):
+            if shadow:
+                draw.text((cx + 1, y + 1), ch, font=font,
+                          fill=(0, 0, 0, int(160 * alpha)))
+            draw.text((cx, y), ch, font=font, fill=fill)
+            cx += w + tracking
+        return
     if shadow:
-        draw.text((x + 1, y + 1), text, font=font, fill=(0, 0, 0, 160), anchor=anchor)
-    draw.text((x, y), text, font=font, fill=hex_to_rgb(color), anchor=anchor)
+        draw.text((x + 1, y + 1), text, font=font,
+                  fill=(0, 0, 0, int(160 * alpha)), anchor=anchor)
+    draw.text((x, y), text, font=font, fill=fill, anchor=anchor)
 
 
 def draw_vector(img, node, state):
@@ -204,14 +312,26 @@ def draw_vector(img, node, state):
     w, h = node.get("width", 0), node.get("height", 0)
     shape = node.get("shape", "rect")
     opacity = node.get("opacity", 1.0)
+    opacity *= alpha_when(node, state)
 
     if shape == "vgradient":
-        top = hex_to_rgb(node["from"])
-        bottom = hex_to_rgb(node["to"])
+        top = hex_to_rgb(node["from"], int(255 * opacity))
+        bottom = hex_to_rgb(node["to"], int(255 * opacity))
         for row in range(h):
             t = row / max(1, h - 1)
-            col = tuple(int(top[i] + (bottom[i] - top[i]) * t) for i in range(3))
-            draw.line([(x, y + row), (x + w, y + row)], fill=col + (255,))
+            col = tuple(int(top[i] + (bottom[i] - top[i]) * t) for i in range(4))
+            draw.line([(x, y + row), (x + w, y + row)], fill=col)
+        return
+
+    if shape == "hgradient":
+        # Left-to-right fade. Used for the soft light streak behind the car
+        # and for the horizon band, where a hard edge would read as a panel.
+        left = hex_to_rgb(node["from"], int(255 * opacity))
+        right = hex_to_rgb(node["to"], int(255 * opacity))
+        for col in range(w):
+            t = col / max(1, w - 1)
+            mix = tuple(int(left[i] + (right[i] - left[i]) * t) for i in range(4))
+            draw.line([(x + col, y), (x + col, y + h)], fill=mix)
         return
 
     if shape == "radial":
@@ -227,10 +347,43 @@ def draw_vector(img, node, state):
             draw.ellipse([cx - rx, cy - ry, cx + rx, cy + ry], fill=mix + (a,))
         return
 
+    if shape == "line":
+        draw.line([(x, y), (node.get("x2", x), node.get("y2", y))],
+                  fill=hex_to_rgb(node.get("color", "#2A333D"),
+                                  int(255 * opacity)),
+                  width=node.get("width_px", 1))
+        return
+
+    if shape == "polygon":
+        pts = [tuple(p) for p in node["points"]]
+        draw.polygon(pts, fill=hex_to_rgb(node.get("fill", "#101519"),
+                                          int(255 * opacity)))
+        if "stroke" in node:
+            draw.line(pts + [pts[0]],
+                      fill=hex_to_rgb(node["stroke"], int(255 * opacity)),
+                      width=node.get("width_px", 1))
+        return
+
+    if shape == "arc":
+        return draw_arc(draw, node, state, opacity)
+
+    if shape == "ticks":
+        return draw_arc_ticks(draw, node, state, opacity)
+
+    if shape == "tickrow":
+        return draw_tick_row(draw, node, state, opacity)
+
+    if shape == "vbar":
+        return draw_vbar(draw, node, state, opacity)
+
+    if shape == "vticks":
+        return draw_vticks(draw, node, state, opacity)
+
     if shape == "roundrect":
         radius = node.get("radius", 10)
         draw.rounded_rectangle([x, y, x + w, y + h], radius=radius,
-                               fill=hex_to_rgb(node.get("fill", "#182028")))
+                               fill=hex_to_rgb(node.get("fill", "#182028"),
+                                               int(255 * opacity)))
         if "stroke" in node:
             draw.rounded_rectangle([x, y, x + w, y + h], radius=radius,
                                    outline=hex_to_rgb(node["stroke"]), width=2)
@@ -246,7 +399,167 @@ def draw_vector(img, node, state):
         return
 
     draw.rectangle([x, y, x + w, y + h],
-                   fill=hex_to_rgb(node.get("fill", "#000000")))
+                   fill=hex_to_rgb(node.get("fill", "#000000"),
+                                   int(255 * opacity)))
+
+
+def _arc_bounds(node):
+    r = node["radius"]
+    cx, cy = node["cx"], node["cy"]
+    return [cx - r, cy - r, cx + r, cy + r]
+
+
+def draw_arc(draw, node, state, opacity):
+    """Stroke arc with an optional value-driven sweep.
+
+    Angles follow PIL/NanoVG convention: 0 deg at 3 o'clock, clockwise.
+    """
+    bounds = _arc_bounds(node)
+    width = node.get("width_px", 4)
+    start = node.get("start_deg", 0)
+    end = node.get("end_deg", 360)
+    draw.arc(bounds, start=start, end=end,
+             fill=hex_to_rgb(node.get("color", "#232B34"),
+                             int(255 * opacity)), width=width)
+    prog = node.get("progress")
+    if not prog:
+        return
+    sig = state.signal(prog["signal"])
+    if not sig.valid or sig.value is None:
+        return
+    maximum = float(prog.get("max", 100.0))
+    ratio = 0.0 if maximum <= 0 else float(sig.value) / maximum
+    ratio = max(0.0, min(1.0, ratio))
+    if ratio <= 0.0:
+        return
+    sweep = (end - start) * ratio
+    if prog.get("from") == "end":
+        lo, hi = end - sweep, end
+    else:
+        lo, hi = start, start + sweep
+    draw.arc(bounds, start=lo, end=hi,
+             fill=hex_to_rgb(prog.get("color", "#C9D4DF"),
+                             int(255 * opacity * prog.get("opacity", 1.0))),
+             width=prog.get("width_px", width))
+
+
+def draw_arc_ticks(draw, node, state, opacity):
+    """Radial tick marks - the quiet instrument texture in designs B and C."""
+    import math
+    cx, cy = node["cx"], node["cy"]
+    start = node.get("start_deg", 0)
+    end = node.get("end_deg", 360)
+    count = node.get("count", 40)
+    outer = node["radius"]
+    length = node.get("length_px", 6)
+    major_every = node.get("major_every", 0)
+    major_length = node.get("major_length_px", length)
+    color = hex_to_rgb(node.get("color", "#2A333D"), int(255 * opacity))
+    major_color = hex_to_rgb(node.get("major_color", node.get("color",
+                                                             "#3A4550")),
+                             int(255 * opacity))
+    for i in range(count):
+        t = i / max(1, count - 1)
+        ang = math.radians(start + (end - start) * t)
+        is_major = major_every and (i % major_every == 0)
+        ln = major_length if is_major else length
+        x0 = cx + math.cos(ang) * outer
+        y0 = cy + math.sin(ang) * outer
+        x1 = cx + math.cos(ang) * (outer - ln)
+        y1 = cy + math.sin(ang) * (outer - ln)
+        draw.line([(x0, y0), (x1, y1)],
+                  fill=major_color if is_major else color,
+                  width=node.get("width_px", 1))
+
+
+def draw_tick_row(draw, node, state, opacity):
+    """Linear tick rule. Optionally lights the ticks below a bound value."""
+    x, y = node.get("x", 0), node.get("y", 0)
+    span = node.get("width", 0)
+    count = node.get("count", 24)
+    height = node.get("height_px", 8)
+    major_every = node.get("major_every", 0)
+    major_height = node.get("major_height_px", height)
+    color = hex_to_rgb(node.get("color", "#252E37"), int(255 * opacity))
+    major_color = hex_to_rgb(node.get("major_color", "#323D48"),
+                             int(255 * opacity))
+    lit_color = hex_to_rgb(node.get("lit_color", "#C9D4DF"), int(255 * opacity))
+    lit_ratio = None
+    prog = node.get("progress")
+    if prog:
+        sig = state.signal(prog["signal"])
+        if sig.valid and sig.value is not None:
+            maximum = float(prog.get("max", 100.0))
+            lit_ratio = 0.0 if maximum <= 0 else max(
+                0.0, min(1.0, float(sig.value) / maximum))
+    for i in range(count):
+        t = i / max(1, count - 1)
+        is_major = major_every and (i % major_every == 0)
+        hh = major_height if is_major else height
+        col = major_color if is_major else color
+        if lit_ratio is not None and t <= lit_ratio:
+            col = lit_color
+        draw.line([(x + span * t, y - hh), (x + span * t, y)], fill=col,
+                  width=node.get("width_px", 1))
+
+
+def draw_vticks(draw, node, state, opacity):
+    """Vertical tick column; lights bottom-up with the bound value."""
+    x = node.get("x", 0)
+    bottom = node.get("y", 0)
+    span = node.get("height", 0)
+    count = node.get("count", 24)
+    width = node.get("width_px", 8)
+    major_every = node.get("major_every", 0)
+    major_width = node.get("major_width_px", width)
+    color = hex_to_rgb(node.get("color", "#252E37"), int(255 * opacity))
+    major_color = hex_to_rgb(node.get("major_color", "#323D48"),
+                             int(255 * opacity))
+    lit_color = hex_to_rgb(node.get("lit_color", "#C9D4DF"), int(255 * opacity))
+    lit_ratio = None
+    prog = node.get("progress")
+    if prog:
+        sig = state.signal(prog["signal"])
+        if sig.valid and sig.value is not None:
+            maximum = float(prog.get("max", 100.0))
+            lit_ratio = 0.0 if maximum <= 0 else max(
+                0.0, min(1.0, float(sig.value) / maximum))
+    for i in range(count):
+        t = i / max(1, count - 1)
+        is_major = major_every and (i % major_every == 0)
+        ww = major_width if is_major else width
+        col = major_color if is_major else color
+        if lit_ratio is not None and t <= lit_ratio:
+            col = lit_color
+        yy = bottom - span * t
+        draw.line([(x, yy), (x + ww, yy)], fill=col,
+                  width=node.get("tick_height_px", 2))
+
+
+def draw_vbar(draw, node, state, opacity):
+    """Vertical track with a bottom-up value fill (energy in designs A/B/C)."""
+    x, y = node.get("x", 0), node.get("y", 0)
+    w, h = node.get("width", 4), node.get("height", 100)
+    radius = node.get("radius", w // 2)
+    draw.rounded_rectangle([x, y, x + w, y + h], radius=radius,
+                           fill=hex_to_rgb(node.get("track_color", "#1A222A"),
+                                           int(255 * opacity)))
+    prog = node.get("progress")
+    if not prog:
+        return
+    sig = state.signal(prog["signal"])
+    if not sig.valid or sig.value is None:
+        return
+    maximum = float(prog.get("max", 100.0))
+    ratio = 0.0 if maximum <= 0 else max(0.0,
+                                         min(1.0, float(sig.value) / maximum))
+    if ratio <= 0.0:
+        return
+    fill_h = max(2.0, h * ratio)
+    draw.rounded_rectangle([x, y + h - fill_h, x + w, y + h], radius=radius,
+                           fill=hex_to_rgb(prog.get("color", "#C9D4DF"),
+                                           int(255 * opacity *
+                                               prog.get("opacity", 1.0))))
 
 
 def resolve_asset_path(provider, asset_id):
@@ -286,13 +599,20 @@ def paste_scaled(base, path, x, y, w, h):
 
 
 def draw_vehicle_visual(img, node, state, provider, t_norm,
-                        vehicle_image=None):
+                        vehicle_image=None, vehicle_crop=False):
     x, y = node.get("x", 0), node.get("y", 0)
     w, h = node.get("width", 356), node.get("height", 236)
     if vehicle_image:
         # A/B checkpoint mode: composite a rendered vehicle instead of the
         # provider asset. Aspect ratio is preserved inside the node box.
         veh = Image.open(vehicle_image).convert("RGBA")
+        if vehicle_crop:
+            # Trim the transparent margin so the node box maps to the car
+            # itself. Without this the placement maths depends on however much
+            # empty space the render happened to contain.
+            bbox = veh.getchannel("A").getbbox()
+            if bbox:
+                veh = veh.crop(bbox)
         scale = min(w / veh.width, h / veh.height)
         new_size = (max(1, int(veh.width * scale)),
                     max(1, int(veh.height * scale)))
@@ -335,9 +655,10 @@ def apply_safe_area(img, canvas):
         return img
     d = ImageDraw.Draw(img)
     w, h = img.size
-    d.polygon([(0, 0), (top, 0), (bottom, h), (0, h)], fill=(0, 0, 0, 255))
+    mask = hex_to_rgb(canvas.get("mask_color", "#000000"))
+    d.polygon([(0, 0), (top, 0), (bottom, h), (0, h)], fill=mask)
     d.polygon([(w, 0), (w - top, 0), (w - bottom, h), (w, h)],
-              fill=(0, 0, 0, 255))
+              fill=mask)
     return img
 
 
@@ -358,7 +679,7 @@ def draw_dev_banner(img, text):
 
 
 def render(scene, provider, raw_state, out_path, t_norm=1.0,
-           banner=None, vehicle_image=None):
+           banner=None, vehicle_image=None, vehicle_crop=False):
     canvas = scene["canvas"]
     img = Image.new("RGBA", (canvas["width"], canvas["height"]), (0, 0, 0, 255))
     state = State(raw_state)
@@ -371,7 +692,7 @@ def render(scene, provider, raw_state, out_path, t_norm=1.0,
             draw_text(img, node, state)
         elif ntype == "vehicle_visual":
             draw_vehicle_visual(img, node, state, provider, t_norm,
-                                vehicle_image)
+                                vehicle_image, vehicle_crop)
         elif ntype == "image":
             path = resolve_asset_path(provider, node.get("asset", ""))
             if path and os.path.isfile(path):
@@ -418,6 +739,13 @@ def main():
     ap.add_argument("--vehicle-image", default=None,
                     help="A/B checkpoint: composite this rendered vehicle PNG "
                          "into the scene instead of the provider asset")
+    ap.add_argument("--vehicle-image-for", action="append", default=[],
+                    help="per-state vehicle render, STATE=PATH. Lets one "
+                         "review pass show the closed car in every state and "
+                         "the door-open render only in the door state.")
+    ap.add_argument("--vehicle-crop", action="store_true",
+                    help="trim the vehicle render to its alpha bbox before "
+                         "fitting it into the node box")
     ap.add_argument("--out-name", default=None,
                     help="override the output filename prefix")
     ap.add_argument("--vehicle-box", default=None,
@@ -447,14 +775,21 @@ def main():
     banner = None
     if kind == vehicle_asset_provider.PLACEHOLDER:
         banner = "DEV PREVIEW - ENGINEERING PLACEHOLDER VEHICLE (not production art)"
-    if args.vehicle_image:
+    vehicle_images = {}
+    for item in args.vehicle_image_for:
+        if "=" not in item:
+            sys.exit("--vehicle-image-for must look like door_fl_open=path.png")
+        key, value = item.split("=", 1)
+        vehicle_images[key] = value
+    default_vehicle_image = args.vehicle_image
+    if args.vehicle_image or vehicle_images:
         # Checkpoint mode: the vehicle that actually gets composited is the
         # render passed on the command line, so the provider banner would be
         # describing a different asset and stamping it on a real Model 3
         # render is simply wrong.
         banner = None
         print("[preview] checkpoint mode: provider placeholder banner "
-              "suppressed because --vehicle-image was supplied")
+              "suppressed because an explicit vehicle render was supplied")
     print(f"[preview] vehicle source: {kind} -> {os.path.relpath(root, REPO_ROOT)}")
     if provider.warning:
         print(f"[preview] WARNING: {provider.warning}")
@@ -480,9 +815,10 @@ def main():
             sys.exit(f"unknown state: {name} (see --list-states)")
         filename = (args.out_name or f"{scene['scene']}_{name}") + ".png"
         out = os.path.join(args.out, filename)
+        vehicle_image = vehicle_images.get(name, default_vehicle_image)
         render(scene, provider, MOCK_STATES[name], out, args.t, banner,
-               args.vehicle_image)
-        print(f"[preview] {name:10} -> {out}")
+               vehicle_image, args.vehicle_crop)
+        print(f"[preview] {name:15} -> {out}")
 
 
 if __name__ == "__main__":

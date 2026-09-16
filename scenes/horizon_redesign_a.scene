@@ -1,0 +1,478 @@
+{
+  "scene": "horizon_redesign_a",
+  "version": 1,
+  "status": "horizon redesign candidate - not production approved",
+  "canvas": {
+    "width": 1920,
+    "height": 480,
+    "safe_area": {
+      "top_corner_cut": 116,
+      "bottom_corner_cut": 51
+    },
+    "mask_color": "#04060A"
+  },
+  "manifest": "assets/manifest.json",
+  "notes": [
+    "All values come from VehicleState. Mock data exists only in tools/preview/scene_preview.py MOCK_STATES.",
+    "No DRIVE / ALL CLOSED / UART OK text: a healthy car is silent.",
+    "UART health is a Developer Mode concern; only UART LOST surfaces, and it surfaces through the warning path.",
+    "A known-untrusted SOC is never drawn as a percentage."
+  ],
+  "nodes": [
+    {
+      "id": "bg",
+      "type": "vector",
+      "shape": "vgradient",
+      "z": 0,
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 480,
+      "from": "#04060A",
+      "to": "#0A0E13"
+    },
+    {
+      "id": "bg.pool",
+      "type": "vector",
+      "shape": "radial",
+      "z": 1,
+      "x": 200,
+      "y": 30,
+      "width": 1520,
+      "height": 520,
+      "from": "#121A22",
+      "to": "#04060A",
+      "opacity": 0.55
+    },
+    {
+      "id": "ground.pool",
+      "type": "vector",
+      "shape": "radial",
+      "z": 4,
+      "x": 360,
+      "y": 396,
+      "width": 1200,
+      "height": 150,
+      "from": "#1A222B",
+      "to": "#04060A",
+      "opacity": 0.62
+    },
+    {
+      "id": "top.temp",
+      "type": "text",
+      "z": 40,
+      "x": 176,
+      "y": 42,
+      "size": 22,
+      "align": "left",
+      "color": "#8A96A2",
+      "font_role": "medium",
+      "font": 22,
+      "tracking": 1.5,
+      "bind": "temperature_primary",
+      "format": "{}\u00b0C"
+    },
+    {
+      "id": "top.clock",
+      "type": "text",
+      "z": 40,
+      "x": 1744,
+      "y": 42,
+      "size": 22,
+      "align": "right",
+      "color": "#A8B3BE",
+      "font_role": "medium",
+      "font": 22,
+      "source": "clock",
+      "format": "%H:%M",
+      "tracking": 1.5
+    },
+    {
+      "id": "top.rule",
+      "type": "vector",
+      "shape": "line",
+      "z": 6,
+      "x": 176,
+      "y": 64,
+      "x2": 1744,
+      "y2": 64,
+      "color": "#171E25",
+      "width_px": 1
+    },
+    {
+      "id": "vehicle",
+      "type": "vehicle_visual",
+      "x": 610,
+      "y": 40,
+      "width": 700,
+      "height": 401,
+      "z": 20,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "asset": "vehicle.base",
+      "parts": {
+        "door_fl": {
+          "sequence": "vehicle.door.fl",
+          "bind": "door_fl"
+        },
+        "door_fr": {
+          "sequence": "vehicle.door.fr",
+          "bind": "door_fr"
+        },
+        "door_rl": {
+          "sequence": "vehicle.door.rl",
+          "bind": "door_rl"
+        },
+        "door_rr": {
+          "sequence": "vehicle.door.rr",
+          "bind": "door_rr"
+        }
+      }
+    },
+    {
+      "id": "speed.value",
+      "type": "text",
+      "z": 40,
+      "x": 452,
+      "y": 282,
+      "size": 176,
+      "align": "right",
+      "color": "#E8EDF2",
+      "font_role": "display",
+      "font": 176,
+      "bind": "speed",
+      "format": "{}",
+      "invalid_color": "#5A646E",
+      "invalid_text": "--"
+    },
+    {
+      "id": "speed.unit",
+      "type": "text",
+      "z": 40,
+      "x": 452,
+      "y": 344,
+      "size": 24,
+      "align": "right",
+      "color": "#7C8894",
+      "font_role": "medium",
+      "font": 24,
+      "tracking": 3.0,
+      "text": "KM/H",
+      "alpha": 0.85
+    },
+    {
+      "id": "speed.divider",
+      "type": "vector",
+      "shape": "line",
+      "z": 42,
+      "x": 498,
+      "y": 248,
+      "x2": 498,
+      "y2": 346,
+      "color": "#232B34",
+      "width_px": 2
+    },
+    {
+      "id": "speed.gear",
+      "type": "text",
+      "z": 40,
+      "x": 534,
+      "y": 296,
+      "size": 46,
+      "align": "left",
+      "color": "#C9D4DF",
+      "font_role": "medium",
+      "font": 46,
+      "bind": "gear",
+      "value_map": {
+        "1": "P",
+        "2": "R",
+        "3": "N",
+        "4": "D"
+      },
+      "format": "{}",
+      "invalid_color": "#5A646E",
+      "invalid_text": "\u2013"
+    },
+    {
+      "id": "speed.rule",
+      "type": "vector",
+      "shape": "line",
+      "z": 6,
+      "x": 176,
+      "y": 378,
+      "x2": 560,
+      "y2": 378,
+      "color": "#1C232A",
+      "width_px": 1
+    },
+    {
+      "id": "energy.track",
+      "type": "vector",
+      "shape": "vbar",
+      "z": 42,
+      "x": 1712,
+      "y": 150,
+      "width": 4,
+      "height": 222,
+      "track_color": "#1A222A",
+      "radius": 2,
+      "opacity": 1.0,
+      "progress": {
+        "signal": "soc",
+        "max": 100,
+        "color": "#C9D4DF"
+      },
+      "alpha_when": [
+        {
+          "when": {
+            "all": [
+              {
+                "signal": "soc.trusted",
+                "is_true": false
+              },
+              {
+                "signal": "soc.valid",
+                "valid": true
+              }
+            ]
+          },
+          "alpha": 0.0
+        }
+      ]
+    },
+    {
+      "id": "energy.value",
+      "type": "text",
+      "z": 40,
+      "x": 1688,
+      "y": 282,
+      "size": 100,
+      "align": "right",
+      "color": "#E8EDF2",
+      "font_role": "display",
+      "font": 100,
+      "bind": "soc",
+      "format": "{}",
+      "invalid_color": "#5A646E",
+      "invalid_text": "--",
+      "alpha_when": [
+        {
+          "when": {
+            "all": [
+              {
+                "signal": "soc.trusted",
+                "is_true": false
+              },
+              {
+                "signal": "soc.valid",
+                "valid": true
+              }
+            ]
+          },
+          "alpha": 0.0
+        }
+      ]
+    },
+    {
+      "id": "energy.pct",
+      "type": "text",
+      "z": 40,
+      "x": 1700,
+      "y": 302,
+      "size": 30,
+      "align": "left",
+      "color": "#7C8894",
+      "font_role": "medium",
+      "font": 30,
+      "text": "%",
+      "alpha_when": [
+        {
+          "when": {
+            "all": [
+              {
+                "signal": "soc.trusted",
+                "is_true": false
+              },
+              {
+                "signal": "soc.valid",
+                "valid": true
+              }
+            ]
+          },
+          "alpha": 0.0
+        }
+      ]
+    },
+    {
+      "id": "energy.range",
+      "type": "text",
+      "z": 40,
+      "x": 1688,
+      "y": 344,
+      "size": 28,
+      "align": "right",
+      "color": "#8A96A2",
+      "font_role": "medium",
+      "font": 28,
+      "tracking": 1.5,
+      "bind": "range",
+      "format": "{} km",
+      "invalid_color": "#5A646E"
+    },
+    {
+      "id": "energy.untrusted",
+      "type": "text",
+      "z": 40,
+      "x": 1688,
+      "y": 222,
+      "size": 20,
+      "align": "right",
+      "color": "#8A96A2",
+      "font_role": "medium",
+      "font": 20,
+      "tracking": 2.5,
+      "text": "CHARGE EST.",
+      "alpha": 0.0,
+      "alpha_when": [
+        {
+          "when": {
+            "all": [
+              {
+                "signal": "soc.trusted",
+                "is_true": false
+              },
+              {
+                "signal": "soc.valid",
+                "valid": true
+              }
+            ]
+          },
+          "alpha": 1.0
+        }
+      ]
+    },
+    {
+      "id": "ctx.dot",
+      "type": "vector",
+      "shape": "roundrect",
+      "z": 44,
+      "x": 176,
+      "y": 404,
+      "width": 8,
+      "height": 8,
+      "radius": 4,
+      "fill": "#D8A657",
+      "alpha": 0.0,
+      "alpha_when": [
+        {
+          "when": {
+            "signal": "door_fl",
+            "is_true": true
+          },
+          "alpha": 1.0
+        },
+        {
+          "when": {
+            "signal": "door_fl",
+            "valid": true
+          },
+          "alpha": 0.0
+        }
+      ]
+    },
+    {
+      "id": "ctx.door",
+      "type": "text",
+      "z": 40,
+      "x": 196,
+      "y": 409,
+      "size": 21,
+      "align": "left",
+      "color": "#CBB27A",
+      "font_role": "medium",
+      "font": 21,
+      "tracking": 3.0,
+      "text": "FRONT LEFT DOOR",
+      "alpha": 0.0,
+      "alpha_when": [
+        {
+          "when": {
+            "signal": "door_fl",
+            "is_true": true
+          },
+          "alpha": 1.0
+        },
+        {
+          "when": {
+            "signal": "door_fl",
+            "valid": true
+          },
+          "alpha": 0.0
+        }
+      ]
+    },
+    {
+      "id": "ctx.uart.dot",
+      "type": "vector",
+      "shape": "roundrect",
+      "z": 44,
+      "x": 176,
+      "y": 404,
+      "width": 8,
+      "height": 8,
+      "radius": 4,
+      "fill": "#D8A657",
+      "alpha": 0.0,
+      "alpha_when": [
+        {
+          "when": {
+            "signal": "uart_health",
+            "equals": "UART LOST"
+          },
+          "alpha": 1.0
+        },
+        {
+          "when": {
+            "signal": "uart_health",
+            "valid": true
+          },
+          "alpha": 0.0
+        }
+      ]
+    },
+    {
+      "id": "ctx.uart",
+      "type": "text",
+      "z": 40,
+      "x": 196,
+      "y": 409,
+      "size": 21,
+      "align": "left",
+      "color": "#D8A657",
+      "font_role": "medium",
+      "font": 21,
+      "tracking": 3.0,
+      "text": "DRIVE DATA LOST",
+      "alpha": 0.0,
+      "alpha_when": [
+        {
+          "when": {
+            "signal": "uart_health",
+            "equals": "UART LOST"
+          },
+          "alpha": 1.0
+        },
+        {
+          "when": {
+            "signal": "uart_health",
+            "valid": true
+          },
+          "alpha": 0.0
+        }
+      ]
+    }
+  ]
+}

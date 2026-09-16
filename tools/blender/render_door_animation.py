@@ -89,6 +89,9 @@ def parse_args():
     ap.add_argument("--open-angle", type=float, default=DEFAULT_OPEN_ANGLE_DEG)
     ap.add_argument("--vehicle-width", type=int, default=600,
                     choices=[400, 600, 800])
+    ap.add_argument("--canvas", default=None,
+                    help="override the derived WxH canvas, e.g. 2200x1520 "
+                         "for a review-grade still pair")
     ap.add_argument("--out", default=None)
     ap.add_argument("--body", default=None,
                     help="material preset; defaults per --material version")
@@ -429,8 +432,11 @@ def main():
         # frame renders as a pure black silhouette.
         vehicle_v2.setup_key_rig()
 
-    canvas_w = int(round(args.vehicle_width / OCCUPANCY))
-    canvas_h = int(round(canvas_w * CANVAS_ASPECT))
+    if args.canvas:
+        canvas_w, canvas_h = (int(v) for v in args.canvas.lower().split("x"))
+    else:
+        canvas_w = int(round(args.vehicle_width / OCCUPANCY))
+        canvas_h = int(round(canvas_w * CANVAS_ASPECT))
     setup_camera_and_render(args.vehicle_width, canvas_w, canvas_h,
                             args.engine, args.samples, args.supersample,
                             args.out, args.azimuth)

@@ -1,0 +1,596 @@
+{
+  "scene": "horizon_redesign_b",
+  "version": 1,
+  "status": "horizon redesign candidate - not production approved",
+  "canvas": {
+    "width": 1920,
+    "height": 480,
+    "safe_area": {
+      "top_corner_cut": 116,
+      "bottom_corner_cut": 51
+    },
+    "mask_color": "#04060A"
+  },
+  "manifest": "assets/manifest.json",
+  "notes": [
+    "All values come from VehicleState. Mock data exists only in tools/preview/scene_preview.py MOCK_STATES.",
+    "No DRIVE / ALL CLOSED / UART OK text: a healthy car is silent.",
+    "UART health is a Developer Mode concern; only UART LOST surfaces, and it surfaces through the warning path.",
+    "A known-untrusted SOC is never drawn as a percentage."
+  ],
+  "nodes": [
+    {
+      "id": "bg",
+      "type": "vector",
+      "shape": "vgradient",
+      "z": 0,
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 480,
+      "from": "#03050A",
+      "to": "#080C12"
+    },
+    {
+      "id": "space.band.l",
+      "type": "vector",
+      "shape": "hgradient",
+      "z": 1,
+      "x": 0,
+      "y": 300,
+      "width": 960,
+      "height": 140,
+      "from": "#04060A",
+      "to": "#101820",
+      "opacity": 0.85
+    },
+    {
+      "id": "space.band.r",
+      "type": "vector",
+      "shape": "hgradient",
+      "z": 1,
+      "x": 960,
+      "y": 300,
+      "width": 960,
+      "height": 140,
+      "from": "#101820",
+      "to": "#04060A",
+      "opacity": 0.85
+    },
+    {
+      "id": "space.arc",
+      "type": "vector",
+      "shape": "arc",
+      "z": 2,
+      "cx": 960,
+      "cy": -960,
+      "radius": 1400,
+      "start_deg": 70,
+      "end_deg": 110,
+      "width_px": 2,
+      "color": "#1A222B"
+    },
+    {
+      "id": "space.arc.ticks",
+      "type": "vector",
+      "shape": "ticks",
+      "z": 2,
+      "cx": 960,
+      "cy": -960,
+      "radius": 1400,
+      "start_deg": 70,
+      "end_deg": 110,
+      "count": 41,
+      "major_every": 10,
+      "length_px": 10,
+      "major_length_px": 20,
+      "color": "#141B22",
+      "major_color": "#222C35",
+      "width_px": 1
+    },
+    {
+      "id": "ground.pool",
+      "type": "vector",
+      "shape": "radial",
+      "z": 4,
+      "x": 320,
+      "y": 386,
+      "width": 1280,
+      "height": 160,
+      "from": "#1A222B",
+      "to": "#04060A",
+      "opacity": 0.55
+    },
+    {
+      "id": "vehicle",
+      "type": "vehicle_visual",
+      "x": 580,
+      "y": 22,
+      "width": 760,
+      "height": 435,
+      "z": 20,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "asset": "vehicle.base",
+      "parts": {
+        "door_fl": {
+          "sequence": "vehicle.door.fl",
+          "bind": "door_fl"
+        },
+        "door_fr": {
+          "sequence": "vehicle.door.fr",
+          "bind": "door_fr"
+        },
+        "door_rl": {
+          "sequence": "vehicle.door.rl",
+          "bind": "door_rl"
+        },
+        "door_rr": {
+          "sequence": "vehicle.door.rr",
+          "bind": "door_rr"
+        }
+      }
+    },
+    {
+      "id": "speed.tie",
+      "type": "vector",
+      "shape": "line",
+      "z": 12,
+      "x": 508,
+      "y": 316,
+      "x2": 580,
+      "y2": 316,
+      "color": "#1E262E",
+      "width_px": 1
+    },
+    {
+      "id": "speed.value",
+      "type": "text",
+      "z": 40,
+      "x": 468,
+      "y": 300,
+      "size": 170,
+      "align": "right",
+      "color": "#EAEFF4",
+      "font_role": "ultralight",
+      "font": 170,
+      "bind": "speed",
+      "format": "{}",
+      "invalid_color": "#525C66",
+      "invalid_text": "--"
+    },
+    {
+      "id": "speed.unit",
+      "type": "text",
+      "z": 40,
+      "x": 468,
+      "y": 356,
+      "size": 22,
+      "align": "right",
+      "color": "#76828E",
+      "font_role": "medium",
+      "font": 22,
+      "tracking": 3.5,
+      "text": "KM/H",
+      "alpha": 0.8
+    },
+    {
+      "id": "gear.rule",
+      "type": "vector",
+      "shape": "line",
+      "z": 12,
+      "x": 246,
+      "y": 196,
+      "x2": 246,
+      "y2": 340,
+      "color": "#1C242B",
+      "width_px": 1
+    },
+    {
+      "id": "gear.p",
+      "type": "text",
+      "z": 40,
+      "x": 200,
+      "y": 200,
+      "size": 26,
+      "align": "left",
+      "color": "#5A646E",
+      "font_role": "medium",
+      "font": 26,
+      "text": "P",
+      "alpha": 0.25,
+      "alpha_when": [
+        {
+          "when": {
+            "signal": "gear",
+            "equals": 1
+          },
+          "alpha": 0.95
+        }
+      ]
+    },
+    {
+      "id": "gear.r",
+      "type": "text",
+      "z": 40,
+      "x": 200,
+      "y": 244,
+      "size": 26,
+      "align": "left",
+      "color": "#5A646E",
+      "font_role": "medium",
+      "font": 26,
+      "text": "R",
+      "alpha": 0.25,
+      "alpha_when": [
+        {
+          "when": {
+            "signal": "gear",
+            "equals": 2
+          },
+          "alpha": 0.95
+        }
+      ]
+    },
+    {
+      "id": "gear.n",
+      "type": "text",
+      "z": 40,
+      "x": 200,
+      "y": 288,
+      "size": 26,
+      "align": "left",
+      "color": "#5A646E",
+      "font_role": "medium",
+      "font": 26,
+      "text": "N",
+      "alpha": 0.25,
+      "alpha_when": [
+        {
+          "when": {
+            "signal": "gear",
+            "equals": 3
+          },
+          "alpha": 0.95
+        }
+      ]
+    },
+    {
+      "id": "gear.d",
+      "type": "text",
+      "z": 40,
+      "x": 200,
+      "y": 332,
+      "size": 26,
+      "align": "left",
+      "color": "#5A646E",
+      "font_role": "medium",
+      "font": 26,
+      "text": "D",
+      "alpha": 0.25,
+      "alpha_when": [
+        {
+          "when": {
+            "signal": "gear",
+            "equals": 4
+          },
+          "alpha": 0.95
+        }
+      ]
+    },
+    {
+      "id": "energy.arc",
+      "type": "vector",
+      "shape": "arc",
+      "z": 30,
+      "cx": 960,
+      "cy": -960,
+      "radius": 1400,
+      "start_deg": 70,
+      "end_deg": 110,
+      "width_px": 3,
+      "color": "#161D24",
+      "opacity": 1.0,
+      "progress": {
+        "signal": "soc",
+        "max": 100,
+        "color": "#C9D4DF",
+        "width_px": 3,
+        "from": "end",
+        "opacity": 0.95
+      },
+      "alpha_when": [
+        {
+          "when": {
+            "all": [
+              {
+                "signal": "soc.trusted",
+                "is_true": false
+              },
+              {
+                "signal": "soc.valid",
+                "valid": true
+              }
+            ]
+          },
+          "alpha": 0.0
+        }
+      ]
+    },
+    {
+      "id": "energy.value",
+      "type": "text",
+      "z": 40,
+      "x": 1452,
+      "y": 352,
+      "size": 72,
+      "align": "left",
+      "color": "#E8EDF2",
+      "font_role": "light",
+      "font": 72,
+      "bind": "soc",
+      "format": "{}",
+      "invalid_color": "#525C66",
+      "invalid_text": "--",
+      "alpha_when": [
+        {
+          "when": {
+            "all": [
+              {
+                "signal": "soc.trusted",
+                "is_true": false
+              },
+              {
+                "signal": "soc.valid",
+                "valid": true
+              }
+            ]
+          },
+          "alpha": 0.0
+        }
+      ]
+    },
+    {
+      "id": "energy.pct",
+      "type": "text",
+      "z": 40,
+      "x": 1584,
+      "y": 364,
+      "size": 24,
+      "align": "left",
+      "color": "#76828E",
+      "font_role": "medium",
+      "font": 24,
+      "text": "%",
+      "alpha_when": [
+        {
+          "when": {
+            "all": [
+              {
+                "signal": "soc.trusted",
+                "is_true": false
+              },
+              {
+                "signal": "soc.valid",
+                "valid": true
+              }
+            ]
+          },
+          "alpha": 0.0
+        }
+      ]
+    },
+    {
+      "id": "energy.range",
+      "type": "text",
+      "z": 40,
+      "x": 1452,
+      "y": 392,
+      "size": 24,
+      "align": "left",
+      "color": "#8A96A2",
+      "font_role": "medium",
+      "font": 24,
+      "tracking": 1.5,
+      "bind": "range",
+      "format": "{} km",
+      "invalid_color": "#5A646E"
+    },
+    {
+      "id": "energy.untrusted",
+      "type": "text",
+      "z": 40,
+      "x": 1452,
+      "y": 330,
+      "size": 18,
+      "align": "left",
+      "color": "#8A96A2",
+      "font_role": "medium",
+      "font": 18,
+      "tracking": 2.5,
+      "text": "CHARGE EST. - SEE RANGE",
+      "alpha": 0.0,
+      "alpha_when": [
+        {
+          "when": {
+            "all": [
+              {
+                "signal": "soc.trusted",
+                "is_true": false
+              },
+              {
+                "signal": "soc.valid",
+                "valid": true
+              }
+            ]
+          },
+          "alpha": 1.0
+        }
+      ]
+    },
+    {
+      "id": "rail.temp",
+      "type": "text",
+      "z": 40,
+      "x": 176,
+      "y": 446,
+      "size": 20,
+      "align": "left",
+      "color": "#6E7A86",
+      "font_role": "medium",
+      "font": 20,
+      "tracking": 1.5,
+      "bind": "temperature_primary",
+      "format": "{}\u00b0C"
+    },
+    {
+      "id": "top.clock",
+      "type": "text",
+      "z": 40,
+      "x": 1744,
+      "y": 446,
+      "size": 20,
+      "align": "right",
+      "color": "#7C8894",
+      "font_role": "medium",
+      "font": 20,
+      "source": "clock",
+      "format": "%H:%M",
+      "tracking": 1.5
+    },
+    {
+      "id": "rail.rule",
+      "type": "vector",
+      "shape": "line",
+      "z": 6,
+      "x": 176,
+      "y": 424,
+      "x2": 1744,
+      "y2": 424,
+      "color": "#141B22",
+      "width_px": 1
+    },
+    {
+      "id": "ctx.rule",
+      "type": "vector",
+      "shape": "line",
+      "z": 44,
+      "x": 176,
+      "y": 48,
+      "x2": 528,
+      "y2": 48,
+      "color": "#3A3324",
+      "width_px": 1,
+      "alpha": 0.0,
+      "alpha_when": [
+        {
+          "when": {
+            "signal": "door_fl",
+            "is_true": true
+          },
+          "alpha": 1.0
+        },
+        {
+          "when": {
+            "signal": "door_fl",
+            "valid": true
+          },
+          "alpha": 0.0
+        }
+      ]
+    },
+    {
+      "id": "ctx.door",
+      "type": "text",
+      "z": 40,
+      "x": 176,
+      "y": 72,
+      "size": 20,
+      "align": "left",
+      "color": "#CBB27A",
+      "font_role": "medium",
+      "font": 20,
+      "tracking": 4.0,
+      "text": "FRONT LEFT DOOR",
+      "alpha": 0.0,
+      "alpha_when": [
+        {
+          "when": {
+            "signal": "door_fl",
+            "is_true": true
+          },
+          "alpha": 1.0
+        },
+        {
+          "when": {
+            "signal": "door_fl",
+            "valid": true
+          },
+          "alpha": 0.0
+        }
+      ]
+    },
+    {
+      "id": "ctx.uart.rule",
+      "type": "vector",
+      "shape": "line",
+      "z": 44,
+      "x": 176,
+      "y": 48,
+      "x2": 528,
+      "y2": 48,
+      "color": "#3A3224",
+      "width_px": 1,
+      "alpha": 0.0,
+      "alpha_when": [
+        {
+          "when": {
+            "signal": "uart_health",
+            "equals": "UART LOST"
+          },
+          "alpha": 1.0
+        },
+        {
+          "when": {
+            "signal": "uart_health",
+            "valid": true
+          },
+          "alpha": 0.0
+        }
+      ]
+    },
+    {
+      "id": "ctx.uart",
+      "type": "text",
+      "z": 40,
+      "x": 176,
+      "y": 72,
+      "size": 20,
+      "align": "left",
+      "color": "#D8A657",
+      "font_role": "medium",
+      "font": 20,
+      "tracking": 4.0,
+      "text": "DRIVE DATA LOST",
+      "alpha": 0.0,
+      "alpha_when": [
+        {
+          "when": {
+            "signal": "uart_health",
+            "equals": "UART LOST"
+          },
+          "alpha": 1.0
+        },
+        {
+          "when": {
+            "signal": "uart_health",
+            "valid": true
+          },
+          "alpha": 0.0
+        }
+      ]
+    }
+  ]
+}
