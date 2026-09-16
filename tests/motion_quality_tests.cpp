@@ -1,5 +1,7 @@
 #include "dashboard/motion_quality.h"
 
+// Keep the assertions live even in a Release build (NDEBUG).
+#undef NDEBUG
 #include <cassert>
 #include <iostream>
 

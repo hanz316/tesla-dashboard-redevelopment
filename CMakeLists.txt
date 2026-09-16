@@ -20,6 +20,7 @@ add_library(dashboard_core
     src/core/horizon_v6.cpp
     src/core/v6_asset_catalog.cpp
     src/core/motion_quality.cpp
+    src/core/delta_animation.cpp
 )
 set_target_properties(dashboard_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(dashboard_core PUBLIC include)
@@ -60,6 +61,11 @@ if(BUILD_HOST_TOOLS)
     target_link_libraries(dashboard_motion_quality_tests PRIVATE dashboard_core)
     target_compile_options(dashboard_motion_quality_tests PRIVATE -Wall -Wextra -Wpedantic)
     add_test(NAME dashboard_motion_quality_tests COMMAND dashboard_motion_quality_tests)
+
+    add_executable(dashboard_delta_animation_tests tests/delta_animation_tests.cpp)
+    target_link_libraries(dashboard_delta_animation_tests PRIVATE dashboard_core)
+    target_compile_options(dashboard_delta_animation_tests PRIVATE -Wall -Wextra -Wpedantic)
+    add_test(NAME dashboard_delta_animation_tests COMMAND dashboard_delta_animation_tests)
 endif()
 
 if(BUILD_FLYTHINGS_DEVICE)

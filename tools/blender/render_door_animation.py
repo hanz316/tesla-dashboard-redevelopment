@@ -35,7 +35,9 @@ except ImportError:  # pragma: no cover
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import hmi_studio_v2  # noqa: E402
+import hmi_studio_v3  # noqa: E402
 import render_vehicle_visual_v2 as vehicle_v2  # noqa: E402
+import render_vehicle_visual_v3 as vehicle_v3  # noqa: E402
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 DEFAULT_INPUT = os.path.join(REPO_ROOT, "assets", "source", "download",
@@ -53,7 +55,11 @@ VEHICLE_WIDTHS = {"400": 400, "600": 600, "800": 800}
 OCCUPANCY = 0.78
 CANVAS_ASPECT = 760.0 / 1100.0
 
-DEFAULT_DURATION_S = 0.65
+# Part 10/11: open and close are separate animations with independent timing
+# and independent easing. Close is deliberately slightly faster than open.
+DEFAULT_OPEN_DURATION_S = 0.62
+DEFAULT_CLOSE_DURATION_S = 0.54
+DEFAULT_DURATION_S = DEFAULT_OPEN_DURATION_S
 DEFAULT_OPEN_ANGLE_DEG = 52.0
 # Rotation sign about the vertical hinge axis that swings this door OUT of
 # the car. Measured, not assumed - see swing_direction_report(). +Z rotates
@@ -71,12 +77,23 @@ def parse_args():
                     help="print pivot + collision sweep and exit")
     ap.add_argument("--door", default=DOOR_OBJECT)
     ap.add_argument("--fps", type=int, default=30, choices=[24, 30, 60])
-    ap.add_argument("--duration", type=float, default=DEFAULT_DURATION_S)
+    ap.add_argument("--duration", type=float, default=None,
+                    help="override BOTH open and close durations")
+    ap.add_argument("--open-duration", type=float,
+                    default=DEFAULT_OPEN_DURATION_S)
+    ap.add_argument("--close-duration", type=float,
+                    default=DEFAULT_CLOSE_DURATION_S)
+    ap.add_argument("--direction", default="both",
+                    choices=["open", "close", "both"],
+                    help="render one direction or both into <out>/<direction>/")
     ap.add_argument("--open-angle", type=float, default=DEFAULT_OPEN_ANGLE_DEG)
     ap.add_argument("--vehicle-width", type=int, default=600,
                     choices=[400, 600, 800])
     ap.add_argument("--out", default=None)
-    ap.add_argument("--body", default="silver01")
+    ap.add_argument("--body", default=None,
+                    help="material preset; defaults per --material version")
+    ap.add_argument("--material", default="v3", choices=["v2", "v3"])
+    ap.add_argument("--look", default="normal", choices=["normal", "soft"])
     ap.add_argument("--engine", default="eevee", choices=["eevee", "cycles"])
     ap.add_argument("--samples", type=int, default=64)
     ap.add_argument("--supersample", type=int, default=1)
@@ -296,10 +313,23 @@ def swing_direction_report(door, rest_matrix, angle_deg):
 
 
 def ease_in_out_cubic(t):
-    """Slow start, natural middle, decelerating finish. No overshoot."""
+    """OPEN easing: slow initial release, smooth acceleration, decelerating
+    finish. No spring, no bounce, no overshoot."""
     if t < 0.5:
         return 4.0 * t * t * t
     return 1.0 - pow(-2.0 * t + 2.0, 3.0) / 2.0
+
+
+def ease_in_out_quint(t):
+    """CLOSE easing: quintic smootherstep.
+
+    Deliberately NOT the mirror of the open curve. A closed door has to settle
+    against the seal, so this has zero velocity AND zero acceleration at both
+    ends: the pull-off is softer and the arrival at the latch is damped, which
+    reads as a heavier, better-damped part than simply reversing the open.
+    Still strictly monotonic and bounded to [0, 1], so no overshoot.
+    """
+    return t * t * t * (t * (t * 6.0 - 15.0) + 10.0)
 
 
 def setup_camera_and_render(vehicle_width, canvas_w, canvas_h, engine, samples,
@@ -385,42 +415,69 @@ def main():
     if args.out is None:
         sys.exit("--out is required for rendering")
 
-    hmi_studio_v2.apply_v2_materials(meshes, args.body)
-    hmi_studio_v2.build_reflection_studio()
-    # The V2 static renderer gets its shape from the reflection cards plus a
-    # soft 3-point key rig. Without those lights this scene has no emitters
-    # at all (read_factory_settings(use_empty=True) removes the world), and
-    # every frame renders as a pure black silhouette.
-    vehicle_v2.setup_key_rig()
+    if args.material == "v3":
+        preset = args.body or "silver_v3"
+        hmi_studio_v3.apply_v3_materials(meshes, preset)
+        hmi_studio_v3.build_reflection_studio_v3()
+        hmi_studio_v3.build_light_rig_v3()
+    else:
+        preset = args.body or "silver01"
+        hmi_studio_v2.apply_v2_materials(meshes, preset)
+        hmi_studio_v2.build_reflection_studio()
+        # Without these lights the scene has no emitters at all
+        # (read_factory_settings(use_empty=True) removes the world) and every
+        # frame renders as a pure black silhouette.
+        vehicle_v2.setup_key_rig()
 
     canvas_w = int(round(args.vehicle_width / OCCUPANCY))
     canvas_h = int(round(canvas_w * CANVAS_ASPECT))
     setup_camera_and_render(args.vehicle_width, canvas_w, canvas_h,
                             args.engine, args.samples, args.supersample,
                             args.out, args.azimuth)
+    # Same filmic look as the V3 stills, so the animation cuts together with
+    # them instead of looking like a different render.
+    vehicle_v3.apply_look(bpy.context.scene, args.look, None)
 
-    frame_count = max(2, int(round(args.duration * args.fps)) + 1)
+    open_duration = (args.duration if args.duration is not None
+                     else args.open_duration)
+    close_duration = (args.duration if args.duration is not None
+                      else args.close_duration)
+
     rest_matrix = door.matrix_world.copy()
-    print(f"[door] fps={args.fps} duration={args.duration}s "
-          f"frames={frame_count} open_angle={args.open_angle} "
-          f"vehicle_width={args.vehicle_width} canvas={canvas_w}x{canvas_h}")
-
     scene = bpy.context.scene
-    start = time.time()
-    for index in range(frame_count):
-        t = index / float(frame_count - 1)
-        angle = args.open_angle * ease_in_out_cubic(t)
-        door.matrix_world = door_open_matrix(rest_matrix, OPEN_SIGN * angle)
-        scene.frame_set(index + 1)
-        scene.render.filepath = os.path.join(args.out, f"{index:03d}.png")
-        bpy.ops.render.render(write_still=True)
-        if index % 5 == 0 or index == frame_count - 1:
-            print(f"[door]   frame {index:03d} angle={angle:5.1f} deg "
-                  f"({time.time()-start:.1f}s elapsed)")
+    print(f"[door] material={args.material} preset={preset} look={args.look} "
+          f"fps={args.fps} open={open_duration}s close={close_duration}s "
+          f"open_angle={args.open_angle} vehicle_width={args.vehicle_width} "
+          f"canvas={canvas_w}x{canvas_h}")
 
-    total = time.time() - start
-    print(f"[door] RENDER_TIME {total:.1f}s for {frame_count} frames "
-          f"({total/frame_count:.2f}s/frame) -> {args.out}")
+    directions = (["open", "close"] if args.direction == "both"
+                  else [args.direction])
+    for direction in directions:
+        duration = open_duration if direction == "open" else close_duration
+        frame_count = max(2, int(round(duration * args.fps)) + 1)
+        out_dir = os.path.join(args.out, direction)
+        os.makedirs(out_dir, exist_ok=True)
+        print(f"[door] {direction}: duration={duration}s frames={frame_count}")
+        start = time.time()
+        for index in range(frame_count):
+            t = index / float(frame_count - 1)
+            if direction == "open":
+                angle = args.open_angle * ease_in_out_cubic(t)
+            else:
+                # Close runs from fully open back to the seal.
+                angle = args.open_angle * (1.0 - ease_in_out_quint(t))
+            door.matrix_world = door_open_matrix(rest_matrix,
+                                                 OPEN_SIGN * angle)
+            scene.frame_set(index + 1)
+            scene.render.filepath = os.path.join(out_dir, f"{index:03d}.png")
+            bpy.ops.render.render(write_still=True)
+            if index % 5 == 0 or index == frame_count - 1:
+                print(f"[door]   {direction} frame {index:03d} "
+                      f"angle={angle:5.1f} deg ({time.time()-start:.1f}s)")
+        total = time.time() - start
+        print(f"[door] RENDER_TIME {direction} {total:.1f}s for "
+              f"{frame_count} frames ({total/frame_count:.2f}s/frame) "
+              f"-> {out_dir}")
 
 
 if __name__ == "__main__":

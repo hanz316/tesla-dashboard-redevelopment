@@ -1,0 +1,370 @@
+{
+  "id": "door_fl_open_600_30",
+  "kind": "delta_animation",
+  "base": "base.png",
+  "canvas": {
+    "width": 769,
+    "height": 531
+  },
+  "fps": 30,
+  "duration_ms": 620,
+  "padding": 6,
+  "threshold": 4,
+  "compositing": "rectangle_replacement",
+  "frames": [
+    {
+      "frame": 0,
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "anchor_x": 0,
+      "anchor_y": 0,
+      "duration_ms": 620,
+      "empty": true
+    },
+    {
+      "frame": 1,
+      "x": 219,
+      "y": 211,
+      "width": 88,
+      "height": 61,
+      "anchor_x": 219,
+      "anchor_y": 211,
+      "duration_ms": 620,
+      "empty": false,
+      "raw_bbox": [
+        225,
+        217,
+        301,
+        266
+      ]
+    },
+    {
+      "frame": 2,
+      "x": 216,
+      "y": 191,
+      "width": 115,
+      "height": 134,
+      "anchor_x": 216,
+      "anchor_y": 191,
+      "duration_ms": 620,
+      "empty": false,
+      "raw_bbox": [
+        222,
+        197,
+        325,
+        319
+      ]
+    },
+    {
+      "frame": 3,
+      "x": 215,
+      "y": 191,
+      "width": 119,
+      "height": 150,
+      "anchor_x": 215,
+      "anchor_y": 191,
+      "duration_ms": 620,
+      "empty": false,
+      "raw_bbox": [
+        221,
+        197,
+        328,
+        335
+      ]
+    },
+    {
+      "frame": 4,
+      "x": 214,
+      "y": 191,
+      "width": 120,
+      "height": 151,
+      "anchor_x": 214,
+      "anchor_y": 191,
+      "duration_ms": 620,
+      "empty": false,
+      "raw_bbox": [
+        220,
+        197,
+        328,
+        336
+      ]
+    },
+    {
+      "frame": 5,
+      "x": 212,
+      "y": 187,
+      "width": 122,
+      "height": 156,
+      "anchor_x": 212,
+      "anchor_y": 187,
+      "duration_ms": 620,
+      "empty": false,
+      "raw_bbox": [
+        218,
+        193,
+        328,
+        337
+      ]
+    },
+    {
+      "frame": 6,
+      "x": 209,
+      "y": 186,
+      "width": 176,
+      "height": 160,
+      "anchor_x": 209,
+      "anchor_y": 186,
+      "duration_ms": 620,
+      "empty": false,
+      "raw_bbox": [
+        215,
+        192,
+        379,
+        340
+      ]
+    },
+    {
+      "frame": 7,
+      "x": 206,
+      "y": 186,
+      "width": 179,
+      "height": 160,
+      "anchor_x": 206,
+      "anchor_y": 186,
+      "duration_ms": 620,
+      "empty": false,
+      "raw_bbox": [
+        212,
+        192,
+        379,
+        340
+      ]
+    },
+    {
+      "frame": 8,
+      "x": 201,
+      "y": 186,
+      "width": 189,
+      "height": 187,
+      "anchor_x": 201,
+      "anchor_y": 186,
+      "duration_ms": 620,
+      "empty": false,
+      "raw_bbox": [
+        207,
+        192,
+        384,
+        367
+      ]
+    },
+    {
+      "frame": 9,
+      "x": 195,
+      "y": 187,
+      "width": 195,
+      "height": 186,
+      "anchor_x": 195,
+      "anchor_y": 187,
+      "duration_ms": 620,
+      "empty": false,
+      "raw_bbox": [
+        201,
+        193,
+        384,
+        367
+      ]
+    },
+    {
+      "frame": 10,
+      "x": 182,
+      "y": 188,
+      "width": 208,
+      "height": 185,
+      "anchor_x": 182,
+      "anchor_y": 188,
+      "duration_ms": 620,
+      "empty": false,
+      "raw_bbox": [
+        188,
+        194,
+        384,
+        367
+      ]
+    },
+    {
+      "frame": 11,
+      "x": 181,
+      "y": 160,
+      "width": 281,
+      "height": 246,
+      "anchor_x": 181,
+      "anchor_y": 160,
+      "duration_ms": 620,
+      "empty": false,
+      "raw_bbox": [
+        187,
+        166,
+        456,
+        400
+      ]
+    },
+    {
+      "frame": 12,
+      "x": 177,
+      "y": 160,
+      "width": 285,
+      "height": 246,
+      "anchor_x": 177,
+      "anchor_y": 160,
+      "duration_ms": 620,
+      "empty": false,
+      "raw_bbox": [
+        183,
+        166,
+        456,
+        400
+      ]
+    },
+    {
+      "frame": 13,
+      "x": 154,
+      "y": 160,
+      "width": 236,
+      "height": 220,
+      "anchor_x": 154,
+      "anchor_y": 160,
+      "duration_ms": 620,
+      "empty": false,
+      "raw_bbox": [
+        160,
+        166,
+        384,
+        374
+      ]
+    },
+    {
+      "frame": 14,
+      "x": 154,
+      "y": 160,
+      "width": 236,
+      "height": 220,
+      "anchor_x": 154,
+      "anchor_y": 160,
+      "duration_ms": 620,
+      "empty": false,
+      "raw_bbox": [
+        160,
+        166,
+        384,
+        374
+      ]
+    },
+    {
+      "frame": 15,
+      "x": 154,
+      "y": 160,
+      "width": 236,
+      "height": 220,
+      "anchor_x": 154,
+      "anchor_y": 160,
+      "duration_ms": 620,
+      "empty": false,
+      "raw_bbox": [
+        160,
+        166,
+        384,
+        374
+      ]
+    },
+    {
+      "frame": 16,
+      "x": 154,
+      "y": 160,
+      "width": 236,
+      "height": 220,
+      "anchor_x": 154,
+      "anchor_y": 160,
+      "duration_ms": 620,
+      "empty": false,
+      "raw_bbox": [
+        160,
+        166,
+        384,
+        374
+      ]
+    },
+    {
+      "frame": 17,
+      "x": 154,
+      "y": 160,
+      "width": 236,
+      "height": 220,
+      "anchor_x": 154,
+      "anchor_y": 160,
+      "duration_ms": 620,
+      "empty": false,
+      "raw_bbox": [
+        160,
+        166,
+        384,
+        374
+      ]
+    },
+    {
+      "frame": 18,
+      "x": 153,
+      "y": 160,
+      "width": 237,
+      "height": 220,
+      "anchor_x": 153,
+      "anchor_y": 160,
+      "duration_ms": 620,
+      "empty": false,
+      "raw_bbox": [
+        159,
+        166,
+        384,
+        374
+      ]
+    },
+    {
+      "frame": 19,
+      "x": 153,
+      "y": 160,
+      "width": 237,
+      "height": 220,
+      "anchor_x": 153,
+      "anchor_y": 160,
+      "duration_ms": 620,
+      "empty": false,
+      "raw_bbox": [
+        159,
+        166,
+        384,
+        374
+      ]
+    }
+  ],
+  "stats": {
+    "frame_count": 20,
+    "frames_with_change": 19,
+    "avg_region_px": 39252.1,
+    "peak_region_px": 70110,
+    "canvas_px": 408339,
+    "avg_region_share_of_canvas": 0.0961,
+    "avg_png_bytes": 47433.8,
+    "total_png_bytes": 901243,
+    "full_frame_avg_png_bytes": 165565.6,
+    "avg_decode_ms": 3.21,
+    "peak_decode_ms": 5.74,
+    "avg_decode_share_of_30fps": 0.0965
+  },
+  "verification": {
+    "method": "rebuild = base; rebuild[y0:y1, x0:x1] = crop",
+    "pixel_equal": false,
+    "worst_mismatched_px": 4097,
+    "worst_channel_diff": 4
+  }
+}

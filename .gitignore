@@ -58,3 +58,11 @@ assets/rendered/v2/
 # tools/blender/render_door_benchmark.sh). The GIF/MP4/filmstrip review copies
 # live in assets/checkpoints/door_fl_2026-09-16/.
 assets/rendered/door_fl/
+
+# Vehicle Visual V3 working renders (regenerable; review copies live in
+# assets/checkpoints/vehicle_visual_v3_2026-09-16/).
+assets/rendered/v3/
+
+# Door_FL V3 working renders + delta POC output (83 MB regenerable; the GIFs,
+# filmstrip and one delta example live in assets/checkpoints/door_fl_v3_2026-09-16/).
+assets/rendered/door_fl_v3/

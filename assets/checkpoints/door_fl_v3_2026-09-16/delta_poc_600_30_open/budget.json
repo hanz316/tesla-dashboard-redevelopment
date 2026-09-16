@@ -1,0 +1,72 @@
+{
+  "label": "600px/30fps open",
+  "A": {
+    "name": "A_full_canvas",
+    "frames": 20,
+    "avg_dims": [
+      769.0,
+      531.0
+    ],
+    "peak_dims": [
+      769,
+      531
+    ],
+    "avg_px_per_frame": 408339.0,
+    "peak_px_per_frame": 408339,
+    "avg_decoded_mb": 1.558,
+    "peak_decoded_mb": 1.558,
+    "avg_png_bytes": 165566,
+    "total_png_bytes": 3311312,
+    "avg_decode_ms": 33.43,
+    "peak_decode_ms": 33.43,
+    "avg_decode_share": 1.0038,
+    "budget_ms": 33.3
+  },
+  "B": {
+    "name": "B_alpha_crop",
+    "frames": 20,
+    "avg_dims": [
+      462.0,
+      266.0
+    ],
+    "peak_dims": [
+      462,
+      266
+    ],
+    "avg_px_per_frame": 122892.0,
+    "peak_px_per_frame": 122892,
+    "avg_decoded_mb": 0.469,
+    "peak_decoded_mb": 0.469,
+    "avg_png_bytes": 165566,
+    "total_png_bytes": 3311312,
+    "avg_decode_ms": 10.06,
+    "peak_decode_ms": 10.06,
+    "avg_decode_share": 0.3021,
+    "budget_ms": 33.3
+  },
+  "C": {
+    "name": "C_difference_crop",
+    "frames": 19,
+    "avg_dims": [
+      196.4,
+      187.5
+    ],
+    "peak_dims": [
+      285,
+      246
+    ],
+    "avg_px_per_frame": 36813.9,
+    "peak_px_per_frame": 70110,
+    "avg_decoded_mb": 0.14,
+    "peak_decoded_mb": 0.267,
+    "avg_png_bytes": 47434,
+    "total_png_bytes": 901243,
+    "avg_decode_ms": 3.01,
+    "peak_decode_ms": 5.74,
+    "avg_decode_share": 0.0905,
+    "budget_ms": 33.3
+  },
+  "saved_px_pct": 91.0,
+  "saved_decode_pct": 91.0,
+  "saved_png_pct": 71.4
+}
