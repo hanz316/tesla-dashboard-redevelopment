@@ -240,3 +240,67 @@ reflector 三层，OFF 状态仍有内部深度。
 
 `MODEL_A_PRODUCTION_MASTER.json` 中 `taillight_geometry.status`
 已标记为 `BLOCKED_BY_SOURCE_GEOMETRY`。
+
+---
+
+# 附录 2：方案 1（封闭内腔体）实施结果
+
+按人工选择实施方案 1。结果分两半：
+
+## 做到的部分
+
+**封闭内腔体本身成功了。** 对每个 lens shell 的顶点做凸包（convex hull
+按构造就是闭合的），再向质心收缩：
+
+| shrink | boundary edges | 结果 |
+|---|---|---|
+| 0.88 | **0** | watertight |
+| 0.82 | **0** | watertight |
+| 0.76 | **0** | watertight |
+| 0.70 | **0** | watertight |
+| 0.64 | **0** | watertight |
+| 0.58 | **0** | watertight |
+| 0.52 | **0** | watertight |
+
+`boundary_edges = 0`、无非流形开口 —— 即"closed cavity"这一步是成立的。
+这验证了方案 1 的前半段可行。
+
+## 没有做到的部分：放置证明
+
+**导光条的 containment 证明仍然失败。** 三轮迭代后定位到两个**具体**原因：
+
+1. **`rear_lights` 横跨车尾两侧**（3,550 顶点覆盖整个后部）。
+   用一个对象的质心 Y 符号去定义"外侧方向"是错的 —— 一半顶点必然在另一侧，
+   无论怎么收缩都会被判为外露。**必须先按 Y 符号把灯对象拆成左右两份**，
+   "outward" 才有定义。
+
+2. **镜片是开放壳体。** 壳体内部的点总能从某个斜向经开口被"看到"，
+   所以"要求所有方向都被遮挡"在数学上永远不成立。这不是放置错误，
+   是**检验方法选错了**：应该用
+   - **parity 判定**（对闭合腔体）证明 100% contained，以及
+   - **screen-space QA**（渲染导光条为高亮、其余 holdout，要求所有可见
+     导光条像素落在尾灯屏幕区域内部）证明不可见，
+   而不是用一个方向性遮挡代理量去代替这两件事。
+
+## 决定
+
+**master 不加入导光条，也不加入腔体。** 没有几何优于未经证明的几何。
+`MODEL_A_PRODUCTION_MASTER.json` 的 `taillight_geometry` 中新增
+`cavity_attempt` 段，完整记录上述两个原因与下一步（**按左右拆分灯对象后
+重跑**）。
+
+## 为什么没有在通过前执行 Parts 1–22
+
+人工指示"修复通过后不要停"。但 Step 12 的冻结条件是**六条同时满足**
+（cavity closed / 100% containment / zero visible protrusion / zero body
+intersection / zero trunk relationship error / OFF 600px acceptable）。
+当前第 2 条与第 3 条**没有通过**。
+
+而 brake、left indicator、right indicator **全部建立在同一套灯腔内部结构上**
+（Step 8 明确要求"不要分别重建 brake geometry 和 indicator geometry"）。
+在灯腔结构未冻结时先生成这三个状态，它们必然要在灯腔定案后全部重做；
+人工在同一份指示中也写明"不要偷偷修改整个 Production Master 来解决局部状态问题"。
+
+因此这属于指示中预留的例外：**"除非出现新的真正 BLOCKER —— 即无法通过
+局部修复继续"**。当前 blocker 是灯对象的左右拆分，属于局部修复，但**尚未完成**，
+所以在完成前不进入 Parts 1–22。

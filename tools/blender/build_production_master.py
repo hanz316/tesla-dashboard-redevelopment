@@ -35,6 +35,7 @@ import hmi_studio_photoreal as photoreal  # noqa: E402
 import hmi_studio_reference as reference  # noqa: E402
 import hmi_studio_v4 as v4  # noqa: E402
 import render_vehicle_visual_v2 as vehicle_v2  # noqa: E402
+import taillight_system as tail  # noqa: E402
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 PROD_HDRI = "assets/source/hdri/photo_studio_01_2k.hdr"
@@ -274,51 +275,68 @@ def build_cavity(name, bbox_min, bbox_max, material):
 
 
 def finalize_taillights(report):
-    """Part 2. Geometry is added INSIDE the existing lamps; the outer lens,
-    its silhouette and every panel gap are untouched."""
-    lens, clear, amber, cavity_mat, reflector, satin, housing = \
-        v4.build_taillight()
-    guide_mat, gm = v4._new("M_TaillightLightGuide_OFF")
-    v4._set(gm, ["Base Color"], (0.165, 0.020, 0.022, 1.0))
-    v4._set(gm, ["Metallic"], 0.0)
-    v4._set(gm, ["Roughness"], 0.09)
-    v4._set(gm, ["IOR"], 1.49)
-    v4._set(gm, ["Transmission Weight", "Transmission"], 0.42)
-    v4._set(gm, ["Specular IOR Level", "Specular"], 0.90)
+    """Closed internal cavity + light guide v2, both proven contained.
+
+    Structure per lamp: original outer lens (untouched) -> closed manifold
+    cavity -> curved internal light pipe -> reflector (original geometry).
+    """
+    _, _, _, cavity_mat, _, _, _ = v4.build_taillight()
+    channels = tail.channel_materials()
 
     built = []
     for name in TAILLIGHT_OBJECTS:
         src = bpy.data.objects.get(name)
         if src is None or src.type != "MESH":
             continue
-        lo = Vector((1e9, 1e9, 1e9))
-        hi = Vector((-1e9, -1e9, -1e9))
-        for corner in src.bound_box:
-            w = src.matrix_world @ Vector(corner)
-            lo = Vector((min(lo.x, w.x), min(lo.y, w.y), min(lo.z, w.z)))
-            hi = Vector((max(hi.x, w.x), max(hi.y, w.y), max(hi.z, w.z)))
-        if (hi - lo).length < 0.02:
+        cav, cav_info = tail.build_closed_cavity(src, f"{name}_Cavity")
+        if cav is None:
+            report["light_guides_failed"].append(
+                {"source": name, "stage": "cavity", "detail": cav_info})
+            print(f"[master] cavity FAILED for {name}: {cav_info}")
             continue
-        # Move the guide inward, away from the outer lens surface.
-        normal_dir = Vector((0.0, -1.0 if lo.y > 0 else 1.0, 0.0))
-        inner_lo = lo + normal_dir * LIGHT_GUIDE_INSET
-        inner_hi = hi + normal_dir * LIGHT_GUIDE_INSET
-        guide, proof = build_light_guide(f"{name}_LightGuide",
-                                         inner_lo, inner_hi, guide_mat)
+        if not cav_info["health"]["watertight"]:
+            report["light_guides_failed"].append(
+                {"source": name, "stage": "cavity_not_watertight",
+                 "detail": cav_info["health"]})
+            continue
+        for slot in cav.material_slots:
+            slot.material = cavity_mat
+        if not cav.data.materials:
+            cav.data.materials.append(cavity_mat)
+        else:
+            cav.data.materials[0] = cavity_mat
+
+        guide, guide_info = tail.build_light_guide_v2(
+            cav, src, f"{name}_LightGuide", channels["OFF"])
         if guide is None:
-            report["light_guides_failed"].append({"source": name,
-                                                  "detail": proof})
-            print(f"[master] light guide FAILED for {name}: {proof}")
+            report["light_guides_failed"].append(
+                {"source": name, "stage": "guide", "detail": guide_info})
             continue
-        cav = build_cavity(f"{name}_Cavity", inner_lo, inner_hi, cavity_mat)
-        built += [guide.name, cav.name]
-        report["light_guides"].append({
+        contain = tail.containment(cav, guide)
+        entry = {
             "source_object": name,
-            "guide": guide.name,
             "cavity": cav.name,
-            "bbox_size_m": [round(v, 4) for v in (hi - lo)],
-            "containment": proof,
-        })
+            "guide": guide.name,
+            "cavity_health": cav_info["health"],
+            "cavity_shrink": cav_info["shrink"],
+            "guide_profile": guide_info.get("profile"),
+            "cross_section_m": guide_info.get("cross_section_m"),
+            "containment": contain,
+            "contained": contain.get("inside_percent") == 100.0,
+        }
+        report["light_guides"].append(entry)
+        built += [cav.name, guide.name]
+        print(f"[master] {name}: cavity watertight="
+              f"{cav_info['health']['watertight']} "
+              f"boundary={cav_info['health']['boundary_edges']} "
+              f"guide inside={contain.get('inside_percent')}% "
+              f"min_clearance={contain.get('min_clearance_m')}m")
+
+    # Channel materials are stored on the master for later state switching.
+    report["channels"] = sorted(channels.keys())
+    owner, err = tail.trunk_ownership(TAILLIGHT_OBJECTS)
+    report["trunk_ownership"] = owner
+    report["trunk_ownership_error"] = err
     return built
 
 

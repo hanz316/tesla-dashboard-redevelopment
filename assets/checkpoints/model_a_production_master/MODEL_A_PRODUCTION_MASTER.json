@@ -40,176 +40,176 @@
     "failed": [
       {
         "source": "rear_lights",
+        "stage": "cavity",
         "detail": {
-          "inside": false,
+          "built": false,
           "attempts": [
             {
-              "radius": 0.0085,
-              "inset": 0.016,
-              "sagitta": 0.16,
-              "outside": 336
+              "shrink": 0.88,
+              "boundary_edges": 0,
+              "exposed_vertices": 120
             },
             {
-              "radius": 0.00723,
-              "inset": 0.02,
-              "sagitta": 0.112,
-              "outside": 336
+              "shrink": 0.82,
+              "boundary_edges": 0,
+              "exposed_vertices": 120
             },
             {
-              "radius": 0.00614,
-              "inset": 0.024,
-              "sagitta": 0.078,
-              "outside": 336
+              "shrink": 0.76,
+              "boundary_edges": 0,
+              "exposed_vertices": 120
             },
             {
-              "radius": 0.00522,
-              "inset": 0.028,
-              "sagitta": 0.055,
-              "outside": 336
+              "shrink": 0.7,
+              "boundary_edges": 0,
+              "exposed_vertices": 120
             },
             {
-              "radius": 0.00444,
-              "inset": 0.032,
-              "sagitta": 0.038,
-              "outside": 336
+              "shrink": 0.64,
+              "boundary_edges": 0,
+              "exposed_vertices": 120
             },
             {
-              "radius": 0.00377,
-              "inset": 0.036,
-              "sagitta": 0.027,
-              "outside": 336
+              "shrink": 0.58,
+              "boundary_edges": 0,
+              "exposed_vertices": 120
+            },
+            {
+              "shrink": 0.52,
+              "boundary_edges": 0,
+              "exposed_vertices": 120
             }
           ]
         }
       },
       {
         "source": "rear_lightsl",
+        "stage": "cavity",
         "detail": {
-          "inside": false,
+          "built": false,
           "attempts": [
             {
-              "radius": 0.0085,
-              "inset": 0.016,
-              "sagitta": 0.16,
-              "outside": 335
+              "shrink": 0.88,
+              "boundary_edges": 0,
+              "exposed_vertices": 113
             },
             {
-              "radius": 0.00723,
-              "inset": 0.02,
-              "sagitta": 0.112,
-              "outside": 336
+              "shrink": 0.82,
+              "boundary_edges": 0,
+              "exposed_vertices": 114
             },
             {
-              "radius": 0.00614,
-              "inset": 0.024,
-              "sagitta": 0.078,
-              "outside": 336
+              "shrink": 0.76,
+              "boundary_edges": 0,
+              "exposed_vertices": 117
             },
             {
-              "radius": 0.00522,
-              "inset": 0.028,
-              "sagitta": 0.055,
-              "outside": 336
+              "shrink": 0.7,
+              "boundary_edges": 0,
+              "exposed_vertices": 120
             },
             {
-              "radius": 0.00444,
-              "inset": 0.032,
-              "sagitta": 0.038,
-              "outside": 336
+              "shrink": 0.64,
+              "boundary_edges": 0,
+              "exposed_vertices": 120
             },
             {
-              "radius": 0.00377,
-              "inset": 0.036,
-              "sagitta": 0.027,
-              "outside": 336
+              "shrink": 0.58,
+              "boundary_edges": 0,
+              "exposed_vertices": 120
+            },
+            {
+              "shrink": 0.52,
+              "boundary_edges": 0,
+              "exposed_vertices": 120
             }
           ]
         }
       },
       {
         "source": "rear_lightsr",
+        "stage": "cavity",
         "detail": {
-          "inside": false,
+          "built": false,
           "attempts": [
             {
-              "radius": 0.0085,
-              "inset": 0.016,
-              "sagitta": 0.16,
-              "outside": 335
+              "shrink": 0.88,
+              "boundary_edges": 0,
+              "exposed_vertices": 113
             },
             {
-              "radius": 0.00723,
-              "inset": 0.02,
-              "sagitta": 0.112,
-              "outside": 336
+              "shrink": 0.82,
+              "boundary_edges": 0,
+              "exposed_vertices": 114
             },
             {
-              "radius": 0.00614,
-              "inset": 0.024,
-              "sagitta": 0.078,
-              "outside": 336
+              "shrink": 0.76,
+              "boundary_edges": 0,
+              "exposed_vertices": 117
             },
             {
-              "radius": 0.00522,
-              "inset": 0.028,
-              "sagitta": 0.055,
-              "outside": 336
+              "shrink": 0.7,
+              "boundary_edges": 0,
+              "exposed_vertices": 120
             },
             {
-              "radius": 0.00444,
-              "inset": 0.032,
-              "sagitta": 0.038,
-              "outside": 336
+              "shrink": 0.64,
+              "boundary_edges": 0,
+              "exposed_vertices": 120
             },
             {
-              "radius": 0.00377,
-              "inset": 0.036,
-              "sagitta": 0.027,
-              "outside": 336
+              "shrink": 0.58,
+              "boundary_edges": 0,
+              "exposed_vertices": 120
+            },
+            {
+              "shrink": 0.52,
+              "boundary_edges": 0,
+              "exposed_vertices": 120
             }
           ]
         }
       },
       {
         "source": "light_breake",
+        "stage": "cavity",
         "detail": {
-          "inside": false,
+          "built": false,
           "attempts": [
             {
-              "radius": 0.0085,
-              "inset": 0.016,
-              "sagitta": 0.16,
-              "outside": 336
+              "shrink": 0.88,
+              "boundary_edges": 0,
+              "exposed_vertices": 120
             },
             {
-              "radius": 0.00723,
-              "inset": 0.02,
-              "sagitta": 0.112,
-              "outside": 336
+              "shrink": 0.82,
+              "boundary_edges": 0,
+              "exposed_vertices": 120
             },
             {
-              "radius": 0.00614,
-              "inset": 0.024,
-              "sagitta": 0.078,
-              "outside": 336
+              "shrink": 0.76,
+              "boundary_edges": 0,
+              "exposed_vertices": 120
             },
             {
-              "radius": 0.00522,
-              "inset": 0.028,
-              "sagitta": 0.055,
-              "outside": 336
+              "shrink": 0.7,
+              "boundary_edges": 0,
+              "exposed_vertices": 120
             },
             {
-              "radius": 0.00444,
-              "inset": 0.032,
-              "sagitta": 0.038,
-              "outside": 336
+              "shrink": 0.64,
+              "boundary_edges": 0,
+              "exposed_vertices": 120
             },
             {
-              "radius": 0.00377,
-              "inset": 0.036,
-              "sagitta": 0.027,
-              "outside": 336
+              "shrink": 0.58,
+              "boundary_edges": 0,
+              "exposed_vertices": 120
+            },
+            {
+              "shrink": 0.52,
+              "boundary_edges": 0,
+              "exposed_vertices": 120
             }
           ]
         }
@@ -227,7 +227,14 @@
       "BRAKE_ON",
       "LEFT_INDICATOR",
       "RIGHT_INDICATOR"
-    ]
+    ],
+    "cavity_attempt": {
+      "result": "watertight cavity ACHIEVED, guide placement proof NOT achieved",
+      "watertight": "bmesh convex hull of each lamp shell is closed by construction: boundary_edges = 0 at every tested shrink factor (0.88 -> 0.52). That half of the plan works.",
+      "blocked_on": "the exterior-occlusion proof still fails for every placement. Two concrete causes were identified: (1) the production camera direction cannot be used to define 'outward' for a lamp object that spans both sides of the car (rear_lights contains 3550 verts across the whole rear), and (2) the lens shells are open, so a point inside one is reachable through the opening from oblique directions - requiring occlusion from every direction can never pass.",
+      "next_step": "run the cavity and guide build PER SIDE, after splitting the lamp objects by the sign of their centroid Y, so 'outward' is well defined; then prove containment against the closed cavity with the parity test and prove non-visibility with the screen-space QA pass (Step 10B) rather than a directional occlusion proxy.",
+      "decision": "master ships WITHOUT a light guide and WITHOUT the cavity. No geometry beats unproven geometry."
+    }
   },
   "paint": {
     "name": "REFERENCE AUTOMOTIVE PAINT (basecoat + independent clearcoat)",
