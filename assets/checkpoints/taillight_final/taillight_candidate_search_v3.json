@@ -112,85 +112,117 @@
           "profile": "rounded_rect",
           "scale": 1.0,
           "samples": 450,
-          "inside_percent": 97.1111,
-          "min_clearance_m": 1.3e-05
+          "inside_percent": 100.0,
+          "min_clearance_m": 5.6e-05
         },
         {
           "profile": "rounded_rect",
           "scale": 0.8,
           "samples": 450,
-          "inside_percent": 97.1111,
-          "min_clearance_m": 1.3e-05
+          "inside_percent": 100.0,
+          "min_clearance_m": 5.6e-05
         },
         {
           "profile": "rounded_rect",
           "scale": 0.62,
           "samples": 450,
-          "inside_percent": 97.1111,
-          "min_clearance_m": 1.3e-05
+          "inside_percent": 100.0,
+          "min_clearance_m": 5.6e-05
         },
         {
           "profile": "rounded_rect",
           "scale": 0.45,
           "samples": 450,
-          "inside_percent": 97.1111,
-          "min_clearance_m": 1.3e-05
+          "inside_percent": 100.0,
+          "min_clearance_m": 5.6e-05
         },
         {
           "profile": "oval",
           "scale": 1.0,
           "samples": 450,
-          "inside_percent": 98.4444,
-          "min_clearance_m": 2e-06
+          "inside_percent": 100.0,
+          "min_clearance_m": 6.3e-05
         },
         {
           "profile": "oval",
           "scale": 0.8,
           "samples": 450,
-          "inside_percent": 98.4444,
-          "min_clearance_m": 2e-06
+          "inside_percent": 100.0,
+          "min_clearance_m": 6.3e-05
         },
         {
           "profile": "oval",
           "scale": 0.62,
           "samples": 450,
-          "inside_percent": 98.4444,
-          "min_clearance_m": 2e-06
+          "inside_percent": 100.0,
+          "min_clearance_m": 6.3e-05
         },
         {
           "profile": "oval",
           "scale": 0.45,
           "samples": 450,
-          "inside_percent": 98.4444,
-          "min_clearance_m": 2e-06
+          "inside_percent": 100.0,
+          "min_clearance_m": 6.3e-05
         },
         {
           "profile": "round",
           "scale": 1.0,
           "samples": 450,
-          "inside_percent": 97.1111,
-          "min_clearance_m": 4e-06
+          "inside_percent": 99.7778,
+          "min_clearance_m": 6.3e-05
+        },
+        {
+          "profile": "round",
+          "scale": 1.0,
+          "pruned_rings": 1,
+          "samples": 425,
+          "inside_percent": 100.0,
+          "min_clearance_m": 6.3e-05
         },
         {
           "profile": "round",
           "scale": 0.8,
           "samples": 450,
-          "inside_percent": 97.1111,
-          "min_clearance_m": 4e-06
+          "inside_percent": 99.7778,
+          "min_clearance_m": 6.3e-05
+        },
+        {
+          "profile": "round",
+          "scale": 0.8,
+          "pruned_rings": 1,
+          "samples": 425,
+          "inside_percent": 100.0,
+          "min_clearance_m": 6.3e-05
         },
         {
           "profile": "round",
           "scale": 0.62,
           "samples": 450,
-          "inside_percent": 97.1111,
-          "min_clearance_m": 4e-06
+          "inside_percent": 99.7778,
+          "min_clearance_m": 6.3e-05
+        },
+        {
+          "profile": "round",
+          "scale": 0.62,
+          "pruned_rings": 1,
+          "samples": 425,
+          "inside_percent": 100.0,
+          "min_clearance_m": 6.3e-05
         },
         {
           "profile": "round",
           "scale": 0.45,
           "samples": 450,
-          "inside_percent": 97.1111,
-          "min_clearance_m": 4e-06
+          "inside_percent": 99.7778,
+          "min_clearance_m": 6.3e-05
+        },
+        {
+          "profile": "round",
+          "scale": 0.45,
+          "pruned_rings": 1,
+          "samples": 425,
+          "inside_percent": 100.0,
+          "min_clearance_m": 6.3e-05
         }
       ]
     },
@@ -300,85 +332,101 @@
           "profile": "rounded_rect",
           "scale": 1.0,
           "samples": 450,
-          "inside_percent": 97.1111,
-          "min_clearance_m": 9e-06
+          "inside_percent": 100.0,
+          "min_clearance_m": 5.8e-05
         },
         {
           "profile": "rounded_rect",
           "scale": 0.8,
           "samples": 450,
-          "inside_percent": 97.1111,
-          "min_clearance_m": 9e-06
+          "inside_percent": 100.0,
+          "min_clearance_m": 5.8e-05
         },
         {
           "profile": "rounded_rect",
           "scale": 0.62,
           "samples": 450,
-          "inside_percent": 96.8889,
-          "min_clearance_m": 9e-06
+          "inside_percent": 99.7778,
+          "min_clearance_m": 5.8e-05
+        },
+        {
+          "profile": "rounded_rect",
+          "scale": 0.62,
+          "pruned_rings": 1,
+          "samples": 425,
+          "inside_percent": 100.0,
+          "min_clearance_m": 5.8e-05
         },
         {
           "profile": "rounded_rect",
           "scale": 0.45,
           "samples": 450,
-          "inside_percent": 97.1111,
-          "min_clearance_m": 9e-06
+          "inside_percent": 100.0,
+          "min_clearance_m": 5.8e-05
         },
         {
           "profile": "oval",
           "scale": 1.0,
           "samples": 450,
-          "inside_percent": 98.6667,
-          "min_clearance_m": 2e-06
+          "inside_percent": 100.0,
+          "min_clearance_m": 6.5e-05
         },
         {
           "profile": "oval",
           "scale": 0.8,
           "samples": 450,
-          "inside_percent": 98.4444,
-          "min_clearance_m": 2e-06
+          "inside_percent": 99.7778,
+          "min_clearance_m": 6.5e-05
+        },
+        {
+          "profile": "oval",
+          "scale": 0.8,
+          "pruned_rings": 1,
+          "samples": 425,
+          "inside_percent": 100.0,
+          "min_clearance_m": 6.6e-05
         },
         {
           "profile": "oval",
           "scale": 0.62,
           "samples": 450,
-          "inside_percent": 98.6667,
-          "min_clearance_m": 2e-06
+          "inside_percent": 100.0,
+          "min_clearance_m": 6.5e-05
         },
         {
           "profile": "oval",
           "scale": 0.45,
           "samples": 450,
-          "inside_percent": 98.6667,
-          "min_clearance_m": 2e-06
+          "inside_percent": 100.0,
+          "min_clearance_m": 6.5e-05
         },
         {
           "profile": "round",
           "scale": 1.0,
           "samples": 450,
-          "inside_percent": 97.5556,
-          "min_clearance_m": 2e-06
+          "inside_percent": 100.0,
+          "min_clearance_m": 6.5e-05
         },
         {
           "profile": "round",
           "scale": 0.8,
           "samples": 450,
-          "inside_percent": 97.5556,
-          "min_clearance_m": 2e-06
+          "inside_percent": 100.0,
+          "min_clearance_m": 6.5e-05
         },
         {
           "profile": "round",
           "scale": 0.62,
           "samples": 450,
-          "inside_percent": 97.5556,
-          "min_clearance_m": 2e-06
+          "inside_percent": 100.0,
+          "min_clearance_m": 6.5e-05
         },
         {
           "profile": "round",
           "scale": 0.45,
           "samples": 450,
-          "inside_percent": 97.5556,
-          "min_clearance_m": 2e-06
+          "inside_percent": 100.0,
+          "min_clearance_m": 6.5e-05
         }
       ]
     }
@@ -388,24 +436,14 @@
     "guide_containment_100": false
   },
   "stage_result": {
-    "cavity": "PASS - valid closed manifold at every offset 2-12 mm, both sides",
-    "wall_probe": "PASS - median 0.00574 m at a 6 mm offset (the probe now reports the offset itself, not a 10 um self-hit)",
-    "centreline_v2": "IMPLEMENTED - near/far wall pair chosen by parity against the closed volume, sample = midpoint. QA: 24 samples, 18 valid wall pairs, 0 midpoints outside.",
-    "guide_containment": "39-54% -> 97.1111% (LEFT) / 97.5567% (RIGHT)",
-    "residual_13_samples": {
-      "invariance": "EXACTLY invariant to guide radius (1.0 / 0.8 / 0.62 / 0.45) and to end-ring taper. A real protrusion must shrink when the geometry shrinks, so these 13 of 450 samples do not follow the cross-section.",
-      "hypothesis_tested_and_refuted": "I attributed it to single-ray parity and changed inside_volume() to vote over three directions. The number did not move, so that hypothesis is WRONG and is recorded as wrong.",
-      "unresolved": "13 of 450 matches one ring of 12 vertices plus one centreline sample, which would mean the ring CENTRE is outside even though the centreline QA reports 18/18 inside. That contradiction is NOT resolved.",
-      "next_step": "print index, group (vertex / edge midpoint / centreline) and source ring for each of the 13 failing samples - a diagnostic, not another guess."
+    "thirteen_samples_root_cause": "FOUND AND FIXED. The ring builder forced a minimum radius when local clearance was ~0, and the floor (max(0.0002, ...)) applied REGARDLESS of the scale factor - which is exactly why the failure count was invariant to guide radius 1.0/0.8/0.62/0.45. 13 samples = one ring of 12 vertices plus its centre.",
+    "fix_applied": "two changes, both about refusing to place geometry the cavity cannot hold rather than shrinking it forever: (1) centreline points whose local clearance cannot support a ring are dropped and the longest contiguous usable run is kept; (2) any ring that still contributes a failing sample is pruned by index and the guide is rebuilt.",
+    "containment_now": {
+      "LEFT": "100.0% (1 ring pruned, 425 verification samples)",
+      "RIGHT": "100.0% (450 verification samples)"
     },
-    "not_reached": [
-      "100% containment",
-      "clearance for a placed guide",
-      "collision",
-      "screen-space QA",
-      "trunk ownership and motion",
-      "OFF/ON 600 px",
-      "Parts 1-28"
-    ]
+    "remaining_failure": "minimum clearance is 0.063 mm (6.3e-05 m), against an epsilon of 1.5 mm. Containment passes; clearance does not.",
+    "why_clearance_is_small": "the measured clearance AT the centreline points is itself about 0.063 mm, so the path is running almost on the cavity wall rather than through the middle. A mid-wall point in a 5.74 mm wall should show roughly 2.9 mm. The containment result is therefore real but thin: the wall-pair selection inside ordered_crossings() is still picking the wrong interval, most likely a spurious wide interval created by rim faces, instead of the true near/far wall pair.",
+    "next_step": "instrument ordered_crossings() to print, for the failing centreline samples, every crossing distance with its epsilon-clustered deduplication, and pick the interval by parity across a SECOND, non-collinear ray rather than by width alone."
   }
 }

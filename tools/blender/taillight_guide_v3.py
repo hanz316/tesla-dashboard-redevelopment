@@ -301,6 +301,31 @@ def main():
                 fixed.append(pts[i])
         sm = fixed
         radii = [max(0.0004, min(0.0030, d * 0.40)) for d in depth]
+        # Per-ring clearance measured once, used both to size the ring and to
+        # decide whether the path may extend there at all.
+        ring_clearance = []
+        for c in sm:
+            res_c = tree.find_nearest(c, 5.0)
+            ring_clearance.append(res_c[3] if res_c[0] is not None else 0.0)
+        MIN_R = 0.00035
+        usable = [i for i, clr in enumerate(ring_clearance)
+                  if clr >= 2.0 * MIN_R + EPSILON]
+        # Keep the longest CONTIGUOUS usable run: correct geometry beats visual
+        # continuity, so the guide simply does not extend where the cavity
+        # cannot hold it, instead of being forced to a minimum radius there.
+        runs, cur = [], []
+        for i in range(len(sm)):
+            if i in usable:
+                cur.append(i)
+            else:
+                if len(cur) > len(runs):
+                    runs = cur
+                cur = []
+        if len(cur) > len(runs):
+            runs = cur
+        if len(runs) >= 4:
+            sm = [sm[i] for i in runs]
+            radii = [radii[i] for i in runs]
 
         attempts = []
         picked = None
@@ -325,7 +350,7 @@ def main():
                         r0 = r0 * 0.6
                     res_c = tree.find_nearest(sm[k], 5.0)
                     clr = res_c[3] if res_c[0] is not None else 0.0
-                    rr.append(max(0.0002, min(r0 * f, clr * 0.5)))
+                    rr.append(min(r0 * f, clr * 0.5))
                 guide = make_guide(sm, rr, profile,
                                    f"TailGuide_{side}_{profile}_{f}")
                 gverts = [guide.matrix_world @ v.co
@@ -352,7 +377,54 @@ def main():
                 if pct >= 100.0 and dmin > EPSILON:
                     picked = (guide, profile, f, rr, len(samp), addstats(ds))
                     break
+                # Not inside: find WHICH rings contribute a failing sample and
+                # prune exactly those, then rebuild. Correct geometry beats
+                # visual continuity, so a ring that cannot live inside the
+                # cavity is removed rather than shrunk forever.
+                bad_rings = set()
+                for si, sp in enumerate(samp):
+                    if base.inside_volume(tree, sp):
+                        continue
+                    if si < 12 * len(rr):
+                        bad_rings.add(si // 12)
+                    elif si < 24 * len(rr):
+                        bad_rings.add((si - 12 * len(rr)) // 12)
+                    else:
+                        bad_rings.add(si - 24 * len(rr))
                 bpy.data.objects.remove(guide, do_unlink=True)
+                if bad_rings and len(rr) - len(bad_rings) >= 4:
+                    keep = [i for i in range(len(rr)) if i not in bad_rings]
+                    kept_pts = [sm[i] for i in keep]
+                    kept_r = [rr[i] for i in keep]
+                    guide2 = make_guide(kept_pts, kept_r, profile,
+                                        f"TailGuide_{side}_{profile}_{f}_pruned")
+                    gv2 = [guide2.matrix_world @ v.co
+                           for v in guide2.data.vertices]
+                    s2 = list(gv2)
+                    for i in range(0, len(gv2), 12):
+                        ring = gv2[i:i + 12]
+                        for k in range(len(ring)):
+                            s2.append((ring[k] + ring[(k + 1) % len(ring)]) * 0.5)
+                    s2 += kept_pts
+                    ins2 = sum(1 for q in s2 if base.inside_volume(tree, q))
+                    pct2 = 100.0 * ins2 / len(s2)
+                    d2 = []
+                    for q in s2:
+                        rr_ = tree.find_nearest(q, 5.0)
+                        if rr_[0] is not None:
+                            d2.append(rr_[3])
+                    d2.sort()
+                    attempts.append({"profile": profile, "scale": f,
+                                     "pruned_rings": len(bad_rings),
+                                     "samples": len(s2),
+                                     "inside_percent": round(pct2, 4),
+                                     "min_clearance_m": round(d2[0], 6)
+                                     if d2 else 0.0})
+                    if pct2 >= 100.0 and d2 and d2[0] > EPSILON:
+                        picked = (guide2, profile, f, kept_r, len(s2),
+                                  addstats(d2))
+                        break
+                    bpy.data.objects.remove(guide2, do_unlink=True)
             if picked:
                 break
 
