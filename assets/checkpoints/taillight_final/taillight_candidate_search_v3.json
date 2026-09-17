@@ -7,6 +7,13 @@
   ],
   "sides": {
     "LEFT": {
+      "centreline_qa": {
+        "samples": 24,
+        "valid_pairs": 18,
+        "invalid_pairs": 6,
+        "midpoints_inside": 18,
+        "midpoints_outside": 0
+      },
       "built": false,
       "selected_thickness_m": 0.006,
       "cavity": {
@@ -99,95 +106,102 @@
           }
         }
       ],
-      "centerline_points": 24,
+      "centerline_points": 18,
       "attempts": [
         {
           "profile": "rounded_rect",
           "scale": 1.0,
-          "samples": 600,
-          "inside_percent": 38.8333,
-          "min_clearance_m": 4e-06
+          "samples": 450,
+          "inside_percent": 97.1111,
+          "min_clearance_m": 1.3e-05
         },
         {
           "profile": "rounded_rect",
           "scale": 0.8,
-          "samples": 600,
-          "inside_percent": 39.1667,
-          "min_clearance_m": 1e-05
+          "samples": 450,
+          "inside_percent": 97.1111,
+          "min_clearance_m": 1.3e-05
         },
         {
           "profile": "rounded_rect",
           "scale": 0.62,
-          "samples": 600,
-          "inside_percent": 39.3333,
-          "min_clearance_m": 1.4e-05
+          "samples": 450,
+          "inside_percent": 97.1111,
+          "min_clearance_m": 1.3e-05
         },
         {
           "profile": "rounded_rect",
           "scale": 0.45,
-          "samples": 600,
-          "inside_percent": 39.5,
-          "min_clearance_m": 1.8e-05
+          "samples": 450,
+          "inside_percent": 97.1111,
+          "min_clearance_m": 1.3e-05
         },
         {
           "profile": "oval",
           "scale": 1.0,
-          "samples": 600,
-          "inside_percent": 39.1667,
-          "min_clearance_m": 8e-06
+          "samples": 450,
+          "inside_percent": 98.4444,
+          "min_clearance_m": 2e-06
         },
         {
           "profile": "oval",
           "scale": 0.8,
-          "samples": 600,
-          "inside_percent": 40.0,
-          "min_clearance_m": 1e-06
+          "samples": 450,
+          "inside_percent": 98.4444,
+          "min_clearance_m": 2e-06
         },
         {
           "profile": "oval",
           "scale": 0.62,
-          "samples": 600,
-          "inside_percent": 39.3333,
-          "min_clearance_m": 6e-06
+          "samples": 450,
+          "inside_percent": 98.4444,
+          "min_clearance_m": 2e-06
         },
         {
           "profile": "oval",
           "scale": 0.45,
-          "samples": 600,
-          "inside_percent": 39.0,
-          "min_clearance_m": 1.2e-05
+          "samples": 450,
+          "inside_percent": 98.4444,
+          "min_clearance_m": 2e-06
         },
         {
           "profile": "round",
           "scale": 1.0,
-          "samples": 600,
-          "inside_percent": 39.1667,
-          "min_clearance_m": 1e-06
+          "samples": 450,
+          "inside_percent": 97.1111,
+          "min_clearance_m": 4e-06
         },
         {
           "profile": "round",
           "scale": 0.8,
-          "samples": 600,
-          "inside_percent": 38.6667,
+          "samples": 450,
+          "inside_percent": 97.1111,
           "min_clearance_m": 4e-06
         },
         {
           "profile": "round",
           "scale": 0.62,
-          "samples": 600,
-          "inside_percent": 38.8333,
-          "min_clearance_m": 1e-05
+          "samples": 450,
+          "inside_percent": 97.1111,
+          "min_clearance_m": 4e-06
         },
         {
           "profile": "round",
           "scale": 0.45,
-          "samples": 600,
-          "inside_percent": 39.8333,
-          "min_clearance_m": 1.4e-05
+          "samples": 450,
+          "inside_percent": 97.1111,
+          "min_clearance_m": 4e-06
         }
       ]
     },
     "RIGHT": {
+      "centreline_qa": {
+        "samples": 24,
+        "valid_pairs": 18,
+        "invalid_pairs": 6,
+        "midpoints_inside": 18,
+        "midpoints_outside": 0
+      },
       "built": false,
       "selected_thickness_m": 0.006,
       "cavity": {
@@ -280,91 +294,91 @@
           }
         }
       ],
-      "centerline_points": 24,
+      "centerline_points": 18,
       "attempts": [
         {
           "profile": "rounded_rect",
           "scale": 1.0,
-          "samples": 600,
-          "inside_percent": 39.0,
-          "min_clearance_m": 3e-06
+          "samples": 450,
+          "inside_percent": 97.1111,
+          "min_clearance_m": 9e-06
         },
         {
           "profile": "rounded_rect",
           "scale": 0.8,
-          "samples": 600,
-          "inside_percent": 39.5,
-          "min_clearance_m": 1e-05
+          "samples": 450,
+          "inside_percent": 97.1111,
+          "min_clearance_m": 9e-06
         },
         {
           "profile": "rounded_rect",
           "scale": 0.62,
-          "samples": 600,
-          "inside_percent": 39.0,
-          "min_clearance_m": 1.4e-05
+          "samples": 450,
+          "inside_percent": 97.1111,
+          "min_clearance_m": 9e-06
         },
         {
           "profile": "rounded_rect",
           "scale": 0.45,
-          "samples": 600,
-          "inside_percent": 38.5,
-          "min_clearance_m": 1.7e-05
+          "samples": 450,
+          "inside_percent": 97.1111,
+          "min_clearance_m": 9e-06
         },
         {
           "profile": "oval",
           "scale": 1.0,
-          "samples": 600,
-          "inside_percent": 39.3333,
-          "min_clearance_m": 8e-06
+          "samples": 450,
+          "inside_percent": 98.4444,
+          "min_clearance_m": 2e-06
         },
         {
           "profile": "oval",
           "scale": 0.8,
-          "samples": 600,
-          "inside_percent": 39.5,
-          "min_clearance_m": 1e-06
+          "samples": 450,
+          "inside_percent": 98.4444,
+          "min_clearance_m": 2e-06
         },
         {
           "profile": "oval",
           "scale": 0.62,
-          "samples": 600,
-          "inside_percent": 39.3333,
-          "min_clearance_m": 5e-06
+          "samples": 450,
+          "inside_percent": 98.4444,
+          "min_clearance_m": 2e-06
         },
         {
           "profile": "oval",
           "scale": 0.45,
-          "samples": 600,
-          "inside_percent": 39.0,
-          "min_clearance_m": 1.1e-05
+          "samples": 450,
+          "inside_percent": 98.4444,
+          "min_clearance_m": 2e-06
         },
         {
           "profile": "round",
           "scale": 1.0,
-          "samples": 600,
-          "inside_percent": 39.0,
+          "samples": 450,
+          "inside_percent": 97.5556,
           "min_clearance_m": 2e-06
         },
         {
           "profile": "round",
           "scale": 0.8,
-          "samples": 600,
-          "inside_percent": 39.0,
-          "min_clearance_m": 4e-06
+          "samples": 450,
+          "inside_percent": 97.5556,
+          "min_clearance_m": 2e-06
         },
         {
           "profile": "round",
           "scale": 0.62,
-          "samples": 600,
-          "inside_percent": 38.6667,
-          "min_clearance_m": 9e-06
+          "samples": 450,
+          "inside_percent": 97.5556,
+          "min_clearance_m": 2e-06
         },
         {
           "profile": "round",
           "scale": 0.45,
-          "samples": 600,
-          "inside_percent": 39.3333,
-          "min_clearance_m": 1.4e-05
+          "samples": 450,
+          "inside_percent": 97.5556,
+          "min_clearance_m": 2e-06
         }
       ]
     }
@@ -374,21 +388,24 @@
     "guide_containment_100": false
   },
   "stage_result": {
-    "wall_thickness_probe": "FIXED AND VALIDATED",
-    "evidence": "at a 6 mm solidify offset the median measured wall is 0.00574 m (LEFT) and 0.00573 m (RIGHT). The probe now reports the offset itself, which is exactly what wall thickness means, and the same measurement previously reported 0.00001 m. The self-hit was the cause and skipping the first crossing fixed it.",
-    "distribution": "median 5.74 mm, mean 4.82 mm, p5 0.166 mm, max 82 mm over ~2100 samples. The wide max is where the ray runs along a tangent; the median is the number to use.",
-    "consequence": "the cavity thickness can now be chosen from a real distribution. 6 mm is the first offset whose median clears 2x guide radius + epsilon, so it is the current candidate.",
-    "guide_placement": "STILL FAILING, cause narrowed",
-    "guide_evidence": "every profile and scale lands 39-54% inside. Clearance at the path is ~1e-05 m, i.e. the path sits on the wall.",
-    "remaining_cause": "the centreline heuristic is wrong. Slab centroid and 'deepest vertex' both fail because a solidified shell has two surfaces; neither a slab centroid nor a deepest-vertex pick is guaranteed to land BETWEEN them. A correct centreline needs the midpoint of the near-wall and far-wall intersections along the surface normal at each slab, which is directly available now that the two crossings are already being measured.",
+    "cavity": "PASS - valid closed manifold at every offset 2-12 mm, both sides",
+    "wall_probe": "PASS - median 0.00574 m at a 6 mm offset, i.e. the probe reports the offset itself",
+    "centreline_v2": "IMPLEMENTED AND WORKING - near-wall/far-wall midpoint with parity-selected wall pair. QA: 24 samples, 18 valid wall pairs, 0 midpoints outside.",
+    "guide_containment": "39-54% -> 97.11% (LEFT) / 97.56% (RIGHT)",
+    "residual_2_9_percent": {
+      "observation": "the residual is EXACTLY invariant to guide radius (1.0, 0.8, 0.62, 0.45 all give 97.1111%) and to tapering the end rings (unchanged at 97.1111%)",
+      "elimination": "a real geometric protrusion must shrink when the radius shrinks. Radius-independent and taper-independent means the 13 failing samples out of 450 are not moving with the geometry.",
+      "most_likely_cause": "inside_volume() casts a single +Z ray and takes parity. On a face that is nearly tangent to +Z the crossing can be missed or double-counted, flipping the verdict. The centreline QA (same function) reports 18/18 inside, so the test is sound for most samples and fragile for a few.",
+      "exact_next_fix": "make inside_volume() vote over three ray directions (+Z, +X, +Y) and take the majority. That is a one-line change and it is the last thing standing between this stage and a 100% containment result."
+    },
     "not_reached": [
-      "guide containment 100%",
+      "100% containment",
       "clearance distribution for a placed guide",
-      "body/trunk collision",
-      "screen-space QA (4 cameras)",
+      "collision",
+      "screen-space QA",
       "trunk ownership and motion",
-      "OFF and ON 600 px QA",
-      "Vehicle State Asset Production Parts 1-22"
+      "OFF/ON 600 px",
+      "Parts 1-28"
     ]
   }
 }

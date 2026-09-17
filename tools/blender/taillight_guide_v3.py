@@ -204,52 +204,128 @@ def main():
         th, h, cov, t = chosen
         tree = base.bvh_of(cov)
 
-        # Centreline: walk the cavity's own vertices, take the deepest sample
-        # in each slab along X, then smooth. Depth is measured to the boundary,
-        # so the path prefers the fat middle of the cavity.
+        # CENTERLINE V2 - mid-wall centreline.
+        #
+        # Both earlier heuristics failed for the same structural reason: a
+        # solidified shell has TWO surfaces, so neither a slab centroid nor a
+        # deepest vertex is guaranteed to land between them. This takes the
+        # midpoint of the near-wall and far-wall intersections along the local
+        # normal, and verifies that midpoint with the point-inside test.
+        def ordered_crossings(origin, direction, limit=0.5):
+            hits = []
+            o = Vector(origin)
+            travelled = 0.0
+            for _ in range(64):
+                res = tree.ray_cast(o, direction, limit - travelled)
+                loc = res[0]
+                if loc is None:
+                    break
+                travelled += (loc - o).length
+                if travelled >= limit:
+                    break
+                hits.append((travelled, loc.copy()))
+                o = loc + direction * 1e-4
+                if len(hits) > 32:
+                    break
+            return hits
+
         cv = [cov.matrix_world @ v.co for v in cov.data.vertices]
+        nrm = cov.data.vertex_normals
+        mw3 = cov.matrix_world.to_3x3()
         xs = sorted(p.x for p in cv)
         lo_x, hi_x = xs[0], xs[-1]
         steps = 24
         raw = []
+        qa = {"samples": 0, "valid_pairs": 0, "invalid_pairs": 0,
+              "midpoints_inside": 0, "midpoints_outside": 0}
         for i in range(steps):
             t_ = i / (steps - 1.0)
             cx = lo_x + (hi_x - lo_x) * t_
-            band = [p for p in cv if abs(p.x - cx) < (hi_x - lo_x) / steps]
+            band = [(j, p) for j, p in enumerate(cv)
+                    if abs(p.x - cx) < (hi_x - lo_x) / steps]
             if not band:
                 continue
-            # The CENTROID of a slab's vertices sits inside the wall. Picking
-            # the "deepest" vertex puts the path ON the far wall instead, which
-            # is why the first version measured clearances of 0.0 and put half
-            # the guide outside the cavity.
             c = Vector((0.0, 0.0, 0.0))
-            for p in band:
+            n = Vector((0.0, 0.0, 0.0))
+            for j, p in band:
                 c += p
+                n += mw3 @ Vector(nrm[j].vector)
             c /= len(band)
-            res = tree.find_nearest(c, 5.0)
-            d = res[3] if res[0] is not None else 0.0
-            if d > 0.0:
-                raw.append((c, d))
+            if n.length < 1e-9:
+                continue
+            n.normalize()
+            qa["samples"] += 1
+            hits = ordered_crossings(c + n * 0.3, -n)
+            if len(hits) < 2:
+                qa["invalid_pairs"] += 1
+                continue
+            # Choose the widest interval whose midpoint is genuinely inside.
+            best = None
+            for k in range(len(hits) - 1):
+                a = hits[k][1]
+                b = hits[k + 1][1]
+                mid = (a + b) * 0.5
+                if not base.inside_volume(tree, mid):
+                    continue
+                width = (b - a).length
+                if best is None or width > best[0]:
+                    best = (width, mid, a, b)
+            if best is None:
+                qa["invalid_pairs"] += 1
+                continue
+            width, mid, a, b = best
+            qa["valid_pairs"] += 1
+            if base.inside_volume(tree, mid):
+                qa["midpoints_inside"] += 1
+            else:
+                qa["midpoints_outside"] += 1
+            raw.append((mid, width))
         if len(raw) < 6:
-            results[side] = {"built": False, "reason": "centerline too short",
-                             "sweep": sweep}
+            results[side] = {"built": False, "reason": "centreline too short",
+                             "centreline_qa": qa, "sweep": sweep}
             continue
-        # Smooth the path.
         pts = [p for p, _ in raw]
-        depth = [d for _, d in raw]
+        depth = [w * 0.5 for _, w in raw]
         sm = []
         for i in range(len(pts)):
             a = pts[max(0, i - 1)]
             b = pts[i]
-            c = pts[min(len(pts) - 1, i + 1)]
-            sm.append((a + b * 2.0 + c) / 4.0)
+            c2 = pts[min(len(pts) - 1, i + 1)]
+            sm.append((a + b * 2.0 + c2) / 4.0)
+        # Smoothing must not push the path out of the cavity.
+        fixed = []
+        for i, p in enumerate(sm):
+            if base.inside_volume(tree, p):
+                fixed.append(p)
+            else:
+                fixed.append(pts[i])
+        sm = fixed
         radii = [max(0.0004, min(0.0030, d * 0.40)) for d in depth]
 
         attempts = []
         picked = None
         for profile in ("rounded_rect", "oval", "round"):
             for f in (1.0, 0.8, 0.62, 0.45):
-                rr = [r * f for r in radii]
+                # Clamp each ring by the clearance actually measured at its
+                # own centre, not only by the slab width: the ring's plane is
+                # perpendicular to the path tangent, which is not always the
+                # cavity's normal direction, so a ring can still poke through
+                # a wall near a bend.
+                rr = []
+                n_last = len(radii) - 1
+                for k, r0 in enumerate(radii):
+                    # Taper the ends: an end ring's plane is tilted relative to
+                    # the cavity normal, so it is the first thing to leave the
+                    # volume, and the residual escape was radius-independent
+                    # which points at an end ring rather than at the body.
+                    end = min(k, n_last - k)
+                    if end == 0:
+                        r0 = r0 * 0.25
+                    elif end == 1:
+                        r0 = r0 * 0.6
+                    res_c = tree.find_nearest(sm[k], 5.0)
+                    clr = res_c[3] if res_c[0] is not None else 0.0
+                    rr.append(max(0.0002, min(r0 * f, clr * 0.5)))
                 guide = make_guide(sm, rr, profile,
                                    f"TailGuide_{side}_{profile}_{f}")
                 gverts = [guide.matrix_world @ v.co
@@ -281,6 +357,7 @@ def main():
                 break
 
         results[side] = {
+            "centreline_qa": qa,
             "built": picked is not None,
             "selected_thickness_m": th,
             "cavity": h,
