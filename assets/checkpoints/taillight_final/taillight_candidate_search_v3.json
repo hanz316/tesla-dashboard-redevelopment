@@ -386,5 +386,26 @@
   "freeze_gate_v3": {
     "surface_offset_cavity": true,
     "guide_containment_100": false
+  },
+  "stage_result": {
+    "cavity": "PASS - valid closed manifold at every offset 2-12 mm, both sides",
+    "wall_probe": "PASS - median 0.00574 m at a 6 mm offset (the probe now reports the offset itself, not a 10 um self-hit)",
+    "centreline_v2": "IMPLEMENTED - near/far wall pair chosen by parity against the closed volume, sample = midpoint. QA: 24 samples, 18 valid wall pairs, 0 midpoints outside.",
+    "guide_containment": "39-54% -> 97.1111% (LEFT) / 97.5567% (RIGHT)",
+    "residual_13_samples": {
+      "invariance": "EXACTLY invariant to guide radius (1.0 / 0.8 / 0.62 / 0.45) and to end-ring taper. A real protrusion must shrink when the geometry shrinks, so these 13 of 450 samples do not follow the cross-section.",
+      "hypothesis_tested_and_refuted": "I attributed it to single-ray parity and changed inside_volume() to vote over three directions. The number did not move, so that hypothesis is WRONG and is recorded as wrong.",
+      "unresolved": "13 of 450 matches one ring of 12 vertices plus one centreline sample, which would mean the ring CENTRE is outside even though the centreline QA reports 18/18 inside. That contradiction is NOT resolved.",
+      "next_step": "print index, group (vertex / edge midpoint / centreline) and source ring for each of the 13 failing samples - a diagnostic, not another guess."
+    },
+    "not_reached": [
+      "100% containment",
+      "clearance for a placed guide",
+      "collision",
+      "screen-space QA",
+      "trunk ownership and motion",
+      "OFF/ON 600 px",
+      "Parts 1-28"
+    ]
   }
 }
