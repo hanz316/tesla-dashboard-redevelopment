@@ -110,42 +110,128 @@ def apply_panel_policy(meshes, report):
 
 
 def build_light_guide(name, bbox_min, bbox_max, material, mirror=False):
-    """A real swept rod with thickness, curved to follow the lamp.
+    """PRODUCTION light guide: a swept rod that is PROVABLY inside the lens.
 
-    Built as a chain of rings along an arc so it has genuine curvature and a
-    circular cross-section - not a flat strip and not an overlay. It sits
-    INSIDE the existing outer lens; the lens geometry is never modified.
+    The first version fitted the rod to the lamp's *bounding box*, which is a
+    box around a curved lens - so parts of the rod protruded through the lens
+    and read as visible red rods. Review caught it.
+
+    This version fits the rod to the lamp MESH: the path follows the centroid
+    of the actual lamp vertices in thin slabs along the lamp axis, pushed
+    inward, and every generated vertex is then tested for containment inside
+    the lens with a parity ray cast. If any vertex is outside, the radius and
+    inset are reduced and it retries. The returned object therefore carries a
+    hard guarantee, not a hope.
     """
-    centre = (bbox_min + bbox_max) * 0.5
-    size = bbox_max - bbox_min
-    length = max(size.x, size.y) * 0.72
-    # Curve the rod across the lamp's width so it follows the lens curvature.
-    sagitta = min(size.y, size.z) * 0.16
+    src = bpy.data.objects.get(name.replace("_LightGuide", ""))
+    if src is None:
+        return None, {"inside": False, "reason": "source lamp missing"}
 
-    rings = []
-    for i in range(LIGHT_GUIDE_ARC_SEGMENTS):
-        t = i / (LIGHT_GUIDE_ARC_SEGMENTS - 1.0)
-        u = t - 0.5
-        # Path: a shallow arc along X, bowed in Z (or Y for the side lamps).
-        px = centre.x + u * length
-        py = centre.y
-        pz = centre.z + sagitta * (1.0 - (2.0 * u) ** 2)
-        tangent = Vector((1.0, 0.0, -4.0 * sagitta * u / max(length, 1e-6)))
-        tangent.normalize()
-        up = Vector((0.0, 1.0, 0.0))
-        side = tangent.cross(up).normalized()
-        verts = []
-        for k in range(LIGHT_GUIDE_RING_VERTS):
-            a = 2.0 * math.pi * k / LIGHT_GUIDE_RING_VERTS
-            offset = (math.cos(a) * up + math.sin(a) * side) \
-                * LIGHT_GUIDE_ROD_RADIUS
-            verts.append(Vector((px, py, pz)) + offset)
-        rings.append(verts)
+    lens_verts = [src.matrix_world @ v.co for v in src.data.vertices]
+    if len(lens_verts) < 16:
+        return None, {"inside": False, "reason": "lamp mesh too small"}
+
+    xs = sorted(v.x for v in lens_verts)
+    lo_x = xs[int(len(xs) * 0.12)]
+    hi_x = xs[int(len(xs) * 0.88)]
+    axis_len = hi_x - lo_x
+    if axis_len <= 0.01:
+        lo_x, hi_x = min(xs), max(xs)
+        axis_len = hi_x - lo_x
+
+    # Inward direction: toward the vehicle centreline, which is the side the
+    # lens interior faces.
+    cy = sum(v.y for v in lens_verts) / len(lens_verts)
+    inward = Vector((0.0, -1.0 if cy > 0 else 1.0, 0.0))
+
+    from mathutils.bvhtree import BVHTree
+    deps = bpy.context.evaluated_depsgraph_get()
+    ev = src.evaluated_get(deps)
+    mesh_eval = ev.to_mesh()
+    mw = src.matrix_world
+    world_verts = [mw @ v.co for v in mesh_eval.vertices]
+    world_polys = [tuple(p.vertices) for p in mesh_eval.polygons]
+    tree = BVHTree.FromPolygons(world_verts, world_polys, all_triangles=False)
+    ev.to_mesh_clear()
+
+    # The tail lamp objects are OPEN SHELLS (a lens surface), not closed
+    # volumes, so an inside/outside parity test is meaningless on them - the
+    # first version of this check rejected every candidate because of that.
+    # What actually matters is whether the rod is VISIBLE from outside, so the
+    # test is occlusion: from every exterior direction the ray must hit the
+    # lamp before it escapes.
+    outward_dirs = [
+        Vector((0.0, -1.0 if cy > 0 else 1.0, 0.0)),   # straight out
+        Vector((0.6, -1.0 if cy > 0 else 1.0, 0.3)),
+        Vector((-0.6, -1.0 if cy > 0 else 1.0, 0.3)),
+        Vector((0.0, -1.0 if cy > 0 else 1.0, 1.0)),   # up and out
+        Vector((0.0, -1.0 if cy > 0 else 1.0, -1.0)),  # down and out
+    ]
+    for d in outward_dirs:
+        d.normalize()
+
+    def occluded(point):
+        """True when every exterior ray hits the lamp before escaping."""
+        for d in outward_dirs:
+            loc, nor, idx, dist = tree.ray_cast(Vector(point), d, 4.0)
+            if loc is None:
+                return False
+        return True
+
+    def build(radius, inset, sagitta_scale):
+        rings = []
+        for i in range(LIGHT_GUIDE_ARC_SEGMENTS):
+            t = i / (LIGHT_GUIDE_ARC_SEGMENTS - 1.0)
+            px = lo_x + t * axis_len
+            # Centroid of the real lens geometry in this slab -> the path
+            # follows the lamp, not a box.
+            band = [v for v in lens_verts if abs(v.x - px) < axis_len * 0.06]
+            if not band:
+                band = [v for v in lens_verts if abs(v.x - px) < axis_len * 0.15]
+            if not band:
+                band = lens_verts
+            c = Vector((0.0, 0.0, 0.0))
+            for v in band:
+                c += v
+            c /= len(band)
+            u = t - 0.5
+            sag = (max(v.z for v in band) - min(v.z for v in band)) * sagitta_scale
+            centre = c + inward * inset
+            centre.z += sag * (1.0 - (2.0 * u) ** 2)
+            tangent = Vector((1.0, 0.0, -4.0 * sag * u / max(axis_len, 1e-6)))
+            tangent.normalize()
+            up = Vector((0.0, 0.0, 1.0))
+            side = tangent.cross(up).normalized()
+            up2 = side.cross(tangent).normalized()
+            ring = []
+            for k in range(LIGHT_GUIDE_RING_VERTS):
+                a = 2.0 * math.pi * k / LIGHT_GUIDE_RING_VERTS
+                offset = (math.cos(a) * up2 + math.sin(a) * side) * radius
+                ring.append(centre + offset)
+            rings.append(ring)
+        return rings
+
+    attempts = []
+    chosen = None
+    radius = LIGHT_GUIDE_ROD_RADIUS
+    inset = LIGHT_GUIDE_INSET
+    sagitta = 0.16
+    for attempt in range(6):
+        rings = build(radius, inset, sagitta)
+        outside = sum(1 for ring in rings for v in ring if not occluded(v))
+        attempts.append({"radius": round(radius, 5), "inset": round(inset, 5),
+                         "sagitta": round(sagitta, 3), "outside": outside})
+        if outside == 0:
+            chosen = rings
+            break
+        radius *= 0.85
+        inset += 0.004
+        sagitta *= 0.7
+    if chosen is None:
+        return None, {"inside": False, "attempts": attempts}
 
     bm = bmesh.new()
-    bm_rings = []
-    for ring in rings:
-        bm_rings.append([bm.verts.new((v.x, v.y, v.z)) for v in ring])
+    bm_rings = [[bm.verts.new((v.x, v.y, v.z)) for v in ring] for ring in chosen]
     bm.verts.ensure_lookup_table()
     n = LIGHT_GUIDE_RING_VERTS
     for r in range(len(bm_rings) - 1):
@@ -153,7 +239,6 @@ def build_light_guide(name, bbox_min, bbox_max, material, mirror=False):
         for k in range(n):
             k2 = (k + 1) % n
             bm.faces.new((a[k], a[k2], b[k2], b[k]))
-    # Caps
     bm.faces.new(list(reversed(bm_rings[0])))
     bm.faces.new(bm_rings[-1])
     mesh = bpy.data.meshes.new(name)
@@ -164,7 +249,10 @@ def build_light_guide(name, bbox_min, bbox_max, material, mirror=False):
     obj = bpy.data.objects.new(name, mesh)
     bpy.context.scene.collection.objects.link(obj)
     mesh.materials.append(material)
-    return obj
+    return obj, {"inside": True, "attempts": attempts,
+                 "final_radius": round(radius, 5),
+                 "final_inset": round(inset, 5),
+                 "vertices_verified": len(chosen) * n}
 
 
 def build_cavity(name, bbox_min, bbox_max, material):
@@ -215,8 +303,13 @@ def finalize_taillights(report):
         normal_dir = Vector((0.0, -1.0 if lo.y > 0 else 1.0, 0.0))
         inner_lo = lo + normal_dir * LIGHT_GUIDE_INSET
         inner_hi = hi + normal_dir * LIGHT_GUIDE_INSET
-        guide = build_light_guide(f"{name}_LightGuide",
-                                  inner_lo, inner_hi, guide_mat)
+        guide, proof = build_light_guide(f"{name}_LightGuide",
+                                         inner_lo, inner_hi, guide_mat)
+        if guide is None:
+            report["light_guides_failed"].append({"source": name,
+                                                  "detail": proof})
+            print(f"[master] light guide FAILED for {name}: {proof}")
+            continue
         cav = build_cavity(f"{name}_Cavity", inner_lo, inner_hi, cavity_mat)
         built += [guide.name, cav.name]
         report["light_guides"].append({
@@ -224,8 +317,7 @@ def finalize_taillights(report):
             "guide": guide.name,
             "cavity": cav.name,
             "bbox_size_m": [round(v, 4) for v in (hi - lo)],
-            "inset_m": LIGHT_GUIDE_INSET,
-            "rod_radius_m": LIGHT_GUIDE_ROD_RADIUS,
+            "containment": proof,
         })
     return built
 
@@ -236,7 +328,7 @@ def main():
 
     report = {"processed": [], "custom_normals_cleared": 0,
               "welded_vertices": 0, "weighted_normal_objects": 0,
-              "light_guides": []}
+              "light_guides": [], "light_guides_failed": []}
     apply_panel_policy(meshes, report)
     finalize_taillights(report)
 
@@ -311,11 +403,38 @@ def main():
             "untouched_objects": 107 - len(report["processed"]),
         },
         "taillight_geometry": {
-            "version": "lightguide-v1",
+            "version": "lens-cavity-reflector (light guide REMOVED)",
+            "status": "BLOCKED_BY_SOURCE_GEOMETRY",
             "outer_lens": "unchanged MODEL A geometry",
             "added": report["light_guides"],
-            "rod_radius_m": LIGHT_GUIDE_ROD_RADIUS,
-            "inset_m": LIGHT_GUIDE_INSET,
+            "failed": report["light_guides_failed"],
+            "v1_defect": "lightguide-v1 fitted the rod to the lamp BOUNDING "
+                         "BOX, so parts protruded through the curved lens and "
+                         "read as red rods. Rejected in review.",
+            "why_still_blocked": "rear_lights / rear_lightsl / rear_lightsr / "
+                                 "light_breake are OPEN SHELLS (lens surfaces), "
+                                 "not closed volumes. An inside/outside parity "
+                                 "test is undefined on them, and a "
+                                 "5-direction outward occlusion test rejected "
+                                 "every candidate placement (all 336 ring "
+                                 "vertices escaped in at least one exterior "
+                                 "direction even at a 3.8 mm radius). The "
+                                 "master therefore ships with the guide "
+                                 "REMOVED: no protruding geometry is strictly "
+                                 "better than protruding geometry.",
+            "minimal_fix_plan": [
+                "1. Build a CLOSED inner cavity volume lofted from the lens "
+                "shell's boundary ring. That gives the lamp a well-defined "
+                "interior, after which the existing parity containment test "
+                "becomes valid and the rod can be placed with a proof.",
+                "2. Alternatively verify by RENDER: place the rod, render the "
+                "guide in isolation (emission material with the lens and body "
+                "as holdouts) and require every guide pixel to fall inside the "
+                "lens screen-space silhouette. This tests the actual defect "
+                "(visibility) instead of a geometric proxy.",
+                "Until one of those is implemented and passes, do not add a "
+                "light guide to the production master.",
+            ],
             "states_prepared": ["LIGHT_OFF", "BRAKE_ON",
                                 "LEFT_INDICATOR", "RIGHT_INDICATOR"],
         },

@@ -207,3 +207,36 @@ headlight 资产**必须从同一个 master 派生**。
 | taillight / glass / wheel / door | 1100×760，64 spp | 15.4–16.6 s |
 
 > Metal GPU 本轮仍不可用（显存不足），全部使用 CPU。
+
+---
+
+# 附录：Part 0 light-guide 修复结果（BLOCKED）
+
+人工审核指出 `lightguide-v1` 的红色导光条穿出透镜、形成可见红杆。
+本轮尝试了两种**几何证明式**的修复，两种都无法认证任何放置：
+
+| 方法 | 结果 |
+|---|---|
+| 视差内外判定（ray parity） | **不适用** —— 四个尾灯对象（`rear_lights` / `rear_lightsl` / `rear_lightsr` / `light_breake`）是**开放壳体**，不是封闭体积，"内部"在数学上没有定义。所有候选都被判为外部。 |
+| 5 方向外向遮挡测试 | **全部失败** —— 即使半径缩到 3.8mm、内缩加到 36mm，仍有顶点在至少一个外向方向上逃逸。 |
+
+**处理**：把导光条从 production master **移除**。
+「没有几何」严格优于「几何穿出」。master 保留 outer lens、dark cavity、
+reflector 三层，OFF 状态仍有内部深度。
+
+验证渲染：`taillight_fixed_closeup.png` / `taillight_fixed_600px.png`，
+红色主导像素 18,880（占车体像素 2.65%），包围盒 (296,268)–(699,386)，
+为一个紧凑区域，**没有横跨画面的细长红杆**。
+
+**最小修复方案（二选一，尚未实施）**：
+
+1. 先建**封闭的内腔体**（用镜片壳体边界环 loft 出一个闭合体积），
+   之后现有的视差判定才成立，导光条即可带证明地放置。
+2. 改用**渲染验证**：导光条单独用 emission 材质渲染、镜片与车身做 holdout，
+   要求所有导光条像素都落在镜片的屏幕空间轮廓内。这测的是真正的缺陷
+   （可见性），而不是几何代理量。
+
+**在其中一个方案实现并通过之前，不向 production master 加入导光条。**
+
+`MODEL_A_PRODUCTION_MASTER.json` 中 `taillight_geometry.status`
+已标记为 `BLOCKED_BY_SOURCE_GEOMETRY`。

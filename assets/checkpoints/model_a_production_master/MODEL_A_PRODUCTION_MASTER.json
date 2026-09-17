@@ -33,60 +33,195 @@
     "untouched_objects": 102
   },
   "taillight_geometry": {
-    "version": "lightguide-v1",
+    "version": "lens-cavity-reflector (light guide REMOVED)",
+    "status": "BLOCKED_BY_SOURCE_GEOMETRY",
     "outer_lens": "unchanged MODEL A geometry",
-    "added": [
+    "added": [],
+    "failed": [
       {
-        "source_object": "rear_lights",
-        "guide": "rear_lights_LightGuide",
-        "cavity": "rear_lights_Cavity",
-        "bbox_size_m": [
-          0.1875,
-          1.6364,
-          0.1504
-        ],
-        "inset_m": 0.016,
-        "rod_radius_m": 0.0085
+        "source": "rear_lights",
+        "detail": {
+          "inside": false,
+          "attempts": [
+            {
+              "radius": 0.0085,
+              "inset": 0.016,
+              "sagitta": 0.16,
+              "outside": 336
+            },
+            {
+              "radius": 0.00723,
+              "inset": 0.02,
+              "sagitta": 0.112,
+              "outside": 336
+            },
+            {
+              "radius": 0.00614,
+              "inset": 0.024,
+              "sagitta": 0.078,
+              "outside": 336
+            },
+            {
+              "radius": 0.00522,
+              "inset": 0.028,
+              "sagitta": 0.055,
+              "outside": 336
+            },
+            {
+              "radius": 0.00444,
+              "inset": 0.032,
+              "sagitta": 0.038,
+              "outside": 336
+            },
+            {
+              "radius": 0.00377,
+              "inset": 0.036,
+              "sagitta": 0.027,
+              "outside": 336
+            }
+          ]
+        }
       },
       {
-        "source_object": "rear_lightsl",
-        "guide": "rear_lightsl_LightGuide",
-        "cavity": "rear_lightsl_Cavity",
-        "bbox_size_m": [
-          0.1137,
-          0.2213,
-          0.0969
-        ],
-        "inset_m": 0.016,
-        "rod_radius_m": 0.0085
+        "source": "rear_lightsl",
+        "detail": {
+          "inside": false,
+          "attempts": [
+            {
+              "radius": 0.0085,
+              "inset": 0.016,
+              "sagitta": 0.16,
+              "outside": 335
+            },
+            {
+              "radius": 0.00723,
+              "inset": 0.02,
+              "sagitta": 0.112,
+              "outside": 336
+            },
+            {
+              "radius": 0.00614,
+              "inset": 0.024,
+              "sagitta": 0.078,
+              "outside": 336
+            },
+            {
+              "radius": 0.00522,
+              "inset": 0.028,
+              "sagitta": 0.055,
+              "outside": 336
+            },
+            {
+              "radius": 0.00444,
+              "inset": 0.032,
+              "sagitta": 0.038,
+              "outside": 336
+            },
+            {
+              "radius": 0.00377,
+              "inset": 0.036,
+              "sagitta": 0.027,
+              "outside": 336
+            }
+          ]
+        }
       },
       {
-        "source_object": "rear_lightsr",
-        "guide": "rear_lightsr_LightGuide",
-        "cavity": "rear_lightsr_Cavity",
-        "bbox_size_m": [
-          0.1137,
-          0.2213,
-          0.0969
-        ],
-        "inset_m": 0.016,
-        "rod_radius_m": 0.0085
+        "source": "rear_lightsr",
+        "detail": {
+          "inside": false,
+          "attempts": [
+            {
+              "radius": 0.0085,
+              "inset": 0.016,
+              "sagitta": 0.16,
+              "outside": 335
+            },
+            {
+              "radius": 0.00723,
+              "inset": 0.02,
+              "sagitta": 0.112,
+              "outside": 336
+            },
+            {
+              "radius": 0.00614,
+              "inset": 0.024,
+              "sagitta": 0.078,
+              "outside": 336
+            },
+            {
+              "radius": 0.00522,
+              "inset": 0.028,
+              "sagitta": 0.055,
+              "outside": 336
+            },
+            {
+              "radius": 0.00444,
+              "inset": 0.032,
+              "sagitta": 0.038,
+              "outside": 336
+            },
+            {
+              "radius": 0.00377,
+              "inset": 0.036,
+              "sagitta": 0.027,
+              "outside": 336
+            }
+          ]
+        }
       },
       {
-        "source_object": "light_breake",
-        "guide": "light_breake_LightGuide",
-        "cavity": "light_breake_Cavity",
-        "bbox_size_m": [
-          0.0591,
-          1.4679,
-          0.0086
-        ],
-        "inset_m": 0.016,
-        "rod_radius_m": 0.0085
+        "source": "light_breake",
+        "detail": {
+          "inside": false,
+          "attempts": [
+            {
+              "radius": 0.0085,
+              "inset": 0.016,
+              "sagitta": 0.16,
+              "outside": 336
+            },
+            {
+              "radius": 0.00723,
+              "inset": 0.02,
+              "sagitta": 0.112,
+              "outside": 336
+            },
+            {
+              "radius": 0.00614,
+              "inset": 0.024,
+              "sagitta": 0.078,
+              "outside": 336
+            },
+            {
+              "radius": 0.00522,
+              "inset": 0.028,
+              "sagitta": 0.055,
+              "outside": 336
+            },
+            {
+              "radius": 0.00444,
+              "inset": 0.032,
+              "sagitta": 0.038,
+              "outside": 336
+            },
+            {
+              "radius": 0.00377,
+              "inset": 0.036,
+              "sagitta": 0.027,
+              "outside": 336
+            }
+          ]
+        }
       }
     ],
-    "rod_radius_m": 0.0085,
-    "inset_m": 0.016,
+    "v1_defect": "lightguide-v1 fitted the rod to the lamp BOUNDING BOX, so parts protruded through the curved lens and read as red rods. Rejected in review.",
+    "why_still_blocked": "rear_lights / rear_lightsl / rear_lightsr / light_breake are OPEN SHELLS (lens surfaces), not closed volumes. An inside/outside parity test is undefined on them, and a 5-direction outward occlusion test rejected every candidate placement (all 336 ring vertices escaped in at least one exterior direction even at a 3.8 mm radius). The master therefore ships with the guide REMOVED: no protruding geometry is strictly better than protruding geometry.",
+    "minimal_fix_plan": [
+      "1. Build a CLOSED inner cavity volume lofted from the lens shell's boundary ring. That gives the lamp a well-defined interior, after which the existing parity containment test becomes valid and the rod can be placed with a proof.",
+      "2. Alternatively verify by RENDER: place the rod, render the guide in isolation (emission material with the lens and body as holdouts) and require every guide pixel to fall inside the lens screen-space silhouette. This tests the actual defect (visibility) instead of a geometric proxy.",
+      "Until one of those is implemented and passes, do not add a light guide to the production master."
+    ],
     "states_prepared": [
       "LIGHT_OFF",
       "BRAKE_ON",
