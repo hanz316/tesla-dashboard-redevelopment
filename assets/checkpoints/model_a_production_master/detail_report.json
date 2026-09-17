@@ -1,0 +1,13 @@
+{
+  "mesh_objects": 115,
+  "vehicle_bbox_size_m": [
+    4.9928,
+    2.1858,
+    1.4087
+  ],
+  "objects_outside_vehicle_bbox": [],
+  "degenerate_objects": [],
+  "view": "hero",
+  "samples": 96,
+  "render_seconds": 49.0
+}

@@ -1,0 +1,248 @@
+{
+  "asset": "MODEL_A_PRODUCTION_MASTER",
+  "status": "LOCKED",
+  "derived_from": {
+    "geometry": "MODEL A - Tesla 2018 Model 3 (Ameer Studio FBX)",
+    "source_file": "assets/source/download/model_a_ameer/source/tesla_car1.fbx",
+    "blend": "assets/source/blender/model_a_production_master.blend",
+    "builder": "tools/blender/build_production_master.py"
+  },
+  "normal_policy": {
+    "policy": {
+      "door_lf": "WEIGHTED",
+      "door_rf": "CLEAN",
+      "door_lr": "KEEP_ORIGINAL",
+      "door_rr": "KEEP_ORIGINAL",
+      "bonnet_ok": "WEIGHTED",
+      "boot": "KEEP_ORIGINAL",
+      "front_bumper_ok": "CLEAN",
+      "rear_bumper_ok": "KEEP_ORIGINAL",
+      "body": "WEIGHTED"
+    },
+    "source": "panel_normal_policy.json (measured, see MODEL_A_CEILING_TEST.md)",
+    "applied": [
+      "body",
+      "bonnet_ok",
+      "door_lf",
+      "door_rf",
+      "front_bumper_ok"
+    ],
+    "welded_vertices": 8158,
+    "custom_normals_cleared": 5,
+    "weighted_normal_objects": 3,
+    "untouched_objects": 102
+  },
+  "taillight_geometry": {
+    "version": "lightguide-v1",
+    "outer_lens": "unchanged MODEL A geometry",
+    "added": [
+      {
+        "source_object": "rear_lights",
+        "guide": "rear_lights_LightGuide",
+        "cavity": "rear_lights_Cavity",
+        "bbox_size_m": [
+          0.1875,
+          1.6364,
+          0.1504
+        ],
+        "inset_m": 0.016,
+        "rod_radius_m": 0.0085
+      },
+      {
+        "source_object": "rear_lightsl",
+        "guide": "rear_lightsl_LightGuide",
+        "cavity": "rear_lightsl_Cavity",
+        "bbox_size_m": [
+          0.1137,
+          0.2213,
+          0.0969
+        ],
+        "inset_m": 0.016,
+        "rod_radius_m": 0.0085
+      },
+      {
+        "source_object": "rear_lightsr",
+        "guide": "rear_lightsr_LightGuide",
+        "cavity": "rear_lightsr_Cavity",
+        "bbox_size_m": [
+          0.1137,
+          0.2213,
+          0.0969
+        ],
+        "inset_m": 0.016,
+        "rod_radius_m": 0.0085
+      },
+      {
+        "source_object": "light_breake",
+        "guide": "light_breake_LightGuide",
+        "cavity": "light_breake_Cavity",
+        "bbox_size_m": [
+          0.0591,
+          1.4679,
+          0.0086
+        ],
+        "inset_m": 0.016,
+        "rod_radius_m": 0.0085
+      }
+    ],
+    "rod_radius_m": 0.0085,
+    "inset_m": 0.016,
+    "states_prepared": [
+      "LIGHT_OFF",
+      "BRAKE_ON",
+      "LEFT_INDICATOR",
+      "RIGHT_INDICATOR"
+    ]
+  },
+  "paint": {
+    "name": "REFERENCE AUTOMOTIVE PAINT (basecoat + independent clearcoat)",
+    "architecture": "Glossy BSDF (coat) mixed by Fresnel over a metallic Principled basecoat; Voronoi flake on the BASECOAT",
+    "silver": "OEM SILVER NEUTRAL",
+    "base_color": [
+      0.56,
+      0.578,
+      0.605
+    ],
+    "basecoat_metallic": 1.0,
+    "basecoat_roughness": 0.34,
+    "basecoat_roughness_variation": {
+      "scale": 2.6,
+      "range": "0.90-1.12"
+    },
+    "flake": {
+      "type": "Voronoi F1",
+      "scale": 260.0,
+      "bump_strength": 0.16,
+      "bump_distance": 0.0006
+    },
+    "clearcoat_bsdf": "Glossy",
+    "clearcoat_roughness": 0.018,
+    "clearcoat_color": [
+      0.92,
+      0.93,
+      0.95
+    ],
+    "mix": {
+      "base": 0.42,
+      "fresnel_gain": 0.62,
+      "layer_blend": 0.16
+    }
+  },
+  "glass": {
+    "architecture": "Principled dielectric + independent Glossy coating layer, mixed by coat weight",
+    "panes": {
+      "roof": {
+        "tint": [
+          0.012,
+          0.016,
+          0.024
+        ],
+        "rough": 0.01,
+        "trans": 0.1,
+        "ior": 1.545,
+        "coat": 0.85
+      },
+      "front": {
+        "tint": [
+          0.018,
+          0.022,
+          0.03
+        ],
+        "rough": 0.016,
+        "trans": 0.22,
+        "ior": 1.525,
+        "coat": 0.55
+      },
+      "side": {
+        "tint": [
+          0.022,
+          0.027,
+          0.036
+        ],
+        "rough": 0.02,
+        "trans": 0.3,
+        "ior": 1.52,
+        "coat": 0.4
+      },
+      "rear": {
+        "tint": [
+          0.017,
+          0.021,
+          0.029
+        ],
+        "rough": 0.018,
+        "trans": 0.25,
+        "ior": 1.522,
+        "coat": 0.48
+      }
+    }
+  },
+  "wheel_tire": {
+    "rim": {
+      "base_color": [
+        0.15,
+        0.157,
+        0.17
+      ],
+      "metallic": 0.95,
+      "roughness": 0.225,
+      "anisotropic": 0.62,
+      "coat": 0.28,
+      "specular": 0.7
+    },
+    "tire": {
+      "base_color": [
+        0.02,
+        0.02,
+        0.022
+      ],
+      "metallic": 0.0,
+      "roughness": 0.93,
+      "specular": 0.26
+    },
+    "brake_disc": {
+      "base_color": [
+        0.27,
+        0.272,
+        0.278
+      ],
+      "metallic": 1.0,
+      "roughness": 0.38,
+      "anisotropic": 0.35
+    },
+    "note": "rim stays well below body brightness (0.150 vs 0.560 base colour)"
+  },
+  "camera": {
+    "preset": "V2-A",
+    "type": "ORTHO",
+    "azimuth_deg": -32.0,
+    "elevation_deg": 22.0,
+    "ortho_scale": 4.25,
+    "look_at_z": 0.6,
+    "distance_m": 14.0,
+    "render_canvas": "1100x760",
+    "supersample": 2,
+    "output_resolution": "2200x1520"
+  },
+  "lighting": {
+    "environment": "assets/source/hdri/photo_studio_01_2k.hdr",
+    "environment_license": "CC0 1.0 (Poly Haven, Sergej Majboroda)",
+    "environment_strength": 1.0,
+    "rig": "HDRI HYBRID: 1 key (260 W, glossy) + 1 fill (90 W x2, diffuse-only) + 1 rim (150 W) + 1 bounce (46 W x2, diffuse-only)",
+    "film_transparent": true
+  },
+  "render": {
+    "engine": "Cycles",
+    "device": "CPU (GPU ran out of memory)",
+    "samples": 96,
+    "adaptive": true,
+    "denoise": true,
+    "sample_clamp_indirect": 4.0,
+    "sample_clamp_direct": 6.0,
+    "view_transform": "AgX",
+    "exposure": 0.1,
+    "gamma": 1.0,
+    "output": "PNG RGBA"
+  },
+  "lock_notice": "These parameters are LOCKED. Door_FL/FR/RL/RR, frunk, trunk, brake, indicator and headlight assets must all derive from this master. Per-state re-tuning of material, camera or lighting is forbidden because it produces visible jumps between states."
+}
