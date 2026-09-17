@@ -66,6 +66,21 @@ if(BUILD_HOST_TOOLS)
     target_link_libraries(dashboard_delta_animation_tests PRIVATE dashboard_core)
     target_compile_options(dashboard_delta_animation_tests PRIVATE -Wall -Wextra -Wpedantic)
     add_test(NAME dashboard_delta_animation_tests COMMAND dashboard_delta_animation_tests)
+
+    # Geometry rules for the taillight light guide. These run on the host: the
+    # Blender-only pieces are stubbed, and the cavity is replaced by an analytic
+    # distance function, so the rules that were expensive to learn (reject
+    # geometry rather than force a minimum radius, count coverage in slabs,
+    # attribute the limiting clearance sample) are checked without a GPU,
+    # Blender or the source model.
+    find_program(PYTHON3_EXECUTABLE python3)
+    if(PYTHON3_EXECUTABLE)
+        add_test(NAME dashboard_taillight_guide_tests
+                 COMMAND "${PYTHON3_EXECUTABLE}"
+                         "${CMAKE_CURRENT_SOURCE_DIR}/tests/taillight_guide_tests.py")
+    else()
+        message(WARNING "python3 not found: taillight guide regression tests disabled")
+    endif()
 endif()
 
 if(BUILD_FLYTHINGS_DEVICE)
