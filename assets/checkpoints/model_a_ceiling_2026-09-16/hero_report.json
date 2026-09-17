@@ -1,0 +1,11 @@
+{
+  "treatment": "hero",
+  "view": "production",
+  "panel": "door_lf",
+  "normals": {
+    "welded": 26868,
+    "custom_normals_cleared": 107
+  },
+  "light_guides": 4,
+  "render_seconds": 77.9
+}

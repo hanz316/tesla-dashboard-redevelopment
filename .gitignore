@@ -87,3 +87,7 @@ assets/rendered/hdri_round2/
 # copies live in assets/checkpoints/vehicle_material_diagnostic_2026-09-16/).
 assets/rendered/diagnostic/
 assets/rendered/material_study/
+
+# MODEL A quality ceiling test working renders (regenerable; review copies live
+# in assets/checkpoints/model_a_ceiling_2026-09-16/).
+assets/rendered/ceiling/

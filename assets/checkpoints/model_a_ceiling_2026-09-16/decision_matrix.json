@@ -1,0 +1,67 @@
+{
+  "note": "facts only. No scores, no winner. Decision is for human review.",
+  "rows": {
+    "MODEL_A_CURRENT": {
+      "source": "assets/source/download/model_a_ameer/source/tesla_car1.fbx",
+      "mesh_objects": 107,
+      "exterior_objects": 10,
+      "surface_quality": "triangulated 100%, skin dihedral p95 18.0-26.9 deg, thin triangles 29-38%",
+      "normal_quality": "every object carries FBX custom split normals; wheels 19.9-46.1% flipped faces",
+      "topology_quality": "max face / median up to 1406x (door_lf); body has 281 islands, 9720 non-manifold edges",
+      "panel_separation": "real: doors, bonnet, boot and both bumpers are separate objects",
+      "door_animation_ready": "YES - 4 independent door objects with verified hinges",
+      "frunk_ready": "YES - bonnet_ok is a separate object",
+      "trunk_ready": "YES - boot is a separate object",
+      "taillight_detail": "PARTIAL - lens + reflector + red trim + housing exist, NO light guide",
+      "wheel_detail": "GOOD - separate hub objects, rim/tire/disc/caliper separable",
+      "glass_detail": "GOOD - roof pane and windows are separate glass objects",
+      "estimated_cleanup": "2 classes of work (below)",
+      "600px_visual": "mean 136.7 std 49.9, 0 clipped; plastic feel present per human review"
+    },
+    "MODEL_A_CLEANED": {
+      "surface_quality": "unchanged geometry",
+      "normal_quality": "custom normals cleared, 26868 verts welded, weighted normal keep_sharp",
+      "topology_quality": "unchanged",
+      "panel_separation": "unchanged (creases preserved by keep_sharp)",
+      "per_panel_effect": "WEIGHTED: door_lf, bonnet_ok, body | CLEAN: door_rf, front_bumper_ok | KEEP_ORIGINAL: door_lr, door_rr, boot, rear_bumper_ok",
+      "600px_visual": "mean 136.8 std 49.9 - luminance identical to CURRENT; only reflection SHAPE changes",
+      "note": "strip diagnostic: doors waviness -83%, roof -56%. HDRI doors view: 1.671 -> 1.668 (no change)."
+    },
+    "MODEL_A_LOCAL_REMESH": {
+      "method": "voxel remesh of door_lf only, in memory, as a retopology proxy",
+      "faces": "34961 -> 249522 (4mm) / 679472 (2.5mm)",
+      "silhouette_deviation": "median 1.8mm / 1.15mm, p95 10mm, max 52mm",
+      "reflection_waviness": "1.671 (current) -> 3.578 (4mm) -> 3.597 (2.5mm)",
+      "result": "WORSE. 19x the face count and 2.7x the density produce no improvement over each other and both are worse than the original.",
+      "conclusion": "topology is NOT the ceiling for reflection quality"
+    },
+    "MODEL_B": {
+      "source": "assets/source/download/model_b_wintrez/teslaMSFullSketchfab001.blend",
+      "mesh_objects": 1,
+      "vertices": 134283,
+      "triangles": 126258,
+      "islands": 305,
+      "non_manifold_edges": 20773,
+      "surface_quality": "dihedral median 6.60 deg, p95 53.86 deg - rougher by this measure than MODEL A",
+      "normal_quality": "single mesh; no per-panel normal control",
+      "topology_quality": "aspect p95 26.0, thin triangles 21.0%",
+      "panel_separation": "NONE - one object, no separable doors/bonnet/boot",
+      "door_animation_ready": "NO",
+      "frunk_ready": "NO",
+      "trunk_ready": "NO",
+      "taillight_detail": "not separable from the single mesh",
+      "wheel_detail": "not separable",
+      "glass_detail": "not separable",
+      "600px_visual": "mean 166.6 std 34.5 - brighter and flatter than MODEL A"
+    }
+  },
+  "cleanup_classes_if_model_a_continues": [
+    "A1 normal policy: apply the per-panel policy (3 of 9 panels weighted, 2 clean, 4 keep original) - already implemented and reversible",
+    "A2 taillight geometry: add internal light guide + cavity structure; the only panel where geometry is provably missing"
+  ],
+  "source_model_ceiling": {
+    "declared": true,
+    "what_is_capped": "not reflection smoothness (remesh proved it), but DETAIL: there is no light-guide geometry, and the exterior is 100% triangulated with up to 1406x area spread",
+    "what_is_not_capped": "panel separation, door/frunk/trunk animation structure, and normal-driven shading are all intact and fixable"
+  }
+}

@@ -1,0 +1,331 @@
+{
+  "policy": {
+    "door_lf": "WEIGHTED",
+    "door_rf": "CLEAN",
+    "door_lr": "KEEP_ORIGINAL",
+    "door_rr": "KEEP_ORIGINAL",
+    "bonnet_ok": "WEIGHTED",
+    "boot": "KEEP_ORIGINAL",
+    "front_bumper_ok": "CLEAN",
+    "rear_bumper_ok": "KEEP_ORIGINAL",
+    "body": "WEIGHTED"
+  },
+  "panels": {
+    "door_lf": {
+      "role": "front left door",
+      "view": "rear_quarter",
+      "box": [
+        137,
+        128,
+        357,
+        443
+      ],
+      "verdict": "WEIGHTED",
+      "reason": "waviness 3.849 -> 2.777, breaks 41 -> 38, crease 2.082 -> 2.052",
+      "measurements": {
+        "original": {
+          "waviness": 3.849,
+          "breaks": 41,
+          "deform": 3.48,
+          "crease": 2.082,
+          "area_px": 57660
+        },
+        "clean": {
+          "waviness": 6.188,
+          "breaks": 42,
+          "deform": 1.93,
+          "crease": 2.079,
+          "area_px": 57660
+        },
+        "weighted": {
+          "waviness": 2.777,
+          "breaks": 38,
+          "deform": 3.13,
+          "crease": 2.052,
+          "area_px": 57660
+        }
+      }
+    },
+    "door_rf": {
+      "role": "front right door",
+      "view": "rear_quarter",
+      "box": [
+        452,
+        54,
+        672,
+        369
+      ],
+      "verdict": "CLEAN",
+      "reason": "waviness 9.415 -> 7.887, breaks 0 -> 0",
+      "measurements": {
+        "original": {
+          "waviness": 9.415,
+          "breaks": 0,
+          "deform": 4.17,
+          "crease": 3.355,
+          "area_px": 48320
+        },
+        "clean": {
+          "waviness": 7.887,
+          "breaks": 0,
+          "deform": 4.68,
+          "crease": 3.362,
+          "area_px": 48320
+        },
+        "weighted": {
+          "waviness": 8.734,
+          "breaks": 0,
+          "deform": 4.68,
+          "crease": 3.239,
+          "area_px": 48320
+        }
+      }
+    },
+    "door_lr": {
+      "role": "rear left door",
+      "view": "rear_quarter",
+      "box": [
+        287,
+        201,
+        475,
+        503
+      ],
+      "verdict": "KEEP_ORIGINAL",
+      "reason": "both treatments make it worse (clean 28.842, weighted 23.178 vs original 23.027)",
+      "measurements": {
+        "original": {
+          "waviness": 23.027,
+          "breaks": 0,
+          "deform": 41.67,
+          "crease": 1.433,
+          "area_px": 52531
+        },
+        "clean": {
+          "waviness": 28.842,
+          "breaks": 0,
+          "deform": 41.33,
+          "crease": 1.477,
+          "area_px": 52531
+        },
+        "weighted": {
+          "waviness": 23.178,
+          "breaks": 0,
+          "deform": 62.83,
+          "crease": 1.46,
+          "area_px": 52531
+        }
+      }
+    },
+    "door_rr": {
+      "role": "rear right door",
+      "view": "rear_quarter",
+      "box": [
+        573,
+        134,
+        761,
+        436
+      ],
+      "verdict": "KEEP_ORIGINAL",
+      "reason": "both treatments make it worse (clean 16.964, weighted 19.626 vs original 16.095)",
+      "measurements": {
+        "original": {
+          "waviness": 16.095,
+          "breaks": 0,
+          "deform": 5.32,
+          "crease": 3.597,
+          "area_px": 41956
+        },
+        "clean": {
+          "waviness": 16.964,
+          "breaks": 0,
+          "deform": 5.28,
+          "crease": 3.576,
+          "area_px": 41956
+        },
+        "weighted": {
+          "waviness": 19.626,
+          "breaks": 0,
+          "deform": 5.33,
+          "crease": 3.562,
+          "area_px": 41956
+        }
+      }
+    },
+    "bonnet_ok": {
+      "role": "hood",
+      "view": "roof",
+      "box": [
+        96,
+        -148,
+        472,
+        190
+      ],
+      "verdict": "WEIGHTED",
+      "reason": "waviness 3.166 -> 1.796, breaks 98 -> 98, crease 1.701 -> 1.64",
+      "measurements": {
+        "original": {
+          "waviness": 3.166,
+          "breaks": 98,
+          "deform": 5.57,
+          "crease": 1.701,
+          "area_px": 69121
+        },
+        "clean": {
+          "waviness": 4.637,
+          "breaks": 97,
+          "deform": 4.74,
+          "crease": 1.645,
+          "area_px": 69121
+        },
+        "weighted": {
+          "waviness": 1.796,
+          "breaks": 98,
+          "deform": 4.74,
+          "crease": 1.64,
+          "area_px": 69121
+        }
+      }
+    },
+    "boot": {
+      "role": "trunk",
+      "view": "roof",
+      "box": [
+        461,
+        461,
+        806,
+        774
+      ],
+      "verdict": "KEEP_ORIGINAL",
+      "reason": "both treatments make it worse (clean 3.262, weighted 2.812 vs original 2.75)",
+      "measurements": {
+        "original": {
+          "waviness": 2.75,
+          "breaks": 101,
+          "deform": 1.7,
+          "crease": 2.555,
+          "area_px": 51680
+        },
+        "clean": {
+          "waviness": 3.262,
+          "breaks": 100,
+          "deform": 1.74,
+          "crease": 2.517,
+          "area_px": 51680
+        },
+        "weighted": {
+          "waviness": 2.812,
+          "breaks": 100,
+          "deform": 1.85,
+          "crease": 2.399,
+          "area_px": 51680
+        }
+      }
+    },
+    "front_bumper_ok": {
+      "role": "front bumper",
+      "view": "roof",
+      "box": [
+        55,
+        -159,
+        450,
+        145
+      ],
+      "verdict": "CLEAN",
+      "reason": "waviness 8.083 -> 6.309, breaks 213 -> 216",
+      "measurements": {
+        "original": {
+          "waviness": 8.083,
+          "breaks": 213,
+          "deform": 2.37,
+          "crease": 1.659,
+          "area_px": 49924
+        },
+        "clean": {
+          "waviness": 6.309,
+          "breaks": 216,
+          "deform": 2.14,
+          "crease": 1.592,
+          "area_px": 49924
+        },
+        "weighted": {
+          "waviness": 7.44,
+          "breaks": 216,
+          "deform": 2.14,
+          "crease": 1.578,
+          "area_px": 49924
+        }
+      }
+    },
+    "rear_bumper_ok": {
+      "role": "rear bumper",
+      "view": "roof",
+      "box": [
+        427,
+        488,
+        851,
+        833
+      ],
+      "verdict": "KEEP_ORIGINAL",
+      "reason": "original is already best",
+      "measurements": {
+        "original": {
+          "waviness": 2.746,
+          "breaks": 209,
+          "deform": 1.63,
+          "crease": 2.27,
+          "area_px": 47913
+        },
+        "clean": {
+          "waviness": 3.635,
+          "breaks": 209,
+          "deform": 1.69,
+          "crease": 2.239,
+          "area_px": 47913
+        },
+        "weighted": {
+          "waviness": 2.738,
+          "breaks": 207,
+          "deform": 1.88,
+          "crease": 2.121,
+          "area_px": 47913
+        }
+      }
+    },
+    "body": {
+      "role": "body shell (roof metal, fenders, rear quarters, C pillars)",
+      "view": "roof",
+      "box": [
+        64,
+        -190,
+        818,
+        779
+      ],
+      "verdict": "WEIGHTED",
+      "reason": "waviness 7.696 -> 3.405, breaks 123 -> 122, crease 2.313 -> 2.221",
+      "measurements": {
+        "original": {
+          "waviness": 7.696,
+          "breaks": 123,
+          "deform": 4.58,
+          "crease": 2.313,
+          "area_px": 278038
+        },
+        "clean": {
+          "waviness": 4.447,
+          "breaks": 122,
+          "deform": 4.65,
+          "crease": 2.28,
+          "area_px": 278038
+        },
+        "weighted": {
+          "waviness": 3.405,
+          "breaks": 122,
+          "deform": 4.72,
+          "crease": 2.221,
+          "area_px": 278038
+        }
+      }
+    }
+  },
+  "method": "verdict requires lower waviness AND no worse breaks AND no worse highlight deformation AND crease energy preserved; raw numbers are recorded so it can be overridden by hand"
+}

@@ -22,6 +22,7 @@ Usage:
 """
 
 import argparse
+import json
 import math
 import os
 import sys
@@ -65,7 +66,7 @@ def parse_args():
     ap = argparse.ArgumentParser()
     ap.add_argument("--input", default=vehicle_v2.DEFAULT_INPUT)
     ap.add_argument("--normals", default="original",
-                    choices=["original", "clean"])
+                    choices=["original", "clean", "weighted"])
     ap.add_argument("--weld", type=float, default=0.0002,
                     help="merge-by-distance threshold for the clean pass")
     ap.add_argument("--weighted-normal", action="store_true", default=True)
@@ -144,6 +145,36 @@ def clean_normals(meshes, weld, weighted_normal, subdiv):
     return stats
 
 
+def panel_screen_boxes(meshes, cam, scene, names):
+    """Project each panel's world bbox into the current camera's pixel space.
+
+    Per-panel diagnostics need to know where each panel actually is in the
+    frame. Doing that from the object's own bounding box (rather than guessing
+    regions) keeps the crops honest when the camera changes.
+    """
+    from bpy_extras.object_utils import world_to_camera_view
+    out = {}
+    width = scene.render.resolution_x
+    height = scene.render.resolution_y
+    for name in names:
+        obj = bpy.data.objects.get(name)
+        if obj is None or obj.type != "MESH":
+            continue
+        lo = [1e9, 1e9]
+        hi = [-1e9, -1e9]
+        for corner in obj.bound_box:
+            world = obj.matrix_world @ Vector(corner)
+            co = world_to_camera_view(scene, cam, world)
+            x = co.x * width
+            y = (1.0 - co.y) * height
+            lo[0] = min(lo[0], x)
+            lo[1] = min(lo[1], y)
+            hi[0] = max(hi[0], x)
+            hi[1] = max(hi[1], y)
+        out[name] = [round(lo[0]), round(lo[1]), round(hi[0]), round(hi[1])]
+    return out
+
+
 def build_diagnostic_rig():
     """Black world + long smooth white strips. No HDRI."""
     world = bpy.data.worlds.new("HMI_DiagnosticWorld")
@@ -217,8 +248,8 @@ def main():
     os.makedirs(args.out_dir, exist_ok=True)
 
     meshes, size = vehicle_v2.import_and_normalise(args.input, "+Y")
-    if args.normals == "clean":
-        clean_normals(meshes, args.weld, args.weighted_normal, args.subdiv)
+    if args.normals in ("clean", "weighted"):
+        clean_normals(meshes, args.weld, args.normals == "weighted", args.subdiv)
     build_diagnostic_rig()
 
     scene = vehicle_v2.setup_render("cycles", args.samples, canvas_w, canvas_h,
@@ -247,6 +278,13 @@ def main():
         start = time.time()
         bpy.ops.render.render(write_still=True)
         print(f"[diag] RENDER_TIME {name} {time.time()-start:.1f}s -> {out}")
+        boxes = panel_screen_boxes(
+            meshes, cam, scene,
+            ["body", "bonnet_ok", "boot", "door_lf", "door_rf", "door_lr",
+             "door_rr", "front_bumper_ok", "rear_bumper_ok"])
+        with open(os.path.join(args.out_dir, f"{name}_boxes.json"), "w") as fh:
+            json.dump(boxes, fh, indent=2)
+            fh.write("\n")
     return 0
 
 

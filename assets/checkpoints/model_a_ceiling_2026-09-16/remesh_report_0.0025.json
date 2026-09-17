@@ -1,0 +1,23 @@
+{
+  "treatment": "remesh",
+  "view": "doors",
+  "panel": "door_lf",
+  "normals": {
+    "welded": 26868,
+    "custom_normals_cleared": 107
+  },
+  "remesh": {
+    "panel": "door_lf",
+    "voxel_size_m": 0.0025,
+    "faces_before": 34961,
+    "faces_after": 679472,
+    "silhouette_deviation": {
+      "median_m": 0.00115,
+      "p95_m": 0.00955,
+      "max_m": 0.05097,
+      "probe_verts": 1234,
+      "new_verts": 677118
+    }
+  },
+  "render_seconds": 13.1
+}
