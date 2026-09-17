@@ -1,0 +1,129 @@
+{
+  "method": "swept-volume cavity (capsule per connected component)",
+  "epsilon_m": 0.0015,
+  "vehicle_size_m": [
+    4.694,
+    2.186,
+    1.409
+  ],
+  "left_sign": 1.0,
+  "source_components_per_lamp": {
+    "rear_lights": 2,
+    "rear_lightsl": 1,
+    "rear_lightsr": 1,
+    "light_breake": 2
+  },
+  "components_per_side": {
+    "LEFT": 3,
+    "RIGHT": 3
+  },
+  "candidates": [
+    {
+      "inset_m": 0.01,
+      "result": "component sweep failed",
+      "detail": {
+        "LEFT": {
+          "built": false,
+          "reason": {
+            "reason": "slice thinner than inset",
+            "slice": 0,
+            "r": [
+              0.0,
+              0.00092
+            ]
+          },
+          "inset_m": 0.01
+        }
+      }
+    },
+    {
+      "inset_m": 0.007,
+      "result": "component sweep failed",
+      "detail": {
+        "LEFT": {
+          "built": false,
+          "reason": {
+            "reason": "slice thinner than inset",
+            "slice": 0,
+            "r": [
+              0.00023,
+              0.01061
+            ]
+          },
+          "inset_m": 0.007
+        }
+      }
+    },
+    {
+      "inset_m": 0.005,
+      "result": "component sweep failed",
+      "detail": {
+        "LEFT": {
+          "built": false,
+          "reason": {
+            "reason": "slice thinner than inset",
+            "slice": 0,
+            "r": [
+              0.0,
+              0.0
+            ]
+          },
+          "inset_m": 0.005
+        }
+      }
+    },
+    {
+      "inset_m": 0.0035,
+      "result": "component sweep failed",
+      "detail": {
+        "LEFT": {
+          "built": false,
+          "reason": {
+            "reason": "slice thinner than inset",
+            "slice": 0,
+            "r": [
+              0.0,
+              0.00065
+            ]
+          },
+          "inset_m": 0.0035
+        }
+      }
+    },
+    {
+      "inset_m": 0.0025,
+      "result": "component sweep failed",
+      "detail": {
+        "LEFT": {
+          "built": false,
+          "reason": {
+            "reason": "slice thinner than inset",
+            "slice": 0,
+            "r": [
+              0.0,
+              0.00165
+            ]
+          },
+          "inset_m": 0.0025
+        }
+      }
+    }
+  ],
+  "freeze_gate": {
+    "swept_cavity": false
+  },
+  "true_blocker": {
+    "conclusion": "With the original lens silhouette unchanged, no interior volume can be produced by SWEEPING because the lamp components are thin shells, not solids.",
+    "measured_evidence": [
+      "per-side components: 3 LEFT / 3 RIGHT (rear_lights 2, rear_lightsl 1, rear_lightsr 1, light_breake 2)",
+      "every swept candidate fails at slice 0 of the first component",
+      "measured cross-section at slice 0: 0.0 x 0.00092 m at 10 mm inset; 0.00023 x 0.01061 m at 7 mm; 0.0 x 0.0 at 5 mm; 0.0 x 0.00065 m at 3.5 mm; 0.0 x 0.00165 m at 2.5 mm",
+      "i.e. one cross-section axis is under 2 mm at every inset: the component has essentially no thickness in its own shell-normal direction"
+    ],
+    "candidates_tested": 5,
+    "why_iteration_cannot_solve": "the failure is not a parameter choice. The cross-section is measured FROM the component's own extent, and that extent is ~0 in one axis by construction. No combination of sweep radius, inset, cross-section or centreline can create thickness that the source surface does not have.",
+    "previous_approach_also_quantified": "whole-cluster convex hull gave a valid closed manifold (volume 0.00130 m3, boundary 0) but goes thin BETWEEN the disjoint components, so the guide path had clearance below epsilon + 0.8 mm.",
+    "segmented_guide_result": "not reachable yet: segmentation needs a containing volume to place segments in, and neither cavity construction produces one with usable clearance along the lamp.",
+    "minimum_structural_change": "offset the lens SURFACE instead of sweeping a cross-section: duplicate the shell, displace it inward along its own normals by a few mm and stitch the boundary, producing a closed 'shell + inner offset' volume whose thickness is the offset. That is the only remaining construction that yields a real interior without moving the outer silhouette. It must handle the non-manifold seams in these shells, which is why it needs to be built and validated as its own pass."
+  }
+}
