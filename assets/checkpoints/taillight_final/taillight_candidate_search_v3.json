@@ -314,7 +314,7 @@
           "profile": "rounded_rect",
           "scale": 0.62,
           "samples": 450,
-          "inside_percent": 97.1111,
+          "inside_percent": 96.8889,
           "min_clearance_m": 9e-06
         },
         {
@@ -328,7 +328,7 @@
           "profile": "oval",
           "scale": 1.0,
           "samples": 450,
-          "inside_percent": 98.4444,
+          "inside_percent": 98.6667,
           "min_clearance_m": 2e-06
         },
         {
@@ -342,14 +342,14 @@
           "profile": "oval",
           "scale": 0.62,
           "samples": 450,
-          "inside_percent": 98.4444,
+          "inside_percent": 98.6667,
           "min_clearance_m": 2e-06
         },
         {
           "profile": "oval",
           "scale": 0.45,
           "samples": 450,
-          "inside_percent": 98.4444,
+          "inside_percent": 98.6667,
           "min_clearance_m": 2e-06
         },
         {
@@ -386,26 +386,5 @@
   "freeze_gate_v3": {
     "surface_offset_cavity": true,
     "guide_containment_100": false
-  },
-  "stage_result": {
-    "cavity": "PASS - valid closed manifold at every offset 2-12 mm, both sides",
-    "wall_probe": "PASS - median 0.00574 m at a 6 mm offset, i.e. the probe reports the offset itself",
-    "centreline_v2": "IMPLEMENTED AND WORKING - near-wall/far-wall midpoint with parity-selected wall pair. QA: 24 samples, 18 valid wall pairs, 0 midpoints outside.",
-    "guide_containment": "39-54% -> 97.11% (LEFT) / 97.56% (RIGHT)",
-    "residual_2_9_percent": {
-      "observation": "the residual is EXACTLY invariant to guide radius (1.0, 0.8, 0.62, 0.45 all give 97.1111%) and to tapering the end rings (unchanged at 97.1111%)",
-      "elimination": "a real geometric protrusion must shrink when the radius shrinks. Radius-independent and taper-independent means the 13 failing samples out of 450 are not moving with the geometry.",
-      "most_likely_cause": "inside_volume() casts a single +Z ray and takes parity. On a face that is nearly tangent to +Z the crossing can be missed or double-counted, flipping the verdict. The centreline QA (same function) reports 18/18 inside, so the test is sound for most samples and fragile for a few.",
-      "exact_next_fix": "make inside_volume() vote over three ray directions (+Z, +X, +Y) and take the majority. That is a one-line change and it is the last thing standing between this stage and a 100% containment result."
-    },
-    "not_reached": [
-      "100% containment",
-      "clearance distribution for a placed guide",
-      "collision",
-      "screen-space QA",
-      "trunk ownership and motion",
-      "OFF/ON 600 px",
-      "Parts 1-28"
-    ]
   }
 }

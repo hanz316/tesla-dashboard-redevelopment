@@ -142,18 +142,33 @@ def bvh_of(obj, world=True):
     return tree
 
 
-def inside_volume(tree, point):
+def _crossings_in_direction(tree, point, direction):
     hits = 0
     origin = Vector(point)
-    d = Vector((0.0, 0.0, 1.0))
     for _ in range(64):
-        res = tree.ray_cast(origin, d, 50.0)
+        res = tree.ray_cast(origin, direction, 50.0)
         loc = res[0]
         if loc is None:
             break
         hits += 1
-        origin = loc + d * 1e-5
-    return hits % 2 == 1
+        origin = loc + direction * 1e-5
+    return hits
+
+
+def inside_volume(tree, point):
+    """Majority vote over three ray directions.
+
+    A single +Z ray takes parity, and a face nearly tangent to +Z can have its
+    crossing missed or double counted, flipping the verdict for that sample.
+    That produced a residual that did not move when the geometry moved. Voting
+    over three directions removes the fragility without changing the result for
+    samples that were already unambiguous.
+    """
+    votes = 0
+    for axis in ((0.0, 0.0, 1.0), (1.0, 0.0, 0.0), (0.0, 1.0, 0.0)):
+        if _crossings_in_direction(tree, point, Vector(axis)) % 2 == 1:
+            votes += 1
+    return votes >= 2
 
 
 def make_guide(path_pts, radius_a, radius_b, profile, name):
