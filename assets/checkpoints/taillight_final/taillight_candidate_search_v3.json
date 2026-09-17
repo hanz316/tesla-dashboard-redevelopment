@@ -1,0 +1,267 @@
+{
+  "epsilon_m": 0.0015,
+  "vehicle_size_m": [
+    4.694,
+    2.186,
+    1.409
+  ],
+  "sides": {
+    "LEFT": {
+      "built": false,
+      "sweep": [
+        {
+          "thickness_m": 0.002,
+          "valid": true,
+          "volume_m3": 6.5425e-05,
+          "true_wall": {
+            "samples": 2118,
+            "min_m": 2e-06,
+            "p1_m": 1e-05,
+            "p5_m": 1e-05,
+            "median_m": 1e-05,
+            "mean_m": 3.6e-05,
+            "max_m": 0.020383
+          }
+        },
+        {
+          "thickness_m": 0.003,
+          "valid": true,
+          "volume_m3": 9.3984e-05,
+          "true_wall": {
+            "samples": 2116,
+            "min_m": 1e-06,
+            "p1_m": 9e-06,
+            "p5_m": 1e-05,
+            "median_m": 1e-05,
+            "mean_m": 3.1e-05,
+            "max_m": 0.009449
+          }
+        },
+        {
+          "thickness_m": 0.004,
+          "valid": true,
+          "volume_m3": 0.000119823,
+          "true_wall": {
+            "samples": 2114,
+            "min_m": 3e-06,
+            "p1_m": 9e-06,
+            "p5_m": 1e-05,
+            "median_m": 1e-05,
+            "mean_m": 7.2e-05,
+            "max_m": 0.037406
+          }
+        },
+        {
+          "thickness_m": 0.005,
+          "valid": true,
+          "volume_m3": 0.000142973,
+          "true_wall": {
+            "samples": 2116,
+            "min_m": 2e-06,
+            "p1_m": 9e-06,
+            "p5_m": 1e-05,
+            "median_m": 1e-05,
+            "mean_m": 7.2e-05,
+            "max_m": 0.069275
+          }
+        },
+        {
+          "thickness_m": 0.006,
+          "valid": true,
+          "volume_m3": 0.00016347,
+          "true_wall": {
+            "samples": 2116,
+            "min_m": 1e-06,
+            "p1_m": 8e-06,
+            "p5_m": 1e-05,
+            "median_m": 1e-05,
+            "mean_m": 6.6e-05,
+            "max_m": 0.065115
+          }
+        },
+        {
+          "thickness_m": 0.008,
+          "valid": true,
+          "volume_m3": 0.000196641,
+          "true_wall": {
+            "samples": 2114,
+            "min_m": 2e-06,
+            "p1_m": 8e-06,
+            "p5_m": 1e-05,
+            "median_m": 1e-05,
+            "mean_m": 0.000228,
+            "max_m": 0.060544
+          }
+        },
+        {
+          "thickness_m": 0.01,
+          "valid": true,
+          "volume_m3": 0.000219613,
+          "true_wall": {
+            "samples": 2113,
+            "min_m": 2e-06,
+            "p1_m": 8e-06,
+            "p5_m": 1e-05,
+            "median_m": 1e-05,
+            "mean_m": 0.00017,
+            "max_m": 0.049076
+          }
+        },
+        {
+          "thickness_m": 0.012,
+          "valid": true,
+          "volume_m3": 0.000232662,
+          "true_wall": {
+            "samples": 2113,
+            "min_m": 2e-06,
+            "p1_m": 7e-06,
+            "p5_m": 1e-05,
+            "median_m": 1e-05,
+            "mean_m": 0.000138,
+            "max_m": 0.049011
+          }
+        }
+      ],
+      "reason": "no offset gives usable wall thickness"
+    },
+    "RIGHT": {
+      "built": false,
+      "sweep": [
+        {
+          "thickness_m": 0.002,
+          "valid": true,
+          "volume_m3": 6.5441e-05,
+          "true_wall": {
+            "samples": 2118,
+            "min_m": 2e-06,
+            "p1_m": 1e-05,
+            "p5_m": 1e-05,
+            "median_m": 1e-05,
+            "mean_m": 2.2e-05,
+            "max_m": 0.018895
+          }
+        },
+        {
+          "thickness_m": 0.003,
+          "valid": true,
+          "volume_m3": 9.4021e-05,
+          "true_wall": {
+            "samples": 2115,
+            "min_m": 1e-06,
+            "p1_m": 9e-06,
+            "p5_m": 1e-05,
+            "median_m": 1e-05,
+            "mean_m": 5.5e-05,
+            "max_m": 0.040799
+          }
+        },
+        {
+          "thickness_m": 0.004,
+          "valid": true,
+          "volume_m3": 0.000119889,
+          "true_wall": {
+            "samples": 2116,
+            "min_m": 1e-06,
+            "p1_m": 9e-06,
+            "p5_m": 1e-05,
+            "median_m": 1e-05,
+            "mean_m": 5.3e-05,
+            "max_m": 0.036314
+          }
+        },
+        {
+          "thickness_m": 0.005,
+          "valid": true,
+          "volume_m3": 0.000143073,
+          "true_wall": {
+            "samples": 2116,
+            "min_m": 3e-06,
+            "p1_m": 9e-06,
+            "p5_m": 1e-05,
+            "median_m": 1e-05,
+            "mean_m": 4.5e-05,
+            "max_m": 0.027693
+          }
+        },
+        {
+          "thickness_m": 0.006,
+          "valid": true,
+          "volume_m3": 0.000163613,
+          "true_wall": {
+            "samples": 2116,
+            "min_m": 1e-06,
+            "p1_m": 8e-06,
+            "p5_m": 1e-05,
+            "median_m": 1e-05,
+            "mean_m": 6.9e-05,
+            "max_m": 0.067996
+          }
+        },
+        {
+          "thickness_m": 0.008,
+          "valid": true,
+          "volume_m3": 0.000196896,
+          "true_wall": {
+            "samples": 2115,
+            "min_m": 1e-06,
+            "p1_m": 8e-06,
+            "p5_m": 1e-05,
+            "median_m": 1e-05,
+            "mean_m": 0.000243,
+            "max_m": 0.065999
+          }
+        },
+        {
+          "thickness_m": 0.01,
+          "valid": true,
+          "volume_m3": 0.000220012,
+          "true_wall": {
+            "samples": 2112,
+            "min_m": 2e-06,
+            "p1_m": 8e-06,
+            "p5_m": 1e-05,
+            "median_m": 1e-05,
+            "mean_m": 0.000134,
+            "max_m": 0.058887
+          }
+        },
+        {
+          "thickness_m": 0.012,
+          "valid": true,
+          "volume_m3": 0.00023326,
+          "true_wall": {
+            "samples": 2117,
+            "min_m": 2e-06,
+            "p1_m": 8e-06,
+            "p5_m": 1e-05,
+            "median_m": 1e-05,
+            "mean_m": 0.00018,
+            "max_m": 0.049156
+          }
+        }
+      ],
+      "reason": "no offset gives usable wall thickness"
+    }
+  },
+  "freeze_gate_v3": {
+    "surface_offset_cavity": false,
+    "guide_containment_100": false
+  },
+  "stage_result": {
+    "surface_offset_cavity": "PASS - unchanged from the previous pass, valid closed manifold at all 8 offsets on both sides",
+    "true_wall_probe": "STILL WRONG, and now precisely diagnosable",
+    "evidence": "median wall reads 0.00001 m (0.01 mm) at EVERY offset from 2 mm to 12 mm, with min 1-3e-06 m. A wall cannot be 10 um thick at a 12 mm offset, so the ray is not reaching the far wall.",
+    "cause": "the probe starts at a vertex and rays along that vertex's own normal. The first crossing it finds is the cavity's OWN rim/side wall a few microns away, not the opposite wall. It measures a self-hit.",
+    "exact_fix": "skip the first crossing: advance the ray origin past the first hit (loc + n * 1e-5) and take the SECOND crossing distance as the wall thickness. Then the distribution becomes meaningful and the cavity thickness can be chosen from it.",
+    "not_reached": [
+      "choosing the final cavity thickness from a correct distribution",
+      "light guide placement and the 100% containment proof",
+      "clearance distribution, body/trunk collision",
+      "screen-space QA from four cameras",
+      "trunk ownership and motion",
+      "OFF and ON 600 px QA",
+      "Vehicle State Asset Production Parts 1-22"
+    ],
+    "honest_status": "the construction problem is SOLVED; the measurement that would let the next stage choose parameters is not yet correct, and I stopped here rather than claim a containment result I had not proven."
+  }
+}
