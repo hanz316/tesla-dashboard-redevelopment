@@ -211,8 +211,18 @@ def main():
         # deepest vertex is guaranteed to land between them. This takes the
         # midpoint of the near-wall and far-wall intersections along the local
         # normal, and verifies that midpoint with the point-inside test.
-        def ordered_crossings(origin, direction, limit=0.5):
-            hits = []
+        SECOND_RAYS = [Vector((1.0, 0.37, 0.71)).normalized(),
+                       Vector((-0.53, 1.0, 0.29)).normalized(),
+                       Vector((0.41, -0.62, 1.0)).normalized()]
+
+        def unique_crossings(origin, direction, limit=0.5, eps=2e-4):
+            """Raw hits -> epsilon-clustered unique surface crossings.
+
+            A shared-edge or shared-vertex hit registers two triangle hits for
+            one physical crossing, which silently corrupts parity. Clustering
+            by distance is what makes the parity meaningful.
+            """
+            ts = []
             o = Vector(origin)
             travelled = 0.0
             for _ in range(64):
@@ -223,12 +233,33 @@ def main():
                 travelled += (loc - o).length
                 if travelled >= limit:
                     break
-                hits.append((travelled, loc.copy()))
-                o = loc + direction * 1e-4
-                if len(hits) > 32:
-                    break
-            return hits
+                ts.append(travelled)
+                o = loc + direction * 1e-5
+            ts.sort()
+            merged = []
+            for t in ts:
+                if merged and abs(t - merged[-1]) < eps:
+                    continue
+                merged.append(t)
+            return merged
 
+        def inside_by(origin, direction):
+            return len(unique_crossings(origin, direction)) % 2 == 1
+
+        def classify(point, primary):
+            """Second non-collinear ray, then third, majority of reliable ones."""
+            votes = []
+            for d in SECOND_RAYS:
+                if abs(d.dot(primary)) > 0.95:      # too parallel to be useful
+                    continue
+                votes.append(inside_by(point, d))
+                if len(votes) >= 2:
+                    break
+            if not votes:
+                return None
+            return sum(1 for v in votes if v) * 2 >= len(votes)
+
+        args_expected_wall = th
         cv = [cov.matrix_world @ v.co for v in cov.data.vertices]
         nrm = cov.data.vertex_normals
         mw3 = cov.matrix_world.to_3x3()
@@ -255,25 +286,35 @@ def main():
                 continue
             n.normalize()
             qa["samples"] += 1
-            hits = ordered_crossings(c + n * 0.3, -n)
-            if len(hits) < 2:
+            origin = c + n * 0.3
+            ts = unique_crossings(origin, -n)
+            if len(ts) < 2:
                 qa["invalid_pairs"] += 1
                 continue
-            # Choose the widest interval whose midpoint is genuinely inside.
+            # A consecutive pair is a VALID INTERIOR INTERVAL only when its
+            # midpoint is confirmed inside by an independent, non-collinear
+            # ray. "Widest gap wins" was the old heuristic and it picked
+            # spurious intervals formed by rim faces.
             best = None
-            for k in range(len(hits) - 1):
-                a = hits[k][1]
-                b = hits[k + 1][1]
-                mid = (a + b) * 0.5
-                if not base.inside_volume(tree, mid):
+            for k in range(len(ts) - 1):
+                t0, t1 = ts[k], ts[k + 1]
+                if (t1 - t0) < 1e-4:
                     continue
-                width = (b - a).length
-                if best is None or width > best[0]:
-                    best = (width, mid, a, b)
+                mid = origin + (-n) * ((t0 + t1) * 0.5)
+                verdict = classify(mid, n)
+                if verdict is not True:
+                    continue
+                width = t1 - t0
+                # Prefer the interval whose thickness matches the cavity
+                # construction offset - a sanity prior, never a substitute for
+                # the parity check above.
+                score = -abs(width - args_expected_wall)
+                if best is None or score > best[0]:
+                    best = (score, mid, width)
             if best is None:
                 qa["invalid_pairs"] += 1
                 continue
-            width, mid, a, b = best
+            _, mid, width = best
             qa["valid_pairs"] += 1
             if base.inside_volume(tree, mid):
                 qa["midpoints_inside"] += 1
