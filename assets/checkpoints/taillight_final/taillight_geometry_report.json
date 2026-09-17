@@ -1,0 +1,155 @@
+{
+  "left_sign_resolved_from": "door_lf",
+  "left_sign": 1.0,
+  "left_sign_error": null,
+  "min_clearance_m": 0.002,
+  "lamps": {
+    "rear_lights": {
+      "components": 2,
+      "assignment": [
+        {
+          "object": "rear_lights",
+          "vertices": 581,
+          "centroid_y": 0.713,
+          "side": "LEFT"
+        },
+        {
+          "object": "rear_lights",
+          "vertices": 581,
+          "centroid_y": -0.713,
+          "side": "RIGHT"
+        }
+      ],
+      "vertices": 1162,
+      "triangles": 2144
+    },
+    "rear_lightsl": {
+      "components": 1,
+      "assignment": [
+        {
+          "object": "rear_lightsl",
+          "vertices": 327,
+          "centroid_y": 0.4952,
+          "side": "LEFT"
+        }
+      ],
+      "vertices": 327,
+      "triangles": 592
+    },
+    "rear_lightsr": {
+      "components": 1,
+      "assignment": [
+        {
+          "object": "rear_lightsr",
+          "vertices": 327,
+          "centroid_y": -0.4952,
+          "side": "RIGHT"
+        }
+      ],
+      "vertices": 327,
+      "triangles": 592
+    },
+    "light_breake": {
+      "components": 2,
+      "assignment": [
+        {
+          "object": "light_breake",
+          "vertices": 151,
+          "centroid_y": 0.682,
+          "side": "LEFT"
+        },
+        {
+          "object": "light_breake",
+          "vertices": 151,
+          "centroid_y": -0.682,
+          "side": "RIGHT"
+        }
+      ],
+      "vertices": 302,
+      "triangles": 544
+    }
+  },
+  "split_side_violations": 0,
+  "split_counts": {
+    "LEFT": {
+      "objects": 3,
+      "vertices": 1059
+    },
+    "RIGHT": {
+      "objects": 3,
+      "vertices": 1059
+    }
+  },
+  "sides": {
+    "LEFT": {
+      "built": false,
+      "cavity": {
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "wire_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 0.00130051,
+        "outward_orientation": true,
+        "watertight": true,
+        "valid_volume": true
+      },
+      "shrink": 0.9,
+      "attempts": [
+        {
+          "profile": "rounded_rect",
+          "result": "path has no usable clearance"
+        },
+        {
+          "profile": "oval",
+          "result": "path has no usable clearance"
+        },
+        {
+          "profile": "round",
+          "result": "path has no usable clearance"
+        }
+      ]
+    },
+    "RIGHT": {
+      "built": false,
+      "cavity": {
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "wire_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 0.00130051,
+        "outward_orientation": true,
+        "watertight": true,
+        "valid_volume": true
+      },
+      "shrink": 0.9,
+      "attempts": [
+        {
+          "profile": "rounded_rect",
+          "result": "path has no usable clearance"
+        },
+        {
+          "profile": "oval",
+          "result": "path has no usable clearance"
+        },
+        {
+          "profile": "round",
+          "result": "path has no usable clearance"
+        }
+      ]
+    }
+  },
+  "freeze_gate": {
+    "left_right_split": true,
+    "cavity_closed_manifold": false,
+    "guide_containment_100": false,
+    "min_clearance_ok": false,
+    "all_pass": false,
+    "_interpretation": {
+      "Part A left/right split": "PASS - verified, 0 side violations",
+      "Part B closed cavity": "PASS - watertight, non-manifold 0, degenerate 0, signed volume 0.00130 m3 > 0, outward normals",
+      "Part C/D guide placement": "FAIL - no placement found. The builder now rejects with a precise reason: 'path has no usable clearance', i.e. after pulling each path sample inside the closed volume its distance to the cavity boundary is below epsilon + 0.8 mm.",
+      "root_cause": "the cavity is a convex hull around SEVERAL DISJOINT lamp pieces, so it is thin in the regions between them. A path along its long axis inevitably passes through those thin regions.",
+      "next_structural_change": "build the cavity as a SWEEP along the lamp rather than a hull of the whole cluster: capsule-swept volumes around each connected component, unioned, give an interior whose clearance is uniform along the lamp instead of collapsing between pieces. Failing that, restrict the guide to the single largest component and accept a shorter guide."
+    }
+  }
+}
