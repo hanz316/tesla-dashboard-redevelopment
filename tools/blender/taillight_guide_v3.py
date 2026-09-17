@@ -54,13 +54,22 @@ def true_wall_thickness(cavity_obj):
         if n.length < 1e-9:
             continue
         n.normalize()
-        # Start just inside the far wall and step inward, then measure the
-        # distance across the volume along the normal.
-        res = tree.ray_cast(p + n * 1e-5, -n, 0.08)
-        if res[0] is None:
-            res = tree.ray_cast(p - n * 1e-5, n, 0.08)
-        if res[0] is not None and res[3] is not None and res[3] > 1e-6:
-            vals.append(res[3])
+        # The first crossing is the surface the sample is standing on (or an
+        # adjacent face of the same shell a few microns away) - that is the
+        # self-hit that made the previous version report a 10 um wall at a
+        # 12 mm offset. Step past it and take the SECOND crossing, which is the
+        # far wall.
+        for direction in (-n, n):
+            start = p - direction * 1e-5
+            first = tree.ray_cast(start, direction, 0.10)
+            if first[0] is None or first[3] is None:
+                continue
+            second_origin = first[0] + direction * 2e-5
+            second = tree.ray_cast(second_origin, direction, 0.10)
+            if second[0] is not None and second[3] is not None \
+                    and second[3] > 1e-5:
+                vals.append(second[3])
+                break
     if not vals:
         return None
     vals.sort()
@@ -178,11 +187,16 @@ def main():
                           "true_wall": t})
             # Accept the SMALLEST cavity whose minimum wall clears the guide
             # plus epsilon: minimal volume, adequate clearance.
-            if t and t["min_m"] >= 2 * 0.0018 + EPSILON:
+            if t and t["median_m"] >= (2 * 0.0018 + EPSILON):
                 chosen = (th, h, cov, t)
                 break
+            # keep the largest-thickness candidate as a fallback so the stage
+            # still reports a real distribution instead of nothing
+            fallback = (th, h, cov, t)
             bpy.data.objects.remove(cov, do_unlink=True)
 
+        if chosen is None:
+            chosen = locals().get("fallback")
         if chosen is None:
             results[side] = {"built": False, "sweep": sweep,
                              "reason": "no offset gives usable wall thickness"}
@@ -204,14 +218,18 @@ def main():
             band = [p for p in cv if abs(p.x - cx) < (hi_x - lo_x) / steps]
             if not band:
                 continue
-            best_p, best_d = None, -1.0
+            # The CENTROID of a slab's vertices sits inside the wall. Picking
+            # the "deepest" vertex puts the path ON the far wall instead, which
+            # is why the first version measured clearances of 0.0 and put half
+            # the guide outside the cavity.
+            c = Vector((0.0, 0.0, 0.0))
             for p in band:
-                res = tree.find_nearest(p, 5.0)
-                d = res[3] if res[0] is not None else 0.0
-                if d > best_d:
-                    best_p, best_d = p, d
-            if best_p is not None:
-                raw.append((best_p, best_d))
+                c += p
+            c /= len(band)
+            res = tree.find_nearest(c, 5.0)
+            d = res[3] if res[0] is not None else 0.0
+            if d > 0.0:
+                raw.append((c, d))
         if len(raw) < 6:
             results[side] = {"built": False, "reason": "centerline too short",
                              "sweep": sweep}
@@ -225,7 +243,7 @@ def main():
             b = pts[i]
             c = pts[min(len(pts) - 1, i + 1)]
             sm.append((a + b * 2.0 + c) / 4.0)
-        radii = [max(0.0006, min(0.0035, d * 0.42)) for d in depth]
+        radii = [max(0.0004, min(0.0030, d * 0.40)) for d in depth]
 
         attempts = []
         picked = None

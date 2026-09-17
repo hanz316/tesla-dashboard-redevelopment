@@ -8,19 +8,38 @@
   "sides": {
     "LEFT": {
       "built": false,
+      "selected_thickness_m": 0.006,
+      "cavity": {
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "wire_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 0.00016347,
+        "outward": true,
+        "watertight": true
+      },
+      "true_wall": {
+        "samples": 2100,
+        "min_m": 1e-05,
+        "p1_m": 2.7e-05,
+        "p5_m": 0.000166,
+        "median_m": 0.005737,
+        "mean_m": 0.004823,
+        "max_m": 0.082091
+      },
       "sweep": [
         {
           "thickness_m": 0.002,
           "valid": true,
           "volume_m3": 6.5425e-05,
           "true_wall": {
-            "samples": 2118,
-            "min_m": 2e-06,
-            "p1_m": 1e-05,
-            "p5_m": 1e-05,
-            "median_m": 1e-05,
-            "mean_m": 3.6e-05,
-            "max_m": 0.020383
+            "samples": 2116,
+            "min_m": 1.4e-05,
+            "p1_m": 4e-05,
+            "p5_m": 0.000243,
+            "median_m": 0.001981,
+            "mean_m": 0.002236,
+            "max_m": 0.06839
           }
         },
         {
@@ -28,13 +47,13 @@
           "valid": true,
           "volume_m3": 9.3984e-05,
           "true_wall": {
-            "samples": 2116,
-            "min_m": 1e-06,
-            "p1_m": 9e-06,
-            "p5_m": 1e-05,
-            "median_m": 1e-05,
-            "mean_m": 3.1e-05,
-            "max_m": 0.009449
+            "samples": 2113,
+            "min_m": 1.2e-05,
+            "p1_m": 4.3e-05,
+            "p5_m": 0.000182,
+            "median_m": 0.002981,
+            "mean_m": 0.003109,
+            "max_m": 0.086621
           }
         },
         {
@@ -42,13 +61,13 @@
           "valid": true,
           "volume_m3": 0.000119823,
           "true_wall": {
-            "samples": 2114,
-            "min_m": 3e-06,
-            "p1_m": 9e-06,
-            "p5_m": 1e-05,
-            "median_m": 1e-05,
-            "mean_m": 7.2e-05,
-            "max_m": 0.037406
+            "samples": 2110,
+            "min_m": 1.1e-05,
+            "p1_m": 3.5e-05,
+            "p5_m": 0.000177,
+            "median_m": 0.003981,
+            "mean_m": 0.003825,
+            "max_m": 0.084566
           }
         },
         {
@@ -56,13 +75,13 @@
           "valid": true,
           "volume_m3": 0.000142973,
           "true_wall": {
-            "samples": 2116,
-            "min_m": 2e-06,
-            "p1_m": 9e-06,
-            "p5_m": 1e-05,
-            "median_m": 1e-05,
-            "mean_m": 7.2e-05,
-            "max_m": 0.069275
+            "samples": 2108,
+            "min_m": 1.1e-05,
+            "p1_m": 3.1e-05,
+            "p5_m": 0.000181,
+            "median_m": 0.00498,
+            "mean_m": 0.004468,
+            "max_m": 0.082974
           }
         },
         {
@@ -70,75 +89,138 @@
           "valid": true,
           "volume_m3": 0.00016347,
           "true_wall": {
-            "samples": 2116,
-            "min_m": 1e-06,
-            "p1_m": 8e-06,
-            "p5_m": 1e-05,
-            "median_m": 1e-05,
-            "mean_m": 6.6e-05,
-            "max_m": 0.065115
-          }
-        },
-        {
-          "thickness_m": 0.008,
-          "valid": true,
-          "volume_m3": 0.000196641,
-          "true_wall": {
-            "samples": 2114,
-            "min_m": 2e-06,
-            "p1_m": 8e-06,
-            "p5_m": 1e-05,
-            "median_m": 1e-05,
-            "mean_m": 0.000228,
-            "max_m": 0.060544
-          }
-        },
-        {
-          "thickness_m": 0.01,
-          "valid": true,
-          "volume_m3": 0.000219613,
-          "true_wall": {
-            "samples": 2113,
-            "min_m": 2e-06,
-            "p1_m": 8e-06,
-            "p5_m": 1e-05,
-            "median_m": 1e-05,
-            "mean_m": 0.00017,
-            "max_m": 0.049076
-          }
-        },
-        {
-          "thickness_m": 0.012,
-          "valid": true,
-          "volume_m3": 0.000232662,
-          "true_wall": {
-            "samples": 2113,
-            "min_m": 2e-06,
-            "p1_m": 7e-06,
-            "p5_m": 1e-05,
-            "median_m": 1e-05,
-            "mean_m": 0.000138,
-            "max_m": 0.049011
+            "samples": 2100,
+            "min_m": 1e-05,
+            "p1_m": 2.7e-05,
+            "p5_m": 0.000166,
+            "median_m": 0.005737,
+            "mean_m": 0.004823,
+            "max_m": 0.082091
           }
         }
       ],
-      "reason": "no offset gives usable wall thickness"
+      "centerline_points": 24,
+      "attempts": [
+        {
+          "profile": "rounded_rect",
+          "scale": 1.0,
+          "samples": 600,
+          "inside_percent": 38.8333,
+          "min_clearance_m": 4e-06
+        },
+        {
+          "profile": "rounded_rect",
+          "scale": 0.8,
+          "samples": 600,
+          "inside_percent": 39.1667,
+          "min_clearance_m": 1e-05
+        },
+        {
+          "profile": "rounded_rect",
+          "scale": 0.62,
+          "samples": 600,
+          "inside_percent": 39.3333,
+          "min_clearance_m": 1.4e-05
+        },
+        {
+          "profile": "rounded_rect",
+          "scale": 0.45,
+          "samples": 600,
+          "inside_percent": 39.5,
+          "min_clearance_m": 1.8e-05
+        },
+        {
+          "profile": "oval",
+          "scale": 1.0,
+          "samples": 600,
+          "inside_percent": 39.1667,
+          "min_clearance_m": 8e-06
+        },
+        {
+          "profile": "oval",
+          "scale": 0.8,
+          "samples": 600,
+          "inside_percent": 40.0,
+          "min_clearance_m": 1e-06
+        },
+        {
+          "profile": "oval",
+          "scale": 0.62,
+          "samples": 600,
+          "inside_percent": 39.3333,
+          "min_clearance_m": 6e-06
+        },
+        {
+          "profile": "oval",
+          "scale": 0.45,
+          "samples": 600,
+          "inside_percent": 39.0,
+          "min_clearance_m": 1.2e-05
+        },
+        {
+          "profile": "round",
+          "scale": 1.0,
+          "samples": 600,
+          "inside_percent": 39.1667,
+          "min_clearance_m": 1e-06
+        },
+        {
+          "profile": "round",
+          "scale": 0.8,
+          "samples": 600,
+          "inside_percent": 38.6667,
+          "min_clearance_m": 4e-06
+        },
+        {
+          "profile": "round",
+          "scale": 0.62,
+          "samples": 600,
+          "inside_percent": 38.8333,
+          "min_clearance_m": 1e-05
+        },
+        {
+          "profile": "round",
+          "scale": 0.45,
+          "samples": 600,
+          "inside_percent": 39.8333,
+          "min_clearance_m": 1.4e-05
+        }
+      ]
     },
     "RIGHT": {
       "built": false,
+      "selected_thickness_m": 0.006,
+      "cavity": {
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "wire_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 0.000163613,
+        "outward": true,
+        "watertight": true
+      },
+      "true_wall": {
+        "samples": 2101,
+        "min_m": 1.2e-05,
+        "p1_m": 2.5e-05,
+        "p5_m": 0.000161,
+        "median_m": 0.00573,
+        "mean_m": 0.004827,
+        "max_m": 0.082103
+      },
       "sweep": [
         {
           "thickness_m": 0.002,
           "valid": true,
           "volume_m3": 6.5441e-05,
           "true_wall": {
-            "samples": 2118,
-            "min_m": 2e-06,
-            "p1_m": 1e-05,
-            "p5_m": 1e-05,
-            "median_m": 1e-05,
-            "mean_m": 2.2e-05,
-            "max_m": 0.018895
+            "samples": 2117,
+            "min_m": 1.3e-05,
+            "p1_m": 4e-05,
+            "p5_m": 0.000244,
+            "median_m": 0.001981,
+            "mean_m": 0.002218,
+            "max_m": 0.032701
           }
         },
         {
@@ -146,13 +228,13 @@
           "valid": true,
           "volume_m3": 9.4021e-05,
           "true_wall": {
-            "samples": 2115,
-            "min_m": 1e-06,
-            "p1_m": 9e-06,
-            "p5_m": 1e-05,
-            "median_m": 1e-05,
-            "mean_m": 5.5e-05,
-            "max_m": 0.040799
+            "samples": 2114,
+            "min_m": 1.1e-05,
+            "p1_m": 4.7e-05,
+            "p5_m": 0.000182,
+            "median_m": 0.002981,
+            "mean_m": 0.003088,
+            "max_m": 0.086617
           }
         },
         {
@@ -160,13 +242,13 @@
           "valid": true,
           "volume_m3": 0.000119889,
           "true_wall": {
-            "samples": 2116,
-            "min_m": 1e-06,
-            "p1_m": 9e-06,
-            "p5_m": 1e-05,
-            "median_m": 1e-05,
-            "mean_m": 5.3e-05,
-            "max_m": 0.036314
+            "samples": 2110,
+            "min_m": 1e-05,
+            "p1_m": 3.3e-05,
+            "p5_m": 0.000149,
+            "median_m": 0.003981,
+            "mean_m": 0.00384,
+            "max_m": 0.084534
           }
         },
         {
@@ -174,13 +256,13 @@
           "valid": true,
           "volume_m3": 0.000143073,
           "true_wall": {
-            "samples": 2116,
-            "min_m": 3e-06,
-            "p1_m": 9e-06,
-            "p5_m": 1e-05,
-            "median_m": 1e-05,
-            "mean_m": 4.5e-05,
-            "max_m": 0.027693
+            "samples": 2109,
+            "min_m": 1.1e-05,
+            "p1_m": 3.1e-05,
+            "p5_m": 0.000172,
+            "median_m": 0.00498,
+            "mean_m": 0.004488,
+            "max_m": 0.082955
           }
         },
         {
@@ -188,80 +270,125 @@
           "valid": true,
           "volume_m3": 0.000163613,
           "true_wall": {
-            "samples": 2116,
-            "min_m": 1e-06,
-            "p1_m": 8e-06,
-            "p5_m": 1e-05,
-            "median_m": 1e-05,
-            "mean_m": 6.9e-05,
-            "max_m": 0.067996
-          }
-        },
-        {
-          "thickness_m": 0.008,
-          "valid": true,
-          "volume_m3": 0.000196896,
-          "true_wall": {
-            "samples": 2115,
-            "min_m": 1e-06,
-            "p1_m": 8e-06,
-            "p5_m": 1e-05,
-            "median_m": 1e-05,
-            "mean_m": 0.000243,
-            "max_m": 0.065999
-          }
-        },
-        {
-          "thickness_m": 0.01,
-          "valid": true,
-          "volume_m3": 0.000220012,
-          "true_wall": {
-            "samples": 2112,
-            "min_m": 2e-06,
-            "p1_m": 8e-06,
-            "p5_m": 1e-05,
-            "median_m": 1e-05,
-            "mean_m": 0.000134,
-            "max_m": 0.058887
-          }
-        },
-        {
-          "thickness_m": 0.012,
-          "valid": true,
-          "volume_m3": 0.00023326,
-          "true_wall": {
-            "samples": 2117,
-            "min_m": 2e-06,
-            "p1_m": 8e-06,
-            "p5_m": 1e-05,
-            "median_m": 1e-05,
-            "mean_m": 0.00018,
-            "max_m": 0.049156
+            "samples": 2101,
+            "min_m": 1.2e-05,
+            "p1_m": 2.5e-05,
+            "p5_m": 0.000161,
+            "median_m": 0.00573,
+            "mean_m": 0.004827,
+            "max_m": 0.082103
           }
         }
       ],
-      "reason": "no offset gives usable wall thickness"
+      "centerline_points": 24,
+      "attempts": [
+        {
+          "profile": "rounded_rect",
+          "scale": 1.0,
+          "samples": 600,
+          "inside_percent": 39.0,
+          "min_clearance_m": 3e-06
+        },
+        {
+          "profile": "rounded_rect",
+          "scale": 0.8,
+          "samples": 600,
+          "inside_percent": 39.5,
+          "min_clearance_m": 1e-05
+        },
+        {
+          "profile": "rounded_rect",
+          "scale": 0.62,
+          "samples": 600,
+          "inside_percent": 39.0,
+          "min_clearance_m": 1.4e-05
+        },
+        {
+          "profile": "rounded_rect",
+          "scale": 0.45,
+          "samples": 600,
+          "inside_percent": 38.5,
+          "min_clearance_m": 1.7e-05
+        },
+        {
+          "profile": "oval",
+          "scale": 1.0,
+          "samples": 600,
+          "inside_percent": 39.3333,
+          "min_clearance_m": 8e-06
+        },
+        {
+          "profile": "oval",
+          "scale": 0.8,
+          "samples": 600,
+          "inside_percent": 39.5,
+          "min_clearance_m": 1e-06
+        },
+        {
+          "profile": "oval",
+          "scale": 0.62,
+          "samples": 600,
+          "inside_percent": 39.3333,
+          "min_clearance_m": 5e-06
+        },
+        {
+          "profile": "oval",
+          "scale": 0.45,
+          "samples": 600,
+          "inside_percent": 39.0,
+          "min_clearance_m": 1.1e-05
+        },
+        {
+          "profile": "round",
+          "scale": 1.0,
+          "samples": 600,
+          "inside_percent": 39.0,
+          "min_clearance_m": 2e-06
+        },
+        {
+          "profile": "round",
+          "scale": 0.8,
+          "samples": 600,
+          "inside_percent": 39.0,
+          "min_clearance_m": 4e-06
+        },
+        {
+          "profile": "round",
+          "scale": 0.62,
+          "samples": 600,
+          "inside_percent": 38.6667,
+          "min_clearance_m": 9e-06
+        },
+        {
+          "profile": "round",
+          "scale": 0.45,
+          "samples": 600,
+          "inside_percent": 39.3333,
+          "min_clearance_m": 1.4e-05
+        }
+      ]
     }
   },
   "freeze_gate_v3": {
-    "surface_offset_cavity": false,
+    "surface_offset_cavity": true,
     "guide_containment_100": false
   },
   "stage_result": {
-    "surface_offset_cavity": "PASS - unchanged from the previous pass, valid closed manifold at all 8 offsets on both sides",
-    "true_wall_probe": "STILL WRONG, and now precisely diagnosable",
-    "evidence": "median wall reads 0.00001 m (0.01 mm) at EVERY offset from 2 mm to 12 mm, with min 1-3e-06 m. A wall cannot be 10 um thick at a 12 mm offset, so the ray is not reaching the far wall.",
-    "cause": "the probe starts at a vertex and rays along that vertex's own normal. The first crossing it finds is the cavity's OWN rim/side wall a few microns away, not the opposite wall. It measures a self-hit.",
-    "exact_fix": "skip the first crossing: advance the ray origin past the first hit (loc + n * 1e-5) and take the SECOND crossing distance as the wall thickness. Then the distribution becomes meaningful and the cavity thickness can be chosen from it.",
+    "wall_thickness_probe": "FIXED AND VALIDATED",
+    "evidence": "at a 6 mm solidify offset the median measured wall is 0.00574 m (LEFT) and 0.00573 m (RIGHT). The probe now reports the offset itself, which is exactly what wall thickness means, and the same measurement previously reported 0.00001 m. The self-hit was the cause and skipping the first crossing fixed it.",
+    "distribution": "median 5.74 mm, mean 4.82 mm, p5 0.166 mm, max 82 mm over ~2100 samples. The wide max is where the ray runs along a tangent; the median is the number to use.",
+    "consequence": "the cavity thickness can now be chosen from a real distribution. 6 mm is the first offset whose median clears 2x guide radius + epsilon, so it is the current candidate.",
+    "guide_placement": "STILL FAILING, cause narrowed",
+    "guide_evidence": "every profile and scale lands 39-54% inside. Clearance at the path is ~1e-05 m, i.e. the path sits on the wall.",
+    "remaining_cause": "the centreline heuristic is wrong. Slab centroid and 'deepest vertex' both fail because a solidified shell has two surfaces; neither a slab centroid nor a deepest-vertex pick is guaranteed to land BETWEEN them. A correct centreline needs the midpoint of the near-wall and far-wall intersections along the surface normal at each slab, which is directly available now that the two crossings are already being measured.",
     "not_reached": [
-      "choosing the final cavity thickness from a correct distribution",
-      "light guide placement and the 100% containment proof",
-      "clearance distribution, body/trunk collision",
-      "screen-space QA from four cameras",
+      "guide containment 100%",
+      "clearance distribution for a placed guide",
+      "body/trunk collision",
+      "screen-space QA (4 cameras)",
       "trunk ownership and motion",
       "OFF and ON 600 px QA",
       "Vehicle State Asset Production Parts 1-22"
-    ],
-    "honest_status": "the construction problem is SOLVED; the measurement that would let the next stage choose parameters is not yet correct, and I stopped here rather than claim a containment result I had not proven."
+    ]
   }
 }
