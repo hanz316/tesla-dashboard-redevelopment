@@ -1,0 +1,509 @@
+{
+  "method": "surface-offset (solidify inward)",
+  "vehicle_size_m": [
+    4.694,
+    2.186,
+    1.409
+  ],
+  "left_sign": 1.0,
+  "thickness_candidates_m": [
+    0.002,
+    0.003,
+    0.004,
+    0.005,
+    0.006,
+    0.008,
+    0.01,
+    0.012
+  ],
+  "epsilon_note": "epsilon is derived below from the measured minimum wall-to-wall thickness, not fixed a priori",
+  "lamps": {
+    "rear_lights": {
+      "components": 2,
+      "vertices": 1162,
+      "normals": null,
+      "inward": null,
+      "cleanup": null
+    },
+    "rear_lightsl": {
+      "components": 1,
+      "vertices": 327,
+      "normals": null,
+      "inward": null,
+      "cleanup": null
+    },
+    "rear_lightsr": {
+      "components": 1,
+      "vertices": 327,
+      "normals": null,
+      "inward": null,
+      "cleanup": null
+    },
+    "light_breake": {
+      "components": 2,
+      "vertices": 302,
+      "normals": null,
+      "inward": null,
+      "cleanup": null
+    }
+  },
+  "sweep": [
+    {
+      "side": "LEFT",
+      "thickness_m": 0.002,
+      "health": {
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "wire_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 6.5425e-05,
+        "outward": true,
+        "watertight": true
+      },
+      "thickness_distribution": {
+        "samples": 264,
+        "min_m": 6e-05,
+        "p1_m": 8e-05,
+        "p5_m": 0.00038,
+        "median_m": 0.0005,
+        "mean_m": 0.00048,
+        "max_m": 0.0005
+      }
+    },
+    {
+      "side": "LEFT",
+      "thickness_m": 0.003,
+      "health": {
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "wire_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 9.3984e-05,
+        "outward": true,
+        "watertight": true
+      },
+      "thickness_distribution": {
+        "samples": 265,
+        "min_m": 7e-05,
+        "p1_m": 9e-05,
+        "p5_m": 0.0003,
+        "median_m": 0.0005,
+        "mean_m": 0.00048,
+        "max_m": 0.0005
+      }
+    },
+    {
+      "side": "LEFT",
+      "thickness_m": 0.004,
+      "health": {
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "wire_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 0.000119823,
+        "outward": true,
+        "watertight": true
+      },
+      "thickness_distribution": {
+        "samples": 265,
+        "min_m": 7e-05,
+        "p1_m": 9e-05,
+        "p5_m": 0.00042,
+        "median_m": 0.0005,
+        "mean_m": 0.00049,
+        "max_m": 0.0005
+      }
+    },
+    {
+      "side": "LEFT",
+      "thickness_m": 0.005,
+      "health": {
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "wire_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 0.000142973,
+        "outward": true,
+        "watertight": true
+      },
+      "thickness_distribution": {
+        "samples": 265,
+        "min_m": 4e-05,
+        "p1_m": 8e-05,
+        "p5_m": 0.00036,
+        "median_m": 0.0005,
+        "mean_m": 0.00048,
+        "max_m": 0.0005
+      }
+    },
+    {
+      "side": "LEFT",
+      "thickness_m": 0.006,
+      "health": {
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "wire_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 0.00016347,
+        "outward": true,
+        "watertight": true
+      },
+      "thickness_distribution": {
+        "samples": 265,
+        "min_m": 2e-05,
+        "p1_m": 8e-05,
+        "p5_m": 0.00046,
+        "median_m": 0.0005,
+        "mean_m": 0.00049,
+        "max_m": 0.0005
+      }
+    },
+    {
+      "side": "LEFT",
+      "thickness_m": 0.008,
+      "health": {
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "wire_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 0.000196641,
+        "outward": true,
+        "watertight": true
+      },
+      "thickness_distribution": {
+        "samples": 265,
+        "min_m": 8e-05,
+        "p1_m": 0.00019,
+        "p5_m": 0.00047,
+        "median_m": 0.0005,
+        "mean_m": 0.00049,
+        "max_m": 0.0005
+      }
+    },
+    {
+      "side": "LEFT",
+      "thickness_m": 0.01,
+      "health": {
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "wire_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 0.000219613,
+        "outward": true,
+        "watertight": true
+      },
+      "thickness_distribution": {
+        "samples": 264,
+        "min_m": 8e-05,
+        "p1_m": 0.00011,
+        "p5_m": 0.00041,
+        "median_m": 0.0005,
+        "mean_m": 0.00049,
+        "max_m": 0.0005
+      }
+    },
+    {
+      "side": "LEFT",
+      "thickness_m": 0.012,
+      "health": {
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "wire_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 0.000232662,
+        "outward": true,
+        "watertight": true
+      },
+      "thickness_distribution": {
+        "samples": 265,
+        "min_m": 8e-05,
+        "p1_m": 0.00025,
+        "p5_m": 0.00043,
+        "median_m": 0.0005,
+        "mean_m": 0.00049,
+        "max_m": 0.0005
+      }
+    },
+    {
+      "side": "RIGHT",
+      "thickness_m": 0.002,
+      "health": {
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "wire_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 6.5441e-05,
+        "outward": true,
+        "watertight": true
+      },
+      "thickness_distribution": {
+        "samples": 264,
+        "min_m": 6e-05,
+        "p1_m": 0.00012,
+        "p5_m": 0.0004,
+        "median_m": 0.0005,
+        "mean_m": 0.00049,
+        "max_m": 0.0005
+      }
+    },
+    {
+      "side": "RIGHT",
+      "thickness_m": 0.003,
+      "health": {
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "wire_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 9.4021e-05,
+        "outward": true,
+        "watertight": true
+      },
+      "thickness_distribution": {
+        "samples": 265,
+        "min_m": 9e-05,
+        "p1_m": 0.00015,
+        "p5_m": 0.00043,
+        "median_m": 0.0005,
+        "mean_m": 0.00049,
+        "max_m": 0.0005
+      }
+    },
+    {
+      "side": "RIGHT",
+      "thickness_m": 0.004,
+      "health": {
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "wire_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 0.000119889,
+        "outward": true,
+        "watertight": true
+      },
+      "thickness_distribution": {
+        "samples": 265,
+        "min_m": 2e-05,
+        "p1_m": 9e-05,
+        "p5_m": 0.0005,
+        "median_m": 0.0005,
+        "mean_m": 0.00049,
+        "max_m": 0.0005
+      }
+    },
+    {
+      "side": "RIGHT",
+      "thickness_m": 0.005,
+      "health": {
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "wire_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 0.000143073,
+        "outward": true,
+        "watertight": true
+      },
+      "thickness_distribution": {
+        "samples": 265,
+        "min_m": 5e-05,
+        "p1_m": 9e-05,
+        "p5_m": 0.00045,
+        "median_m": 0.0005,
+        "mean_m": 0.00049,
+        "max_m": 0.0005
+      }
+    },
+    {
+      "side": "RIGHT",
+      "thickness_m": 0.006,
+      "health": {
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "wire_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 0.000163613,
+        "outward": true,
+        "watertight": true
+      },
+      "thickness_distribution": {
+        "samples": 265,
+        "min_m": 2e-05,
+        "p1_m": 0.00013,
+        "p5_m": 0.00047,
+        "median_m": 0.0005,
+        "mean_m": 0.00049,
+        "max_m": 0.0005
+      }
+    },
+    {
+      "side": "RIGHT",
+      "thickness_m": 0.008,
+      "health": {
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "wire_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 0.000196896,
+        "outward": true,
+        "watertight": true
+      },
+      "thickness_distribution": {
+        "samples": 265,
+        "min_m": 0.00017,
+        "p1_m": 0.00031,
+        "p5_m": 0.00048,
+        "median_m": 0.0005,
+        "mean_m": 0.00049,
+        "max_m": 0.0005
+      }
+    },
+    {
+      "side": "RIGHT",
+      "thickness_m": 0.01,
+      "health": {
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "wire_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 0.000220012,
+        "outward": true,
+        "watertight": true
+      },
+      "thickness_distribution": {
+        "samples": 264,
+        "min_m": 5e-05,
+        "p1_m": 0.00014,
+        "p5_m": 0.00043,
+        "median_m": 0.0005,
+        "mean_m": 0.00049,
+        "max_m": 0.0005
+      }
+    },
+    {
+      "side": "RIGHT",
+      "thickness_m": 0.012,
+      "health": {
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "wire_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 0.00023326,
+        "outward": true,
+        "watertight": true
+      },
+      "thickness_distribution": {
+        "samples": 265,
+        "min_m": 6e-05,
+        "p1_m": 0.00018,
+        "p5_m": 0.0004,
+        "median_m": 0.0005,
+        "mean_m": 0.00049,
+        "max_m": 0.0005
+      }
+    }
+  ],
+  "sides": {
+    "LEFT": {
+      "cleanup": {
+        "merged_vertices": 0,
+        "loose_vertices_removed": 0,
+        "degenerate_faces_removed": 0,
+        "normals_recalculated": true
+      },
+      "normal_consistency": 1.0,
+      "flipped_faces": 0,
+      "inward": {
+        "component_centroid_y": 0.6413,
+        "vehicle_side": "LEFT",
+        "inward_axis_sign": -1.0,
+        "stored_normals_point_outward": true,
+        "flip_needed": false
+      },
+      "source_vertices": 1059,
+      "source_faces": 1936,
+      "selected_thickness_m": 0.002,
+      "cavity": {
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "wire_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 6.5425e-05,
+        "outward": true,
+        "watertight": true
+      },
+      "thickness_distribution": {
+        "samples": 264,
+        "min_m": 6e-05,
+        "p1_m": 8e-05,
+        "p5_m": 0.00038,
+        "median_m": 0.0005,
+        "mean_m": 0.00048,
+        "max_m": 0.0005
+      }
+    },
+    "RIGHT": {
+      "cleanup": {
+        "merged_vertices": 0,
+        "loose_vertices_removed": 0,
+        "degenerate_faces_removed": 0,
+        "normals_recalculated": true
+      },
+      "normal_consistency": 1.0,
+      "flipped_faces": 0,
+      "inward": {
+        "component_centroid_y": -0.6413,
+        "vehicle_side": "RIGHT",
+        "inward_axis_sign": 1.0,
+        "stored_normals_point_outward": true,
+        "flip_needed": false
+      },
+      "source_vertices": 1059,
+      "source_faces": 1936,
+      "selected_thickness_m": 0.002,
+      "cavity": {
+        "boundary_edges": 0,
+        "non_manifold_edges": 0,
+        "wire_edges": 0,
+        "degenerate_faces": 0,
+        "signed_volume_m3": 6.5441e-05,
+        "outward": true,
+        "watertight": true
+      },
+      "thickness_distribution": {
+        "samples": 264,
+        "min_m": 6e-05,
+        "p1_m": 0.00012,
+        "p5_m": 0.0004,
+        "median_m": 0.0005,
+        "mean_m": 0.00049,
+        "max_m": 0.0005
+      }
+    }
+  },
+  "freeze_gate_v3": {
+    "surface_offset_cavity": true,
+    "guide_containment_100": null,
+    "note": "guide placement, screen-space QA, trunk motion and Parts 1-22 are separate passes; this report covers the cavity stage only"
+  },
+  "stage_result": {
+    "surface_offset_cavity": "SUCCESS",
+    "what_passed": [
+      "inward direction derived from geometry, not assumed: normal consistency 1.000 with 0 flipped faces on both sides, so flip_needed = False; the inward axis sign follows the lamp centroid's Y and the vehicle centreline",
+      "cleanup on the construction copy: 0 merged vertices, 0 loose vertices, 0 degenerate faces removed - the shells were already clean",
+      "valid closed manifold at EVERY tested offset from 2 mm to 12 mm on both sides: boundary_edges 0, non_manifold_edges 0, wire_edges 0, degenerate_faces 0, signed volume > 0, outward orientation",
+      "volume grows monotonically with offset: 6.54e-05 m3 at 2 mm to 2.33e-04 m3 at 12 mm"
+    ],
+    "what_is_NOT_yet_valid": [
+      "the wall-to-wall thickness distribution is NOT reliable yet. The probe rays along a heuristic Y direction instead of the true surface normal, so the reported min/median values (~0.5 mm) measure the probe direction, not the wall. It must ray along each sample's own normal before the distribution can be used to pick the cavity thickness."
+    ],
+    "not_done": [
+      "guide placement inside the offset cavity",
+      "100% containment proof and clearance distribution",
+      "body / trunk collision",
+      "screen-space QA from four cameras",
+      "trunk ownership and 0/25/50/75/100% motion",
+      "OFF and ON 600px QA",
+      "Vehicle State Asset Production Parts 1-22"
+    ],
+    "minimum_offset_that_works": "2 mm already produces a valid manifold; the final thickness should be chosen from a CORRECT thickness distribution, not from the smallest passing one, so the 2 mm result is a floor and not yet the decision."
+  }
+}
