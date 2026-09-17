@@ -1,0 +1,98 @@
+[
+  {
+    "file": "assets/rendered/diagnostic/original/doors.png",
+    "car_px": 203879,
+    "ridge_px": 7875,
+    "peak": 249.0,
+    "breaks": 33,
+    "columns": 883,
+    "break_share": 0.0374,
+    "waviness": 11.272,
+    "thickness_mean": 31.1,
+    "thickness_p95": 95.0
+  },
+  {
+    "file": "assets/rendered/diagnostic/original/rear_quarter.png",
+    "car_px": 230993,
+    "ridge_px": 5621,
+    "peak": 197.3333282470703,
+    "breaks": 121,
+    "columns": 764,
+    "break_share": 0.1584,
+    "waviness": 4.356,
+    "thickness_mean": 81.3,
+    "thickness_p95": 243.9
+  },
+  {
+    "file": "assets/rendered/diagnostic/original/roof.png",
+    "car_px": 278038,
+    "ridge_px": 43782,
+    "peak": 119.0,
+    "breaks": 70,
+    "columns": 701,
+    "break_share": 0.0999,
+    "waviness": 7.696,
+    "thickness_mean": 190.5,
+    "thickness_p95": 476.0
+  },
+  {
+    "file": "assets/rendered/diagnostic/original/side.png",
+    "car_px": 162896,
+    "ridge_px": 6845,
+    "peak": 255.0,
+    "breaks": 2,
+    "columns": 830,
+    "break_share": 0.0024,
+    "waviness": 2.866,
+    "thickness_mean": 13.9,
+    "thickness_p95": 55.6
+  },
+  {
+    "file": "assets/rendered/diagnostic/clean/doors.png",
+    "car_px": 203879,
+    "ridge_px": 7787,
+    "peak": 249.6666717529297,
+    "breaks": 34,
+    "columns": 883,
+    "break_share": 0.0385,
+    "waviness": 1.946,
+    "thickness_mean": 30.9,
+    "thickness_p95": 95.0
+  },
+  {
+    "file": "assets/rendered/diagnostic/clean/rear_quarter.png",
+    "car_px": 230993,
+    "ridge_px": 5721,
+    "peak": 197.6666717529297,
+    "breaks": 116,
+    "columns": 764,
+    "break_share": 0.1518,
+    "waviness": 5.141,
+    "thickness_mean": 86.0,
+    "thickness_p95": 244.6
+  },
+  {
+    "file": "assets/rendered/diagnostic/clean/roof.png",
+    "car_px": 278038,
+    "ridge_px": 44678,
+    "peak": 118.66666412353516,
+    "breaks": 69,
+    "columns": 701,
+    "break_share": 0.0984,
+    "waviness": 3.405,
+    "thickness_mean": 190.3,
+    "thickness_p95": 488.1
+  },
+  {
+    "file": "assets/rendered/diagnostic/clean/side.png",
+    "car_px": 162896,
+    "ridge_px": 6880,
+    "peak": 255.0,
+    "breaks": 2,
+    "columns": 830,
+    "break_share": 0.0024,
+    "waviness": 2.693,
+    "thickness_mean": 13.6,
+    "thickness_p95": 56.0
+  }
+]

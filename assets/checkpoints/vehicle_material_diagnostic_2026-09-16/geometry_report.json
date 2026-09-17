@@ -1,0 +1,916 @@
+{
+  "vehicle_size_m": [
+    4.694,
+    2.186,
+    1.409
+  ],
+  "objects": [
+    {
+      "name": "aluminium_light",
+      "vertices": 2644,
+      "polygons": 4836,
+      "triangles": 4836,
+      "quads": 0,
+      "ngons": 0,
+      "ngon_share": 0.0,
+      "non_manifold_edges": 444,
+      "boundary_edges": 444,
+      "interior_edges_gt2_faces": 0,
+      "wire_edges": 0,
+      "duplicate_vertices": 0,
+      "flipped_faces": 0,
+      "flipped_share": 0.0,
+      "has_custom_split_normals": true,
+      "smooth_face_share": 1.0,
+      "sharp_edges": 0,
+      "modifiers": [],
+      "materials": [
+        "aluminium_light.0"
+      ],
+      "edge_length": {
+        "min": 0.00023092565243132412,
+        "median": 0.015672506764531136,
+        "max": 0.07087726145982742,
+        "p99": 0.04277677834033966
+      },
+      "face_area": {
+        "min": 1.0399780876468867e-06,
+        "median": 1.62914893735433e-05,
+        "max": 0.00040369160706177354,
+        "p99": 0.000271065830020234
+      },
+      "large_faces_gt9x_median": 162,
+      "large_face_share": 0.0335,
+      "area_max_over_median": 24.78,
+      "role": "light trim"
+    },
+    {
+      "name": "back_chrome_light",
+      "vertices": 3078,
+      "polygons": 5868,
+      "triangles": 5868,
+      "quads": 0,
+      "ngons": 0,
+      "ngon_share": 0.0,
+      "non_manifold_edges": 280,
+      "boundary_edges": 280,
+      "interior_edges_gt2_faces": 0,
+      "wire_edges": 0,
+      "duplicate_vertices": 0,
+      "flipped_faces": 0,
+      "flipped_share": 0.0,
+      "has_custom_split_normals": true,
+      "smooth_face_share": 1.0,
+      "sharp_edges": 0,
+      "modifiers": [],
+      "materials": [
+        "back_chrome_light.0"
+      ],
+      "edge_length": {
+        "min": 0.00023872940801084042,
+        "median": 0.0048448978923261166,
+        "max": 0.03680361807346344,
+        "p99": 0.025788085535168648
+      },
+      "face_area": {
+        "min": 1.6694934856786858e-07,
+        "median": 8.110966518870555e-06,
+        "max": 0.000257236126344651,
+        "p99": 0.00013716594548895955
+      },
+      "large_faces_gt9x_median": 196,
+      "large_face_share": 0.0334,
+      "area_max_over_median": 31.71,
+      "role": "taillight trim"
+    },
+    {
+      "name": "black_lights",
+      "vertices": 3550,
+      "polygons": 6348,
+      "triangles": 6348,
+      "quads": 0,
+      "ngons": 0,
+      "ngon_share": 0.0,
+      "non_manifold_edges": 740,
+      "boundary_edges": 740,
+      "interior_edges_gt2_faces": 0,
+      "wire_edges": 0,
+      "duplicate_vertices": 0,
+      "flipped_faces": 2252,
+      "flipped_share": 0.3548,
+      "has_custom_split_normals": true,
+      "smooth_face_share": 1.0,
+      "sharp_edges": 0,
+      "modifiers": [],
+      "materials": [
+        "black_lights.0"
+      ],
+      "edge_length": {
+        "min": 0.00015678734052926302,
+        "median": 0.01142695639282465,
+        "max": 0.041402943432331085,
+        "p99": 0.03367634862661362
+      },
+      "face_area": {
+        "min": 6.132074759079842e-08,
+        "median": 1.5944657207001e-05,
+        "max": 0.0003079292946495116,
+        "p99": 0.00019476663146633655
+      },
+      "large_faces_gt9x_median": 250,
+      "large_face_share": 0.0394,
+      "area_max_over_median": 19.31,
+      "role": "light housings (black)"
+    },
+    {
+      "name": "body",
+      "vertices": 28401,
+      "polygons": 47288,
+      "triangles": 47288,
+      "quads": 0,
+      "ngons": 0,
+      "ngon_share": 0.0,
+      "non_manifold_edges": 9720,
+      "boundary_edges": 9720,
+      "interior_edges_gt2_faces": 0,
+      "wire_edges": 0,
+      "duplicate_vertices": 3727,
+      "flipped_faces": 125,
+      "flipped_share": 0.0026,
+      "has_custom_split_normals": true,
+      "smooth_face_share": 1.0,
+      "sharp_edges": 0,
+      "modifiers": [],
+      "materials": [
+        "primary"
+      ],
+      "edge_length": {
+        "min": 0.00024414947256445885,
+        "median": 0.01874074526131153,
+        "max": 0.07334835082292557,
+        "p99": 0.043918050825595856
+      },
+      "face_area": {
+        "min": 5.0982929877818606e-08,
+        "median": 3.8146117731230333e-05,
+        "max": 0.0005473923520185053,
+        "p99": 0.00036461447598412633
+      },
+      "large_faces_gt9x_median": 728,
+      "large_face_share": 0.0154,
+      "area_max_over_median": 14.35,
+      "role": "body shell (roof metal, fenders, rear quarters, C pillars)"
+    },
+    {
+      "name": "bodysills",
+      "vertices": 6434,
+      "polygons": 10616,
+      "triangles": 10616,
+      "quads": 0,
+      "ngons": 0,
+      "ngon_share": 0.0,
+      "non_manifold_edges": 2314,
+      "boundary_edges": 2314,
+      "interior_edges_gt2_faces": 0,
+      "wire_edges": 0,
+      "duplicate_vertices": 688,
+      "flipped_faces": 10550,
+      "flipped_share": 0.9938,
+      "has_custom_split_normals": true,
+      "smooth_face_share": 1.0,
+      "sharp_edges": 0,
+      "modifiers": [],
+      "materials": [
+        "primary.001"
+      ],
+      "edge_length": {
+        "min": 0.001053103362210095,
+        "median": 0.02440650202333927,
+        "max": 0.10608356446027756,
+        "p99": 0.08225886523723602
+      },
+      "face_area": {
+        "min": 7.53830420308077e-07,
+        "median": 0.0001501810911577195,
+        "max": 0.0015742970863357186,
+        "p99": 0.001023158896714449
+      },
+      "large_faces_gt9x_median": 18,
+      "large_face_share": 0.0017,
+      "area_max_over_median": 10.48,
+      "role": "rocker / sill"
+    },
+    {
+      "name": "bonnet_ok",
+      "vertices": 2651,
+      "polygons": 4572,
+      "triangles": 4572,
+      "quads": 0,
+      "ngons": 0,
+      "ngon_share": 0.0,
+      "non_manifold_edges": 730,
+      "boundary_edges": 730,
+      "interior_edges_gt2_faces": 0,
+      "wire_edges": 0,
+      "duplicate_vertices": 290,
+      "flipped_faces": 11,
+      "flipped_share": 0.0024,
+      "has_custom_split_normals": true,
+      "smooth_face_share": 1.0,
+      "sharp_edges": 0,
+      "modifiers": [],
+      "materials": [
+        "primary"
+      ],
+      "edge_length": {
+        "min": 0.00043697538785636425,
+        "median": 0.033343903720378876,
+        "max": 0.09315305948257446,
+        "p99": 0.07992860674858093
+      },
+      "face_area": {
+        "min": 4.318505091305269e-07,
+        "median": 0.0001363365154247731,
+        "max": 0.0011380997020751238,
+        "p99": 0.0010544793913140893
+      },
+      "large_faces_gt9x_median": 0,
+      "large_face_share": 0.0,
+      "area_max_over_median": 8.35,
+      "role": "hood"
+    },
+    {
+      "name": "boot",
+      "vertices": 6947,
+      "polygons": 11084,
+      "triangles": 11084,
+      "quads": 0,
+      "ngons": 0,
+      "ngon_share": 0.0,
+      "non_manifold_edges": 2826,
+      "boundary_edges": 2826,
+      "interior_edges_gt2_faces": 0,
+      "wire_edges": 0,
+      "duplicate_vertices": 1158,
+      "flipped_faces": 39,
+      "flipped_share": 0.0035,
+      "has_custom_split_normals": true,
+      "smooth_face_share": 1.0,
+      "sharp_edges": 0,
+      "modifiers": [],
+      "materials": [
+        "primary"
+      ],
+      "edge_length": {
+        "min": 0.0003152891877107322,
+        "median": 0.021909838542342186,
+        "max": 0.08606231957674026,
+        "p99": 0.055831603705883026
+      },
+      "face_area": {
+        "min": 6.29842986654694e-08,
+        "median": 5.1469512982293963e-05,
+        "max": 0.0007037592004053295,
+        "p99": 0.0006548655801452696
+      },
+      "large_faces_gt9x_median": 480,
+      "large_face_share": 0.0433,
+      "area_max_over_median": 13.67,
+      "role": "trunk lid"
+    },
+    {
+      "name": "chrome_light",
+      "vertices": 2710,
+      "polygons": 5184,
+      "triangles": 5184,
+      "quads": 0,
+      "ngons": 0,
+      "ngon_share": 0.0,
+      "non_manifold_edges": 228,
+      "boundary_edges": 228,
+      "interior_edges_gt2_faces": 0,
+      "wire_edges": 0,
+      "duplicate_vertices": 0,
+      "flipped_faces": 1184,
+      "flipped_share": 0.2284,
+      "has_custom_split_normals": true,
+      "smooth_face_share": 1.0,
+      "sharp_edges": 0,
+      "modifiers": [],
+      "materials": [
+        "back_chrome_light.0"
+      ],
+      "edge_length": {
+        "min": 0.00023492058971896768,
+        "median": 0.006812006235122681,
+        "max": 0.02203858643770218,
+        "p99": 0.020153604447841644
+      },
+      "face_area": {
+        "min": 1.4245489410313894e-07,
+        "median": 9.408923688170034e-06,
+        "max": 7.407565135508776e-05,
+        "p99": 6.714651681249961e-05
+      },
+      "large_faces_gt9x_median": 0,
+      "large_face_share": 0.0,
+      "area_max_over_median": 7.87,
+      "role": "headlight trim"
+    },
+    {
+      "name": "door_lf",
+      "vertices": 19934,
+      "polygons": 35532,
+      "triangles": 35532,
+      "quads": 0,
+      "ngons": 0,
+      "ngon_share": 0.0,
+      "non_manifold_edges": 4308,
+      "boundary_edges": 4308,
+      "interior_edges_gt2_faces": 0,
+      "wire_edges": 0,
+      "duplicate_vertices": 1108,
+      "flipped_faces": 2740,
+      "flipped_share": 0.0771,
+      "has_custom_split_normals": true,
+      "smooth_face_share": 1.0,
+      "sharp_edges": 0,
+      "modifiers": [],
+      "materials": [
+        "dvorright.0",
+        "movsteer_1.0.0",
+        "movsteer_1.0.1",
+        "JUST_BLACK.0",
+        "primary",
+        "Plastic.0",
+        "aluminium2.0",
+        "Putih.0",
+        "texture_Buttons.0",
+        "mirror_inside.0",
+        "glass.0",
+        "door_lf.0",
+        "door_lf.5",
+        "primary.002"
+      ],
+      "edge_length": {
+        "min": 2.9921531677246094e-05,
+        "median": 0.0135812284424901,
+        "max": 0.5844449996948242,
+        "p99": 0.08375006914138794
+      },
+      "face_area": {
+        "min": 3.950130889052161e-09,
+        "median": 3.75124545826111e-05,
+        "max": 0.05275293439626694,
+        "p99": 0.001333556487224996
+      },
+      "large_faces_gt9x_median": 3157,
+      "large_face_share": 0.0888,
+      "area_max_over_median": 1406.28,
+      "role": "front left door"
+    },
+    {
+      "name": "door_lr",
+      "vertices": 14082,
+      "polygons": 25150,
+      "triangles": 25150,
+      "quads": 0,
+      "ngons": 0,
+      "ngon_share": 0.0,
+      "non_manifold_edges": 3008,
+      "boundary_edges": 3008,
+      "interior_edges_gt2_faces": 0,
+      "wire_edges": 0,
+      "duplicate_vertices": 741,
+      "flipped_faces": 1310,
+      "flipped_share": 0.0521,
+      "has_custom_split_normals": true,
+      "smooth_face_share": 1.0,
+      "sharp_edges": 0,
+      "modifiers": [],
+      "materials": [
+        "dvorright.0",
+        "movsteer_1.0.0",
+        "movsteer_1.0.1",
+        "JUST_BLACK.0",
+        "primary",
+        "Plastic.0",
+        "aluminium2.0",
+        "Putih.0",
+        "texture_Buttons.0",
+        "glass.0",
+        "primary.002",
+        "primary.004"
+      ],
+      "edge_length": {
+        "min": 0.00014709311653859913,
+        "median": 0.018758373335003853,
+        "max": 0.08953410387039185,
+        "p99": 0.08110366016626358
+      },
+      "face_area": {
+        "min": 5.0029900222625656e-08,
+        "median": 5.831025919178501e-05,
+        "max": 0.0015894219977781177,
+        "p99": 0.0007842830382287502
+      },
+      "large_faces_gt9x_median": 1092,
+      "large_face_share": 0.0434,
+      "area_max_over_median": 27.26,
+      "role": "rear left door"
+    },
+    {
+      "name": "door_rf",
+      "vertices": 17865,
+      "polygons": 32196,
+      "triangles": 32196,
+      "quads": 0,
+      "ngons": 0,
+      "ngon_share": 0.0,
+      "non_manifold_edges": 3534,
+      "boundary_edges": 3534,
+      "interior_edges_gt2_faces": 0,
+      "wire_edges": 0,
+      "duplicate_vertices": 787,
+      "flipped_faces": 1857,
+      "flipped_share": 0.0577,
+      "has_custom_split_normals": true,
+      "smooth_face_share": 1.0,
+      "sharp_edges": 0,
+      "modifiers": [],
+      "materials": [
+        "dvorright.0",
+        "movsteer_1.0.0",
+        "movsteer_1.0.1",
+        "JUST_BLACK.0",
+        "primary",
+        "Plastic.0",
+        "aluminium2.0",
+        "Putih.0",
+        "texture_Buttons.0",
+        "mirror_inside.0",
+        "glass.0",
+        "door_lf.0",
+        "primary.002"
+      ],
+      "edge_length": {
+        "min": 2.9921531677246094e-05,
+        "median": 0.01644427329301834,
+        "max": 0.5844451189041138,
+        "p99": 0.08627191185951233
+      },
+      "face_area": {
+        "min": 3.872437925878103e-09,
+        "median": 4.688235276262276e-05,
+        "max": 0.052752941846847534,
+        "p99": 0.0014511625049635768
+      },
+      "large_faces_gt9x_median": 2252,
+      "large_face_share": 0.0699,
+      "area_max_over_median": 1125.22,
+      "role": "front right door"
+    },
+    {
+      "name": "door_rr",
+      "vertices": 14071,
+      "polygons": 25118,
+      "triangles": 25118,
+      "quads": 0,
+      "ngons": 0,
+      "ngon_share": 0.0,
+      "non_manifold_edges": 3016,
+      "boundary_edges": 3016,
+      "interior_edges_gt2_faces": 0,
+      "wire_edges": 0,
+      "duplicate_vertices": 747,
+      "flipped_faces": 1306,
+      "flipped_share": 0.052,
+      "has_custom_split_normals": true,
+      "smooth_face_share": 1.0,
+      "sharp_edges": 0,
+      "modifiers": [],
+      "materials": [
+        "dvorright.0",
+        "movsteer_1.0.0",
+        "movsteer_1.0.1",
+        "JUST_BLACK.0",
+        "primary",
+        "Plastic.0",
+        "aluminium2.0",
+        "Putih.0",
+        "texture_Buttons.0",
+        "glass.0",
+        "primary.002"
+      ],
+      "edge_length": {
+        "min": 0.00014709311653859913,
+        "median": 0.018803277984261513,
+        "max": 0.08953443914651871,
+        "p99": 0.08110374957323074
+      },
+      "face_area": {
+        "min": 4.9977924021504805e-08,
+        "median": 5.8345289289718494e-05,
+        "max": 0.0015893516829237342,
+        "p99": 0.0007842173217795789
+      },
+      "large_faces_gt9x_median": 1091,
+      "large_face_share": 0.0434,
+      "area_max_over_median": 27.24,
+      "role": "rear right door"
+    },
+    {
+      "name": "front_bumper_ok",
+      "vertices": 9972,
+      "polygons": 16136,
+      "triangles": 16136,
+      "quads": 0,
+      "ngons": 0,
+      "ngon_share": 0.0,
+      "non_manifold_edges": 3918,
+      "boundary_edges": 3918,
+      "interior_edges_gt2_faces": 0,
+      "wire_edges": 0,
+      "duplicate_vertices": 1588,
+      "flipped_faces": 41,
+      "flipped_share": 0.0025,
+      "has_custom_split_normals": true,
+      "smooth_face_share": 1.0,
+      "sharp_edges": 0,
+      "modifiers": [],
+      "materials": [
+        "primary"
+      ],
+      "edge_length": {
+        "min": 0.00034241698449477553,
+        "median": 0.01820819452404976,
+        "max": 0.06796778738498688,
+        "p99": 0.053298693150281906
+      },
+      "face_area": {
+        "min": 1.3816487864914961e-07,
+        "median": 6.0462825786089525e-05,
+        "max": 0.0009193159639835358,
+        "p99": 0.00035929441219195724
+      },
+      "large_faces_gt9x_median": 86,
+      "large_face_share": 0.0053,
+      "area_max_over_median": 15.2,
+      "role": "front bumper"
+    },
+    {
+      "name": "glass",
+      "vertices": 3272,
+      "polygons": 6528,
+      "triangles": 6528,
+      "quads": 0,
+      "ngons": 0,
+      "ngon_share": 0.0,
+      "non_manifold_edges": 0,
+      "boundary_edges": 0,
+      "interior_edges_gt2_faces": 0,
+      "wire_edges": 0,
+      "duplicate_vertices": 0,
+      "flipped_faces": 0,
+      "flipped_share": 0.0,
+      "has_custom_split_normals": true,
+      "smooth_face_share": 1.0,
+      "sharp_edges": 0,
+      "modifiers": [],
+      "materials": [
+        "glass.0",
+        "glass.1"
+      ],
+      "edge_length": {
+        "min": 0.00020722905173897743,
+        "median": 0.045371267944574356,
+        "max": 0.1472363919019699,
+        "p99": 0.13606750965118408
+      },
+      "face_area": {
+        "min": 1.642737856855092e-07,
+        "median": 0.00034088914981111884,
+        "max": 0.00527984369546175,
+        "p99": 0.004997077863663435
+      },
+      "large_faces_gt9x_median": 752,
+      "large_face_share": 0.1152,
+      "area_max_over_median": 15.49,
+      "role": "glass (roof pane + windows)"
+    },
+    {
+      "name": "hub_lb",
+      "vertices": 3354,
+      "polygons": 2795,
+      "triangles": 2795,
+      "quads": 0,
+      "ngons": 0,
+      "ngon_share": 0.0,
+      "non_manifold_edges": 3313,
+      "boundary_edges": 3313,
+      "interior_edges_gt2_faces": 0,
+      "wire_edges": 0,
+      "duplicate_vertices": 1871,
+      "flipped_faces": 1287,
+      "flipped_share": 0.4605,
+      "has_custom_split_normals": true,
+      "smooth_face_share": 1.0,
+      "sharp_edges": 0,
+      "modifiers": [],
+      "materials": [
+        "hub_rb.0"
+      ],
+      "edge_length": {
+        "min": 8.740457997191697e-05,
+        "median": 0.006185998674482107,
+        "max": 0.07006029784679413,
+        "p99": 0.04807760939002037
+      },
+      "face_area": {
+        "min": 1.3984936231281608e-07,
+        "median": 1.3683045835932717e-05,
+        "max": 0.0008439866360276937,
+        "p99": 0.0005044225254096091
+      },
+      "large_faces_gt9x_median": 174,
+      "large_face_share": 0.0623,
+      "area_max_over_median": 61.68,
+      "role": "rear left wheel"
+    },
+    {
+      "name": "hub_lf",
+      "vertices": 2173,
+      "polygons": 2514,
+      "triangles": 2514,
+      "quads": 0,
+      "ngons": 0,
+      "ngon_share": 0.0,
+      "non_manifold_edges": 1712,
+      "boundary_edges": 1712,
+      "interior_edges_gt2_faces": 0,
+      "wire_edges": 0,
+      "duplicate_vertices": 842,
+      "flipped_faces": 500,
+      "flipped_share": 0.1989,
+      "has_custom_split_normals": true,
+      "smooth_face_share": 1.0,
+      "sharp_edges": 0,
+      "modifiers": [],
+      "materials": [
+        "hub_rf.0",
+        "hub_rf.1"
+      ],
+      "edge_length": {
+        "min": 0.0001982843823498115,
+        "median": 0.00921544712036848,
+        "max": 0.13857366144657135,
+        "p99": 0.08244440704584122
+      },
+      "face_area": {
+        "min": 1.2205155996980466e-07,
+        "median": 2.616914025566075e-05,
+        "max": 0.002087306696921587,
+        "p99": 0.0009253103635273874
+      },
+      "large_faces_gt9x_median": 198,
+      "large_face_share": 0.0788,
+      "area_max_over_median": 79.76,
+      "role": "front left wheel"
+    },
+    {
+      "name": "hub_rb",
+      "vertices": 3354,
+      "polygons": 2795,
+      "triangles": 2795,
+      "quads": 0,
+      "ngons": 0,
+      "ngon_share": 0.0,
+      "non_manifold_edges": 3313,
+      "boundary_edges": 3313,
+      "interior_edges_gt2_faces": 0,
+      "wire_edges": 0,
+      "duplicate_vertices": 1871,
+      "flipped_faces": 1286,
+      "flipped_share": 0.4601,
+      "has_custom_split_normals": true,
+      "smooth_face_share": 1.0,
+      "sharp_edges": 0,
+      "modifiers": [],
+      "materials": [
+        "hub_rb.0"
+      ],
+      "edge_length": {
+        "min": 8.771711873123422e-05,
+        "median": 0.006186371203511953,
+        "max": 0.0700603649020195,
+        "p99": 0.048077598214149475
+      },
+      "face_area": {
+        "min": 1.3958356248622295e-07,
+        "median": 1.36815497171483e-05,
+        "max": 0.0008439864031970501,
+        "p99": 0.000504421885125339
+      },
+      "large_faces_gt9x_median": 174,
+      "large_face_share": 0.0623,
+      "area_max_over_median": 61.69,
+      "role": "rear right wheel"
+    },
+    {
+      "name": "hub_rf",
+      "vertices": 2173,
+      "polygons": 2514,
+      "triangles": 2514,
+      "quads": 0,
+      "ngons": 0,
+      "ngon_share": 0.0,
+      "non_manifold_edges": 1712,
+      "boundary_edges": 1712,
+      "interior_edges_gt2_faces": 0,
+      "wire_edges": 0,
+      "duplicate_vertices": 842,
+      "flipped_faces": 489,
+      "flipped_share": 0.1945,
+      "has_custom_split_normals": true,
+      "smooth_face_share": 1.0,
+      "sharp_edges": 0,
+      "modifiers": [],
+      "materials": [
+        "hub_rf.0",
+        "hub_rf.1"
+      ],
+      "edge_length": {
+        "min": 0.00019745179452002048,
+        "median": 0.009214711375534534,
+        "max": 0.13829749822616577,
+        "p99": 0.08244438469409943
+      },
+      "face_area": {
+        "min": 1.2151144801464397e-07,
+        "median": 2.6170475393882953e-05,
+        "max": 0.0020873078610748053,
+        "p99": 0.000925328116863966
+      },
+      "large_faces_gt9x_median": 198,
+      "large_face_share": 0.0788,
+      "area_max_over_median": 79.76,
+      "role": "front right wheel"
+    },
+    {
+      "name": "rear_bumper_ok",
+      "vertices": 9540,
+      "polygons": 15572,
+      "triangles": 15572,
+      "quads": 0,
+      "ngons": 0,
+      "ngon_share": 0.0,
+      "non_manifold_edges": 3612,
+      "boundary_edges": 3612,
+      "interior_edges_gt2_faces": 0,
+      "wire_edges": 0,
+      "duplicate_vertices": 1505,
+      "flipped_faces": 45,
+      "flipped_share": 0.0029,
+      "has_custom_split_normals": true,
+      "smooth_face_share": 1.0,
+      "sharp_edges": 0,
+      "modifiers": [],
+      "materials": [
+        "primary"
+      ],
+      "edge_length": {
+        "min": 0.0002568498603068292,
+        "median": 0.017766490578651428,
+        "max": 0.05172297731041908,
+        "p99": 0.04597543552517891
+      },
+      "face_area": {
+        "min": 1.3630373985051847e-07,
+        "median": 4.7268611524486914e-05,
+        "max": 0.0005124539602547884,
+        "p99": 0.0004265668976586312
+      },
+      "large_faces_gt9x_median": 156,
+      "large_face_share": 0.01,
+      "area_max_over_median": 10.84,
+      "role": "rear bumper"
+    },
+    {
+      "name": "tembus_belakang",
+      "vertices": 1574,
+      "polygons": 2992,
+      "triangles": 2992,
+      "quads": 0,
+      "ngons": 0,
+      "ngon_share": 0.0,
+      "non_manifold_edges": 152,
+      "boundary_edges": 152,
+      "interior_edges_gt2_faces": 0,
+      "wire_edges": 0,
+      "duplicate_vertices": 0,
+      "flipped_faces": 0,
+      "flipped_share": 0.0,
+      "has_custom_split_normals": true,
+      "smooth_face_share": 1.0,
+      "sharp_edges": 0,
+      "modifiers": [],
+      "materials": [
+        "tembus red.0"
+      ],
+      "edge_length": {
+        "min": 0.0004345326451584697,
+        "median": 0.015884103253483772,
+        "max": 0.04243726655840874,
+        "p99": 0.04050625488162041
+      },
+      "face_area": {
+        "min": 2.043460085587867e-07,
+        "median": 2.3018115825834684e-05,
+        "max": 0.0003936315479222685,
+        "p99": 0.0002965513849630952
+      },
+      "large_faces_gt9x_median": 256,
+      "large_face_share": 0.0856,
+      "area_max_over_median": 17.1,
+      "role": "rear glass piece"
+    },
+    {
+      "name": "tembus_boot_ok",
+      "vertices": 1438,
+      "polygons": 2728,
+      "triangles": 2728,
+      "quads": 0,
+      "ngons": 0,
+      "ngon_share": 0.0,
+      "non_manifold_edges": 144,
+      "boundary_edges": 144,
+      "interior_edges_gt2_faces": 0,
+      "wire_edges": 0,
+      "duplicate_vertices": 0,
+      "flipped_faces": 0,
+      "flipped_share": 0.0,
+      "has_custom_split_normals": true,
+      "smooth_face_share": 1.0,
+      "sharp_edges": 0,
+      "modifiers": [],
+      "materials": [
+        "tembus red.0"
+      ],
+      "edge_length": {
+        "min": 0.00033698196057230234,
+        "median": 0.01124571729451418,
+        "max": 0.027075348421931267,
+        "p99": 0.023750826716423035
+      },
+      "face_area": {
+        "min": 1.2749184463700658e-07,
+        "median": 1.2278644135221839e-05,
+        "max": 0.00015288035501725972,
+        "p99": 0.0001389456883771345
+      },
+      "large_faces_gt9x_median": 122,
+      "large_face_share": 0.0447,
+      "area_max_over_median": 12.45,
+      "role": "trunk glass piece"
+    },
+    {
+      "name": "tembus_depan_ok",
+      "vertices": 3078,
+      "polygons": 5768,
+      "triangles": 5768,
+      "quads": 0,
+      "ngons": 0,
+      "ngon_share": 0.0,
+      "non_manifold_edges": 376,
+      "boundary_edges": 376,
+      "interior_edges_gt2_faces": 0,
+      "wire_edges": 0,
+      "duplicate_vertices": 0,
+      "flipped_faces": 0,
+      "flipped_share": 0.0,
+      "has_custom_split_normals": true,
+      "smooth_face_share": 1.0,
+      "sharp_edges": 0,
+      "modifiers": [],
+      "materials": [
+        "tembus red.0"
+      ],
+      "edge_length": {
+        "min": 0.00039850137545727193,
+        "median": 0.014730117283761501,
+        "max": 0.04398974031209946,
+        "p99": 0.03337521851062775
+      },
+      "face_area": {
+        "min": 1.9107243076632585e-07,
+        "median": 2.4305358238052577e-05,
+        "max": 0.0002333536249352619,
+        "p99": 0.00021155572903808206
+      },
+      "large_faces_gt9x_median": 30,
+      "large_face_share": 0.0052,
+      "area_max_over_median": 9.6,
+      "role": "front glass piece"
+    }
+  ]
+}

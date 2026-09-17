@@ -82,3 +82,8 @@ assets/rendered/photoreal/
 # HDRI selection round 2 working renders (regenerable; review copies live in
 # assets/checkpoints/hdri_selection_round2_2026-09-16/).
 assets/rendered/hdri_round2/
+
+# Vehicle material / geometry diagnostic working renders (regenerable; review
+# copies live in assets/checkpoints/vehicle_material_diagnostic_2026-09-16/).
+assets/rendered/diagnostic/
+assets/rendered/material_study/
