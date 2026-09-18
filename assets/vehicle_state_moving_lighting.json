@@ -1,0 +1,46 @@
+{
+  "schema": "vehicle-state-moving-lighting v1",
+  "source_master": "MODEL_A_PRODUCTION_MASTER",
+  "taillight_geometry_version": "surface-offset-cavity-lightguide-v3",
+  "why": "The inner rear indicator lamps belong to the trunk lid (TRUNK_MOVING, proved by the freeze gate ownership measurement), so their light is not at the closed-position screen location while the lid is open. A 2D warp of the single-frame overlay was measured and rejected: a rigid 3D rotation projects to an exact 2D affine only for a planar surface, and the trunk has depth (max error 13.5 px over 65 sampled vertices at 356x236).",
+  "architecture": "FIXED_BODY lighting contribution (base + brake / headlight / running overlays) plus TRUNK_MOVING lighting contribution rendered with the trunk layer",
+  "panels": {
+    "trunk": {
+      "object": "boot",
+      "ownership": "TRUNK_MOVING",
+      "carries": [
+        "INDICATOR_LEFT",
+        "INDICATOR_RIGHT"
+      ],
+      "frames": 14,
+      "lights_off_dir": "trunk",
+      "variants": {
+        "ind_left": {
+          "dir": "trunk/ind_left",
+          "frames": 14,
+          "state": "LEFT_INDICATOR",
+          "png_bytes_total": 943313
+        },
+        "ind_right": {
+          "dir": "trunk/ind_right",
+          "frames": 14,
+          "state": "RIGHT_INDICATOR",
+          "png_bytes_total": 944489
+        },
+        "ind_both": {
+          "dir": "trunk/ind_both",
+          "frames": 14,
+          "state": "HAZARD",
+          "png_bytes_total": 944896
+        }
+      },
+      "hazard": "own variant (ind_both): drawing two full-vehicle variants in sequence would let the second one's unlit pixels overwrite the first one's lit lamp",
+      "rejected_alternative": "2D affine warp of the closed-position indicator overlay"
+    }
+  },
+  "fixed_body_overlays": [
+    "vehicle.brake",
+    "vehicle.headlight",
+    "vehicle.running"
+  ]
+}

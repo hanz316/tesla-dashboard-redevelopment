@@ -1,0 +1,51 @@
+{
+  "baseline": "normal_drive",
+  "vehicle_box": [
+    610,
+    40,
+    700,
+    401
+  ],
+  "states": {
+    "uart_lost": {
+      "changed_pixels_total": 20887,
+      "changed_pixels_in_vehicle_box": 0,
+      "changed_pixels_outside_vehicle_box": 20887,
+      "vehicle_box_max_delta": 0.0,
+      "vehicle_box_unchanged": true,
+      "verdict": "the vehicle itself did not change: no confirmed OFF or CLOSED was drawn. The difference is the UI's explicit unknown treatment (closure text renders as unknown rather than a state)."
+    },
+    "vehicle_stale_doors": {
+      "changed_pixels_total": 9477,
+      "changed_pixels_in_vehicle_box": 0,
+      "changed_pixels_outside_vehicle_box": 9477,
+      "vehicle_box_max_delta": 0.0,
+      "vehicle_box_unchanged": true,
+      "verdict": "the vehicle itself did not change: no confirmed OFF or CLOSED was drawn. The difference is the UI's explicit unknown treatment (closure text renders as unknown rather than a state)."
+    },
+    "soc_untrusted": {
+      "changed_pixels_total": 5502,
+      "changed_pixels_in_vehicle_box": 0,
+      "changed_pixels_outside_vehicle_box": 5502,
+      "vehicle_box_max_delta": 0.0,
+      "vehicle_box_unchanged": true,
+      "verdict": "the vehicle itself did not change: no confirmed OFF or CLOSED was drawn. The difference is the UI's explicit unknown treatment (closure text renders as unknown rather than a state)."
+    }
+  },
+  "semantics": {
+    "rule": "UNKNOWN != OFF and UNKNOWN != CLOSED",
+    "uart_lost": {
+      "signals_present": "none: the mock state carries only uart_health = UART LOST",
+      "controller": "every lamp is known == Unknown (never a confirmed off); every panel holds the position it already had",
+      "assets": "the base vehicle is drawn unchanged; the closure text renders the unknown marker ('--') instead of a state",
+      "justification": "an explicit unknown treatment exists for the closure state, and the vehicle layer is not re-drawn with a fabricated closed state"
+    },
+    "stale": {
+      "signals_present": "uart_health = UART STALE",
+      "controller": "same as UART LOST: lamps Unknown, panels hold",
+      "assets": "unchanged vehicle, unknown closure text"
+    },
+    "controller_tests": "tests/vehicle_visual_controller_tests.cpp asserts UNKNOWN != OFF for lamps, hold-on-missing for panels, and that a stale signal is unknown"
+  },
+  "pass": true
+}

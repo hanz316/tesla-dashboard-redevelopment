@@ -1,0 +1,115 @@
+{
+  "frames": [
+    0,
+    7,
+    13
+  ],
+  "per_pixel_tolerance": 0.06,
+  "fail_fraction": 0.02,
+  "method": "the composed Horizon frame is downscaled back to the 356x236 canvas and compared against a direct render of the same state",
+  "states": {
+    "ind_left": {
+      "preview_state": "vehicle_trunk_left",
+      "per_frame": [
+        {
+          "frame": 0,
+          "lamp_pixels": 214,
+          "disagreeing_pixels": 0,
+          "disagreeing_fraction": 0.0,
+          "max_delta": 0.5255,
+          "pass": true
+        },
+        {
+          "frame": 7,
+          "lamp_pixels": 225,
+          "disagreeing_pixels": 0,
+          "disagreeing_fraction": 0.0,
+          "max_delta": 0.5804,
+          "pass": true
+        },
+        {
+          "frame": 13,
+          "lamp_pixels": 231,
+          "disagreeing_pixels": 0,
+          "disagreeing_fraction": 0.0,
+          "max_delta": 0.549,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    "ind_right": {
+      "preview_state": "vehicle_trunk_right",
+      "per_frame": [
+        {
+          "frame": 0,
+          "lamp_pixels": 214,
+          "disagreeing_pixels": 0,
+          "disagreeing_fraction": 0.0,
+          "max_delta": 0.5255,
+          "pass": true
+        },
+        {
+          "frame": 7,
+          "lamp_pixels": 225,
+          "disagreeing_pixels": 0,
+          "disagreeing_fraction": 0.0,
+          "max_delta": 0.5804,
+          "pass": true
+        },
+        {
+          "frame": 13,
+          "lamp_pixels": 231,
+          "disagreeing_pixels": 0,
+          "disagreeing_fraction": 0.0,
+          "max_delta": 0.549,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    "hazard": {
+      "preview_state": "vehicle_trunk_hazard",
+      "per_frame": [
+        {
+          "frame": 0,
+          "lamp_pixels": 214,
+          "disagreeing_pixels": 0,
+          "disagreeing_fraction": 0.0,
+          "max_delta": 0.5255,
+          "pass": true
+        },
+        {
+          "frame": 7,
+          "lamp_pixels": 225,
+          "disagreeing_pixels": 0,
+          "disagreeing_fraction": 0.0,
+          "max_delta": 0.5804,
+          "pass": true
+        },
+        {
+          "frame": 13,
+          "lamp_pixels": 231,
+          "disagreeing_pixels": 0,
+          "disagreeing_fraction": 0.0,
+          "max_delta": 0.549,
+          "pass": true
+        }
+      ],
+      "pass": true
+    }
+  },
+  "control_closed_position_overlay": {
+    "0": {
+      "disagreeing_fraction": 0.018692
+    },
+    "7": {
+      "disagreeing_fraction": 0.573333
+    },
+    "13": {
+      "disagreeing_fraction": 0.562771
+    }
+  },
+  "control_is_discriminating": true,
+  "pass": true
+}

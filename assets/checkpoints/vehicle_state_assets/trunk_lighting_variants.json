@@ -1,0 +1,100 @@
+{
+  "contract": "assets/vehicle_state_moving_lighting.json",
+  "canvas": [
+    356,
+    236
+  ],
+  "frames": 14,
+  "open_angle_deg": 55.0,
+  "variants": {
+    "ind_left": {
+      "dir": "trunk/ind_left",
+      "frames": 14,
+      "state": "LEFT_INDICATOR",
+      "png_bytes_total": 943313
+    },
+    "ind_right": {
+      "dir": "trunk/ind_right",
+      "frames": 14,
+      "state": "RIGHT_INDICATOR",
+      "png_bytes_total": 944489
+    },
+    "ind_both": {
+      "dir": "trunk/ind_both",
+      "frames": 14,
+      "state": "HAZARD",
+      "png_bytes_total": 944896
+    }
+  },
+  "verification_renders": {
+    "lamp_off": [
+      {
+        "frame": 0,
+        "path": "assets/checkpoints/vehicle_state_assets/trunk_lighting_reference/lamp_off_000.png",
+        "sha256_16": "bc3b1532a7d619fb"
+      },
+      {
+        "frame": 7,
+        "path": "assets/checkpoints/vehicle_state_assets/trunk_lighting_reference/lamp_off_007.png",
+        "sha256_16": "d30868cca354af69"
+      },
+      {
+        "frame": 13,
+        "path": "assets/checkpoints/vehicle_state_assets/trunk_lighting_reference/lamp_off_013.png",
+        "sha256_16": "f076ec07c9ba301d"
+      }
+    ],
+    "ind_left": [
+      {
+        "frame": 0,
+        "path": "assets/checkpoints/vehicle_state_assets/trunk_lighting_reference/ind_left_000.png",
+        "sha256_16": "560006bac88fccb5"
+      },
+      {
+        "frame": 7,
+        "path": "assets/checkpoints/vehicle_state_assets/trunk_lighting_reference/ind_left_007.png",
+        "sha256_16": "d4304cdbb5ed314e"
+      },
+      {
+        "frame": 13,
+        "path": "assets/checkpoints/vehicle_state_assets/trunk_lighting_reference/ind_left_013.png",
+        "sha256_16": "1fa2f1fa2f2fead8"
+      }
+    ],
+    "ind_right": [
+      {
+        "frame": 0,
+        "path": "assets/checkpoints/vehicle_state_assets/trunk_lighting_reference/ind_right_000.png",
+        "sha256_16": "5d42b6c410ed7a7e"
+      },
+      {
+        "frame": 7,
+        "path": "assets/checkpoints/vehicle_state_assets/trunk_lighting_reference/ind_right_007.png",
+        "sha256_16": "4562bdd5947b041a"
+      },
+      {
+        "frame": 13,
+        "path": "assets/checkpoints/vehicle_state_assets/trunk_lighting_reference/ind_right_013.png",
+        "sha256_16": "835b5430ed716e2e"
+      }
+    ],
+    "hazard": [
+      {
+        "frame": 0,
+        "path": "assets/checkpoints/vehicle_state_assets/trunk_lighting_reference/hazard_000.png",
+        "sha256_16": "17b55c50463bbae8"
+      },
+      {
+        "frame": 7,
+        "path": "assets/checkpoints/vehicle_state_assets/trunk_lighting_reference/hazard_007.png",
+        "sha256_16": "6c5ba68192a16aa2"
+      },
+      {
+        "frame": 13,
+        "path": "assets/checkpoints/vehicle_state_assets/trunk_lighting_reference/hazard_013.png",
+        "sha256_16": "a6d36182adc534a9"
+      }
+    ]
+  },
+  "png_bytes_total": 2832698
+}

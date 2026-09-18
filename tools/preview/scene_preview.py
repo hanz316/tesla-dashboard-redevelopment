@@ -194,6 +194,29 @@ MOCK_STATES.update({
         "temperature_primary": 22, "uart_health": "UART OK",
         "closures": "OPEN TRUNK",
     },
+    # The trunk carries the inner indicator lamps: these three exist so the
+    # ownership compositing can be validated against direct renders.
+    "vehicle_trunk_left": {
+        "speed": 0, "gear": 1, "soc": 63, "soc_trusted": True,
+        "range": 253, "range_trusted": True,
+        "trunk": True, "indicator_left": True,
+        "temperature_primary": 22, "uart_health": "UART OK",
+        "closures": "OPEN TRUNK",
+    },
+    "vehicle_trunk_right": {
+        "speed": 0, "gear": 1, "soc": 63, "soc_trusted": True,
+        "range": 253, "range_trusted": True,
+        "trunk": True, "indicator_right": True,
+        "temperature_primary": 22, "uart_health": "UART OK",
+        "closures": "OPEN TRUNK",
+    },
+    "vehicle_trunk_hazard": {
+        "speed": 0, "gear": 1, "soc": 63, "soc_trusted": True,
+        "range": 253, "range_trusted": True,
+        "trunk": True, "indicator_left": True, "indicator_right": True,
+        "temperature_primary": 22, "uart_health": "UART OK",
+        "closures": "OPEN TRUNK",
+    },
     "vehicle_fl_rr_brake": {
         "speed": 0, "gear": 1, "soc": 63, "soc_trusted": True,
         "range": 253, "range_trusted": True,
@@ -676,12 +699,85 @@ def sequence_frame(provider, seq_id, bind, state, t_norm=1.0):
         if not (sig.valid and sig.value):
             return None
         idx = int(t_norm * frames) % frames
-    else:  # to_state: open -> last frame, closed -> nothing drawn
+    else:
+        # to_state: closed draws nothing. `--t` selects the position along the
+        # motion, so QA can render an intermediate angle; t = 1 is the fully
+        # open terminal state, which is the runtime's steady state.
         if not (sig.valid and sig.value):
             return None
-        idx = frames - 1
+        position = min(1.0, max(0.0, float(t_norm)))
+        idx = int(round(position * (frames - 1)))
     path = provider.path_for(os.path.join(seq["dir"], f"{idx:03d}.png"))
     return path if os.path.isfile(path) else None
+
+
+def moving_lighting_contract():
+    """The trunk-attached lighting contract, if the asset set provides one.
+
+    A panel that carries lighting can only be composited correctly if its light
+    is rendered with the panel - a 2D warp of a closed-position overlay is not
+    exact for a panel with depth. See
+    tools/blender/build_trunk_lighting_variants.py.
+    """
+    path = os.path.join(REPO_ROOT, "assets",
+                        "vehicle_state_moving_lighting.json")
+    if not os.path.isfile(path):
+        return {}
+    try:
+        with open(path) as fh:
+            return json.load(fh).get("panels", {})
+    except (OSError, ValueError):
+        return {}
+
+
+def active_channels(state):
+    """Which lighting channels the state asks for, from the mock/state signals."""
+    channels = set()
+    for name, bind in (("INDICATOR_LEFT", "indicator_left"),
+                       ("INDICATOR_RIGHT", "indicator_right")):
+        sig = state.signal(bind)
+        if sig.valid and sig.value:
+            channels.add(name)
+    return channels
+
+
+def panel_lighting_frames(provider, panel_id, seq_id, bind, state, t_norm,
+                          contract):
+    """Frames for a moving panel, using its lighting variants when needed.
+
+    Returns (paths, covered). `covered` names the lighting channels the
+    returned images already contain, so the fixed-position overlay for those
+    channels is not drawn again at the closed-position location. A state that
+    lights both channels (hazard) returns both variants: the two inner lamps
+    are disjoint, so drawing them in sequence is exact.
+    """
+    path = sequence_frame(provider, seq_id, bind, state, t_norm)
+    if path is None:
+        return [], set()
+    entry = contract.get(panel_id)
+    if not entry:
+        return [path], set()
+    carriers = set(entry.get("carries", []))
+    active = active_channels(state) & carriers
+    if not active:
+        return [path], set()
+    # One variant image per channel set. Drawing two full-vehicle variants in
+    # sequence would let the second one's unlit pixels overwrite the first one's
+    # lit lamp, so "both" is its own render rather than a composition.
+    if {"INDICATOR_LEFT", "INDICATOR_RIGHT"} <= active:
+        variant = "ind_both"
+    elif "INDICATOR_LEFT" in active:
+        variant = "ind_left"
+    else:
+        variant = "ind_right"
+    spec = (entry.get("variants") or {}).get(variant)
+    if not spec:
+        return [path], set()
+    candidate = provider.path_for(
+        os.path.join(spec["dir"], os.path.basename(path)))
+    if not os.path.isfile(candidate):
+        return [path], set()
+    return [candidate], active
 
 
 def paste_scaled(base, path, x, y, w, h):
@@ -721,10 +817,14 @@ def draw_vehicle_visual(img, node, state, provider, t_norm,
         d = ImageDraw.Draw(img, "RGBA")
         d.rounded_rectangle([x, y, x + w, y + h], radius=14,
                             outline=(90, 100, 110, 120), width=2)
-    for part in node.get("parts", {}).values():
-        path = sequence_frame(provider, part["sequence"], part.get("bind"),
-                              state, t_norm)
-        if path:
+    contract = moving_lighting_contract()
+    covered = set()
+    for panel_id, part in node.get("parts", {}).items():
+        paths, took = panel_lighting_frames(
+            provider, panel_id, part["sequence"], part.get("bind"), state,
+            t_norm, contract)
+        covered |= took
+        for path in paths:
             paste_scaled(img, path, x, y, w, h)
     for ov in node.get("overlays", []):
         sig = state.signal(ov["bind"]) if ov.get("bind") else Signal(True, True)
@@ -734,6 +834,11 @@ def draw_vehicle_visual(img, node, state, provider, t_norm,
         if path and os.path.isfile(path):
             paste_scaled(img, path, x, y, w, h)
     for side, part in node.get("indicators", {}).items():
+        # A channel already delivered by a moving panel's own lighting variant
+        # must not be drawn again at the closed-position location.
+        if (side == "left" and "INDICATOR_LEFT" in covered) or \
+           (side == "right" and "INDICATOR_RIGHT" in covered):
+            continue
         path = sequence_frame(provider, part["sequence"], part.get("bind"),
                               state, t_norm)
         if path:

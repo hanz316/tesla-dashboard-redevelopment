@@ -73,6 +73,17 @@ if(BUILD_HOST_TOOLS)
     target_compile_options(dashboard_vehicle_visual_tests PRIVATE -Wall -Wextra -Wpedantic)
     add_test(NAME dashboard_vehicle_visual_tests COMMAND dashboard_vehicle_visual_tests)
 
+    # The device benchmark plan is platform independent, so the state list, the
+    # sequence playback maths, the frame statistics and the fallback decision
+    # are verified on the host before the T113 is ever connected.
+    add_executable(dashboard_device_bench_tests
+        tests/device_bench_plan_tests.cpp
+        device/bench/bench_plan.cpp
+    )
+    target_include_directories(dashboard_device_bench_tests PRIVATE device/bench)
+    target_compile_options(dashboard_device_bench_tests PRIVATE -Wall -Wextra -Wpedantic)
+    add_test(NAME dashboard_device_bench_tests COMMAND dashboard_device_bench_tests)
+
     # Geometry rules for the taillight light guide. These run on the host: the
     # Blender-only pieces are stubbed, and the cavity is replaced by an analytic
     # distance function, so the rules that were expensive to learn (reject
@@ -87,6 +98,12 @@ if(BUILD_HOST_TOOLS)
         add_test(NAME dashboard_vehicle_asset_tests
                  COMMAND "${PYTHON3_EXECUTABLE}"
                          "${CMAKE_CURRENT_SOURCE_DIR}/tests/vehicle_asset_manifest_tests.py")
+        add_test(NAME dashboard_trunk_lighting_tests
+                 COMMAND "${PYTHON3_EXECUTABLE}"
+                         "${CMAKE_CURRENT_SOURCE_DIR}/tests/trunk_lighting_ownership_tests.py")
+        add_test(NAME dashboard_uart_capture_tests
+                 COMMAND "${PYTHON3_EXECUTABLE}"
+                         "${CMAKE_CURRENT_SOURCE_DIR}/tests/uart_capture_parser_tests.py")
     else()
         message(WARNING "python3 not found: taillight guide regression tests disabled")
     endif()

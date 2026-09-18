@@ -309,32 +309,54 @@ def render_headlight_overlay(scene, out_dir, samples):
                      "mechanism as the taillight system)"}
 
 
-def screen_affine(obj, rest, current, samples=3):
+def screen_affine(obj, rest, current):
     """The 2D affine a rigidly attached panel undergoes in this camera.
 
     Orthographic projection makes the mapping from a 3D rotation to screen
-    space an exact 2D affine, so it is recovered from three rigidly attached
-    points instead of being approximated by a rotation about a projected
-    pivot. The runtime needs it to move a lighting overlay that is mounted on a
-    moving panel (the trunk carries the inner lamps).
+    space an exact 2D affine, so it is recovered from rigidly attached points
+    instead of being approximated by a rotation about a projected pivot. The
+    runtime needs it to move a lighting overlay that is mounted on a moving
+    panel (the trunk carries the inner lamps).
+
+    The three solving points are chosen to span the largest screen triangle:
+    three nearly collinear points make the solve ill-conditioned and produced
+    coefficients around 2.5 for a motion that is a rotation. The affine is then
+    verified against every other sampled point, and the worst error in pixels
+    is reported - this is only usable if it is exact for an orthographic
+    camera.
     """
     from bpy_extras.object_utils import world_to_camera_view
     scene = bpy.context.scene
     cam = scene.camera
     width, height = scene.render.resolution_x, scene.render.resolution_y
-    corners = [Vector(c) for c in obj.bound_box]
-    picks = [corners[0], corners[3], corners[5]][:samples]
+    mw = obj.matrix_world
+    step = max(1, len(obj.data.vertices) // 64)
+    points = [mw @ v.co for v in list(obj.data.vertices)[::step]]
+    if len(points) < 3:
+        points = [mw @ Vector(c) for c in obj.bound_box]
     src, dst = [], []
-    for c in picks:
+    for c in points:
         p_closed = rest @ c
         p_open = current @ c
         a = world_to_camera_view(scene, cam, p_closed)
         b = world_to_camera_view(scene, cam, p_open)
         src.append((a.x * width, a.y * height))
         dst.append((b.x * width, b.y * height))
-    # Solve the 2x3 affine from three correspondences.
-    (x0, y0), (x1, y1), (x2, y2) = src
-    (u0, v0), (u1, v1), (u2, v2) = dst
+    best = None
+    for i in range(len(src)):
+        for j in range(i + 1, len(src)):
+            for k in range(j + 1, len(src)):
+                area = abs((src[j][0] - src[i][0]) * (src[k][1] - src[i][1])
+                           - (src[k][0] - src[i][0]) * (src[j][1] - src[i][1]))
+                if best is None or area > best[0]:
+                    best = (area, i, j, k)
+    if best is None or best[0] < 1e-6:
+        return None
+    _, i, j, k = best
+    solve_src = [src[i], src[j], src[k]]
+    solve_dst = [dst[i], dst[j], dst[k]]
+    (x0, y0), (x1, y1), (x2, y2) = solve_src
+    (u0, v0), (u1, v1), (u2, v2) = solve_dst
     denom = (x0 * (y1 - y2) + x1 * (y2 - y0) + x2 * (y0 - y1))
     if abs(denom) < 1e-9:
         return None
@@ -346,9 +368,21 @@ def screen_affine(obj, rest, current, samples=3):
         c = (vals[0] * (x1 * y2 - x2 * y1) + vals[1] * (x2 * y0 - x0 * y2)
              + vals[2] * (x0 * y1 - x1 * y0)) / denom
         return [round(a, 8), round(b, 8), round(c, 5)]
-    return {"a": solve([u0, u1, u2]), "b": solve([v0, v1, v2]),
-            "note": "screen (u,v) = A * (x,y) + c, in render pixels, "
-                    "bottom-up rows"}
+    affine = {"a": solve([u0, u1, u2]), "b": solve([v0, v1, v2])}
+    worst = 0.0
+    for (sx, sy), (tx, ty) in zip(src, dst):
+        px = affine["a"][0] * sx + affine["a"][1] * sy + affine["a"][2]
+        py = affine["b"][0] * sx + affine["b"][1] * sy + affine["b"][2]
+        worst = max(worst, abs(px - tx), abs(py - ty))
+    affine["verification"] = {
+        "points_checked": len(src),
+        "max_error_px": round(worst, 6),
+        "exact": worst < 0.01}
+    affine["note"] = (
+        "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows; "
+        "maps the CLOSED screen position of a trunk-attached point to its "
+        "position at this frame's opening angle")
+    return affine
 
 
 def main():
