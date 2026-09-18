@@ -1,6 +1,11 @@
 #include "dashboard/protocol_parser.h"
 #include "dashboard/replay.h"
 
+// Keep the assertions live even in a Release build (NDEBUG). Without this a
+// Release build compiles every assert below away and the whole file passes
+// vacuously - which is exactly how a wrong gear expectation survived locally
+// while CI caught it.
+#undef NDEBUG
 #include <cassert>
 #include <cstdint>
 #include <iostream>
@@ -45,8 +50,11 @@ int main() {
         replay.load(records);
         replay.play(5000);
         replay.tick(5000);
-        assert(replay.state().gear.valid);
-        assert(replay.state().gear.value == Gear::Drive);
+        // The 0x01 gear nibble is REJECTED_MAPPING (a controlled live capture
+        // held it at 3 across P/R/N/D), so replaying it must leave the gear
+        // UNKNOWN rather than reconstructing Drive.
+        assert(!replay.state().gear.valid);
+        assert(replay.state().gear.value == Gear::Unknown);
         assert(replay.state().door_fl.valid && replay.state().door_fl.value);
         replay.tick(5100);
         assert(replay.state().speed.valid && replay.state().speed.value == 72);
@@ -69,14 +77,12 @@ int main() {
         replay.pause();
         replay.seek(1000, 12000);
         assert(replay.cursor() == 1);
-        assert(replay.state().gear.valid && replay.state().gear.value == Gear::Drive);
+        assert(!replay.state().gear.valid);
         assert(!replay.state().speed.valid);
 
-        // Paused tick uses recording time rather than host wall time, so the
-        // reconstructed gear sample does not become stale simply because host
-        // time is 12 seconds.
+        // Paused tick uses recording time rather than host wall time.
         replay.tick(30000);
-        assert(replay.state().gear.valid && replay.state().gear.value == Gear::Drive);
+        assert(!replay.state().gear.valid);
     }
 
     {
@@ -84,7 +90,7 @@ int main() {
         replay.load(records);
         replay.seek(1100, 50000);
         assert(replay.cursor() == 2);
-        assert(replay.state().gear.valid && replay.state().gear.value == Gear::Drive);
+        assert(!replay.state().gear.valid);
         assert(replay.state().speed.valid && replay.state().speed.value == 72);
     }
 
