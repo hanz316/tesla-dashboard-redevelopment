@@ -22,12 +22,23 @@ Usage:
 import argparse
 import json
 import os
+import struct
 import sys
 
-try:
-    from PIL import Image
-except ImportError:  # pragma: no cover
-    sys.exit("Pillow is required")
+
+def png_size(path):
+    """Canvas size straight from the PNG header.
+
+    Deliberately dependency-free: this runs as a ctest test, and a contract
+    check that needs Pillow installed is a check that silently stops running.
+    The IHDR chunk always begins at byte 16 with width and height as big-endian
+    uint32.
+    """
+    with open(path, "rb") as fh:
+        header = fh.read(24)
+    if len(header) < 24 or header[:8] != b"\x89PNG\r\n\x1a\n":
+        return None
+    return struct.unpack(">II", header[16:24])
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 sys.path.insert(0, os.path.join(REPO_ROOT, "tools", "preview"))
@@ -116,20 +127,18 @@ def main():
         if not path or not os.path.exists(path):
             report["missing"].append({"id": asset_id, "path": relative})
             continue
-        with Image.open(path) as im:
-            if im.size != (width, height):
-                report["canvas_mismatch"].append(
-                    {"id": asset_id, "size": list(im.size)})
+        size = png_size(path)
+        if size != (width, height):
+            report["canvas_mismatch"].append({"id": asset_id, "size": size})
         checked += 1
     for asset_id, relative in sorted(manifest.get("overlays", {}).items()):
         path = provider.path_for(relative)
         if not path or not os.path.exists(path):
             report["missing"].append({"id": asset_id, "path": relative})
             continue
-        with Image.open(path) as im:
-            if im.size != (width, height):
-                report["canvas_mismatch"].append(
-                    {"id": asset_id, "size": list(im.size)})
+        size = png_size(path)
+        if size != (width, height):
+            report["canvas_mismatch"].append({"id": asset_id, "size": size})
         checked += 1
     sequence_frames = {}
     for asset_id, spec in sorted(manifest.get("sequences", {}).items()):
@@ -145,10 +154,9 @@ def main():
                            f"{spec['frames']}"})
             continue
         sequence_frames[asset_id] = len(frames)
-        with Image.open(os.path.join(directory, frames[0])) as im:
-            if im.size != (width, height):
-                report["canvas_mismatch"].append(
-                    {"id": asset_id, "size": list(im.size)})
+        size = png_size(os.path.join(directory, frames[0]))
+        if size != (width, height):
+            report["canvas_mismatch"].append({"id": asset_id, "size": size})
         checked += 1
     report["assets_checked"] = checked
     report["sequence_frames"] = sequence_frames

@@ -79,6 +79,11 @@ def main():
     proc = subprocess.run([sys.executable, script,
                            "--allow-placeholder-fallback", "--out", out],
                           capture_output=True, text=True)
+    if proc.returncode != 0:
+        # Print the child's own diagnostics: a failure that only says "no
+        # output" is not something anyone can act on.
+        print("  child stdout:", proc.stdout.strip()[-800:] or "(empty)")
+        print("  child stderr:", proc.stderr.strip()[-800:] or "(empty)")
     check(proc.returncode == 0,
           "the manifest/Horizon check passes (%s)"
           % (proc.stdout.strip().splitlines()[-1] if proc.stdout else "no output"))
