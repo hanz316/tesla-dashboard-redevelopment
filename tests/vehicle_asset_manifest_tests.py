@@ -103,11 +103,16 @@ def main():
                   "tree in this checkout")
             check("production_assertions_skipped" in report,
                   "the skipped production assertions are stated explicitly")
-        peak = report["composed_path"]["peak_decoded_rgba_bytes"]
+        peak = report["composed_path"]["peak_resident_decoded_rgba_bytes"]
         full = 1920 * 480 * 4
         check(peak < full * 2,
               "peak decoded RGBA stays under two full-screen frames "
               "(%.2f MB vs %.2f MB)" % (peak / 1048576.0, full / 1048576.0))
+        transition = report["composed_path"][
+            "frame_budget_share_30fps_transition"]
+        check(transition < 0.30,
+              "one sequence frame decode fits inside a third of the 30 fps "
+              "budget (%.1f%%)" % (transition * 100.0))
 
     print("")
     if FAILURES:

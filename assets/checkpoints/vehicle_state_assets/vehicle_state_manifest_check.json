@@ -50,14 +50,18 @@
     }
   },
   "composed_path": {
-    "simultaneously_decoded_assets": 5,
+    "resident_assets_peak": 5,
     "decoded_rgba_bytes_per_asset": 336064,
-    "peak_decoded_rgba_bytes": 1680320,
+    "peak_resident_decoded_rgba_bytes": 1680320,
     "compositing_operations_per_frame": 5,
     "motion_policy": "at most one moving layer sequence is decoded at a time; terminal states keep one frame resident",
     "decode_ms_per_asset_t113_estimated": 6.9,
-    "frame_budget_share_30fps": 1.035,
-    "frame_budget_share_60fps": 2.07,
+    "decodes_per_frame_during_transition": 1,
+    "decodes_per_frame_when_idle": 0,
+    "frame_budget_share_30fps_transition": 0.207,
+    "frame_budget_share_60fps_transition": 0.414,
+    "frame_budget_share_30fps_if_nothing_is_cached": 1.035,
+    "frame_budget_share_60fps_if_nothing_is_cached": 2.07,
     "labels": [
       "mac_measured: canvas and file sizes",
       "t113_estimated: decode ms from the capability audit",

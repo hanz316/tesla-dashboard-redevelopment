@@ -80,12 +80,24 @@ Dirty region at 600 px, measured: doors 32-48 K px mean (64-96 K union), frunk
 the cheap layers; the doors are the expensive ones because a door reveals the
 interior across a large area.
 
-Composed Horizon path: at most one moving sequence decoded at a time plus the
-base plus up to three overlays = **1.60 MB peak decoded RGBA**, against 3.52 MB
-for one full 1920x480 frame. Estimated 30 fps decode share 14 %, 60 fps share
-29 %, using the repository's 6.9 ms per 356x236 decode. Actual device fps,
-simultaneous decode cost and variable-frame support remain
-**UNKNOWN UNTIL DEVICE TEST**.
+Composed Horizon path, stated in the two ways that matter separately:
+
+* **resident** -- base + one moving layer + up to three overlays = 5 assets =
+  **1.60 MB peak decoded RGBA**, against 3.52 MB for one full 1920x480 frame;
+* **per frame** -- one sequence frame is decoded while a panel is moving and
+  nothing once it has stopped (the base and the overlays stay resident):
+  **20.7 % of the 30 fps budget**, 41.4 % of a 60 fps budget, using the
+  repository's 6.9 ms per 356x236 PNG decode.
+
+The pathological alternative -- re-decoding every layer every frame -- would be
+103 % of the 30 fps budget. It is recorded only so it cannot be mistaken for
+the design.
+
+Scale sensitivity at 600 px: 955 KB decoded per frame, one decode of 19.6 ms.
+At 800 px the same decode is 34.8 ms (25 % of a 30 fps budget, 50 % of 60 fps),
+which is why 800 px and 60 fps are evaluation data rather than the target.
+Actual device fps, real simultaneous decode cost and variable-frame support
+remain **UNKNOWN UNTIL DEVICE TEST**.
 
 ## VehicleVisualController
 

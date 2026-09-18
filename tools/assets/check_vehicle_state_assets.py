@@ -183,17 +183,28 @@ def main():
     overlays_max = 3
     simultaneously = 1 + 1 + overlays_max
     report["composed_path"] = {
-        "simultaneously_decoded_assets": simultaneously,
+        "resident_assets_peak": simultaneously,
         "decoded_rgba_bytes_per_asset": base_bytes,
-        "peak_decoded_rgba_bytes": base_bytes * simultaneously,
+        "peak_resident_decoded_rgba_bytes": base_bytes * simultaneously,
         "compositing_operations_per_frame": 1 + 1 + overlays_max,
         "motion_policy": "at most one moving layer sequence is decoded at a "
                          "time; terminal states keep one frame resident",
         "decode_ms_per_asset_t113_estimated":
             round(DECODE_MS_356x236, 3),
-        "frame_budget_share_30fps":
+        # What the runtime actually decodes per frame: one sequence frame while
+        # a panel is moving, nothing once it has stopped (the overlays and the
+        # base are decoded once and stay resident).
+        "decodes_per_frame_during_transition": 1,
+        "decodes_per_frame_when_idle": 0,
+        "frame_budget_share_30fps_transition":
+            round(DECODE_MS_356x236 / FRAME_BUDGET_MS[30], 4),
+        "frame_budget_share_60fps_transition":
+            round(DECODE_MS_356x236 / FRAME_BUDGET_MS[60], 4),
+        # The pathological alternative, stated so it cannot be mistaken for the
+        # design: re-decoding every layer every frame.
+        "frame_budget_share_30fps_if_nothing_is_cached":
             round((DECODE_MS_356x236 * simultaneously) / FRAME_BUDGET_MS[30], 4),
-        "frame_budget_share_60fps":
+        "frame_budget_share_60fps_if_nothing_is_cached":
             round((DECODE_MS_356x236 * simultaneously) / FRAME_BUDGET_MS[60], 4),
         "labels": ["mac_measured: canvas and file sizes",
                    "t113_estimated: decode ms from the capability audit",
