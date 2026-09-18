@@ -1,6 +1,7 @@
 #include "main_activity.h"
 
 #include "device_runtime.h"
+#include "display_format.h"
 
 #include <cstdio>
 #include <ctime>
@@ -19,24 +20,12 @@ constexpr int kTireFrontId = 0xc35f;
 constexpr int kTireRearId = 0xc398;
 constexpr int kClockId = 0xc38f;
 
-const char* gearPicture(dashboard::Gear gear) {
-    switch (gear) {
-        case dashboard::Gear::Park:
-            return "/home/white_gears_p.png";
-        case dashboard::Gear::Reverse:
-            return "/home/white_gears_r.png";
-        case dashboard::Gear::Neutral:
-            return "/home/white_gears_n.png";
-        case dashboard::Gear::Drive:
-            return "/home/white_gears_d.png";
-        case dashboard::Gear::Unknown:
-        default:
-            return nullptr;
-    }
-}
-
 char openMarker(const dashboard::Signal<bool>& value) {
-    return value.valid && value.value ? 'O' : '-';
+    // Unknown is not closed: an unknown door renders as '?' rather than '-'.
+    if (!value.valid || value.stale) {
+        return '?';
+    }
+    return value.value ? 'O' : '-';
 }
 
 const char* sourceStatus(const dashboard::DataSourceHealth& health) {
@@ -95,48 +84,40 @@ void mainActivity::updateDashboard() {
     char text[128];
 
     if (speed_ != nullptr) {
-        std::snprintf(
-            text,
-            sizeof(text),
-            "%u",
-            snapshot.state.speed.valid ? snapshot.state.speed.value : 0U);
-        speed_->setText(text);
+        speed_->setText(dashboard::flythings::formatSpeed(
+            snapshot.state.speed).c_str());
     }
     if (range_ != nullptr) {
-        std::snprintf(
-            text,
-            sizeof(text),
-            "%u km",
-            snapshot.state.range.valid ? snapshot.state.range.value : 0U);
-        range_->setText(text);
+        range_->setText(dashboard::flythings::formatRange(
+            snapshot.state.range).c_str());
     }
     if (soc_ != nullptr) {
-        std::snprintf(
-            text,
-            sizeof(text),
-            "%u%%",
-            snapshot.state.soc.valid
-                ? static_cast<unsigned>(snapshot.state.soc.value)
-                : 0U);
-        soc_->setText(text);
+        // The MCU's SOC byte is a rejected mapping; it renders as unavailable.
+        soc_->setText(dashboard::flythings::formatSoc(
+            snapshot.state.soc).c_str());
     }
-    if (gear_ != nullptr && snapshot.state.gear.valid) {
-        const char* picture = gearPicture(snapshot.state.gear.value);
-        if (picture != nullptr) {
-            gear_->setBackgroundPic(picture);
+    if (gear_ != nullptr) {
+        if (dashboard::flythings::gearIsDisplayable(snapshot.state.gear)) {
+            gear_->setBackgroundPic(dashboard::flythings::gearPicturePath(
+                snapshot.state.gear.value));
         }
+        // An unknown gear deliberately changes nothing here: inventing "P"
+        // would be a fabricated vehicle state. The gear state is reported in
+        // the diagnostic line below instead, where "?" means unknown.
     }
     if (doors_ != nullptr) {
         std::snprintf(
             text,
             sizeof(text),
-            "Doors %c%c%c%c F%c T%c %s %s P:%llu CRC:%llu U:%llu",
+            "Doors %c%c%c%c F%c T%c G:%s %s %s P:%llu CRC:%llu U:%llu",
             openMarker(snapshot.state.door_fl),
             openMarker(snapshot.state.door_fr),
             openMarker(snapshot.state.door_rl),
             openMarker(snapshot.state.door_rr),
             openMarker(snapshot.state.frunk),
             openMarker(snapshot.state.trunk),
+            dashboard::flythings::gearIsDisplayable(snapshot.state.gear)
+                ? "shown" : "?",
             snapshot.uart_connected ? "UART" : "NO UART",
             sourceStatus(snapshot.health),
             static_cast<unsigned long long>(snapshot.parser.valid_packets),
@@ -145,22 +126,12 @@ void mainActivity::updateDashboard() {
         doors_->setText(text);
     }
     if (tire_front_ != nullptr) {
-        std::snprintf(
-            text,
-            sizeof(text),
-            "F %.2f %.2f bar",
-            snapshot.state.tire_fl.valid ? snapshot.state.tire_fl.value : 0.0F,
-            snapshot.state.tire_fr.valid ? snapshot.state.tire_fr.value : 0.0F);
-        tire_front_->setText(text);
+        tire_front_->setText(dashboard::flythings::formatTirePair(
+            snapshot.state.tire_fl, snapshot.state.tire_fr, "F").c_str());
     }
     if (tire_rear_ != nullptr) {
-        std::snprintf(
-            text,
-            sizeof(text),
-            "R %.2f %.2f bar",
-            snapshot.state.tire_rl.valid ? snapshot.state.tire_rl.value : 0.0F,
-            snapshot.state.tire_rr.valid ? snapshot.state.tire_rr.value : 0.0F);
-        tire_rear_->setText(text);
+        tire_rear_->setText(dashboard::flythings::formatTirePair(
+            snapshot.state.tire_rl, snapshot.state.tire_rr, "R").c_str());
     }
     if (clock_ != nullptr) {
         const std::time_t now = std::time(nullptr);

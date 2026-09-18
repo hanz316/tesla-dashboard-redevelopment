@@ -84,6 +84,18 @@ if(BUILD_HOST_TOOLS)
     target_compile_options(dashboard_device_bench_tests PRIVATE -Wall -Wextra -Wpedantic)
     add_test(NAME dashboard_device_bench_tests COMMAND dashboard_device_bench_tests)
 
+    # What the cluster shows for a signal that is not there. Host-compilable on
+    # purpose: UNKNOWN != 0 is a rule, not a device detail.
+    add_executable(dashboard_device_display_tests
+        tests/device_display_format_tests.cpp
+        device/flythings/display_format.cpp
+    )
+    target_include_directories(dashboard_device_display_tests PRIVATE
+        device/flythings include)
+    target_link_libraries(dashboard_device_display_tests PRIVATE dashboard_core)
+    target_compile_options(dashboard_device_display_tests PRIVATE -Wall -Wextra -Wpedantic)
+    add_test(NAME dashboard_device_display_tests COMMAND dashboard_device_display_tests)
+
     # Geometry rules for the taillight light guide. These run on the host: the
     # Blender-only pieces are stubbed, and the cavity is replaced by an analytic
     # distance function, so the rules that were expensive to learn (reject
@@ -104,6 +116,9 @@ if(BUILD_HOST_TOOLS)
         add_test(NAME dashboard_uart_capture_tests
                  COMMAND "${PYTHON3_EXECUTABLE}"
                          "${CMAKE_CURRENT_SOURCE_DIR}/tests/uart_capture_parser_tests.py")
+        add_test(NAME dashboard_deploy_safety_tests
+                 COMMAND "${PYTHON3_EXECUTABLE}"
+                         "${CMAKE_CURRENT_SOURCE_DIR}/tests/deploy_safety_tests.py")
     else()
         message(WARNING "python3 not found: taillight guide regression tests disabled")
     endif()

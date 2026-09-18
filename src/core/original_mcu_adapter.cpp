@@ -85,29 +85,18 @@ void OriginalMcuAdapter::applyCommand01(
         return;
     }
 
-    // Real-car action validation on 2026-08-31 confirmed 0=Park and 4=Drive.
-    // R/N remain unconfirmed here and therefore are not guessed as production truth.
-    const std::uint8_t gear_code = frame.payload[4] >> 4;
-    Gear gear = Gear::Unknown;
-    SignalQuality gear_quality = SignalQuality::Unknown;
-    switch (gear_code) {
-        case 0:
-            gear = Gear::Park;
-            gear_quality = SignalQuality::Confirmed;
-            break;
-        case 4:
-            gear = Gear::Drive;
-            gear_quality = SignalQuality::Confirmed;
-            break;
-        default:
-            break;
-    }
-    state_.gear.update(
-        gear,
-        timestamp_ms,
-        source(),
-        gear_quality,
-        Unit::None);
+    // GEAR IS DELIBERATELY NOT DECODED HERE.
+    //
+    // The old mapping (payload[4] >> 4, 0 = Park, 4 = Drive) is marked
+    // REJECTED_MAPPING: a controlled live capture on 2026-09-18 held this
+    // payload nibble at 3 across P, R, N and D, so it does not carry the gear.
+    // The live captures instead show CMD 0x02 byte 3 tracking the gear
+    // (P=0x05, N=0x02, D=0x09, R=0xff) - observed once per gear, which is
+    // LIKELY and not yet CONFIRMED_LIVE.
+    //
+    // Until a repeatable controlled capture confirms it, production gear stays
+    // UNKNOWN. Filling it with Park would put a fabricated gear on a cluster.
+    (void)timestamp_ms;
 
     const std::uint8_t doors = frame.payload[3];
     updateBoolean(

@@ -78,13 +78,16 @@ void adapterDecodesMvpSignals() {
 
 void adapterDecodesGearAndConfigurableDoors() {
     dashboard::OriginalMcuAdapter adapter;
-    // 2026-08-31 real-car validation confirmed high nibble 4 = Drive.
+    // The 0x01 high nibble is NOT the gear. A controlled live capture on
+    // 2026-09-18 held it at 3 across P, R, N and D (see
+    // docs/DEVICE_VALIDATION_2026-09-18.md), so the old "4 = Drive" reading is
+    // REJECTED_MAPPING and the adapter must not produce a gear from it.
     const auto frame = makeFrame(0x01, {0, 0, 0, 0x35, 0x40});
     adapter.feed(frame.data(), frame.size(), 5000);
     const auto& state = adapter.state();
-    CHECK(state.gear.valid);
-    CHECK(state.gear.value == dashboard::Gear::Drive);
-    CHECK(state.gear.quality == dashboard::SignalQuality::Confirmed);
+    CHECK(!state.gear.valid);
+    CHECK(state.gear.value == dashboard::Gear::Unknown);
+    CHECK(state.gear.quality == dashboard::SignalQuality::Unknown);
     CHECK(state.door_fl.value);
     CHECK(state.door_fr.value);
     CHECK(!state.door_rl.value);
@@ -99,7 +102,9 @@ void adapterDoesNotGuessUnconfirmedGearCodes() {
     dashboard::OriginalMcuAdapter adapter;
     const auto frame = makeFrame(0x01, {0, 0, 0, 0, 0x30});
     adapter.feed(frame.data(), frame.size(), 5010);
-    CHECK(adapter.state().gear.valid);
+    // No gear is produced at all: even a code the old table "knew" is not
+    // trusted, and an unknown gear is never filled in with Park.
+    CHECK(!adapter.state().gear.valid);
     CHECK(adapter.state().gear.value == dashboard::Gear::Unknown);
     CHECK(adapter.state().gear.quality == dashboard::SignalQuality::Unknown);
 }
