@@ -22,7 +22,7 @@ Checksum  1 byte  ~(Command + Length + sum(Payload)) & 0xFF
 | CMD | 字段 | 解码 | 状态 |
 |---:|---|---|---|
 | `0x01` | gear | `(payload[4] >> 4)`: `0=P,4=D` | **REJECTED_MAPPING** — the nibble does not carry the gear. A later capture also showed the whole `0x01` payload changing between sessions (`810000003c3c001064` while shifting vs `010300001c3d001020` parked in R), so `0x01` is a state-change frame whose field layout is not decoded; it must not be read as a gear. See `docs/DEVICE_VALIDATION_2026-09-18.md`. |
-| `0x02` | gear candidate | byte 4: `0x00` for P/N/D, `0xff` in **both** R captures; byte 3 unstable for R (`0xff` while shifting, `0xe7` parked) | **LIKELY, INCOMPLETE** — byte 4 is the only feature that repeated on R, byte 3 is not a clean gear enum. Not usable for production gear; needs a repeat series per gear. |
+| `0x02` | reverse/gear candidate | byte 4: `0x00` for P/N/D, `0xff` in **all four** R captures (~1000 frames); byte 3 unstable everywhere (`ff/fa/fe/f9` shifting, `e7` and `ed/ec` parked in R; `05/f9`, `02/04`, `09/0a` for P/N/D) | **LIKELY, INCOMPLETE** — byte 4 repeats on R but selecting R also turns the reverse lamps on, so it may be reporting reverse state rather than the gear selection. Byte 3 is not a gear enum. Not usable for production gear. |
 | `0x01` | door FL | `payload[3] bit 0`（实车关门确认） | CONFIRMED |
 | `0x01` | door FR | `payload[3] bit 2` | LIKELY / NEEDS REAL CAR TEST |
 | `0x01` | door RL | `payload[3] bit 1` | LIKELY / NEEDS REAL CAR TEST |

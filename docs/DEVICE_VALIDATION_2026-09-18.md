@@ -104,18 +104,26 @@ restored. What the captures still prove, at no further cost:
 | N | `0000000200` / `0000000400` | 02 / 04 | 00 |
 | D | `0000000900` / `0000000a00` | 09 / 0a | 00 |
 | R (while shifting) | `000000ffff` / `000000faff` | ff / fa | **ff** |
-| R (parked, 409 frames, 0 checksum errors) | `000000e7ff` only | **e7** | **ff** |
+| R (parked #1, 409 frames, 0 checksum errors) | `000000e7ff` only | **e7** | **ff** |
+| R (parked #2, 410 frames, 0 checksum errors) | `000000edff` (32) + `000000ecff` (1) | **ed / ec** | **ff** |
 
 Findings, stated at the confidence the evidence supports:
 
-* **byte 4 = `0xff` only ever appeared in R** (both R captures), while P, N and
-  D were `0x00`. That is the single feature that repeated on R.
-* **byte 3 is not a clean gear enum**: R gave `0xff` while the car was being
-  shifted and `0xe7` when it sat still in R for ten seconds (one distinct
-  payload, 33 frames). P/N/D each showed two adjacent values too (`05`/`f9`,
-  `02`/`04`, `09`/`0a`).
+* **byte 4 = `0xff` appeared in every R observation** - four separate captures,
+  the car shifting and then parked twice, roughly a thousand frames - while P,
+  N and D were `0x00` in every capture. That is the one feature that repeats.
+* **byte 3 is not a clean gear enum**: in R it moved `ff -> fa -> fe -> f9`
+  while shifting and then read `e7` and `ed`/`ec` when parked. P/N/D each
+  showed two adjacent values too (`05`/`f9`, `02`/`04`, `09`/`0a`). Read as a
+  little-endian pair, R's byte3/byte4 are negative (-1 to -25) while P/N/D sit
+  near zero, which looks like a signed actuator or selector quantity rather
+  than a gear code.
+* **a caveat that cannot be resolved from the UART alone**: selecting R also
+  turns on the reverse lamps, so byte 4 may be reporting "reverse state" (lamp
+  or camera) rather than the gear selection. Nothing in these captures
+  separates those two.
 * so the `0x02` mapping stays **LIKELY and INCOMPLETE**. It is not used for
-  production gear.
+  production gear, and gear remains UNKNOWN in the runtime.
 
 **Correction to an earlier statement in this document:** "across those same four
 states `0x01` did not change a single bit" was wrong. All four shifting windows
