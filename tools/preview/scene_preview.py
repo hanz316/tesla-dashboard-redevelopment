@@ -114,6 +114,99 @@ MOCK_STATES.update({
         "uart_health": "UART OK",
         "closures": "ALL CLOSED",
     },
+    # Developer preview only. These exist so the Horizon vehicle-state QA can
+    # cover every lighting channel and every moving panel separately; they are
+    # mock data and are never used by production (see the production guard in
+    # the provider and VehicleVisualController::applyMockState).
+    "vehicle_brake": {
+        "speed": 0, "gear": 1, "soc": 63, "soc_trusted": True,
+        "range": 253, "range_trusted": True, "brake": True,
+        "temperature_primary": 22, "uart_health": "UART OK",
+        "closures": "ALL CLOSED",
+    },
+    "vehicle_left": {
+        "speed": 0, "gear": 1, "soc": 63, "soc_trusted": True,
+        "range": 253, "range_trusted": True, "indicator_left": True,
+        "temperature_primary": 22, "uart_health": "UART OK",
+        "closures": "ALL CLOSED",
+    },
+    "vehicle_right": {
+        "speed": 0, "gear": 1, "soc": 63, "soc_trusted": True,
+        "range": 253, "range_trusted": True, "indicator_right": True,
+        "temperature_primary": 22, "uart_health": "UART OK",
+        "closures": "ALL CLOSED",
+    },
+    "vehicle_hazard": {
+        "speed": 0, "gear": 1, "soc": 63, "soc_trusted": True,
+        "range": 253, "range_trusted": True,
+        "indicator_left": True, "indicator_right": True,
+        "temperature_primary": 22, "uart_health": "UART OK",
+        "closures": "ALL CLOSED",
+    },
+    "vehicle_headlight": {
+        "speed": 0, "gear": 1, "soc": 63, "soc_trusted": True,
+        "range": 253, "range_trusted": True, "headlight": True,
+        "temperature_primary": 22, "uart_health": "UART OK",
+        "closures": "ALL CLOSED",
+    },
+    "vehicle_brake_left": {
+        "speed": 0, "gear": 1, "soc": 63, "soc_trusted": True,
+        "range": 253, "range_trusted": True,
+        "brake": True, "indicator_left": True,
+        "temperature_primary": 22, "uart_health": "UART OK",
+        "closures": "ALL CLOSED",
+    },
+    "vehicle_brake_hazard": {
+        "speed": 0, "gear": 1, "soc": 63, "soc_trusted": True,
+        "range": 253, "range_trusted": True,
+        "brake": True, "indicator_left": True, "indicator_right": True,
+        "temperature_primary": 22, "uart_health": "UART OK",
+        "closures": "ALL CLOSED",
+    },
+    "vehicle_door_fr": {
+        "speed": 0, "gear": 1, "soc": 63, "soc_trusted": True,
+        "range": 253, "range_trusted": True, "door_fr": True,
+        "temperature_primary": 22, "uart_health": "UART OK",
+        "closures": "OPEN FR",
+    },
+    "vehicle_door_rl": {
+        "speed": 0, "gear": 1, "soc": 63, "soc_trusted": True,
+        "range": 253, "range_trusted": True, "door_rl": True,
+        "temperature_primary": 22, "uart_health": "UART OK",
+        "closures": "OPEN RL",
+    },
+    "vehicle_door_rr": {
+        "speed": 0, "gear": 1, "soc": 63, "soc_trusted": True,
+        "range": 253, "range_trusted": True, "door_rr": True,
+        "temperature_primary": 22, "uart_health": "UART OK",
+        "closures": "OPEN RR",
+    },
+    "vehicle_frunk": {
+        "speed": 0, "gear": 1, "soc": 63, "soc_trusted": True,
+        "range": 253, "range_trusted": True, "frunk": True,
+        "temperature_primary": 22, "uart_health": "UART OK",
+        "closures": "OPEN FRUNK",
+    },
+    "vehicle_trunk_brake": {
+        "speed": 0, "gear": 1, "soc": 63, "soc_trusted": True,
+        "range": 253, "range_trusted": True,
+        "trunk": True, "brake": True,
+        "temperature_primary": 22, "uart_health": "UART OK",
+        "closures": "OPEN TRUNK",
+    },
+    "vehicle_fl_rr_brake": {
+        "speed": 0, "gear": 1, "soc": 63, "soc_trusted": True,
+        "range": 253, "range_trusted": True,
+        "door_fl": True, "door_rr": True, "brake": True,
+        "temperature_primary": 22, "uart_health": "UART OK",
+        "closures": "OPEN FL RR",
+    },
+    # A stale signal must render as unknown, never as a confident "closed".
+    "vehicle_stale_doors": {
+        "speed": 0, "gear": 1, "soc": 63, "soc_trusted": True,
+        "range": 253, "range_trusted": True,
+        "uart_health": "UART STALE", "closures": "DOORS --",
+    },
 })
 
 

@@ -21,6 +21,7 @@ add_library(dashboard_core
     src/core/v6_asset_catalog.cpp
     src/core/motion_quality.cpp
     src/core/delta_animation.cpp
+    src/core/vehicle_visual_controller.cpp
 )
 set_target_properties(dashboard_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(dashboard_core PUBLIC include)
@@ -67,6 +68,11 @@ if(BUILD_HOST_TOOLS)
     target_compile_options(dashboard_delta_animation_tests PRIVATE -Wall -Wextra -Wpedantic)
     add_test(NAME dashboard_delta_animation_tests COMMAND dashboard_delta_animation_tests)
 
+    add_executable(dashboard_vehicle_visual_tests tests/vehicle_visual_controller_tests.cpp)
+    target_link_libraries(dashboard_vehicle_visual_tests PRIVATE dashboard_core)
+    target_compile_options(dashboard_vehicle_visual_tests PRIVATE -Wall -Wextra -Wpedantic)
+    add_test(NAME dashboard_vehicle_visual_tests COMMAND dashboard_vehicle_visual_tests)
+
     # Geometry rules for the taillight light guide. These run on the host: the
     # Blender-only pieces are stubbed, and the cavity is replaced by an analytic
     # distance function, so the rules that were expensive to learn (reject
@@ -78,6 +84,9 @@ if(BUILD_HOST_TOOLS)
         add_test(NAME dashboard_taillight_guide_tests
                  COMMAND "${PYTHON3_EXECUTABLE}"
                          "${CMAKE_CURRENT_SOURCE_DIR}/tests/taillight_guide_tests.py")
+        add_test(NAME dashboard_vehicle_asset_tests
+                 COMMAND "${PYTHON3_EXECUTABLE}"
+                         "${CMAKE_CURRENT_SOURCE_DIR}/tests/vehicle_asset_manifest_tests.py")
     else()
         message(WARNING "python3 not found: taillight guide regression tests disabled")
     endif()

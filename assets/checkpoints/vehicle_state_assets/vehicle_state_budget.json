@@ -1,0 +1,1400 @@
+{
+  "canvas": [
+    356,
+    236
+  ],
+  "camera": {
+    "name": "Camera_Horizon",
+    "type": "ORTHO",
+    "ortho_scale": 5.55,
+    "location": [
+      -5.3,
+      -4.55,
+      3.85
+    ],
+    "target": [
+      0.0,
+      0.0,
+      0.62
+    ]
+  },
+  "base_png_bytes": 66227,
+  "base_decoded_rgba_bytes": 336064,
+  "sequences": {
+    "brake_on": {
+      "frames": 1,
+      "issues": [],
+      "dirty_bbox_union": [
+        53,
+        105,
+        243,
+        165
+      ],
+      "noise_floor_outside_changed_region": 4,
+      "dirty_pixels_last_frame": 240,
+      "dirty_pixels_max": 240,
+      "dirty_pixels_per_frame": [
+        240
+      ],
+      "first_to_last_change_pixels": 240,
+      "frame_to_frame_change_pixels": [],
+      "motion_is_monotone": true,
+      "opens_visibly": true,
+      "cumulative_change_is_non_decreasing": true,
+      "every_frame_moves": true,
+      "fps": 30,
+      "png_bytes_median": 66381,
+      "png_bytes_total": 66381
+    },
+    "door_fl": {
+      "frames": 16,
+      "issues": [],
+      "dirty_bbox_union": [
+        53,
+        44,
+        243,
+        165
+      ],
+      "noise_floor_outside_changed_region": 4,
+      "dirty_pixels_last_frame": 1679,
+      "dirty_pixels_max": 1689,
+      "dirty_pixels_per_frame": [
+        250,
+        250,
+        250,
+        254,
+        307,
+        410,
+        548,
+        801,
+        1136,
+        1386,
+        1528,
+        1610,
+        1650,
+        1673,
+        1689,
+        1679
+      ],
+      "first_to_last_change_pixels": 1679,
+      "frame_to_frame_change_pixels": [
+        0,
+        0,
+        4,
+        57,
+        142,
+        253,
+        409,
+        781,
+        1032,
+        1031,
+        679,
+        532,
+        355,
+        228,
+        129
+      ],
+      "motion_is_monotone": false,
+      "opens_visibly": true,
+      "cumulative_change_is_non_decreasing": true,
+      "every_frame_moves": true,
+      "fps": 24,
+      "png_bytes_median": 68224,
+      "png_bytes_total": 1082220
+    },
+    "door_fr": {
+      "frames": 16,
+      "issues": [],
+      "dirty_bbox_union": [
+        53,
+        61,
+        301,
+        197
+      ],
+      "noise_floor_outside_changed_region": 4,
+      "dirty_pixels_last_frame": 5233,
+      "dirty_pixels_max": 5233,
+      "dirty_pixels_per_frame": [
+        250,
+        360,
+        1108,
+        1799,
+        2653,
+        3609,
+        3992,
+        4349,
+        4770,
+        4928,
+        5049,
+        5092,
+        5190,
+        5223,
+        5232,
+        5233
+      ],
+      "first_to_last_change_pixels": 5233,
+      "frame_to_frame_change_pixels": [
+        111,
+        799,
+        1336,
+        2057,
+        2786,
+        3181,
+        3332,
+        3376,
+        2642,
+        2054,
+        1592,
+        1322,
+        875,
+        518,
+        199
+      ],
+      "motion_is_monotone": false,
+      "opens_visibly": true,
+      "cumulative_change_is_non_decreasing": true,
+      "every_frame_moves": true,
+      "fps": 24,
+      "png_bytes_median": 67595,
+      "png_bytes_total": 1075953
+    },
+    "door_rl": {
+      "frames": 16,
+      "issues": [],
+      "dirty_bbox_union": [
+        53,
+        61,
+        270,
+        165
+      ],
+      "noise_floor_outside_changed_region": 4,
+      "dirty_pixels_last_frame": 1767,
+      "dirty_pixels_max": 1770,
+      "dirty_pixels_per_frame": [
+        250,
+        250,
+        250,
+        257,
+        383,
+        520,
+        759,
+        1040,
+        1368,
+        1563,
+        1673,
+        1725,
+        1747,
+        1764,
+        1770,
+        1767
+      ],
+      "first_to_last_change_pixels": 1767,
+      "frame_to_frame_change_pixels": [
+        0,
+        0,
+        7,
+        130,
+        253,
+        454,
+        656,
+        855,
+        937,
+        983,
+        941,
+        755,
+        453,
+        338,
+        151
+      ],
+      "motion_is_monotone": false,
+      "opens_visibly": true,
+      "cumulative_change_is_non_decreasing": true,
+      "every_frame_moves": true,
+      "fps": 24,
+      "png_bytes_median": 68277,
+      "png_bytes_total": 1083723
+    },
+    "door_rr": {
+      "frames": 16,
+      "issues": [],
+      "dirty_bbox_union": [
+        53,
+        61,
+        299,
+        194
+      ],
+      "noise_floor_outside_changed_region": 4,
+      "dirty_pixels_last_frame": 4362,
+      "dirty_pixels_max": 4363,
+      "dirty_pixels_per_frame": [
+        250,
+        413,
+        935,
+        1564,
+        2223,
+        3111,
+        3597,
+        3844,
+        4005,
+        4084,
+        4194,
+        4277,
+        4326,
+        4342,
+        4363,
+        4362
+      ],
+      "first_to_last_change_pixels": 4362,
+      "frame_to_frame_change_pixels": [
+        160,
+        668,
+        1159,
+        1541,
+        2325,
+        2741,
+        2821,
+        2459,
+        1969,
+        1493,
+        1194,
+        844,
+        638,
+        372,
+        109
+      ],
+      "motion_is_monotone": false,
+      "opens_visibly": true,
+      "cumulative_change_is_non_decreasing": true,
+      "every_frame_moves": true,
+      "fps": 24,
+      "png_bytes_median": 67498,
+      "png_bytes_total": 1077006
+    },
+    "frunk": {
+      "frames": 14,
+      "issues": [],
+      "dirty_bbox_union": [
+        53,
+        21,
+        306,
+        165
+      ],
+      "noise_floor_outside_changed_region": 4,
+      "dirty_pixels_last_frame": 4822,
+      "dirty_pixels_max": 4837,
+      "dirty_pixels_per_frame": [
+        250,
+        318,
+        545,
+        849,
+        1871,
+        2580,
+        3183,
+        3870,
+        4323,
+        4610,
+        4745,
+        4836,
+        4837,
+        4822
+      ],
+      "first_to_last_change_pixels": 4822,
+      "frame_to_frame_change_pixels": [
+        67,
+        273,
+        502,
+        1004,
+        2168,
+        2801,
+        3434,
+        2803,
+        1625,
+        1036,
+        635,
+        370,
+        168
+      ],
+      "motion_is_monotone": false,
+      "opens_visibly": true,
+      "cumulative_change_is_non_decreasing": true,
+      "every_frame_moves": true,
+      "fps": 24,
+      "png_bytes_median": 69984,
+      "png_bytes_total": 970350
+    },
+    "hazard": {
+      "frames": 12,
+      "issues": [],
+      "dirty_bbox_union": [
+        53,
+        105,
+        243,
+        165
+      ],
+      "noise_floor_outside_changed_region": 4,
+      "dirty_pixels_last_frame": 250,
+      "dirty_pixels_max": 250,
+      "dirty_pixels_per_frame": [
+        250,
+        250,
+        250,
+        250,
+        250,
+        250
+      ],
+      "first_to_last_change_pixels": 250,
+      "frame_to_frame_change_pixels": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        250,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "motion_is_monotone": false,
+      "opens_visibly": true,
+      "cumulative_change_is_non_decreasing": true,
+      "every_frame_moves": true,
+      "fps": 12,
+      "png_bytes_median": 66390,
+      "png_bytes_total": 795702
+    },
+    "headlight_on": {
+      "frames": 1,
+      "issues": [],
+      "dirty_bbox_union": [
+        53,
+        57,
+        305,
+        165
+      ],
+      "noise_floor_outside_changed_region": 4,
+      "dirty_pixels_last_frame": 413,
+      "dirty_pixels_max": 413,
+      "dirty_pixels_per_frame": [
+        413
+      ],
+      "first_to_last_change_pixels": 413,
+      "frame_to_frame_change_pixels": [],
+      "motion_is_monotone": true,
+      "opens_visibly": true,
+      "cumulative_change_is_non_decreasing": true,
+      "every_frame_moves": true,
+      "fps": 30,
+      "png_bytes_median": 66552,
+      "png_bytes_total": 66552
+    },
+    "indicator_left": {
+      "frames": 12,
+      "issues": [],
+      "dirty_bbox_union": [
+        53,
+        105,
+        243,
+        165
+      ],
+      "noise_floor_outside_changed_region": 3,
+      "dirty_pixels_last_frame": 225,
+      "dirty_pixels_max": 225,
+      "dirty_pixels_per_frame": [
+        225,
+        225,
+        225,
+        225,
+        225,
+        225
+      ],
+      "first_to_last_change_pixels": 225,
+      "frame_to_frame_change_pixels": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        225,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "motion_is_monotone": false,
+      "opens_visibly": true,
+      "cumulative_change_is_non_decreasing": true,
+      "every_frame_moves": true,
+      "fps": 12,
+      "png_bytes_median": 66363,
+      "png_bytes_total": 795540
+    },
+    "indicator_right": {
+      "frames": 12,
+      "issues": [],
+      "dirty_bbox_union": [
+        54,
+        105,
+        243,
+        165
+      ],
+      "noise_floor_outside_changed_region": 4,
+      "dirty_pixels_last_frame": 228,
+      "dirty_pixels_max": 228,
+      "dirty_pixels_per_frame": [
+        228,
+        228,
+        228,
+        228,
+        228,
+        228
+      ],
+      "first_to_last_change_pixels": 228,
+      "frame_to_frame_change_pixels": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        228,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "motion_is_monotone": false,
+      "opens_visibly": true,
+      "cumulative_change_is_non_decreasing": true,
+      "every_frame_moves": true,
+      "fps": 12,
+      "png_bytes_median": 66322,
+      "png_bytes_total": 795294
+    },
+    "running_on": {
+      "frames": 1,
+      "issues": [],
+      "dirty_bbox_union": [
+        53,
+        105,
+        243,
+        165
+      ],
+      "noise_floor_outside_changed_region": 3,
+      "dirty_pixels_last_frame": 251,
+      "dirty_pixels_max": 251,
+      "dirty_pixels_per_frame": [
+        251
+      ],
+      "first_to_last_change_pixels": 251,
+      "frame_to_frame_change_pixels": [],
+      "motion_is_monotone": true,
+      "opens_visibly": true,
+      "cumulative_change_is_non_decreasing": true,
+      "every_frame_moves": true,
+      "fps": 30,
+      "png_bytes_median": 66301,
+      "png_bytes_total": 66301
+    },
+    "trunk": {
+      "frames": 14,
+      "issues": [],
+      "dirty_bbox_union": [
+        49,
+        92,
+        243,
+        188
+      ],
+      "noise_floor_outside_changed_region": 4,
+      "dirty_pixels_last_frame": 4464,
+      "dirty_pixels_max": 4464,
+      "dirty_pixels_per_frame": [
+        250,
+        341,
+        1091,
+        1771,
+        2788,
+        3087,
+        3345,
+        3959,
+        4080,
+        4356,
+        4419,
+        4462,
+        4463,
+        4464
+      ],
+      "first_to_last_change_pixels": 4464,
+      "frame_to_frame_change_pixels": [
+        90,
+        855,
+        1119,
+        1943,
+        2611,
+        2799,
+        2963,
+        2423,
+        2008,
+        1729,
+        1235,
+        697,
+        219
+      ],
+      "motion_is_monotone": false,
+      "opens_visibly": true,
+      "cumulative_change_is_non_decreasing": true,
+      "every_frame_moves": true,
+      "fps": 24,
+      "png_bytes_median": 67644,
+      "png_bytes_total": 945360
+    }
+  },
+  "combinations": {
+    "brake_alpha_intact": {
+      "pass": true,
+      "opaque_pixels": 24103,
+      "rule": "the combined frame still has a vehicle silhouette"
+    },
+    "headlight_alpha_intact": {
+      "pass": true,
+      "opaque_pixels": 24103,
+      "rule": "the combined frame still has a vehicle silhouette"
+    },
+    "left_alpha_intact": {
+      "pass": true,
+      "opaque_pixels": 24103,
+      "rule": "the combined frame still has a vehicle silhouette"
+    },
+    "right_alpha_intact": {
+      "pass": true,
+      "opaque_pixels": 24103,
+      "rule": "the combined frame still has a vehicle silhouette"
+    },
+    "hazard_alpha_intact": {
+      "pass": true,
+      "opaque_pixels": 24103,
+      "rule": "the combined frame still has a vehicle silhouette"
+    },
+    "door_fl_replaces_base": {
+      "pass": true,
+      "base_opaque_pixels": 24103,
+      "open_opaque_pixels": 25398,
+      "rule": "an open panel is drawn as a replacement of the base on the same canvas, so the silhouette may only grow"
+    },
+    "door_fr_replaces_base": {
+      "pass": true,
+      "base_opaque_pixels": 24103,
+      "open_opaque_pixels": 24467,
+      "rule": "an open panel is drawn as a replacement of the base on the same canvas, so the silhouette may only grow"
+    },
+    "door_rl_replaces_base": {
+      "pass": true,
+      "base_opaque_pixels": 24103,
+      "open_opaque_pixels": 25457,
+      "rule": "an open panel is drawn as a replacement of the base on the same canvas, so the silhouette may only grow"
+    },
+    "door_rr_replaces_base": {
+      "pass": true,
+      "base_opaque_pixels": 24103,
+      "open_opaque_pixels": 24241,
+      "rule": "an open panel is drawn as a replacement of the base on the same canvas, so the silhouette may only grow"
+    },
+    "frunk_replaces_base": {
+      "pass": true,
+      "base_opaque_pixels": 24103,
+      "open_opaque_pixels": 26811,
+      "rule": "an open panel is drawn as a replacement of the base on the same canvas, so the silhouette may only grow"
+    },
+    "trunk_replaces_base": {
+      "pass": true,
+      "base_opaque_pixels": 24103,
+      "open_opaque_pixels": 24727,
+      "rule": "an open panel is drawn as a replacement of the base on the same canvas, so the silhouette may only grow"
+    }
+  },
+  "budget": [
+    {
+      "sequence": "brake_on",
+      "presentation_width_px": 400,
+      "canvas": [
+        400,
+        265
+      ],
+      "png_bytes_per_frame": 66381,
+      "decoded_rgba_bytes_per_frame": 424000,
+      "full_canvas_pixels": 106000,
+      "dirty_pixels_mean": 303,
+      "dirty_pixels_max": 303,
+      "fixed_tight_pixels": 14271,
+      "frames": 1,
+      "fps": 30,
+      "decoded_rgba_bytes_sequence": 424000,
+      "estimated_decode_ms_per_frame": 8.705,
+      "estimated_decode_ms_per_second_30fps": 261.165,
+      "frame_budget_share_30fps": 7.8349,
+      "frame_budget_share_60fps": 15.6699
+    },
+    {
+      "sequence": "door_fl",
+      "presentation_width_px": 400,
+      "canvas": [
+        400,
+        265
+      ],
+      "png_bytes_per_frame": 68224,
+      "decoded_rgba_bytes_per_frame": 424000,
+      "full_canvas_pixels": 106000,
+      "dirty_pixels_mean": 1217,
+      "dirty_pixels_max": 2132,
+      "fixed_tight_pixels": 28968,
+      "frames": 16,
+      "fps": 24,
+      "decoded_rgba_bytes_sequence": 6784000,
+      "estimated_decode_ms_per_frame": 8.705,
+      "estimated_decode_ms_per_second_30fps": 208.932,
+      "frame_budget_share_30fps": 6.2679,
+      "frame_budget_share_60fps": 12.5359
+    },
+    {
+      "sequence": "door_fr",
+      "presentation_width_px": 400,
+      "canvas": [
+        400,
+        265
+      ],
+      "png_bytes_per_frame": 67595,
+      "decoded_rgba_bytes_per_frame": 424000,
+      "full_canvas_pixels": 106000,
+      "dirty_pixels_mean": 4642,
+      "dirty_pixels_max": 6606,
+      "fixed_tight_pixels": 42687,
+      "frames": 16,
+      "fps": 24,
+      "decoded_rgba_bytes_sequence": 6784000,
+      "estimated_decode_ms_per_frame": 8.705,
+      "estimated_decode_ms_per_second_30fps": 208.932,
+      "frame_budget_share_30fps": 6.2679,
+      "frame_budget_share_60fps": 12.5359
+    },
+    {
+      "sequence": "door_rl",
+      "presentation_width_px": 400,
+      "canvas": [
+        400,
+        265
+      ],
+      "png_bytes_per_frame": 68277,
+      "decoded_rgba_bytes_per_frame": 424000,
+      "full_canvas_pixels": 106000,
+      "dirty_pixels_mean": 1348,
+      "dirty_pixels_max": 2235,
+      "fixed_tight_pixels": 28548,
+      "frames": 16,
+      "fps": 24,
+      "decoded_rgba_bytes_sequence": 6784000,
+      "estimated_decode_ms_per_frame": 8.705,
+      "estimated_decode_ms_per_second_30fps": 208.932,
+      "frame_budget_share_30fps": 6.2679,
+      "frame_budget_share_60fps": 12.5359
+    },
+    {
+      "sequence": "door_rr",
+      "presentation_width_px": 400,
+      "canvas": [
+        400,
+        265
+      ],
+      "png_bytes_per_frame": 67498,
+      "decoded_rgba_bytes_per_frame": 424000,
+      "full_canvas_pixels": 106000,
+      "dirty_pixels_mean": 3937,
+      "dirty_pixels_max": 5508,
+      "fixed_tight_pixels": 41124,
+      "frames": 16,
+      "fps": 24,
+      "decoded_rgba_bytes_sequence": 6784000,
+      "estimated_decode_ms_per_frame": 8.705,
+      "estimated_decode_ms_per_second_30fps": 208.932,
+      "frame_budget_share_30fps": 6.2679,
+      "frame_budget_share_60fps": 12.5359
+    },
+    {
+      "sequence": "frunk",
+      "presentation_width_px": 400,
+      "canvas": [
+        400,
+        265
+      ],
+      "png_bytes_per_frame": 69984,
+      "decoded_rgba_bytes_per_frame": 424000,
+      "full_canvas_pixels": 106000,
+      "dirty_pixels_mean": 3755,
+      "dirty_pixels_max": 6107,
+      "fixed_tight_pixels": 46008,
+      "frames": 14,
+      "fps": 24,
+      "decoded_rgba_bytes_sequence": 5936000,
+      "estimated_decode_ms_per_frame": 8.705,
+      "estimated_decode_ms_per_second_30fps": 208.932,
+      "frame_budget_share_30fps": 6.2679,
+      "frame_budget_share_60fps": 12.5359
+    },
+    {
+      "sequence": "hazard",
+      "presentation_width_px": 400,
+      "canvas": [
+        400,
+        265
+      ],
+      "png_bytes_per_frame": 66390,
+      "decoded_rgba_bytes_per_frame": 424000,
+      "full_canvas_pixels": 106000,
+      "dirty_pixels_mean": 316,
+      "dirty_pixels_max": 316,
+      "fixed_tight_pixels": 14271,
+      "frames": 12,
+      "fps": 12,
+      "decoded_rgba_bytes_sequence": 5088000,
+      "estimated_decode_ms_per_frame": 8.705,
+      "estimated_decode_ms_per_second_30fps": 104.466,
+      "frame_budget_share_30fps": 3.134,
+      "frame_budget_share_60fps": 6.2679
+    },
+    {
+      "sequence": "headlight_on",
+      "presentation_width_px": 400,
+      "canvas": [
+        400,
+        265
+      ],
+      "png_bytes_per_frame": 66552,
+      "decoded_rgba_bytes_per_frame": 424000,
+      "full_canvas_pixels": 106000,
+      "dirty_pixels_mean": 521,
+      "dirty_pixels_max": 521,
+      "fixed_tight_pixels": 34243,
+      "frames": 1,
+      "fps": 30,
+      "decoded_rgba_bytes_sequence": 424000,
+      "estimated_decode_ms_per_frame": 8.705,
+      "estimated_decode_ms_per_second_30fps": 261.165,
+      "frame_budget_share_30fps": 7.8349,
+      "frame_budget_share_60fps": 15.6699
+    },
+    {
+      "sequence": "indicator_left",
+      "presentation_width_px": 400,
+      "canvas": [
+        400,
+        265
+      ],
+      "png_bytes_per_frame": 66363,
+      "decoded_rgba_bytes_per_frame": 424000,
+      "full_canvas_pixels": 106000,
+      "dirty_pixels_mean": 284,
+      "dirty_pixels_max": 284,
+      "fixed_tight_pixels": 14271,
+      "frames": 12,
+      "fps": 12,
+      "decoded_rgba_bytes_sequence": 5088000,
+      "estimated_decode_ms_per_frame": 8.705,
+      "estimated_decode_ms_per_second_30fps": 104.466,
+      "frame_budget_share_30fps": 3.134,
+      "frame_budget_share_60fps": 6.2679
+    },
+    {
+      "sequence": "indicator_right",
+      "presentation_width_px": 400,
+      "canvas": [
+        400,
+        265
+      ],
+      "png_bytes_per_frame": 66322,
+      "decoded_rgba_bytes_per_frame": 424000,
+      "full_canvas_pixels": 106000,
+      "dirty_pixels_mean": 288,
+      "dirty_pixels_max": 288,
+      "fixed_tight_pixels": 14204,
+      "frames": 12,
+      "fps": 12,
+      "decoded_rgba_bytes_sequence": 5088000,
+      "estimated_decode_ms_per_frame": 8.705,
+      "estimated_decode_ms_per_second_30fps": 104.466,
+      "frame_budget_share_30fps": 3.134,
+      "frame_budget_share_60fps": 6.2679
+    },
+    {
+      "sequence": "running_on",
+      "presentation_width_px": 400,
+      "canvas": [
+        400,
+        265
+      ],
+      "png_bytes_per_frame": 66301,
+      "decoded_rgba_bytes_per_frame": 424000,
+      "full_canvas_pixels": 106000,
+      "dirty_pixels_mean": 317,
+      "dirty_pixels_max": 317,
+      "fixed_tight_pixels": 14271,
+      "frames": 1,
+      "fps": 30,
+      "decoded_rgba_bytes_sequence": 424000,
+      "estimated_decode_ms_per_frame": 8.705,
+      "estimated_decode_ms_per_second_30fps": 261.165,
+      "frame_budget_share_30fps": 7.8349,
+      "frame_budget_share_60fps": 15.6699
+    },
+    {
+      "sequence": "trunk",
+      "presentation_width_px": 400,
+      "canvas": [
+        400,
+        265
+      ],
+      "png_bytes_per_frame": 67644,
+      "decoded_rgba_bytes_per_frame": 424000,
+      "full_canvas_pixels": 106000,
+      "dirty_pixels_mean": 3866,
+      "dirty_pixels_max": 5636,
+      "fixed_tight_pixels": 23544,
+      "frames": 14,
+      "fps": 24,
+      "decoded_rgba_bytes_sequence": 5936000,
+      "estimated_decode_ms_per_frame": 8.705,
+      "estimated_decode_ms_per_second_30fps": 208.932,
+      "frame_budget_share_30fps": 6.2679,
+      "frame_budget_share_60fps": 12.5359
+    },
+    {
+      "sequence": "brake_on",
+      "presentation_width_px": 600,
+      "canvas": [
+        600,
+        398
+      ],
+      "png_bytes_per_frame": 66381,
+      "decoded_rgba_bytes_per_frame": 955200,
+      "full_canvas_pixels": 238800,
+      "dirty_pixels_mean": 682,
+      "dirty_pixels_max": 682,
+      "fixed_tight_pixels": 32320,
+      "frames": 1,
+      "fps": 30,
+      "decoded_rgba_bytes_sequence": 955200,
+      "estimated_decode_ms_per_frame": 19.612,
+      "estimated_decode_ms_per_second_30fps": 588.359,
+      "frame_budget_share_30fps": 17.6508,
+      "frame_budget_share_60fps": 35.3016
+    },
+    {
+      "sequence": "door_fl",
+      "presentation_width_px": 600,
+      "canvas": [
+        600,
+        398
+      ],
+      "png_bytes_per_frame": 68224,
+      "decoded_rgba_bytes_per_frame": 955200,
+      "full_canvas_pixels": 238800,
+      "dirty_pixels_mean": 2738,
+      "dirty_pixels_max": 4798,
+      "fixed_tight_pixels": 65280,
+      "frames": 16,
+      "fps": 24,
+      "decoded_rgba_bytes_sequence": 15283200,
+      "estimated_decode_ms_per_frame": 19.612,
+      "estimated_decode_ms_per_second_30fps": 470.687,
+      "frame_budget_share_30fps": 14.1206,
+      "frame_budget_share_60fps": 28.2412
+    },
+    {
+      "sequence": "door_fr",
+      "presentation_width_px": 600,
+      "canvas": [
+        600,
+        398
+      ],
+      "png_bytes_per_frame": 67595,
+      "decoded_rgba_bytes_per_frame": 955200,
+      "full_canvas_pixels": 238800,
+      "dirty_pixels_mean": 10446,
+      "dirty_pixels_max": 14865,
+      "fixed_tight_pixels": 95722,
+      "frames": 16,
+      "fps": 24,
+      "decoded_rgba_bytes_sequence": 15283200,
+      "estimated_decode_ms_per_frame": 19.612,
+      "estimated_decode_ms_per_second_30fps": 470.687,
+      "frame_budget_share_30fps": 14.1206,
+      "frame_budget_share_60fps": 28.2412
+    },
+    {
+      "sequence": "door_rl",
+      "presentation_width_px": 600,
+      "canvas": [
+        600,
+        398
+      ],
+      "png_bytes_per_frame": 68277,
+      "decoded_rgba_bytes_per_frame": 955200,
+      "full_canvas_pixels": 238800,
+      "dirty_pixels_mean": 3033,
+      "dirty_pixels_max": 5028,
+      "fixed_tight_pixels": 64050,
+      "frames": 16,
+      "fps": 24,
+      "decoded_rgba_bytes_sequence": 15283200,
+      "estimated_decode_ms_per_frame": 19.612,
+      "estimated_decode_ms_per_second_30fps": 470.687,
+      "frame_budget_share_30fps": 14.1206,
+      "frame_budget_share_60fps": 28.2412
+    },
+    {
+      "sequence": "door_rr",
+      "presentation_width_px": 600,
+      "canvas": [
+        600,
+        398
+      ],
+      "png_bytes_per_frame": 67498,
+      "decoded_rgba_bytes_per_frame": 955200,
+      "full_canvas_pixels": 238800,
+      "dirty_pixels_mean": 8857,
+      "dirty_pixels_max": 12393,
+      "fixed_tight_pixels": 92960,
+      "frames": 16,
+      "fps": 24,
+      "decoded_rgba_bytes_sequence": 15283200,
+      "estimated_decode_ms_per_frame": 19.612,
+      "estimated_decode_ms_per_second_30fps": 470.687,
+      "frame_budget_share_30fps": 14.1206,
+      "frame_budget_share_60fps": 28.2412
+    },
+    {
+      "sequence": "frunk",
+      "presentation_width_px": 600,
+      "canvas": [
+        600,
+        398
+      ],
+      "png_bytes_per_frame": 69984,
+      "decoded_rgba_bytes_per_frame": 955200,
+      "full_canvas_pixels": 238800,
+      "dirty_pixels_mean": 8448,
+      "dirty_pixels_max": 13740,
+      "fixed_tight_pixels": 103518,
+      "frames": 14,
+      "fps": 24,
+      "decoded_rgba_bytes_sequence": 13372800,
+      "estimated_decode_ms_per_frame": 19.612,
+      "estimated_decode_ms_per_second_30fps": 470.687,
+      "frame_budget_share_30fps": 14.1206,
+      "frame_budget_share_60fps": 28.2412
+    },
+    {
+      "sequence": "hazard",
+      "presentation_width_px": 600,
+      "canvas": [
+        600,
+        398
+      ],
+      "png_bytes_per_frame": 66390,
+      "decoded_rgba_bytes_per_frame": 955200,
+      "full_canvas_pixels": 238800,
+      "dirty_pixels_mean": 710,
+      "dirty_pixels_max": 710,
+      "fixed_tight_pixels": 32320,
+      "frames": 12,
+      "fps": 12,
+      "decoded_rgba_bytes_sequence": 11462400,
+      "estimated_decode_ms_per_frame": 19.612,
+      "estimated_decode_ms_per_second_30fps": 235.344,
+      "frame_budget_share_30fps": 7.0603,
+      "frame_budget_share_60fps": 14.1206
+    },
+    {
+      "sequence": "headlight_on",
+      "presentation_width_px": 600,
+      "canvas": [
+        600,
+        398
+      ],
+      "png_bytes_per_frame": 66552,
+      "decoded_rgba_bytes_per_frame": 955200,
+      "full_canvas_pixels": 238800,
+      "dirty_pixels_mean": 1173,
+      "dirty_pixels_max": 1173,
+      "fixed_tight_pixels": 77350,
+      "frames": 1,
+      "fps": 30,
+      "decoded_rgba_bytes_sequence": 955200,
+      "estimated_decode_ms_per_frame": 19.612,
+      "estimated_decode_ms_per_second_30fps": 588.359,
+      "frame_budget_share_30fps": 17.6508,
+      "frame_budget_share_60fps": 35.3016
+    },
+    {
+      "sequence": "indicator_left",
+      "presentation_width_px": 600,
+      "canvas": [
+        600,
+        398
+      ],
+      "png_bytes_per_frame": 66363,
+      "decoded_rgba_bytes_per_frame": 955200,
+      "full_canvas_pixels": 238800,
+      "dirty_pixels_mean": 639,
+      "dirty_pixels_max": 639,
+      "fixed_tight_pixels": 32320,
+      "frames": 12,
+      "fps": 12,
+      "decoded_rgba_bytes_sequence": 11462400,
+      "estimated_decode_ms_per_frame": 19.612,
+      "estimated_decode_ms_per_second_30fps": 235.344,
+      "frame_budget_share_30fps": 7.0603,
+      "frame_budget_share_60fps": 14.1206
+    },
+    {
+      "sequence": "indicator_right",
+      "presentation_width_px": 600,
+      "canvas": [
+        600,
+        398
+      ],
+      "png_bytes_per_frame": 66322,
+      "decoded_rgba_bytes_per_frame": 955200,
+      "full_canvas_pixels": 238800,
+      "dirty_pixels_mean": 648,
+      "dirty_pixels_max": 648,
+      "fixed_tight_pixels": 32219,
+      "frames": 12,
+      "fps": 12,
+      "decoded_rgba_bytes_sequence": 11462400,
+      "estimated_decode_ms_per_frame": 19.612,
+      "estimated_decode_ms_per_second_30fps": 235.344,
+      "frame_budget_share_30fps": 7.0603,
+      "frame_budget_share_60fps": 14.1206
+    },
+    {
+      "sequence": "running_on",
+      "presentation_width_px": 600,
+      "canvas": [
+        600,
+        398
+      ],
+      "png_bytes_per_frame": 66301,
+      "decoded_rgba_bytes_per_frame": 955200,
+      "full_canvas_pixels": 238800,
+      "dirty_pixels_mean": 713,
+      "dirty_pixels_max": 713,
+      "fixed_tight_pixels": 32320,
+      "frames": 1,
+      "fps": 30,
+      "decoded_rgba_bytes_sequence": 955200,
+      "estimated_decode_ms_per_frame": 19.612,
+      "estimated_decode_ms_per_second_30fps": 588.359,
+      "frame_budget_share_30fps": 17.6508,
+      "frame_budget_share_60fps": 35.3016
+    },
+    {
+      "sequence": "trunk",
+      "presentation_width_px": 600,
+      "canvas": [
+        600,
+        398
+      ],
+      "png_bytes_per_frame": 67644,
+      "decoded_rgba_bytes_per_frame": 955200,
+      "full_canvas_pixels": 238800,
+      "dirty_pixels_mean": 8699,
+      "dirty_pixels_max": 12680,
+      "fixed_tight_pixels": 52974,
+      "frames": 14,
+      "fps": 24,
+      "decoded_rgba_bytes_sequence": 13372800,
+      "estimated_decode_ms_per_frame": 19.612,
+      "estimated_decode_ms_per_second_30fps": 470.687,
+      "frame_budget_share_30fps": 14.1206,
+      "frame_budget_share_60fps": 28.2412
+    },
+    {
+      "sequence": "brake_on",
+      "presentation_width_px": 800,
+      "canvas": [
+        800,
+        530
+      ],
+      "png_bytes_per_frame": 66381,
+      "decoded_rgba_bytes_per_frame": 1696000,
+      "full_canvas_pixels": 424000,
+      "dirty_pixels_mean": 1212,
+      "dirty_pixels_max": 1212,
+      "fixed_tight_pixels": 57645,
+      "frames": 1,
+      "fps": 30,
+      "decoded_rgba_bytes_sequence": 1696000,
+      "estimated_decode_ms_per_frame": 34.822,
+      "estimated_decode_ms_per_second_30fps": 1044.658,
+      "frame_budget_share_30fps": 31.3397,
+      "frame_budget_share_60fps": 62.6795
+    },
+    {
+      "sequence": "door_fl",
+      "presentation_width_px": 800,
+      "canvas": [
+        800,
+        530
+      ],
+      "png_bytes_per_frame": 68224,
+      "decoded_rgba_bytes_per_frame": 1696000,
+      "full_canvas_pixels": 424000,
+      "dirty_pixels_mean": 4867,
+      "dirty_pixels_max": 8529,
+      "fixed_tight_pixels": 116144,
+      "frames": 16,
+      "fps": 24,
+      "decoded_rgba_bytes_sequence": 27136000,
+      "estimated_decode_ms_per_frame": 34.822,
+      "estimated_decode_ms_per_second_30fps": 835.727,
+      "frame_budget_share_30fps": 25.0718,
+      "frame_budget_share_60fps": 50.1436
+    },
+    {
+      "sequence": "door_fr",
+      "presentation_width_px": 800,
+      "canvas": [
+        800,
+        530
+      ],
+      "png_bytes_per_frame": 67595,
+      "decoded_rgba_bytes_per_frame": 1696000,
+      "full_canvas_pixels": 424000,
+      "dirty_pixels_mean": 18570,
+      "dirty_pixels_max": 26426,
+      "fixed_tight_pixels": 170442,
+      "frames": 16,
+      "fps": 24,
+      "decoded_rgba_bytes_sequence": 27136000,
+      "estimated_decode_ms_per_frame": 34.822,
+      "estimated_decode_ms_per_second_30fps": 835.727,
+      "frame_budget_share_30fps": 25.0718,
+      "frame_budget_share_60fps": 50.1436
+    },
+    {
+      "sequence": "door_rl",
+      "presentation_width_px": 800,
+      "canvas": [
+        800,
+        530
+      ],
+      "png_bytes_per_frame": 68277,
+      "decoded_rgba_bytes_per_frame": 1696000,
+      "full_canvas_pixels": 424000,
+      "dirty_pixels_mean": 5393,
+      "dirty_pixels_max": 8938,
+      "fixed_tight_pixels": 114192,
+      "frames": 16,
+      "fps": 24,
+      "decoded_rgba_bytes_sequence": 27136000,
+      "estimated_decode_ms_per_frame": 34.822,
+      "estimated_decode_ms_per_second_30fps": 835.727,
+      "frame_budget_share_30fps": 25.0718,
+      "frame_budget_share_60fps": 50.1436
+    },
+    {
+      "sequence": "door_rr",
+      "presentation_width_px": 800,
+      "canvas": [
+        800,
+        530
+      ],
+      "png_bytes_per_frame": 67498,
+      "decoded_rgba_bytes_per_frame": 1696000,
+      "full_canvas_pixels": 424000,
+      "dirty_pixels_mean": 15746,
+      "dirty_pixels_max": 22033,
+      "fixed_tight_pixels": 165347,
+      "frames": 16,
+      "fps": 24,
+      "decoded_rgba_bytes_sequence": 27136000,
+      "estimated_decode_ms_per_frame": 34.822,
+      "estimated_decode_ms_per_second_30fps": 835.727,
+      "frame_budget_share_30fps": 25.0718,
+      "frame_budget_share_60fps": 50.1436
+    },
+    {
+      "sequence": "frunk",
+      "presentation_width_px": 800,
+      "canvas": [
+        800,
+        530
+      ],
+      "png_bytes_per_frame": 69984,
+      "decoded_rgba_bytes_per_frame": 1696000,
+      "full_canvas_pixels": 424000,
+      "dirty_pixels_mean": 15019,
+      "dirty_pixels_max": 24426,
+      "fixed_tight_pixels": 184356,
+      "frames": 14,
+      "fps": 24,
+      "decoded_rgba_bytes_sequence": 23744000,
+      "estimated_decode_ms_per_frame": 34.822,
+      "estimated_decode_ms_per_second_30fps": 835.727,
+      "frame_budget_share_30fps": 25.0718,
+      "frame_budget_share_60fps": 50.1436
+    },
+    {
+      "sequence": "hazard",
+      "presentation_width_px": 800,
+      "canvas": [
+        800,
+        530
+      ],
+      "png_bytes_per_frame": 66390,
+      "decoded_rgba_bytes_per_frame": 1696000,
+      "full_canvas_pixels": 424000,
+      "dirty_pixels_mean": 1262,
+      "dirty_pixels_max": 1262,
+      "fixed_tight_pixels": 57645,
+      "frames": 12,
+      "fps": 12,
+      "decoded_rgba_bytes_sequence": 20352000,
+      "estimated_decode_ms_per_frame": 34.822,
+      "estimated_decode_ms_per_second_30fps": 417.863,
+      "frame_budget_share_30fps": 12.5359,
+      "frame_budget_share_60fps": 25.0718
+    },
+    {
+      "sequence": "headlight_on",
+      "presentation_width_px": 800,
+      "canvas": [
+        800,
+        530
+      ],
+      "png_bytes_per_frame": 66552,
+      "decoded_rgba_bytes_per_frame": 1696000,
+      "full_canvas_pixels": 424000,
+      "dirty_pixels_mean": 2086,
+      "dirty_pixels_max": 2086,
+      "fixed_tight_pixels": 137538,
+      "frames": 1,
+      "fps": 30,
+      "decoded_rgba_bytes_sequence": 1696000,
+      "estimated_decode_ms_per_frame": 34.822,
+      "estimated_decode_ms_per_second_30fps": 1044.658,
+      "frame_budget_share_30fps": 31.3397,
+      "frame_budget_share_60fps": 62.6795
+    },
+    {
+      "sequence": "indicator_left",
+      "presentation_width_px": 800,
+      "canvas": [
+        800,
+        530
+      ],
+      "png_bytes_per_frame": 66363,
+      "decoded_rgba_bytes_per_frame": 1696000,
+      "full_canvas_pixels": 424000,
+      "dirty_pixels_mean": 1136,
+      "dirty_pixels_max": 1136,
+      "fixed_tight_pixels": 57645,
+      "frames": 12,
+      "fps": 12,
+      "decoded_rgba_bytes_sequence": 20352000,
+      "estimated_decode_ms_per_frame": 34.822,
+      "estimated_decode_ms_per_second_30fps": 417.863,
+      "frame_budget_share_30fps": 12.5359,
+      "frame_budget_share_60fps": 25.0718
+    },
+    {
+      "sequence": "indicator_right",
+      "presentation_width_px": 800,
+      "canvas": [
+        800,
+        530
+      ],
+      "png_bytes_per_frame": 66322,
+      "decoded_rgba_bytes_per_frame": 1696000,
+      "full_canvas_pixels": 424000,
+      "dirty_pixels_mean": 1151,
+      "dirty_pixels_max": 1151,
+      "fixed_tight_pixels": 57375,
+      "frames": 12,
+      "fps": 12,
+      "decoded_rgba_bytes_sequence": 20352000,
+      "estimated_decode_ms_per_frame": 34.822,
+      "estimated_decode_ms_per_second_30fps": 417.863,
+      "frame_budget_share_30fps": 12.5359,
+      "frame_budget_share_60fps": 25.0718
+    },
+    {
+      "sequence": "running_on",
+      "presentation_width_px": 800,
+      "canvas": [
+        800,
+        530
+      ],
+      "png_bytes_per_frame": 66301,
+      "decoded_rgba_bytes_per_frame": 1696000,
+      "full_canvas_pixels": 424000,
+      "dirty_pixels_mean": 1268,
+      "dirty_pixels_max": 1268,
+      "fixed_tight_pixels": 57645,
+      "frames": 1,
+      "fps": 30,
+      "decoded_rgba_bytes_sequence": 1696000,
+      "estimated_decode_ms_per_frame": 34.822,
+      "estimated_decode_ms_per_second_30fps": 1044.658,
+      "frame_budget_share_30fps": 31.3397,
+      "frame_budget_share_60fps": 62.6795
+    },
+    {
+      "sequence": "trunk",
+      "presentation_width_px": 800,
+      "canvas": [
+        800,
+        530
+      ],
+      "png_bytes_per_frame": 67644,
+      "decoded_rgba_bytes_per_frame": 1696000,
+      "full_canvas_pixels": 424000,
+      "dirty_pixels_mean": 15466,
+      "dirty_pixels_max": 22543,
+      "fixed_tight_pixels": 94176,
+      "frames": 14,
+      "fps": 24,
+      "decoded_rgba_bytes_sequence": 23744000,
+      "estimated_decode_ms_per_frame": 34.822,
+      "estimated_decode_ms_per_second_30fps": 835.727,
+      "frame_budget_share_30fps": 25.0718,
+      "frame_budget_share_60fps": 50.1436
+    }
+  ],
+  "measurement_labels": {
+    "mac_measured": [
+      "png_bytes_per_frame",
+      "dirty_pixels_mean",
+      "dirty_pixels_max",
+      "fixed_tight_pixels",
+      "full_canvas_pixels"
+    ],
+    "t113_estimated": [
+      "estimated_decode_ms_per_frame",
+      "frame_budget_share_30fps",
+      "frame_budget_share_60fps"
+    ],
+    "unknown_until_device_test": [
+      "actual runtime decode time",
+      "achieved fps on device",
+      "ZKImageAnim variable-frame support"
+    ]
+  },
+  "t113_decode_baseline": {
+    "ms_per_356x236_png": 6.9,
+    "source": "docs/RENDERING_CAPABILITY_AUDIT.md section 11"
+  },
+  "issues": {},
+  "pass": true
+}

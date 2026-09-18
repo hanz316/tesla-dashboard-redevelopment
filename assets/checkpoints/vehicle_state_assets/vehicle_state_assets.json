@@ -1,0 +1,581 @@
+{
+  "canvas": [
+    356,
+    236
+  ],
+  "camera": {
+    "name": "Camera_Horizon",
+    "type": "ORTHO",
+    "ortho_scale": 5.55,
+    "location": [
+      -5.3,
+      -4.55,
+      3.85
+    ],
+    "target": [
+      0.0,
+      0.0,
+      0.62
+    ]
+  },
+  "samples": 16,
+  "contract": "assets/manifest.json (v6-vehicle v2)",
+  "assets": [
+    {
+      "asset": "base/000.png",
+      "source_master": "MODEL_A_PRODUCTION_MASTER (surface-offset-cavity-lightguide-v3)",
+      "source_state": "OFF + all panels closed",
+      "native_dimensions": [
+        356,
+        236
+      ],
+      "decoded_rgba_bytes": 336064,
+      "png_bytes": 66227,
+      "ownership": "FIXED_BODY",
+      "sha256_16": "79fb52b5961de8c5",
+      "command": "build_vehicle_state_assets.py"
+    },
+    {
+      "asset": "brake_on/000.png",
+      "source_master": "MODEL_A_PRODUCTION_MASTER (surface-offset-cavity-lightguide-v3)",
+      "source_state": "BRAKE",
+      "native_dimensions": [
+        356,
+        236
+      ],
+      "decoded_rgba_bytes": 336064,
+      "png_bytes": 66381,
+      "ownership": "FIXED_BODY",
+      "sha256_16": "0d3b059f18128c7a",
+      "command": "build_vehicle_state_assets.py --state BRAKE"
+    },
+    {
+      "asset": "running_on/000.png",
+      "source_master": "MODEL_A_PRODUCTION_MASTER (surface-offset-cavity-lightguide-v3)",
+      "source_state": "HEADLIGHT",
+      "native_dimensions": [
+        356,
+        236
+      ],
+      "decoded_rgba_bytes": 336064,
+      "png_bytes": 66301,
+      "ownership": "FIXED_BODY",
+      "sha256_16": "621977dc5b137333",
+      "command": "build_vehicle_state_assets.py --state HEADLIGHT"
+    },
+    {
+      "asset": "indicator_left/000.png",
+      "source_master": "MODEL_A_PRODUCTION_MASTER (surface-offset-cavity-lightguide-v3)",
+      "source_state": "LEFT_INDICATOR",
+      "native_dimensions": [
+        356,
+        236
+      ],
+      "decoded_rgba_bytes": 336064,
+      "png_bytes": 66363,
+      "ownership": "FIXED_BODY",
+      "sha256_16": "e22f981dfa894591",
+      "command": "build_vehicle_state_assets.py --state LEFT_INDICATOR"
+    },
+    {
+      "asset": "indicator_right/000.png",
+      "source_master": "MODEL_A_PRODUCTION_MASTER (surface-offset-cavity-lightguide-v3)",
+      "source_state": "RIGHT_INDICATOR",
+      "native_dimensions": [
+        356,
+        236
+      ],
+      "decoded_rgba_bytes": 336064,
+      "png_bytes": 66322,
+      "ownership": "FIXED_BODY",
+      "sha256_16": "3c85e2421da6dfb5",
+      "command": "build_vehicle_state_assets.py --state RIGHT_INDICATOR"
+    },
+    {
+      "asset": "hazard/000.png",
+      "source_master": "MODEL_A_PRODUCTION_MASTER (surface-offset-cavity-lightguide-v3)",
+      "source_state": "HAZARD",
+      "native_dimensions": [
+        356,
+        236
+      ],
+      "decoded_rgba_bytes": 336064,
+      "png_bytes": 66390,
+      "ownership": "FIXED_BODY",
+      "sha256_16": "4e86bf4e3761cf9f",
+      "command": "build_vehicle_state_assets.py --state HAZARD"
+    },
+    {
+      "asset": "headlight_on/000.png",
+      "source_master": "MODEL_A_PRODUCTION_MASTER (surface-offset-cavity-lightguide-v3)",
+      "source_state": "HEADLIGHT (front lamps)",
+      "native_dimensions": [
+        356,
+        236
+      ],
+      "decoded_rgba_bytes": 336064,
+      "png_bytes": 66552,
+      "ownership": "FIXED_BODY",
+      "sha256_16": "c6d76c0f4d014cd4",
+      "command": "build_vehicle_state_assets.py --front-headlights"
+    }
+  ],
+  "panels": {
+    "door_fl": {
+      "hinge": [
+        1.04057,
+        0.89823,
+        0.61505
+      ],
+      "bbox_min": [
+        -0.2329,
+        0.6607,
+        0.2357
+      ],
+      "bbox_max": [
+        1.0435,
+        1.0929,
+        1.3132
+      ],
+      "hinge_from_nearest_edge_m": 0.00289,
+      "panel_extent_along_x_m": 1.2764,
+      "hinge_kind": "vertical hinge at an X edge",
+      "hinge_on_edge": true,
+      "sign": -1.0,
+      "far_edge_travel_m": 1.09483,
+      "rule": "outward |y| for doors, upward z for hood/boot",
+      "object": "door_lf",
+      "axis": "Z",
+      "open_angle_deg": 52.0,
+      "frames": 16,
+      "fps": 24,
+      "open_duration_s": 0.625,
+      "close_duration_s": 0.544,
+      "easing": "ease_in_out_cubic (open); the close animation plays the same frames backwards at its own duration",
+      "png_bytes_total": 1082220,
+      "decoded_rgba_bytes_total": 5377024,
+      "decoded_rgba_bytes_per_frame": 336064
+    },
+    "door_fr": {
+      "hinge": [
+        1.04057,
+        -0.89759,
+        0.61505
+      ],
+      "bbox_min": [
+        -0.2329,
+        -1.0929,
+        0.2357
+      ],
+      "bbox_max": [
+        1.0435,
+        -0.6607,
+        1.3132
+      ],
+      "hinge_from_nearest_edge_m": 0.00289,
+      "panel_extent_along_x_m": 1.2764,
+      "hinge_kind": "vertical hinge at an X edge",
+      "hinge_on_edge": true,
+      "sign": 1.0,
+      "far_edge_travel_m": 1.09459,
+      "rule": "outward |y| for doors, upward z for hood/boot",
+      "object": "door_rf",
+      "axis": "Z",
+      "open_angle_deg": 52.0,
+      "frames": 16,
+      "fps": 24,
+      "open_duration_s": 0.625,
+      "close_duration_s": 0.544,
+      "easing": "ease_in_out_cubic (open); the close animation plays the same frames backwards at its own duration",
+      "png_bytes_total": 1075953,
+      "decoded_rgba_bytes_total": 5377024,
+      "decoded_rgba_bytes_per_frame": 336064
+    },
+    "door_rl": {
+      "hinge": [
+        -0.1251,
+        0.92261,
+        0.61504
+      ],
+      "bbox_min": [
+        -1.2306,
+        0.6308,
+        0.2465
+      ],
+      "bbox_max": [
+        -0.0863,
+        0.9642,
+        1.3176
+      ],
+      "hinge_from_nearest_edge_m": 0.03881,
+      "panel_extent_along_x_m": 1.1443,
+      "hinge_kind": "vertical hinge at an X edge",
+      "hinge_on_edge": true,
+      "sign": -1.0,
+      "far_edge_travel_m": 0.98331,
+      "rule": "outward |y| for doors, upward z for hood/boot",
+      "object": "door_lr",
+      "axis": "Z",
+      "open_angle_deg": 52.0,
+      "frames": 16,
+      "fps": 24,
+      "open_duration_s": 0.625,
+      "close_duration_s": 0.544,
+      "easing": "ease_in_out_cubic (open); the close animation plays the same frames backwards at its own duration",
+      "png_bytes_total": 1083723,
+      "decoded_rgba_bytes_total": 5377024,
+      "decoded_rgba_bytes_per_frame": 336064
+    },
+    "door_rr": {
+      "hinge": [
+        -0.1251,
+        -0.92197,
+        0.61504
+      ],
+      "bbox_min": [
+        -1.2306,
+        -0.9642,
+        0.2465
+      ],
+      "bbox_max": [
+        -0.0863,
+        -0.6308,
+        1.3176
+      ],
+      "hinge_from_nearest_edge_m": 0.0388,
+      "panel_extent_along_x_m": 1.1443,
+      "hinge_kind": "vertical hinge at an X edge",
+      "hinge_on_edge": true,
+      "sign": 1.0,
+      "far_edge_travel_m": 0.98307,
+      "rule": "outward |y| for doors, upward z for hood/boot",
+      "object": "door_rr",
+      "axis": "Z",
+      "open_angle_deg": 52.0,
+      "frames": 16,
+      "fps": 24,
+      "open_duration_s": 0.625,
+      "close_duration_s": 0.544,
+      "easing": "ease_in_out_cubic (open); the close animation plays the same frames backwards at its own duration",
+      "png_bytes_total": 1077006,
+      "decoded_rgba_bytes_total": 5377024,
+      "decoded_rgba_bytes_per_frame": 336064
+    },
+    "frunk": {
+      "hinge": [
+        1.17547,
+        0.00023,
+        0.88283
+      ],
+      "bbox_min": [
+        1.1816,
+        -0.7504,
+        0.6101
+      ],
+      "bbox_max": [
+        2.2713,
+        0.7504,
+        0.8877
+      ],
+      "hinge_from_nearest_edge_m": 0.00617,
+      "panel_extent_along_x_m": 1.0897,
+      "hinge_kind": "lateral hinge at an X edge (top of the panel)",
+      "hinge_on_edge": true,
+      "sign": -1.0,
+      "far_edge_travel_m": 0.85477,
+      "rule": "outward |y| for doors, upward z for hood/boot",
+      "object": "bonnet_ok",
+      "axis": "Y",
+      "open_angle_deg": 45.0,
+      "frames": 14,
+      "fps": 24,
+      "open_duration_s": 0.542,
+      "close_duration_s": 0.472,
+      "easing": "ease_in_out_cubic (open); the close animation plays the same frames backwards at its own duration",
+      "png_bytes_total": 970350,
+      "decoded_rgba_bytes_total": 4704896,
+      "decoded_rgba_bytes_per_frame": 336064
+    },
+    "trunk": {
+      "hinge": [
+        -1.51915,
+        0.00023,
+        1.20405
+      ],
+      "bbox_min": [
+        -2.3133,
+        -0.7407,
+        0.6093
+      ],
+      "bbox_max": [
+        -1.503,
+        0.7407,
+        1.2074
+      ],
+      "hinge_from_nearest_edge_m": 0.01612,
+      "panel_extent_along_x_m": 0.8102,
+      "hinge_kind": "lateral hinge at an X edge (top of the panel)",
+      "hinge_on_edge": true,
+      "sign": 1.0,
+      "far_edge_travel_m": 0.90414,
+      "rule": "outward |y| for doors, upward z for hood/boot",
+      "object": "boot",
+      "axis": "Y",
+      "open_angle_deg": 55.0,
+      "frames": 14,
+      "fps": 24,
+      "open_duration_s": 0.542,
+      "close_duration_s": 0.472,
+      "easing": "ease_in_out_cubic (open); the close animation plays the same frames backwards at its own duration",
+      "png_bytes_total": 945360,
+      "decoded_rgba_bytes_total": 4704896,
+      "decoded_rgba_bytes_per_frame": 336064,
+      "lighting_overlay_screen_affine_per_frame": [
+        {
+          "a": [
+            1.0,
+            0.0,
+            -0.0
+          ],
+          "b": [
+            -0.0,
+            1.0,
+            -0.0
+          ],
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows"
+        },
+        {
+          "a": [
+            1.00080908,
+            -0.00165749,
+            0.05772
+          ],
+          "b": [
+            0.00121026,
+            0.99254188,
+            0.62467
+          ],
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows"
+        },
+        {
+          "a": [
+            1.00650191,
+            -0.01349864,
+            0.48314
+          ],
+          "b": [
+            0.00964126,
+            0.94033232,
+            5.0038
+          ],
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows"
+        },
+        {
+          "a": [
+            1.02219927,
+            -0.04768359,
+            1.82208
+          ],
+          "b": [
+            0.03215187,
+            0.79867582,
+            16.94016
+          ],
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows"
+        },
+        {
+          "a": [
+            1.05374117,
+            -0.12270627,
+            5.19721
+          ],
+          "b": [
+            0.07434234,
+            0.5235476,
+            40.35298
+          ],
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows"
+        },
+        {
+          "a": [
+            1.10824553,
+            -0.2700266,
+            12.94128
+          ],
+          "b": [
+            0.13875194,
+            0.07469787,
+            79.21305
+          ],
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows"
+        },
+        {
+          "a": [
+            1.19414297,
+            -0.54113464,
+            29.35564
+          ],
+          "b": [
+            0.22155651,
+            -0.57418579,
+            136.9397
+          ],
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows"
+        },
+        {
+          "a": [
+            1.30973968,
+            -0.97078323,
+            58.45244
+          ],
+          "b": [
+            0.30185804,
+            -1.3500546,
+            208.77282
+          ],
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows"
+        },
+        {
+          "a": [
+            1.40043604,
+            -1.35604042,
+            86.48876
+          ],
+          "b": [
+            0.34172746,
+            -1.88644281,
+            260.78353
+          ],
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows"
+        },
+        {
+          "a": [
+            1.46044683,
+            -1.63434915,
+            107.56929
+          ],
+          "b": [
+            0.35686793,
+            -2.20620282,
+            293.08454
+          ],
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows"
+        },
+        {
+          "a": [
+            1.49619544,
+            -1.80943275,
+            121.13198
+          ],
+          "b": [
+            0.36142202,
+            -2.38271954,
+            311.48688
+          ],
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows"
+        },
+        {
+          "a": [
+            1.51430027,
+            -1.9008841,
+            128.30142
+          ],
+          "b": [
+            0.36239322,
+            -2.46793908,
+            320.55559
+          ],
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows"
+        },
+        {
+          "a": [
+            1.52092203,
+            -1.93481308,
+            130.97565
+          ],
+          "b": [
+            0.3625164,
+            -2.49838157,
+            323.82875
+          ],
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows"
+        },
+        {
+          "a": [
+            1.52186531,
+            -1.93966833,
+            131.35897
+          ],
+          "b": [
+            0.36252371,
+            -2.50268771,
+            324.29325
+          ],
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows"
+        }
+      ],
+      "carries_lighting": true
+    }
+  },
+  "sequences": {
+    "vehicle.door.fl": {
+      "dir": "door_fl",
+      "frames": 16,
+      "fps": 24,
+      "mode": "to_state"
+    },
+    "vehicle.door.fr": {
+      "dir": "door_fr",
+      "frames": 16,
+      "fps": 24,
+      "mode": "to_state"
+    },
+    "vehicle.door.rl": {
+      "dir": "door_rl",
+      "frames": 16,
+      "fps": 24,
+      "mode": "to_state"
+    },
+    "vehicle.door.rr": {
+      "dir": "door_rr",
+      "frames": 16,
+      "fps": 24,
+      "mode": "to_state"
+    },
+    "vehicle.frunk": {
+      "dir": "frunk",
+      "frames": 14,
+      "fps": 24,
+      "mode": "to_state"
+    },
+    "vehicle.trunk": {
+      "dir": "trunk",
+      "frames": 14,
+      "fps": 24,
+      "mode": "to_state"
+    }
+  },
+  "overlays": {
+    "vehicle.brake": "brake_on/000.png",
+    "vehicle.running": "running_on/000.png",
+    "vehicle.headlight": "headlight_on/000.png"
+  },
+  "front_headlight": {
+    "lamps": [
+      "chrome_foglight_l",
+      "chrome_foglight_r",
+      "chrome_Lights_head_l",
+      "foglights_l",
+      "foglights_r",
+      "indicator_lights_l",
+      "indicator_lights_r",
+      "tembus_depan_ok"
+    ],
+    "mechanism": "frozen lens material copy + emission (same channel mechanism as the taillight system)"
+  },
+  "totals": {
+    "png_bytes": 6699148,
+    "assets": 7,
+    "panels": 6
+  }
+}

@@ -130,6 +130,34 @@
         "door_rr": {
           "sequence": "vehicle.door.rr",
           "bind": "door_rr"
+        },
+        "frunk": {
+          "sequence": "vehicle.frunk",
+          "bind": "frunk"
+        },
+        "trunk": {
+          "sequence": "vehicle.trunk",
+          "bind": "trunk"
+        }
+      },
+      "overlays": [
+        {
+          "asset": "vehicle.brake",
+          "bind": "brake"
+        },
+        {
+          "asset": "vehicle.headlight",
+          "bind": "headlight"
+        }
+      ],
+      "indicators": {
+        "left": {
+          "sequence": "vehicle.indicator.left",
+          "bind": "indicator_left"
+        },
+        "right": {
+          "sequence": "vehicle.indicator.right",
+          "bind": "indicator_right"
         }
       }
     },

@@ -1,0 +1,283 @@
+{
+  "baseline": "horizon_normal_drive.png",
+  "canvas": [
+    480,
+    1920
+  ],
+  "visible_threshold": 0.02,
+  "states": {
+    "all_open": {
+      "changed_pixels": 51859,
+      "changed_fraction": 0.056271,
+      "max_delta": 0.949,
+      "changed_bbox": [
+        190,
+        47,
+        1728,
+        431
+      ]
+    },
+    "door_fl_open": {
+      "changed_pixels": 17788,
+      "changed_fraction": 0.019301,
+      "max_delta": 0.949,
+      "changed_bbox": [
+        197,
+        113,
+        1216,
+        431
+      ]
+    },
+    "normal_drive": {
+      "changed_pixels": 0,
+      "changed_fraction": 0.0,
+      "max_delta": 0.0
+    },
+    "uart_lost": {
+      "changed_pixels": 20887,
+      "changed_fraction": 0.022664,
+      "max_delta": 0.9451,
+      "changed_bbox": [
+        176,
+        47,
+        1717,
+        431
+      ]
+    },
+    "vehicle_brake": {
+      "changed_pixels": 11725,
+      "changed_fraction": 0.012722,
+      "max_delta": 0.949,
+      "changed_bbox": [
+        288,
+        135,
+        1216,
+        375
+      ]
+    },
+    "vehicle_brake_hazard": {
+      "changed_pixels": 12876,
+      "changed_fraction": 0.013971,
+      "max_delta": 0.949,
+      "changed_bbox": [
+        288,
+        133,
+        1216,
+        380
+      ]
+    },
+    "vehicle_brake_left": {
+      "changed_pixels": 12428,
+      "changed_fraction": 0.013485,
+      "max_delta": 0.949,
+      "changed_bbox": [
+        288,
+        133,
+        1216,
+        378
+      ]
+    },
+    "vehicle_door_fr": {
+      "changed_pixels": 27719,
+      "changed_fraction": 0.030077,
+      "max_delta": 0.949,
+      "changed_bbox": [
+        288,
+        135,
+        1216,
+        375
+      ]
+    },
+    "vehicle_door_rl": {
+      "changed_pixels": 16413,
+      "changed_fraction": 0.017809,
+      "max_delta": 0.949,
+      "changed_bbox": [
+        288,
+        135,
+        1216,
+        375
+      ]
+    },
+    "vehicle_door_rr": {
+      "changed_pixels": 24900,
+      "changed_fraction": 0.027018,
+      "max_delta": 0.949,
+      "changed_bbox": [
+        288,
+        135,
+        1216,
+        375
+      ]
+    },
+    "vehicle_fl_rr_brake": {
+      "changed_pixels": 19156,
+      "changed_fraction": 0.020786,
+      "max_delta": 0.949,
+      "changed_bbox": [
+        197,
+        113,
+        1216,
+        431
+      ]
+    },
+    "vehicle_frunk": {
+      "changed_pixels": 26533,
+      "changed_fraction": 0.02879,
+      "max_delta": 0.949,
+      "changed_bbox": [
+        288,
+        72,
+        1216,
+        375
+      ]
+    },
+    "vehicle_hazard": {
+      "changed_pixels": 12446,
+      "changed_fraction": 0.013505,
+      "max_delta": 0.949,
+      "changed_bbox": [
+        288,
+        133,
+        1216,
+        378
+      ]
+    },
+    "vehicle_headlight": {
+      "changed_pixels": 12070,
+      "changed_fraction": 0.013097,
+      "max_delta": 0.949,
+      "changed_bbox": [
+        288,
+        135,
+        1216,
+        375
+      ]
+    },
+    "vehicle_left": {
+      "changed_pixels": 11708,
+      "changed_fraction": 0.012704,
+      "max_delta": 0.949,
+      "changed_bbox": [
+        288,
+        135,
+        1216,
+        375
+      ]
+    },
+    "vehicle_right": {
+      "changed_pixels": 11729,
+      "changed_fraction": 0.012727,
+      "max_delta": 0.949,
+      "changed_bbox": [
+        288,
+        135,
+        1216,
+        375
+      ]
+    },
+    "vehicle_stale_doors": {
+      "changed_pixels": 8936,
+      "changed_fraction": 0.009696,
+      "max_delta": 0.949,
+      "changed_bbox": [
+        176,
+        47,
+        566,
+        347
+      ]
+    },
+    "vehicle_trunk_brake": {
+      "changed_pixels": 14512,
+      "changed_fraction": 0.015747,
+      "max_delta": 0.949,
+      "changed_bbox": [
+        288,
+        133,
+        1216,
+        378
+      ]
+    }
+  },
+  "verdicts": {
+    "baseline_is_its_own_baseline": {
+      "pass": true,
+      "detail": "the neutral state must not differ from itself"
+    },
+    "every_lighting_state_reaches_the_screen": {
+      "pass": true,
+      "detail": {
+        "vehicle_brake": 11725,
+        "vehicle_left": 11708,
+        "vehicle_right": 11729,
+        "vehicle_hazard": 12446,
+        "vehicle_headlight": 12070
+      }
+    },
+    "every_moving_panel_reaches_the_screen": {
+      "pass": true,
+      "detail": {
+        "door_fl_open": 17788,
+        "vehicle_door_fr": 27719,
+        "vehicle_door_rl": 16413,
+        "vehicle_door_rr": 24900,
+        "vehicle_frunk": 26533,
+        "vehicle_trunk_brake": 14512
+      }
+    },
+    "composites_differ_from_their_parts": {
+      "pass": true,
+      "brake": {
+        "changed_pixels": 11725,
+        "changed_fraction": 0.012722,
+        "max_delta": 0.949,
+        "changed_bbox": [
+          288,
+          135,
+          1216,
+          375
+        ]
+      },
+      "brake_left": {
+        "changed_pixels": 12428,
+        "changed_fraction": 0.013485,
+        "max_delta": 0.949,
+        "changed_bbox": [
+          288,
+          133,
+          1216,
+          378
+        ]
+      },
+      "detail": "brake+left changes at least half as much as brake alone and is not identical to it"
+    },
+    "unknown_states_are_not_drawn_as_confident": {
+      "pass": true,
+      "detail": {
+        "vehicle_stale_doors": {
+          "changed_pixels": 8936,
+          "changed_fraction": 0.009696,
+          "max_delta": 0.949,
+          "changed_bbox": [
+            176,
+            47,
+            566,
+            347
+          ]
+        },
+        "uart_lost": {
+          "changed_pixels": 20887,
+          "changed_fraction": 0.022664,
+          "max_delta": 0.9451,
+          "changed_bbox": [
+            176,
+            47,
+            1717,
+            431
+          ]
+        }
+      }
+    }
+  },
+  "pass": true
+}

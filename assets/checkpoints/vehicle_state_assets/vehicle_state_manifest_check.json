@@ -1,0 +1,79 @@
+{
+  "manifest": "assets/manifest.json",
+  "canvas": [
+    356,
+    236
+  ],
+  "source": {
+    "selected": "RENDERED_MODEL3",
+    "mode": "auto",
+    "rendered_available": true,
+    "placeholder_available": true
+  },
+  "missing": [],
+  "canvas_mismatch": [],
+  "horizon": {
+    "horizon_redesign_a.scene": {
+      "asset_ids": [
+        "vehicle.base",
+        "vehicle.brake",
+        "vehicle.headlight"
+      ],
+      "sequences": [],
+      "unresolved_assets": [],
+      "unresolved_sequences": [],
+      "pass": true
+    },
+    "horizon_redesign_b.scene": {
+      "asset_ids": [
+        "vehicle.base",
+        "vehicle.brake",
+        "vehicle.headlight"
+      ],
+      "sequences": [],
+      "unresolved_assets": [],
+      "unresolved_sequences": [],
+      "pass": true
+    },
+    "horizon_redesign_c.scene": {
+      "asset_ids": [
+        "vehicle.base",
+        "vehicle.brake",
+        "vehicle.headlight"
+      ],
+      "sequences": [],
+      "unresolved_assets": [],
+      "unresolved_sequences": [],
+      "pass": true
+    }
+  },
+  "composed_path": {
+    "simultaneously_decoded_assets": 5,
+    "decoded_rgba_bytes_per_asset": 336064,
+    "peak_decoded_rgba_bytes": 1680320,
+    "compositing_operations_per_frame": 5,
+    "motion_policy": "at most one moving layer sequence is decoded at a time; terminal states keep one frame resident",
+    "decode_ms_per_asset_t113_estimated": 6.9,
+    "frame_budget_share_30fps": 1.035,
+    "frame_budget_share_60fps": 2.07,
+    "labels": [
+      "mac_measured: canvas and file sizes",
+      "t113_estimated: decode ms from the capability audit",
+      "unknown_until_device_test: achieved fps, variable-frame support, simultaneous decode cost"
+    ]
+  },
+  "assets_checked": 14,
+  "sequence_frames": {
+    "vehicle.door.fl": 16,
+    "vehicle.door.fr": 16,
+    "vehicle.door.rl": 16,
+    "vehicle.door.rr": 16,
+    "vehicle.frunk": 14,
+    "vehicle.hazard": 12,
+    "vehicle.indicator.left": 12,
+    "vehicle.indicator.right": 12,
+    "vehicle.trunk": 14
+  },
+  "production_mode_ok": true,
+  "pass": true
+}

@@ -77,7 +77,8 @@
   },
   "overlays": {
     "vehicle.brake": "brake_on/000.png",
-    "vehicle.headlight": "headlight_on/000.png"
+    "vehicle.headlight": "headlight_on/000.png",
+    "vehicle.running": "running_on/000.png"
   },
   "notes": [
     "Paths are repo-relative; on device they resolve under the deployed asset root.",
