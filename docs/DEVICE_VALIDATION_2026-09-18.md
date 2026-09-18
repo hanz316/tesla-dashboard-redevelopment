@@ -1,0 +1,99 @@
+# T113 device validation - 2026-09-18
+
+First hardware session against the real cluster, while the car was being
+driven. Everything below is measured on the device; the raw captures live in
+the gitignored `captures/` directory and are listed with each result.
+
+## Connection and device
+
+| item | value |
+|---|---|
+| link | ADB over Wi-Fi, `10.144.92.196:5555` |
+| device | `Zkswe_T113_SPINOR`, FlyThings **V2.1** |
+| panel scanout | **480x1920**, single layer, **60.2 Hz**, backlight 255 |
+| framebuffer | `/dev/fb0` = 480x3840 (two pages, 32bpp), logical 1920x480, **rotate 270** |
+| memory | MemTotal 249,964 kB; MemFree 154,964 kB; MemAvailable 180,816 kB |
+| Wi-Fi throughput | ~0.1 MB/s pulling 7 MB (69 s) - plan deploy times accordingly |
+
+## Live vehicle data - decoded, not inferred
+
+The stock UI was stopped (`setprop ctl.stop zkswe`) so that /dev/ttyS5 was
+unclaimed; nothing competed with a running dashboard for the stream.
+
+`captures/uart-live-20260918.bin` - 22,378 bytes in 60 s = **373 B/s**
+(about 9 % of 38400 8N1, consistent with ~40 short frames/s):
+
+* **2,637 frames, 0 checksum errors** - the frame format and checksum rule in
+  `docs/protocol-table.md` are confirmed against a real car.
+* `0x04` speed: **min 23, max 62, 40 distinct values in 60 s** - live and
+  tracking the drive. Units read as km/h.
+* `0x04` range: 84-85 km.
+* `0x04` SOC: **stuck at 97 % for the whole capture** while range said 84 km -
+  the documented known-bad SOC, confirmed on live data.
+* `0x12` tire pressures: 2.825 / 2.85 / 2.925 / 2.75 bar, stable
+  (wheel order still NEEDS REAL CAR TEST).
+* `0x01` doors/frunk/trunk bits: 0 (all closed) - consistent with driving.
+* `0x07` temperature primary 21-22 C; secondary -23..68 C, so the LIKELY
+  mapping for the secondary is **not credible** and should not be shown.
+
+**Discrepancy found:** `0x01` gear nibble was **3** for the whole capture while
+the car was being driven in Drive, where the protocol table records
+`0 = P, 4 = D`. That field's mapping is wrong or incomplete and needs a
+controlled Park/Drive shift to re-measure. Until then it must not drive gear
+display.
+
+## Our own build on the device
+
+`build-t113/libzkgui.so` (67,744 B, ELF 32-bit ARM EABI5) deployed to
+`/tmp/tesla-dashboard-mvp/lib/` with `deploy/temporary-adb/EasyUI.cfg` in
+`/tmp`, then `setprop ctl.restart zkswe`:
+
+* the app runs and loads **our** library (verified in `/proc/<pid>/maps`);
+* it holds `/dev/ttyS5` with flags **`lr-x`** - read-only, exactly as the
+  safety rule requires;
+* **RSS 3,696 kB, 9 threads**, VSIZE 27.9 MB;
+* **CPU ~4.4 % of one core** (utime+stime delta over 35 s); the stock UI
+  measured ~19 % / 7,960 kB on the same device for comparison;
+* its own `/tmp/uart_record` channel produced `captures/uart-ourown-20260918.bin`
+  (11,186 bytes / 30 s) which decodes to **1,302 frames, 0 rejections**
+  (speed 117, range 80, tires unchanged) - our read path works end to end;
+* the framebuffer shows our dark UI: `captures/device-ours-20260918.png`
+  (11,259 distinct colours) against `captures/device-stock-20260918.png`,
+  mean pixel difference 228.
+
+**Defect found while running:** our app logs missing resources in the stock
+`/res` tree - `back_gears_remind.png`, `forward_gears_remind.png`,
+`right_speed_max.png` - so those HUD elements render as gaps. Either the
+assets must ship with the app or the UI needs a fallback.
+
+## Toolchain reality
+
+`toolchains/toolchain-sunxi-musl/toolchain/bin/arm-openwrt-linux-muslgnueabi-g++`
+is a **Linux x86-64** binary and cannot execute on macOS - which is why
+`scripts/build_t113.sh` runs inside Docker. Docker/podman/colima are not
+installed on this Mac, so the library deployed in this session is the existing
+prebuilt ARM build. Rebuilding current sources on this machine needs Docker (or
+colima) first; no amount of local cmake/firmware work substitutes for it.
+
+## Device state and how to revert
+
+The add-on cluster is currently running **our** library from /tmp. To go back to
+the stock UI:
+
+```bash
+adb -s 10.144.92.196:5555 shell 'rm -f /tmp/EasyUI.cfg; setprop ctl.restart zkswe'
+```
+
+Nothing outside `/tmp` was written: no `/res`, no MTD/flash, no firmware, and
+no vehicle or MCU command was ever sent (the project's read-only rule).
+
+## Still open on hardware
+
+* `ZKImageAnim` capability probe (variable frame size, arbitrary x/y, delta
+  sequence, fixed-tight) - needs our current sources on the device, i.e. a
+  Docker build.
+* Device frame rate of our renderer and its decode timing - needs
+  instrumentation inside the app rather than inference from CPU share.
+* The `0x01` gear mapping and the wheel order for `0x12`.
+* Battery/charging fields and the `0x0D` 20 Hz one-byte stream, still
+  unexplained.
