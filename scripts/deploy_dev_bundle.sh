@@ -30,25 +30,10 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-adb_bin="${ADB_BIN:-$HOME/Library/Android/sdk/platform-tools/adb}"
-if [[ ! -x "$adb_bin" ]]; then
-  adb_bin="$(command -v adb || true)"
-fi
-[[ -n "$adb_bin" ]] || { echo "adb not found (set ADB_BIN)" >&2; exit 1; }
-
-# ---- target selection: explicit, or exactly one connected device ----------
-if [[ -z "$serial" ]]; then
-  mapfile -t targets < <("$adb_bin" devices | awk 'NR>1 && $2=="device" {print $1}')
-  case "${#targets[@]}" in
-    0) echo "No ADB device connected. Connect the instrument, then pass --serial." >&2; exit 1 ;;
-    1) serial="${targets[0]}" ;;
-    *) echo "Multiple ADB devices; pick one with --serial:" >&2
-       printf '  %s\n' "${targets[@]}" >&2
-       exit 1 ;;
-  esac
-fi
-echo "[deploy] target $serial"
-
+# ---- local preconditions first -------------------------------------------
+# The bundle and its integrity are checked before anything device-related, so
+# the first error a user sees is the actionable one ("build and package first")
+# rather than a missing adb on a machine that never had a bundle anyway.
 [[ -f "$bundle/BUILD_INFO.json" ]] || {
   echo "No bundle at $bundle. Run scripts/package_dev_bundle.sh first." >&2; exit 1; }
 
@@ -75,10 +60,31 @@ echo "[deploy] ARTIFACT HASH $actual_hash"
 echo "[deploy] BUILD MODE    $mode"
 echo "[deploy] ROLLBACK      rm -f /tmp/EasyUI.cfg && setprop ctl.restart zkswe"
 
+adb_bin="${ADB_BIN:-$HOME/Library/Android/sdk/platform-tools/adb}"
+if [[ ! -x "$adb_bin" ]]; then
+  adb_bin="$(command -v adb || true)"
+fi
+
+# ---- target selection: explicit, or exactly one connected device ----------
+if [[ -z "$serial" ]]; then
+  [[ -n "$adb_bin" ]] || { echo "adb not found (set ADB_BIN or pass --serial)" >&2; exit 1; }
+  mapfile -t targets < <("$adb_bin" devices | awk 'NR>1 && $2=="device" {print $1}')
+  case "${#targets[@]}" in
+    0) echo "No ADB device connected. Connect the instrument, then pass --serial." >&2; exit 1 ;;
+    1) serial="${targets[0]}" ;;
+    *) echo "Multiple ADB devices; pick one with --serial:" >&2
+       printf '  %s\n' "${targets[@]}" >&2
+       exit 1 ;;
+  esac
+fi
+echo "[deploy] target $serial"
+
 if [[ "$dry_run" == "yes" ]]; then
   echo "[deploy] dry run: nothing pushed"
   exit 0
 fi
+
+[[ -n "$adb_bin" ]] || { echo "adb not found (set ADB_BIN)" >&2; exit 1; }
 
 device_model="$("$adb_bin" -s "$serial" shell 'getprop ro.product.model' | tr -d '\r')"
 case "$device_model" in
