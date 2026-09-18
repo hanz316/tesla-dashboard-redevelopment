@@ -21,7 +21,7 @@ Checksum  1 byte  ~(Command + Length + sum(Payload)) & 0xFF
 
 | CMD | 字段 | 解码 | 状态 |
 |---:|---|---|---|
-| `0x01` | gear | `(payload[4] >> 4)`: `0=P,4=D` 实车确认（Park→Drive） | CONFIRMED |
+| `0x01` | gear | `(payload[4] >> 4)`: `0=P,4=D` | **REJECTED_MAPPING** — 2026-09-18 live capture: across P/R/N/D `0x01` did not change; the gear correlates with `0x02` byte 3 instead (P=0x05, N=0x02, D=0x09, R=0xff, single observation each → LIKELY). See `docs/DEVICE_VALIDATION_2026-09-18.md`. |
 | `0x01` | door FL | `payload[3] bit 0`（实车关门确认） | CONFIRMED |
 | `0x01` | door FR | `payload[3] bit 2` | LIKELY / NEEDS REAL CAR TEST |
 | `0x01` | door RL | `payload[3] bit 1` | LIKELY / NEEDS REAL CAR TEST |

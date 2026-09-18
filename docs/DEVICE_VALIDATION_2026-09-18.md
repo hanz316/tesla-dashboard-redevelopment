@@ -89,6 +89,32 @@ no vehicle or MCU command was ever sent (the project's read-only rule).
 
 ## Still open on hardware
 
+## Controlled-action captures (partial, then stopped by the owner)
+
+A short controlled-action session was run: gear P / R / N / D, then a door
+block. The owner then asked to stop re-deriving protocol fields that the stock
+cluster already reads correctly, so the campaign was stopped and the stock UI
+restored. What the captures still prove, at no further cost:
+
+**Gear lives in CMD `0x02` byte 3, not in `0x01`.**
+
+| gear | `0x02` byte 3 |
+|---|---|
+| P | `0x05` |
+| N | `0x02` |
+| D | `0x09` |
+| R | `0xff` (needs a repeat capture; may be a shift transient) |
+
+Across those same four states `0x01` did not change a single bit, so
+`docs/protocol-table.md`'s "`0x01` gear nibble, 0=P / 4=D" is contradicted by
+live evidence and is now marked REJECTED_MAPPING there. The `0x02` correlation
+is a single observation per gear (no repeat), so it is recorded as LIKELY, not
+CONFIRMED_LIVE, and nothing in the runtime should depend on it yet.
+
+The door block did not stay controlled - the captures show `0x02` byte 3 moving
+between gear values instead of door bits - so no door/frunk/trunk bit is
+claimed from this session.
+
 * `ZKImageAnim` capability probe (variable frame size, arbitrary x/y, delta
   sequence, fixed-tight) - needs our current sources on the device, i.e. a
   Docker build.
