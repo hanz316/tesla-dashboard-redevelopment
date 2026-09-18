@@ -96,20 +96,35 @@ block. The owner then asked to stop re-deriving protocol fields that the stock
 cluster already reads correctly, so the campaign was stopped and the stock UI
 restored. What the captures still prove, at no further cost:
 
-**Gear lives in CMD `0x02` byte 3, not in `0x01`.**
+**Gear is NOT in `0x01`, and `0x02` is only a partial candidate.**
 
-| gear | `0x02` byte 3 |
-|---|---|
-| P | `0x05` |
-| N | `0x02` |
-| D | `0x09` |
-| R | `0xff` (needs a repeat capture; may be a shift transient) |
+| gear | `0x02` payload (dominant values) | byte 3 | byte 4 |
+|---|---|---|---|
+| P | `0000000500` / `000000f9ff` | 05 / f9 | 00 / ff |
+| N | `0000000200` / `0000000400` | 02 / 04 | 00 |
+| D | `0000000900` / `0000000a00` | 09 / 0a | 00 |
+| R (while shifting) | `000000ffff` / `000000faff` | ff / fa | **ff** |
+| R (parked, 409 frames, 0 checksum errors) | `000000e7ff` only | **e7** | **ff** |
 
-Across those same four states `0x01` did not change a single bit, so
-`docs/protocol-table.md`'s "`0x01` gear nibble, 0=P / 4=D" is contradicted by
-live evidence and is now marked REJECTED_MAPPING there. The `0x02` correlation
-is a single observation per gear (no repeat), so it is recorded as LIKELY, not
-CONFIRMED_LIVE, and nothing in the runtime should depend on it yet.
+Findings, stated at the confidence the evidence supports:
+
+* **byte 4 = `0xff` only ever appeared in R** (both R captures), while P, N and
+  D were `0x00`. That is the single feature that repeated on R.
+* **byte 3 is not a clean gear enum**: R gave `0xff` while the car was being
+  shifted and `0xe7` when it sat still in R for ten seconds (one distinct
+  payload, 33 frames). P/N/D each showed two adjacent values too (`05`/`f9`,
+  `02`/`04`, `09`/`0a`).
+* so the `0x02` mapping stays **LIKELY and INCOMPLETE**. It is not used for
+  production gear.
+
+**Correction to an earlier statement in this document:** "across those same four
+states `0x01` did not change a single bit" was wrong. All four shifting windows
+happened to capture the same `0x01` payload (`810000003c3c001064`), but the
+parked-in-R capture shows a completely different one
+(`010300001c3d001020`). `0x01` therefore *does* change with vehicle state; its
+field layout is simply not decoded, and it must not be read as a gear. The
+`docs/protocol-table.md` entry is updated to say that rather than to claim the
+command is gear-free.
 
 The door block did not stay controlled - the captures show `0x02` byte 3 moving
 between gear values instead of door bits - so no door/frunk/trunk bit is
