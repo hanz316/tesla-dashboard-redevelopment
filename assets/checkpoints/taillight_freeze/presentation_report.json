@@ -1,0 +1,1301 @@
+{
+  "source_renders": {
+    "OFF": "assets/checkpoints/taillight_freeze/state_OFF.png",
+    "BRAKE": "assets/checkpoints/taillight_freeze/state_BRAKE.png",
+    "LEFT_INDICATOR": "assets/checkpoints/taillight_freeze/state_LEFT_INDICATOR.png",
+    "RIGHT_INDICATOR": "assets/checkpoints/taillight_freeze/state_RIGHT_INDICATOR.png",
+    "HAZARD": "assets/checkpoints/taillight_freeze/state_HAZARD.png",
+    "HEADLIGHT": "assets/checkpoints/taillight_freeze/state_HEADLIGHT.png",
+    "BRAKE_LEFT": "assets/checkpoints/taillight_freeze/state_BRAKE_LEFT.png",
+    "BRAKE_RIGHT": "assets/checkpoints/taillight_freeze/state_BRAKE_RIGHT.png",
+    "BRAKE_HAZARD": "assets/checkpoints/taillight_freeze/state_BRAKE_HAZARD.png",
+    "HEADLIGHT_LEFT": "assets/checkpoints/taillight_freeze/state_HEADLIGHT_LEFT.png",
+    "HEADLIGHT_RIGHT": "assets/checkpoints/taillight_freeze/state_HEADLIGHT_RIGHT.png"
+  },
+  "lamp_bbox": [
+    640,
+    214,
+    1001,
+    327
+  ],
+  "render_manifest_digest": "96d842e22eb2c345",
+  "states": [
+    "OFF",
+    "BRAKE",
+    "LEFT_INDICATOR",
+    "RIGHT_INDICATOR",
+    "HAZARD",
+    "HEADLIGHT"
+  ],
+  "per_state": [
+    {
+      "state": "OFF",
+      "px_600": "assets/checkpoints/taillight_freeze/state_off_600px.png",
+      "horizon": "assets/checkpoints/taillight_freeze/horizon_state_off.png",
+      "horizon_1to1": "assets/checkpoints/taillight_freeze/state_off_horizon1to1.png",
+      "measure_600": {
+        "pixels": 17242,
+        "red": 0.62503,
+        "amber": 0.6145,
+        "region_xy": [
+          411,
+          277,
+          644,
+          351
+        ],
+        "image": "state_off_600px.png",
+        "lit_fraction": 0.0,
+        "amber_lit_fraction": 0.0,
+        "mean_delta_x": 0.0,
+        "p95_delta": 0.0,
+        "visible_delta_threshold": 0.05
+      },
+      "measure_horizon": {
+        "pixels": 22950,
+        "red": 0.62559,
+        "amber": 0.61505,
+        "region_xy": [
+          521,
+          253,
+          791,
+          338
+        ],
+        "image": "state_off_horizon1to1.png",
+        "lit_fraction": 0.0,
+        "amber_lit_fraction": 0.0,
+        "mean_delta_x": 0.0,
+        "p95_delta": 0.0,
+        "visible_delta_threshold": 0.05
+      },
+      "lamp_measures": {
+        "600px": {
+          "rear_lights": {
+            "pixels": 17242,
+            "red": 0.62503,
+            "amber": 0.6145,
+            "region_xy": [
+              411,
+              277,
+              644,
+              351
+            ],
+            "image": "state_off_600px.png",
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "mean_delta_x": 0.0,
+            "p95_delta": 0.0,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 661.5
+          },
+          "rear_lightsl": {
+            "pixels": 560,
+            "red": 0.43207,
+            "amber": 0.34213,
+            "region_xy": [
+              451,
+              326,
+              491,
+              340
+            ],
+            "image": "state_off_600px.png",
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "mean_delta_x": 0.0,
+            "p95_delta": 0.0,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 150.6
+          },
+          "rear_lightsr": {
+            "pixels": 588,
+            "red": 0.54198,
+            "amber": 0.49402,
+            "region_xy": [
+              607,
+              284,
+              628,
+              312
+            ],
+            "image": "state_off_600px.png",
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "mean_delta_x": 0.0,
+            "p95_delta": 0.0,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 97.8
+          },
+          "light_breake": {
+            "pixels": 10192,
+            "red": 0.63461,
+            "amber": 0.62744,
+            "region_xy": [
+              432,
+              288,
+              640,
+              337
+            ],
+            "image": "state_off_600px.png",
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "mean_delta_x": 0.0,
+            "p95_delta": 0.0,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 38.4
+          }
+        },
+        "horizon": {
+          "rear_lights": {
+            "pixels": 22950,
+            "red": 0.62559,
+            "amber": 0.61505,
+            "region_xy": [
+              521,
+              253,
+              791,
+              338
+            ],
+            "image": "state_off_horizon1to1.png",
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "mean_delta_x": 0.0,
+            "p95_delta": 0.0,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 900.4
+          },
+          "rear_lightsl": {
+            "pixels": 705,
+            "red": 0.43127,
+            "amber": 0.34076,
+            "region_xy": [
+              567,
+              310,
+              614,
+              325
+            ],
+            "image": "state_off_horizon1to1.png",
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "mean_delta_x": 0.0,
+            "p95_delta": 0.0,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 205.0
+          },
+          "rear_lightsr": {
+            "pixels": 775,
+            "red": 0.54343,
+            "amber": 0.49638,
+            "region_xy": [
+              748,
+              262,
+              773,
+              293
+            ],
+            "image": "state_off_horizon1to1.png",
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "mean_delta_x": 0.0,
+            "p95_delta": 0.0,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 133.1
+          },
+          "light_breake": {
+            "pixels": 13496,
+            "red": 0.63571,
+            "amber": 0.62877,
+            "region_xy": [
+              545,
+              266,
+              786,
+              322
+            ],
+            "image": "state_off_horizon1to1.png",
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "mean_delta_x": 0.0,
+            "p95_delta": 0.0,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 52.2
+          }
+        }
+      }
+    },
+    {
+      "state": "BRAKE",
+      "px_600": "assets/checkpoints/taillight_freeze/state_brake_600px.png",
+      "horizon": "assets/checkpoints/taillight_freeze/horizon_state_brake.png",
+      "horizon_1to1": "assets/checkpoints/taillight_freeze/state_brake_horizon1to1.png",
+      "measure_600": {
+        "pixels": 17242,
+        "red": 0.63897,
+        "amber": 0.62298,
+        "region_xy": [
+          411,
+          277,
+          644,
+          351
+        ],
+        "image": "state_brake_600px.png",
+        "lit_fraction": 0.05115,
+        "amber_lit_fraction": 0.04628,
+        "mean_delta_x": 0.013939,
+        "p95_delta": 0.06255,
+        "visible_delta_threshold": 0.05
+      },
+      "measure_horizon": {
+        "pixels": 22950,
+        "red": 0.6391,
+        "amber": 0.62328,
+        "region_xy": [
+          521,
+          253,
+          791,
+          338
+        ],
+        "image": "state_brake_horizon1to1.png",
+        "lit_fraction": 0.04824,
+        "amber_lit_fraction": 0.04449,
+        "mean_delta_x": 0.013514,
+        "p95_delta": 0.03137,
+        "visible_delta_threshold": 0.05
+      },
+      "lamp_measures": {
+        "600px": {
+          "rear_lights": {
+            "pixels": 17242,
+            "red": 0.63897,
+            "amber": 0.62298,
+            "region_xy": [
+              411,
+              277,
+              644,
+              351
+            ],
+            "image": "state_brake_600px.png",
+            "lit_fraction": 0.05115,
+            "amber_lit_fraction": 0.04628,
+            "mean_delta_x": 0.013939,
+            "p95_delta": 0.06255,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 661.5
+          },
+          "rear_lightsl": {
+            "pixels": 560,
+            "red": 0.43224,
+            "amber": 0.34212,
+            "region_xy": [
+              451,
+              326,
+              491,
+              340
+            ],
+            "image": "state_brake_600px.png",
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "mean_delta_x": 0.000175,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 150.6
+          },
+          "rear_lightsr": {
+            "pixels": 588,
+            "red": 0.54205,
+            "amber": 0.49399,
+            "region_xy": [
+              607,
+              284,
+              628,
+              312
+            ],
+            "image": "state_brake_600px.png",
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "mean_delta_x": 7.3e-05,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 97.8
+          },
+          "light_breake": {
+            "pixels": 10192,
+            "red": 0.63971,
+            "amber": 0.63051,
+            "region_xy": [
+              432,
+              288,
+              640,
+              337
+            ],
+            "image": "state_brake_600px.png",
+            "lit_fraction": 0.02159,
+            "amber_lit_fraction": 0.01864,
+            "mean_delta_x": 0.005105,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 38.4
+          }
+        },
+        "horizon": {
+          "rear_lights": {
+            "pixels": 22950,
+            "red": 0.6391,
+            "amber": 0.62328,
+            "region_xy": [
+              521,
+              253,
+              791,
+              338
+            ],
+            "image": "state_brake_horizon1to1.png",
+            "lit_fraction": 0.04824,
+            "amber_lit_fraction": 0.04449,
+            "mean_delta_x": 0.013514,
+            "p95_delta": 0.03137,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 900.4
+          },
+          "rear_lightsl": {
+            "pixels": 705,
+            "red": 0.43166,
+            "amber": 0.34091,
+            "region_xy": [
+              567,
+              310,
+              614,
+              325
+            ],
+            "image": "state_brake_horizon1to1.png",
+            "lit_fraction": 0.00284,
+            "amber_lit_fraction": 0.00284,
+            "mean_delta_x": 0.000389,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 205.0
+          },
+          "rear_lightsr": {
+            "pixels": 775,
+            "red": 0.54353,
+            "amber": 0.49641,
+            "region_xy": [
+              748,
+              262,
+              773,
+              293
+            ],
+            "image": "state_brake_horizon1to1.png",
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "mean_delta_x": 9.6e-05,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 133.1
+          },
+          "light_breake": {
+            "pixels": 13496,
+            "red": 0.64053,
+            "amber": 0.63167,
+            "region_xy": [
+              545,
+              266,
+              786,
+              322
+            ],
+            "image": "state_brake_horizon1to1.png",
+            "lit_fraction": 0.01956,
+            "amber_lit_fraction": 0.01712,
+            "mean_delta_x": 0.004817,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 52.2
+          }
+        }
+      }
+    },
+    {
+      "state": "LEFT_INDICATOR",
+      "px_600": "assets/checkpoints/taillight_freeze/state_left_indicator_600px.png",
+      "horizon": "assets/checkpoints/taillight_freeze/horizon_state_left_indicator.png",
+      "horizon_1to1": "assets/checkpoints/taillight_freeze/state_left_indicator_horizon1to1.png",
+      "measure_600": {
+        "pixels": 17242,
+        "red": 0.62843,
+        "amber": 0.61698,
+        "region_xy": [
+          411,
+          277,
+          644,
+          351
+        ],
+        "image": "state_left_indicator_600px.png",
+        "lit_fraction": 0.01195,
+        "amber_lit_fraction": 0.01137,
+        "mean_delta_x": 0.003402,
+        "p95_delta": 0.00392,
+        "visible_delta_threshold": 0.05
+      },
+      "measure_horizon": {
+        "pixels": 22950,
+        "red": 0.62906,
+        "amber": 0.61758,
+        "region_xy": [
+          521,
+          253,
+          791,
+          338
+        ],
+        "image": "state_left_indicator_horizon1to1.png",
+        "lit_fraction": 0.01163,
+        "amber_lit_fraction": 0.01098,
+        "mean_delta_x": 0.003469,
+        "p95_delta": 0.00392,
+        "visible_delta_threshold": 0.05
+      },
+      "lamp_measures": {
+        "600px": {
+          "rear_lights": {
+            "pixels": 17242,
+            "red": 0.62843,
+            "amber": 0.61698,
+            "region_xy": [
+              411,
+              277,
+              644,
+              351
+            ],
+            "image": "state_left_indicator_600px.png",
+            "lit_fraction": 0.01195,
+            "amber_lit_fraction": 0.01137,
+            "mean_delta_x": 0.003402,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 661.5
+          },
+          "rear_lightsl": {
+            "pixels": 560,
+            "red": 0.52716,
+            "amber": 0.41213,
+            "region_xy": [
+              451,
+              326,
+              491,
+              340
+            ],
+            "image": "state_left_indicator_600px.png",
+            "lit_fraction": 0.30893,
+            "amber_lit_fraction": 0.29643,
+            "mean_delta_x": 0.095098,
+            "p95_delta": 0.37647,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 150.6
+          },
+          "rear_lightsr": {
+            "pixels": 588,
+            "red": 0.5421,
+            "amber": 0.49413,
+            "region_xy": [
+              607,
+              284,
+              628,
+              312
+            ],
+            "image": "state_left_indicator_600px.png",
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "mean_delta_x": 0.000127,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 97.8
+          },
+          "light_breake": {
+            "pixels": 10192,
+            "red": 0.63998,
+            "amber": 0.63137,
+            "region_xy": [
+              432,
+              288,
+              640,
+              337
+            ],
+            "image": "state_left_indicator_600px.png",
+            "lit_fraction": 0.01894,
+            "amber_lit_fraction": 0.01796,
+            "mean_delta_x": 0.005365,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 38.4
+          }
+        },
+        "horizon": {
+          "rear_lights": {
+            "pixels": 22950,
+            "red": 0.62906,
+            "amber": 0.61758,
+            "region_xy": [
+              521,
+              253,
+              791,
+              338
+            ],
+            "image": "state_left_indicator_horizon1to1.png",
+            "lit_fraction": 0.01163,
+            "amber_lit_fraction": 0.01098,
+            "mean_delta_x": 0.003469,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 900.4
+          },
+          "rear_lightsl": {
+            "pixels": 705,
+            "red": 0.52984,
+            "amber": 0.41335,
+            "region_xy": [
+              567,
+              310,
+              614,
+              325
+            ],
+            "image": "state_left_indicator_horizon1to1.png",
+            "lit_fraction": 0.31915,
+            "amber_lit_fraction": 0.30071,
+            "mean_delta_x": 0.098573,
+            "p95_delta": 0.37647,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 205.0
+          },
+          "rear_lightsr": {
+            "pixels": 775,
+            "red": 0.54353,
+            "amber": 0.49649,
+            "region_xy": [
+              748,
+              262,
+              773,
+              293
+            ],
+            "image": "state_left_indicator_horizon1to1.png",
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "mean_delta_x": 9.6e-05,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 133.1
+          },
+          "light_breake": {
+            "pixels": 13496,
+            "red": 0.6411,
+            "amber": 0.63272,
+            "region_xy": [
+              545,
+              266,
+              786,
+              322
+            ],
+            "image": "state_left_indicator_horizon1to1.png",
+            "lit_fraction": 0.01815,
+            "amber_lit_fraction": 0.01726,
+            "mean_delta_x": 0.005396,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 52.2
+          }
+        }
+      }
+    },
+    {
+      "state": "RIGHT_INDICATOR",
+      "px_600": "assets/checkpoints/taillight_freeze/state_right_indicator_600px.png",
+      "horizon": "assets/checkpoints/taillight_freeze/horizon_state_right_indicator.png",
+      "horizon_1to1": "assets/checkpoints/taillight_freeze/state_right_indicator_horizon1to1.png",
+      "measure_600": {
+        "pixels": 17242,
+        "red": 0.6268,
+        "amber": 0.61574,
+        "region_xy": [
+          411,
+          277,
+          644,
+          351
+        ],
+        "image": "state_right_indicator_600px.png",
+        "lit_fraction": 0.00783,
+        "amber_lit_fraction": 0.00737,
+        "mean_delta_x": 0.001772,
+        "p95_delta": 0.00392,
+        "visible_delta_threshold": 0.05
+      },
+      "measure_horizon": {
+        "pixels": 22950,
+        "red": 0.62739,
+        "amber": 0.61631,
+        "region_xy": [
+          521,
+          253,
+          791,
+          338
+        ],
+        "image": "state_right_indicator_horizon1to1.png",
+        "lit_fraction": 0.00797,
+        "amber_lit_fraction": 0.00732,
+        "mean_delta_x": 0.0018,
+        "p95_delta": 0.00392,
+        "visible_delta_threshold": 0.05
+      },
+      "lamp_measures": {
+        "600px": {
+          "rear_lights": {
+            "pixels": 17242,
+            "red": 0.6268,
+            "amber": 0.61574,
+            "region_xy": [
+              411,
+              277,
+              644,
+              351
+            ],
+            "image": "state_right_indicator_600px.png",
+            "lit_fraction": 0.00783,
+            "amber_lit_fraction": 0.00737,
+            "mean_delta_x": 0.001772,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 661.5
+          },
+          "rear_lightsl": {
+            "pixels": 560,
+            "red": 0.43214,
+            "amber": 0.34216,
+            "region_xy": [
+              451,
+              326,
+              491,
+              340
+            ],
+            "image": "state_right_indicator_600px.png",
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "mean_delta_x": 7.7e-05,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 150.6
+          },
+          "rear_lightsr": {
+            "pixels": 588,
+            "red": 0.59044,
+            "amber": 0.52805,
+            "region_xy": [
+              607,
+              284,
+              628,
+              312
+            ],
+            "image": "state_right_indicator_600px.png",
+            "lit_fraction": 0.21429,
+            "amber_lit_fraction": 0.20238,
+            "mean_delta_x": 0.048466,
+            "p95_delta": 0.28235,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 97.8
+          },
+          "light_breake": {
+            "pixels": 10192,
+            "red": 0.63727,
+            "amber": 0.62931,
+            "region_xy": [
+              432,
+              288,
+              640,
+              337
+            ],
+            "image": "state_right_indicator_600px.png",
+            "lit_fraction": 0.01168,
+            "amber_lit_fraction": 0.01099,
+            "mean_delta_x": 0.002661,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 38.4
+          }
+        },
+        "horizon": {
+          "rear_lights": {
+            "pixels": 22950,
+            "red": 0.62739,
+            "amber": 0.61631,
+            "region_xy": [
+              521,
+              253,
+              791,
+              338
+            ],
+            "image": "state_right_indicator_horizon1to1.png",
+            "lit_fraction": 0.00797,
+            "amber_lit_fraction": 0.00732,
+            "mean_delta_x": 0.0018,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 900.4
+          },
+          "rear_lightsl": {
+            "pixels": 705,
+            "red": 0.43115,
+            "amber": 0.34071,
+            "region_xy": [
+              567,
+              310,
+              614,
+              325
+            ],
+            "image": "state_right_indicator_horizon1to1.png",
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "mean_delta_x": -0.000117,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 205.0
+          },
+          "rear_lightsr": {
+            "pixels": 775,
+            "red": 0.59337,
+            "amber": 0.53145,
+            "region_xy": [
+              748,
+              262,
+              773,
+              293
+            ],
+            "image": "state_right_indicator_horizon1to1.png",
+            "lit_fraction": 0.22194,
+            "amber_lit_fraction": 0.20387,
+            "mean_delta_x": 0.049933,
+            "p95_delta": 0.28745,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 133.1
+          },
+          "light_breake": {
+            "pixels": 13496,
+            "red": 0.63836,
+            "amber": 0.63063,
+            "region_xy": [
+              545,
+              266,
+              786,
+              322
+            ],
+            "image": "state_right_indicator_horizon1to1.png",
+            "lit_fraction": 0.01171,
+            "amber_lit_fraction": 0.01074,
+            "mean_delta_x": 0.002654,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 52.2
+          }
+        }
+      }
+    },
+    {
+      "state": "HAZARD",
+      "px_600": "assets/checkpoints/taillight_freeze/state_hazard_600px.png",
+      "horizon": "assets/checkpoints/taillight_freeze/horizon_state_hazard.png",
+      "horizon_1to1": "assets/checkpoints/taillight_freeze/state_hazard_horizon1to1.png",
+      "measure_600": {
+        "pixels": 17242,
+        "red": 0.6302,
+        "amber": 0.61821,
+        "region_xy": [
+          411,
+          277,
+          644,
+          351
+        ],
+        "image": "state_hazard_600px.png",
+        "lit_fraction": 0.01972,
+        "amber_lit_fraction": 0.01873,
+        "mean_delta_x": 0.00517,
+        "p95_delta": 0.00392,
+        "visible_delta_threshold": 0.05
+      },
+      "measure_horizon": {
+        "pixels": 22950,
+        "red": 0.63084,
+        "amber": 0.61882,
+        "region_xy": [
+          521,
+          253,
+          791,
+          338
+        ],
+        "image": "state_hazard_horizon1to1.png",
+        "lit_fraction": 0.01965,
+        "amber_lit_fraction": 0.01843,
+        "mean_delta_x": 0.005252,
+        "p95_delta": 0.00392,
+        "visible_delta_threshold": 0.05
+      },
+      "lamp_measures": {
+        "600px": {
+          "rear_lights": {
+            "pixels": 17242,
+            "red": 0.6302,
+            "amber": 0.61821,
+            "region_xy": [
+              411,
+              277,
+              644,
+              351
+            ],
+            "image": "state_hazard_600px.png",
+            "lit_fraction": 0.01972,
+            "amber_lit_fraction": 0.01873,
+            "mean_delta_x": 0.00517,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 661.5
+          },
+          "rear_lightsl": {
+            "pixels": 560,
+            "red": 0.52702,
+            "amber": 0.41198,
+            "region_xy": [
+              451,
+              326,
+              491,
+              340
+            ],
+            "image": "state_hazard_600px.png",
+            "lit_fraction": 0.30893,
+            "amber_lit_fraction": 0.29643,
+            "mean_delta_x": 0.094951,
+            "p95_delta": 0.37647,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 150.6
+          },
+          "rear_lightsr": {
+            "pixels": 588,
+            "red": 0.5905,
+            "amber": 0.52801,
+            "region_xy": [
+              607,
+              284,
+              628,
+              312
+            ],
+            "image": "state_hazard_600px.png",
+            "lit_fraction": 0.21259,
+            "amber_lit_fraction": 0.20068,
+            "mean_delta_x": 0.048519,
+            "p95_delta": 0.28098,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 97.8
+          },
+          "light_breake": {
+            "pixels": 10192,
+            "red": 0.64262,
+            "amber": 0.63322,
+            "region_xy": [
+              432,
+              288,
+              640,
+              337
+            ],
+            "image": "state_hazard_600px.png",
+            "lit_fraction": 0.03051,
+            "amber_lit_fraction": 0.02894,
+            "mean_delta_x": 0.008011,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 38.4
+          }
+        },
+        "horizon": {
+          "rear_lights": {
+            "pixels": 22950,
+            "red": 0.63084,
+            "amber": 0.61882,
+            "region_xy": [
+              521,
+              253,
+              791,
+              338
+            ],
+            "image": "state_hazard_horizon1to1.png",
+            "lit_fraction": 0.01965,
+            "amber_lit_fraction": 0.01843,
+            "mean_delta_x": 0.005252,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 900.4
+          },
+          "rear_lightsl": {
+            "pixels": 705,
+            "red": 0.52963,
+            "amber": 0.41324,
+            "region_xy": [
+              567,
+              310,
+              614,
+              325
+            ],
+            "image": "state_hazard_horizon1to1.png",
+            "lit_fraction": 0.31915,
+            "amber_lit_fraction": 0.30071,
+            "mean_delta_x": 0.098362,
+            "p95_delta": 0.37647,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 205.0
+          },
+          "rear_lightsr": {
+            "pixels": 775,
+            "red": 0.59335,
+            "amber": 0.53142,
+            "region_xy": [
+              748,
+              262,
+              773,
+              293
+            ],
+            "image": "state_hazard_horizon1to1.png",
+            "lit_fraction": 0.22194,
+            "amber_lit_fraction": 0.20645,
+            "mean_delta_x": 0.049918,
+            "p95_delta": 0.28745,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 133.1
+          },
+          "light_breake": {
+            "pixels": 13496,
+            "red": 0.64374,
+            "amber": 0.63456,
+            "region_xy": [
+              545,
+              266,
+              786,
+              322
+            ],
+            "image": "state_hazard_horizon1to1.png",
+            "lit_fraction": 0.02986,
+            "amber_lit_fraction": 0.02816,
+            "mean_delta_x": 0.008033,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 52.2
+          }
+        }
+      }
+    },
+    {
+      "state": "HEADLIGHT",
+      "px_600": "assets/checkpoints/taillight_freeze/state_headlight_600px.png",
+      "horizon": "assets/checkpoints/taillight_freeze/horizon_state_headlight.png",
+      "horizon_1to1": "assets/checkpoints/taillight_freeze/state_headlight_horizon1to1.png",
+      "measure_600": {
+        "pixels": 17242,
+        "red": 0.62932,
+        "amber": 0.61684,
+        "region_xy": [
+          411,
+          277,
+          644,
+          351
+        ],
+        "image": "state_headlight_600px.png",
+        "lit_fraction": 0.03973,
+        "amber_lit_fraction": 0.02587,
+        "mean_delta_x": 0.004294,
+        "p95_delta": 0.01961,
+        "visible_delta_threshold": 0.05
+      },
+      "measure_horizon": {
+        "pixels": 22950,
+        "red": 0.62976,
+        "amber": 0.61733,
+        "region_xy": [
+          521,
+          253,
+          791,
+          338
+        ],
+        "image": "state_headlight_horizon1to1.png",
+        "lit_fraction": 0.03861,
+        "amber_lit_fraction": 0.0261,
+        "mean_delta_x": 0.004177,
+        "p95_delta": 0.01176,
+        "visible_delta_threshold": 0.05
+      },
+      "lamp_measures": {
+        "600px": {
+          "rear_lights": {
+            "pixels": 17242,
+            "red": 0.62932,
+            "amber": 0.61684,
+            "region_xy": [
+              411,
+              277,
+              644,
+              351
+            ],
+            "image": "state_headlight_600px.png",
+            "lit_fraction": 0.03973,
+            "amber_lit_fraction": 0.02587,
+            "mean_delta_x": 0.004294,
+            "p95_delta": 0.01961,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 661.5
+          },
+          "rear_lightsl": {
+            "pixels": 560,
+            "red": 0.43211,
+            "amber": 0.34209,
+            "region_xy": [
+              451,
+              326,
+              491,
+              340
+            ],
+            "image": "state_headlight_600px.png",
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "mean_delta_x": 4.9e-05,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 150.6
+          },
+          "rear_lightsr": {
+            "pixels": 588,
+            "red": 0.54202,
+            "amber": 0.49403,
+            "region_xy": [
+              607,
+              284,
+              628,
+              312
+            ],
+            "image": "state_headlight_600px.png",
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "mean_delta_x": 4e-05,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 97.8
+          },
+          "light_breake": {
+            "pixels": 10192,
+            "red": 0.63612,
+            "amber": 0.62826,
+            "region_xy": [
+              432,
+              288,
+              640,
+              337
+            ],
+            "image": "state_headlight_600px.png",
+            "lit_fraction": 0.01344,
+            "amber_lit_fraction": 0.00589,
+            "mean_delta_x": 0.001515,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 38.4
+          }
+        },
+        "horizon": {
+          "rear_lights": {
+            "pixels": 22950,
+            "red": 0.62976,
+            "amber": 0.61733,
+            "region_xy": [
+              521,
+              253,
+              791,
+              338
+            ],
+            "image": "state_headlight_horizon1to1.png",
+            "lit_fraction": 0.03861,
+            "amber_lit_fraction": 0.0261,
+            "mean_delta_x": 0.004177,
+            "p95_delta": 0.01176,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 900.4
+          },
+          "rear_lightsl": {
+            "pixels": 705,
+            "red": 0.43123,
+            "amber": 0.34069,
+            "region_xy": [
+              567,
+              310,
+              614,
+              325
+            ],
+            "image": "state_headlight_horizon1to1.png",
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "mean_delta_x": -3.3e-05,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 205.0
+          },
+          "rear_lightsr": {
+            "pixels": 775,
+            "red": 0.54355,
+            "amber": 0.49645,
+            "region_xy": [
+              748,
+              262,
+              773,
+              293
+            ],
+            "image": "state_headlight_horizon1to1.png",
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "mean_delta_x": 0.000121,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 133.1
+          },
+          "light_breake": {
+            "pixels": 13496,
+            "red": 0.63715,
+            "amber": 0.62955,
+            "region_xy": [
+              545,
+              266,
+              786,
+              322
+            ],
+            "image": "state_headlight_horizon1to1.png",
+            "lit_fraction": 0.01297,
+            "amber_lit_fraction": 0.0063,
+            "mean_delta_x": 0.001445,
+            "p95_delta": 0.00392,
+            "visible_delta_threshold": 0.05,
+            "lamp_silhouette_px": 52.2
+          }
+        }
+      }
+    }
+  ],
+  "render_alpha_bbox": [
+    78,
+    147,
+    1012,
+    683
+  ],
+  "regions": {
+    "600px": [
+      411,
+      277,
+      644,
+      351
+    ],
+    "horizon": [
+      521,
+      253,
+      791,
+      338
+    ]
+  },
+  "lamp_regions": {
+    "600px": {
+      "rear_lights": [
+        411,
+        277,
+        644,
+        351
+      ],
+      "rear_lightsl": [
+        451,
+        326,
+        491,
+        340
+      ],
+      "rear_lightsr": [
+        607,
+        284,
+        628,
+        312
+      ],
+      "light_breake": [
+        432,
+        288,
+        640,
+        337
+      ]
+    },
+    "horizon": {
+      "rear_lights": [
+        521,
+        253,
+        791,
+        338
+      ],
+      "rear_lightsl": [
+        567,
+        310,
+        614,
+        325
+      ],
+      "rear_lightsr": [
+        748,
+        262,
+        773,
+        293
+      ],
+      "light_breake": [
+        545,
+        266,
+        786,
+        322
+      ]
+    }
+  },
+  "verdicts": {
+    "600px_brake_lamp_lit": {
+      "pass": true,
+      "outer_lamp_changed_px": 881.9,
+      "outer_lamp_silhouette_px": 661.5,
+      "brake_lamp_changed_px": 220.0,
+      "brake_lamp_silhouette_px": 38.4,
+      "rule": "at least 25% of that lamp's own projected silhouette changes at this scale"
+    },
+    "600px_indicator_one_sided": {
+      "pass": true,
+      "left_lamp_in_LEFT_px": 166.0,
+      "right_lamp_in_LEFT_px": 0.0,
+      "right_lamp_in_RIGHT_px": 119.0,
+      "left_lamp_in_RIGHT_px": 0.0,
+      "rule": "each indicator changes its own inner lamp and leaves the other side quiet"
+    },
+    "600px_hazard_both_sides": {
+      "pass": true,
+      "left_lamp_changed_px": 166.0,
+      "right_lamp_changed_px": 118.0,
+      "rule": "HAZARD changes both inner lamps"
+    },
+    "600px_off_shows_nothing": {
+      "pass": true,
+      "rule": "OFF is the baseline: no lamp changes relative to itself, and the lamp region is not empty"
+    },
+    "horizon_brake_lamp_lit": {
+      "pass": true,
+      "outer_lamp_changed_px": 1107.1,
+      "outer_lamp_silhouette_px": 900.4,
+      "brake_lamp_changed_px": 264.0,
+      "brake_lamp_silhouette_px": 52.2,
+      "rule": "at least 25% of that lamp's own projected silhouette changes at this scale"
+    },
+    "horizon_indicator_one_sided": {
+      "pass": true,
+      "left_lamp_in_LEFT_px": 212.0,
+      "right_lamp_in_LEFT_px": 0.0,
+      "right_lamp_in_RIGHT_px": 158.0,
+      "left_lamp_in_RIGHT_px": 0.0,
+      "rule": "each indicator changes its own inner lamp and leaves the other side quiet"
+    },
+    "horizon_hazard_both_sides": {
+      "pass": true,
+      "left_lamp_changed_px": 212.0,
+      "right_lamp_changed_px": 160.0,
+      "rule": "HAZARD changes both inner lamps"
+    },
+    "horizon_off_shows_nothing": {
+      "pass": true,
+      "rule": "OFF is the baseline: no lamp changes relative to itself, and the lamp region is not empty"
+    }
+  },
+  "pass": true
+}

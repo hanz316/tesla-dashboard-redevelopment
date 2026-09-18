@@ -1,0 +1,3978 @@
+{
+  "stage": "taillight_freeze_v3",
+  "master": "assets/source/blender/model_a_production_master.blend",
+  "report_path": "/Users/hanssmacbookair/tesla-dashboard-redevelopment/assets/checkpoints/taillight_freeze/freeze_gate_v3.json",
+  "taillight_geometry_version": "surface-offset-cavity-lightguide-v3",
+  "ownership": {
+    "LEFT:rear_lights:0": {
+      "owner": "FIXED_BODY",
+      "evidence": {
+        "samples": 581,
+        "median_distance_to_boot_m": 0.05861,
+        "p05_m": 0.01667,
+        "min_m": 0.01303,
+        "contact_threshold_m": 0.03
+      }
+    },
+    "RIGHT:rear_lights:1": {
+      "owner": "FIXED_BODY",
+      "evidence": {
+        "samples": 581,
+        "median_distance_to_boot_m": 0.05861,
+        "p05_m": 0.01667,
+        "min_m": 0.01303,
+        "contact_threshold_m": 0.03
+      }
+    },
+    "LEFT:rear_lightsl:0": {
+      "owner": "TRUNK_MOVING",
+      "evidence": {
+        "samples": 327,
+        "median_distance_to_boot_m": 0.0179,
+        "p05_m": 0.00548,
+        "min_m": 0.00377,
+        "contact_threshold_m": 0.03
+      }
+    },
+    "RIGHT:rear_lightsr:0": {
+      "owner": "TRUNK_MOVING",
+      "evidence": {
+        "samples": 327,
+        "median_distance_to_boot_m": 0.0179,
+        "p05_m": 0.00548,
+        "min_m": 0.00377,
+        "contact_threshold_m": 0.03
+      }
+    }
+  },
+  "gates": {
+    "guide_body_collision": "PASS",
+    "guide_trunk_collision": "PASS",
+    "guide_unrelated_lamp_collision": "PASS",
+    "cavity_body_collision": "INFORMATIONAL",
+    "collision_detector_self_test": "PASS",
+    "escaped_guide_pixels": "PASS",
+    "escaped_cavity_pixels": "PASS",
+    "visible_guide_protrusion": "PASS",
+    "visible_cavity_protrusion": "PASS",
+    "trunk_ownership": "PASS",
+    "trunk_motion_0": "PASS",
+    "trunk_motion_25": "PASS",
+    "trunk_motion_50": "PASS",
+    "trunk_motion_75": "PASS",
+    "trunk_motion_100": "PASS",
+    "on_states": "PASS",
+    "state_brake_lights_both_sides": "PASS",
+    "state_left_indicator_is_one_sided": "PASS",
+    "state_right_indicator_is_one_sided": "PASS",
+    "state_hazard_drives_both_sides": "PASS",
+    "state_headlight_is_running_not_brake": "PASS",
+    "state_brake_does_not_erase_indicator": "PASS",
+    "state_brake_hazard_composes": "PASS",
+    "state_off_state_has_no_lighting_residue": "PASS",
+    "off_600px": "PASS",
+    "horizon_actual_size": "PASS",
+    "presentation_600px_brake_lamp_lit": "PASS",
+    "presentation_600px_indicator_one_sided": "PASS",
+    "presentation_600px_hazard_both_sides": "PASS",
+    "presentation_600px_off_shows_nothing": "PASS",
+    "presentation_horizon_brake_lamp_lit": "PASS",
+    "presentation_horizon_indicator_one_sided": "PASS",
+    "presentation_horizon_hazard_both_sides": "PASS",
+    "presentation_horizon_off_shows_nothing": "PASS"
+  },
+  "collision": {
+    "guide_vs_body": [],
+    "guide_vs_trunk_moving": [],
+    "guide_vs_unrelated_lamp": [],
+    "cavity_vs_body": [
+      {
+        "segment": "LEFT:rear_lights:0",
+        "cavity": "Cavity_LEFT:rear_lights:0_5.0mm",
+        "other": "back_chrome_light",
+        "pairs": 135
+      },
+      {
+        "segment": "LEFT:rear_lights:0",
+        "cavity": "Cavity_LEFT:rear_lights:0_5.0mm",
+        "other": "black_lights",
+        "pairs": 233
+      },
+      {
+        "segment": "LEFT:rear_lightsl:0",
+        "cavity": "Cavity_LEFT:rear_lightsl:0_6.0mm",
+        "other": "black_boot",
+        "pairs": 48
+      },
+      {
+        "segment": "LEFT:rear_lightsl:0",
+        "cavity": "Cavity_LEFT:rear_lightsl:0_6.0mm",
+        "other": "chrome_light",
+        "pairs": 317
+      },
+      {
+        "segment": "RIGHT:rear_lights:1",
+        "cavity": "Cavity_RIGHT:rear_lights:1_5.0mm",
+        "other": "back_chrome_light",
+        "pairs": 101
+      },
+      {
+        "segment": "RIGHT:rear_lights:1",
+        "cavity": "Cavity_RIGHT:rear_lights:1_5.0mm",
+        "other": "black_lights",
+        "pairs": 241
+      },
+      {
+        "segment": "RIGHT:rear_lightsr:0",
+        "cavity": "Cavity_RIGHT:rear_lightsr:0_6.0mm",
+        "other": "black_boot",
+        "pairs": 45
+      },
+      {
+        "segment": "RIGHT:rear_lightsr:0",
+        "cavity": "Cavity_RIGHT:rear_lightsr:0_6.0mm",
+        "other": "chrome_light",
+        "pairs": 144
+      }
+    ],
+    "tolerance_m": 0.0002,
+    "detector_self_test": {
+      "known_overlap_pairs": 12,
+      "known_separated_pairs": 0,
+      "detector_works": true
+    }
+  },
+  "screenspace": {
+    "canvas": "1100x760",
+    "anti_aliasing": "OFF (binary masks)",
+    "camera": "PRODUCTION_Camera",
+    "lamp_pixels": 2298,
+    "guide_pixels": 103,
+    "escaped_guide_pixels": 0,
+    "escaped_guide_fraction": 0.0,
+    "escaped_guide_max_distance_px": 0,
+    "escaped_guide_beyond_tolerance_px": 0,
+    "guide_tolerance_px": 1,
+    "cavity_pixels": 2207,
+    "escaped_cavity_pixels": 2,
+    "escaped_cavity_fraction": 0.00090621,
+    "escaped_cavity_max_distance_px": 1,
+    "escaped_cavity_beyond_tolerance_px": 0,
+    "cavity_tolerance_px": 1,
+    "escaped_cavity_bbox_xy": [
+      975,
+      316,
+      980,
+      320
+    ],
+    "tolerance_derivation": "AA is off, so rasterisation is one pixel per sample and no partial coverage exists. The cavity shares the lens' outer surface by construction (surface-offset cavity = original shell + inward copy), so its silhouette differs from the lens silhouette by at most one pixel along the boundary. Escaped pixels farther than one pixel from the lamp silhouette are protrusions; pixels adjacent to it are the coincident-surface boundary.",
+    "pass": true
+  },
+  "trunk": {
+    "states": [
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "open_angle_deg": 55.0,
+    "pivot": {
+      "derivation": "95th percentile of boot x (front of lid) and boot z (top of lid), axis parallel to Y",
+      "pivot": [
+        -1.55406,
+        0.00739,
+        1.17949
+      ],
+      "boot_samples": 6947
+    },
+    "moving_objects": [
+      "Cavity_LEFT:rear_lightsl:0_6.0mm",
+      "Cavity_RIGHT:rear_lightsr:0_6.0mm",
+      "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s0",
+      "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s1",
+      "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s0",
+      "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s1",
+      "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s2",
+      "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s3",
+      "boot",
+      "rear_lightsl",
+      "rear_lightsr"
+    ],
+    "fixed_objects": [
+      "Cavity_LEFT:rear_lights:0_5.0mm",
+      "Cavity_RIGHT:rear_lights:1_5.0mm",
+      "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run0_s0",
+      "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run1_s0",
+      "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s0",
+      "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s1",
+      "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run1_s0",
+      "light_breake",
+      "rear_lights",
+      "rear_lights"
+    ],
+    "ownership_classes": {
+      "LEFT:rear_lights:0": "FIXED_BODY",
+      "LEFT:rear_lightsl:0": "TRUNK_MOVING",
+      "RIGHT:rear_lights:1": "FIXED_BODY",
+      "RIGHT:rear_lightsr:0": "TRUNK_MOVING"
+    },
+    "ownership_measurements": {
+      "rear_lights": {
+        "owner": "FIXED_BODY",
+        "tie_break": null,
+        "median_to_boot_m": 0.05861,
+        "median_to_body_m": 0.04614,
+        "ratio_boot_over_body": 1.2703,
+        "boot_p05_m": 0.01667,
+        "boot_min_m": 0.01303,
+        "samples": 581,
+        "decision_rule": "TRUNK_MOVING if median distance to the boot panel is < 0.8x the distance to the body panel; FIXED_BODY if > 1.25x; otherwise AMBIGUOUS"
+      },
+      "rear_lightsl": {
+        "owner": "TRUNK_MOVING",
+        "tie_break": null,
+        "median_to_boot_m": 0.0179,
+        "median_to_body_m": 0.18847,
+        "ratio_boot_over_body": 0.095,
+        "boot_p05_m": 0.00548,
+        "boot_min_m": 0.00377,
+        "samples": 327,
+        "decision_rule": "TRUNK_MOVING if median distance to the boot panel is < 0.8x the distance to the body panel; FIXED_BODY if > 1.25x; otherwise AMBIGUOUS"
+      },
+      "rear_lightsr": {
+        "owner": "TRUNK_MOVING",
+        "tie_break": null,
+        "median_to_boot_m": 0.0179,
+        "median_to_body_m": 0.18847,
+        "ratio_boot_over_body": 0.095,
+        "boot_p05_m": 0.00548,
+        "boot_min_m": 0.00377,
+        "samples": 327,
+        "decision_rule": "TRUNK_MOVING if median distance to the boot panel is < 0.8x the distance to the body panel; FIXED_BODY if > 1.25x; otherwise AMBIGUOUS"
+      },
+      "light_breake": {
+        "owner": "FIXED_BODY",
+        "tie_break": {
+          "rule": "piece lies inside another lamp's volume, so it belongs to that lamp's assembly",
+          "parent_lamp": "rear_lights",
+          "parent_owner": "FIXED_BODY",
+          "contained_fraction": 1.0,
+          "margin_m": 0.01
+        },
+        "median_to_boot_m": 0.08126,
+        "median_to_body_m": 0.08983,
+        "ratio_boot_over_body": 0.9046,
+        "boot_p05_m": 0.07358,
+        "boot_min_m": 0.07301,
+        "samples": 302,
+        "decision_rule": "TRUNK_MOVING if median distance to the boot panel is < 0.8x the distance to the body panel; FIXED_BODY if > 1.25x; otherwise AMBIGUOUS"
+      }
+    },
+    "per_state": [
+      {
+        "fraction": 0.0,
+        "angle_deg": 0.0,
+        "rigid": {
+          "ok": true,
+          "max_matrix_delta": 0.0
+        },
+        "fixed_unmoved": {
+          "ok": true,
+          "max_matrix_delta": 0.0
+        },
+        "collisions": [],
+        "render": "assets/checkpoints/taillight_freeze/trunk_000.png"
+      },
+      {
+        "fraction": 0.25,
+        "angle_deg": 13.75,
+        "rigid": {
+          "ok": true,
+          "max_matrix_delta": 1.19e-07
+        },
+        "fixed_unmoved": {
+          "ok": true,
+          "max_matrix_delta": 0.0
+        },
+        "collisions": [],
+        "render": "assets/checkpoints/taillight_freeze/trunk_025.png"
+      },
+      {
+        "fraction": 0.5,
+        "angle_deg": 27.5,
+        "rigid": {
+          "ok": true,
+          "max_matrix_delta": 1.19e-07
+        },
+        "fixed_unmoved": {
+          "ok": true,
+          "max_matrix_delta": 0.0
+        },
+        "collisions": [],
+        "render": "assets/checkpoints/taillight_freeze/trunk_050.png"
+      },
+      {
+        "fraction": 0.75,
+        "angle_deg": 41.25,
+        "rigid": {
+          "ok": true,
+          "max_matrix_delta": 1.19e-07
+        },
+        "fixed_unmoved": {
+          "ok": true,
+          "max_matrix_delta": 0.0
+        },
+        "collisions": [],
+        "render": "assets/checkpoints/taillight_freeze/trunk_075.png"
+      },
+      {
+        "fraction": 1.0,
+        "angle_deg": 55.0,
+        "rigid": {
+          "ok": true,
+          "max_matrix_delta": 1.79e-07
+        },
+        "fixed_unmoved": {
+          "ok": true,
+          "max_matrix_delta": 0.0
+        },
+        "collisions": [],
+        "render": "assets/checkpoints/taillight_freeze/trunk_100.png"
+      }
+    ],
+    "pass": true
+  },
+  "states": {
+    "states": [
+      "OFF",
+      "BRAKE",
+      "LEFT_INDICATOR",
+      "RIGHT_INDICATOR",
+      "HAZARD",
+      "HEADLIGHT",
+      "BRAKE_LEFT",
+      "BRAKE_RIGHT",
+      "BRAKE_HAZARD",
+      "HEADLIGHT_LEFT",
+      "HEADLIGHT_RIGHT"
+    ],
+    "approximation": "VISUAL_APPROXIMATION: MODEL A cannot prove the OEM optical segmentation. Outer lamp carries brake/running, inner lamp carries the indicator, the brake lamp is lit by lens emission because its source geometry cannot hold an interior.",
+    "render_samples": 24,
+    "lens_base_material": "M_TailLens_Outer_v4.001",
+    "lamp_mask_pixels": {
+      "rear_lights": 1603,
+      "rear_lightsl": 365,
+      "rear_lightsr": 237,
+      "light_breake": 93
+    },
+    "lamp_bbox_px_1100x760": [
+      640,
+      214,
+      1001,
+      327
+    ],
+    "lamp_bboxes_px_1100x760": {
+      "rear_lights": [
+        640,
+        214,
+        1001,
+        327
+      ],
+      "rear_lightsl": [
+        702,
+        231,
+        764,
+        252
+      ],
+      "rear_lightsr": [
+        943,
+        274,
+        976,
+        316
+      ],
+      "light_breake": [
+        673,
+        235,
+        994,
+        310
+      ]
+    },
+    "per_state": [
+      {
+        "state": "OFF",
+        "applied": {
+          "LEFT:rear_lights:0": {
+            "lamp": "rear_lights",
+            "channels": [],
+            "guide_material": "M_TailGuide_OFF",
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "LEFT:rear_lightsl:0": {
+            "lamp": "rear_lightsl",
+            "channels": [],
+            "guide_material": "M_TailGuide_OFF",
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "RIGHT:rear_lights:1": {
+            "lamp": "rear_lights",
+            "channels": [],
+            "guide_material": "M_TailGuide_OFF",
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "RIGHT:rear_lightsr:0": {
+            "lamp": "rear_lightsr",
+            "channels": [],
+            "guide_material": "M_TailGuide_OFF",
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "rear_lights": {
+            "lamp": "rear_lights",
+            "channels": [],
+            "guide_material": null,
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "rear_lightsl": {
+            "lamp": "rear_lightsl",
+            "channels": [],
+            "guide_material": null,
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "rear_lightsr": {
+            "lamp": "rear_lightsr",
+            "channels": [],
+            "guide_material": null,
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "light_breake": {
+            "lamp": "light_breake",
+            "channels": [],
+            "guide_material": null,
+            "lens_material": "M_TailLens_Outer_v4.001"
+          }
+        },
+        "emissive_materials": {
+          "Cavity_LEFT:rear_lights:0_5.0mm": [
+            0.0
+          ],
+          "Cavity_LEFT:rear_lightsl:0_6.0mm": [
+            0.0
+          ],
+          "Cavity_RIGHT:rear_lights:1_5.0mm": [
+            0.0
+          ],
+          "Cavity_RIGHT:rear_lightsr:0_6.0mm": [
+            0.0
+          ],
+          "light_breake": [
+            0.0
+          ],
+          "rear_lights": [
+            0.0
+          ],
+          "rear_lightsl": [
+            0.0
+          ],
+          "rear_lightsr": [
+            0.0
+          ],
+          "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run0_s0": [
+            0.0
+          ],
+          "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run1_s0": [
+            0.0
+          ],
+          "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s0": [
+            0.0
+          ],
+          "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s1": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s0": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s1": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run1_s0": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s0": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s1": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s2": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s3": [
+            0.0
+          ]
+        },
+        "render": "assets/checkpoints/taillight_freeze/state_OFF.png",
+        "energy": {
+          "rear_lights": {
+            "pixels": 1603,
+            "red": 0.443918,
+            "amber": 0.349702,
+            "luma": 0.295388
+          },
+          "rear_lightsl": {
+            "pixels": 365,
+            "red": 0.42382,
+            "amber": 0.325786,
+            "luma": 0.26928
+          },
+          "rear_lightsr": {
+            "pixels": 237,
+            "red": 0.512187,
+            "amber": 0.441731,
+            "luma": 0.401067
+          },
+          "light_breake": {
+            "pixels": 93,
+            "red": 0.466498,
+            "amber": 0.376766,
+            "luma": 0.32499
+          }
+        },
+        "off_residue_test": {
+          "max_emission_strength": 0.0,
+          "max_added_light": 0.0,
+          "max_internal_structure_visible_by_darkening": -0.0,
+          "rule": "no emission, and OFF adds no light anywhere relative to the same render with the taillights hidden",
+          "off_render": "assets/checkpoints/taillight_freeze/state_OFF.png",
+          "control_render": "assets/checkpoints/taillight_freeze/state_OFF_no_taillight_geometry.png",
+          "pass": true
+        }
+      },
+      {
+        "state": "BRAKE",
+        "applied": {
+          "LEFT:rear_lights:0": {
+            "lamp": "rear_lights",
+            "channels": [
+              "BRAKE"
+            ],
+            "guide_material": "M_TailGuide_BRAKE",
+            "lens_material": "M_TailLens_BRAKE_v4"
+          },
+          "LEFT:rear_lightsl:0": {
+            "lamp": "rear_lightsl",
+            "channels": [],
+            "guide_material": "M_TailGuide_OFF",
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "RIGHT:rear_lights:1": {
+            "lamp": "rear_lights",
+            "channels": [
+              "BRAKE"
+            ],
+            "guide_material": "M_TailGuide_BRAKE",
+            "lens_material": "M_TailLens_BRAKE_v4"
+          },
+          "RIGHT:rear_lightsr:0": {
+            "lamp": "rear_lightsr",
+            "channels": [],
+            "guide_material": "M_TailGuide_OFF",
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "rear_lights": {
+            "lamp": "rear_lights",
+            "channels": [
+              "BRAKE"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_BRAKE_v4"
+          },
+          "rear_lightsl": {
+            "lamp": "rear_lightsl",
+            "channels": [],
+            "guide_material": null,
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "rear_lightsr": {
+            "lamp": "rear_lightsr",
+            "channels": [],
+            "guide_material": null,
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "light_breake": {
+            "lamp": "light_breake",
+            "channels": [
+              "BRAKE"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_BRAKE_v4"
+          }
+        },
+        "emissive_materials": {
+          "Cavity_LEFT:rear_lights:0_5.0mm": [
+            0.0
+          ],
+          "Cavity_LEFT:rear_lightsl:0_6.0mm": [
+            0.0
+          ],
+          "Cavity_RIGHT:rear_lights:1_5.0mm": [
+            0.0
+          ],
+          "Cavity_RIGHT:rear_lightsr:0_6.0mm": [
+            0.0
+          ],
+          "light_breake": [
+            3.0
+          ],
+          "rear_lights": [
+            3.0
+          ],
+          "rear_lightsl": [
+            0.0
+          ],
+          "rear_lightsr": [
+            0.0
+          ],
+          "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run0_s0": [
+            6.0
+          ],
+          "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run1_s0": [
+            6.0
+          ],
+          "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s0": [
+            0.0
+          ],
+          "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s1": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s0": [
+            6.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s1": [
+            6.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run1_s0": [
+            6.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s0": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s1": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s2": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s3": [
+            0.0
+          ]
+        },
+        "render": "assets/checkpoints/taillight_freeze/state_BRAKE.png",
+        "energy": {
+          "rear_lights": {
+            "pixels": 1603,
+            "red": 0.746473,
+            "amber": 0.536823,
+            "luma": 0.414401
+          },
+          "rear_lightsl": {
+            "pixels": 365,
+            "red": 0.423798,
+            "amber": 0.325641,
+            "luma": 0.269072
+          },
+          "rear_lightsr": {
+            "pixels": 237,
+            "red": 0.512385,
+            "amber": 0.441838,
+            "luma": 0.40112
+          },
+          "light_breake": {
+            "pixels": 93,
+            "red": 0.669703,
+            "amber": 0.494961,
+            "luma": 0.393308
+          }
+        },
+        "response": {
+          "rear_lights": {
+            "pixels": 1603,
+            "lit_fraction": 0.96444,
+            "amber_lit_fraction": 0.95446,
+            "p95_red_delta": 0.36471,
+            "p95_amber_delta": 0.23137,
+            "mean_red_delta": 0.30256,
+            "visible_delta_threshold": 0.05
+          },
+          "rear_lightsl": {
+            "pixels": 365,
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "p95_red_delta": 0.00392,
+            "p95_amber_delta": 0.00196,
+            "mean_red_delta": -2e-05,
+            "visible_delta_threshold": 0.05
+          },
+          "rear_lightsr": {
+            "pixels": 237,
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "p95_red_delta": 0.00392,
+            "p95_amber_delta": 0.00196,
+            "mean_red_delta": 0.0002,
+            "visible_delta_threshold": 0.05
+          },
+          "light_breake": {
+            "pixels": 93,
+            "lit_fraction": 0.97849,
+            "amber_lit_fraction": 0.94624,
+            "p95_red_delta": 0.33882,
+            "p95_amber_delta": 0.20627,
+            "mean_red_delta": 0.2032,
+            "visible_delta_threshold": 0.05
+          }
+        }
+      },
+      {
+        "state": "LEFT_INDICATOR",
+        "applied": {
+          "LEFT:rear_lights:0": {
+            "lamp": "rear_lights",
+            "channels": [],
+            "guide_material": "M_TailGuide_OFF",
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "LEFT:rear_lightsl:0": {
+            "lamp": "rear_lightsl",
+            "channels": [
+              "INDICATOR_LEFT"
+            ],
+            "guide_material": "M_TailGuide_IND_L",
+            "lens_material": "M_TailLens_IND_L_v4"
+          },
+          "RIGHT:rear_lights:1": {
+            "lamp": "rear_lights",
+            "channels": [],
+            "guide_material": "M_TailGuide_OFF",
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "RIGHT:rear_lightsr:0": {
+            "lamp": "rear_lightsr",
+            "channels": [],
+            "guide_material": "M_TailGuide_OFF",
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "rear_lights": {
+            "lamp": "rear_lights",
+            "channels": [],
+            "guide_material": null,
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "rear_lightsl": {
+            "lamp": "rear_lightsl",
+            "channels": [
+              "INDICATOR_LEFT"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_IND_L_v4"
+          },
+          "rear_lightsr": {
+            "lamp": "rear_lightsr",
+            "channels": [],
+            "guide_material": null,
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "light_breake": {
+            "lamp": "light_breake",
+            "channels": [],
+            "guide_material": null,
+            "lens_material": "M_TailLens_Outer_v4.001"
+          }
+        },
+        "emissive_materials": {
+          "Cavity_LEFT:rear_lights:0_5.0mm": [
+            0.0
+          ],
+          "Cavity_LEFT:rear_lightsl:0_6.0mm": [
+            0.0
+          ],
+          "Cavity_RIGHT:rear_lights:1_5.0mm": [
+            0.0
+          ],
+          "Cavity_RIGHT:rear_lightsr:0_6.0mm": [
+            0.0
+          ],
+          "light_breake": [
+            0.0
+          ],
+          "rear_lights": [
+            0.0
+          ],
+          "rear_lightsl": [
+            3.4
+          ],
+          "rear_lightsr": [
+            0.0
+          ],
+          "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run0_s0": [
+            0.0
+          ],
+          "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run1_s0": [
+            0.0
+          ],
+          "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s0": [
+            7.0
+          ],
+          "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s1": [
+            7.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s0": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s1": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run1_s0": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s0": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s1": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s2": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s3": [
+            0.0
+          ]
+        },
+        "render": "assets/checkpoints/taillight_freeze/state_LEFT_INDICATOR.png",
+        "energy": {
+          "rear_lights": {
+            "pixels": 1603,
+            "red": 0.444067,
+            "amber": 0.349798,
+            "luma": 0.295452
+          },
+          "rear_lightsl": {
+            "pixels": 365,
+            "red": 0.762869,
+            "amber": 0.578367,
+            "luma": 0.465059
+          },
+          "rear_lightsr": {
+            "pixels": 237,
+            "red": 0.51217,
+            "amber": 0.441764,
+            "luma": 0.40112
+          },
+          "light_breake": {
+            "pixels": 93,
+            "red": 0.466709,
+            "amber": 0.377061,
+            "luma": 0.325309
+          }
+        },
+        "response": {
+          "rear_lights": {
+            "pixels": 1603,
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "p95_red_delta": 0.00392,
+            "p95_amber_delta": 0.00196,
+            "mean_red_delta": 0.00015,
+            "visible_delta_threshold": 0.05
+          },
+          "rear_lightsl": {
+            "pixels": 365,
+            "lit_fraction": 1.0,
+            "amber_lit_fraction": 0.99726,
+            "p95_red_delta": 0.38431,
+            "p95_amber_delta": 0.29216,
+            "mean_red_delta": 0.33905,
+            "visible_delta_threshold": 0.05
+          },
+          "rear_lightsr": {
+            "pixels": 237,
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "p95_red_delta": 0.00392,
+            "p95_amber_delta": 0.00196,
+            "mean_red_delta": -2e-05,
+            "visible_delta_threshold": 0.05
+          },
+          "light_breake": {
+            "pixels": 93,
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "p95_red_delta": 0.00392,
+            "p95_amber_delta": 0.00275,
+            "mean_red_delta": 0.00021,
+            "visible_delta_threshold": 0.05
+          }
+        }
+      },
+      {
+        "state": "RIGHT_INDICATOR",
+        "applied": {
+          "LEFT:rear_lights:0": {
+            "lamp": "rear_lights",
+            "channels": [],
+            "guide_material": "M_TailGuide_OFF",
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "LEFT:rear_lightsl:0": {
+            "lamp": "rear_lightsl",
+            "channels": [],
+            "guide_material": "M_TailGuide_OFF",
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "RIGHT:rear_lights:1": {
+            "lamp": "rear_lights",
+            "channels": [],
+            "guide_material": "M_TailGuide_OFF",
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "RIGHT:rear_lightsr:0": {
+            "lamp": "rear_lightsr",
+            "channels": [
+              "INDICATOR_RIGHT"
+            ],
+            "guide_material": "M_TailGuide_IND_R",
+            "lens_material": "M_TailLens_IND_R_v4"
+          },
+          "rear_lights": {
+            "lamp": "rear_lights",
+            "channels": [],
+            "guide_material": null,
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "rear_lightsl": {
+            "lamp": "rear_lightsl",
+            "channels": [],
+            "guide_material": null,
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "rear_lightsr": {
+            "lamp": "rear_lightsr",
+            "channels": [
+              "INDICATOR_RIGHT"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_IND_R_v4"
+          },
+          "light_breake": {
+            "lamp": "light_breake",
+            "channels": [],
+            "guide_material": null,
+            "lens_material": "M_TailLens_Outer_v4.001"
+          }
+        },
+        "emissive_materials": {
+          "Cavity_LEFT:rear_lights:0_5.0mm": [
+            0.0
+          ],
+          "Cavity_LEFT:rear_lightsl:0_6.0mm": [
+            0.0
+          ],
+          "Cavity_RIGHT:rear_lights:1_5.0mm": [
+            0.0
+          ],
+          "Cavity_RIGHT:rear_lightsr:0_6.0mm": [
+            0.0
+          ],
+          "light_breake": [
+            0.0
+          ],
+          "rear_lights": [
+            0.0
+          ],
+          "rear_lightsl": [
+            0.0
+          ],
+          "rear_lightsr": [
+            3.4
+          ],
+          "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run0_s0": [
+            0.0
+          ],
+          "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run1_s0": [
+            0.0
+          ],
+          "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s0": [
+            0.0
+          ],
+          "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s1": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s0": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s1": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run1_s0": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s0": [
+            7.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s1": [
+            7.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s2": [
+            7.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s3": [
+            7.0
+          ]
+        },
+        "render": "assets/checkpoints/taillight_freeze/state_RIGHT_INDICATOR.png",
+        "energy": {
+          "rear_lights": {
+            "pixels": 1603,
+            "red": 0.444104,
+            "amber": 0.349806,
+            "luma": 0.295444
+          },
+          "rear_lightsl": {
+            "pixels": 365,
+            "red": 0.423949,
+            "amber": 0.325813,
+            "luma": 0.269253
+          },
+          "rear_lightsr": {
+            "pixels": 237,
+            "red": 0.756714,
+            "amber": 0.617457,
+            "luma": 0.532965
+          },
+          "light_breake": {
+            "pixels": 93,
+            "red": 0.466329,
+            "amber": 0.376618,
+            "luma": 0.32486
+          }
+        },
+        "response": {
+          "rear_lights": {
+            "pixels": 1603,
+            "lit_fraction": 0.00125,
+            "amber_lit_fraction": 0.00062,
+            "p95_red_delta": 0.00392,
+            "p95_amber_delta": 0.00196,
+            "mean_red_delta": 0.00019,
+            "visible_delta_threshold": 0.05
+          },
+          "rear_lightsl": {
+            "pixels": 365,
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "p95_red_delta": 0.00392,
+            "p95_amber_delta": 0.00196,
+            "mean_red_delta": 0.00013,
+            "visible_delta_threshold": 0.05
+          },
+          "rear_lightsr": {
+            "pixels": 237,
+            "lit_fraction": 0.98312,
+            "amber_lit_fraction": 0.95359,
+            "p95_red_delta": 0.30588,
+            "p95_amber_delta": 0.22549,
+            "mean_red_delta": 0.24453,
+            "visible_delta_threshold": 0.05
+          },
+          "light_breake": {
+            "pixels": 93,
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "p95_red_delta": 0.00157,
+            "p95_amber_delta": 0.00196,
+            "mean_red_delta": -0.00017,
+            "visible_delta_threshold": 0.05
+          }
+        }
+      },
+      {
+        "state": "HAZARD",
+        "applied": {
+          "LEFT:rear_lights:0": {
+            "lamp": "rear_lights",
+            "channels": [],
+            "guide_material": "M_TailGuide_OFF",
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "LEFT:rear_lightsl:0": {
+            "lamp": "rear_lightsl",
+            "channels": [
+              "INDICATOR_LEFT"
+            ],
+            "guide_material": "M_TailGuide_IND_L",
+            "lens_material": "M_TailLens_IND_L_v4"
+          },
+          "RIGHT:rear_lights:1": {
+            "lamp": "rear_lights",
+            "channels": [],
+            "guide_material": "M_TailGuide_OFF",
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "RIGHT:rear_lightsr:0": {
+            "lamp": "rear_lightsr",
+            "channels": [
+              "INDICATOR_RIGHT"
+            ],
+            "guide_material": "M_TailGuide_IND_R",
+            "lens_material": "M_TailLens_IND_R_v4"
+          },
+          "rear_lights": {
+            "lamp": "rear_lights",
+            "channels": [],
+            "guide_material": null,
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "rear_lightsl": {
+            "lamp": "rear_lightsl",
+            "channels": [
+              "INDICATOR_LEFT"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_IND_L_v4"
+          },
+          "rear_lightsr": {
+            "lamp": "rear_lightsr",
+            "channels": [
+              "INDICATOR_RIGHT"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_IND_R_v4"
+          },
+          "light_breake": {
+            "lamp": "light_breake",
+            "channels": [],
+            "guide_material": null,
+            "lens_material": "M_TailLens_Outer_v4.001"
+          }
+        },
+        "emissive_materials": {
+          "Cavity_LEFT:rear_lights:0_5.0mm": [
+            0.0
+          ],
+          "Cavity_LEFT:rear_lightsl:0_6.0mm": [
+            0.0
+          ],
+          "Cavity_RIGHT:rear_lights:1_5.0mm": [
+            0.0
+          ],
+          "Cavity_RIGHT:rear_lightsr:0_6.0mm": [
+            0.0
+          ],
+          "light_breake": [
+            0.0
+          ],
+          "rear_lights": [
+            0.0
+          ],
+          "rear_lightsl": [
+            3.4
+          ],
+          "rear_lightsr": [
+            3.4
+          ],
+          "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run0_s0": [
+            0.0
+          ],
+          "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run1_s0": [
+            0.0
+          ],
+          "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s0": [
+            7.0
+          ],
+          "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s1": [
+            7.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s0": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s1": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run1_s0": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s0": [
+            7.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s1": [
+            7.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s2": [
+            7.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s3": [
+            7.0
+          ]
+        },
+        "render": "assets/checkpoints/taillight_freeze/state_HAZARD.png",
+        "energy": {
+          "rear_lights": {
+            "pixels": 1603,
+            "red": 0.444233,
+            "amber": 0.349876,
+            "luma": 0.295482
+          },
+          "rear_lightsl": {
+            "pixels": 365,
+            "red": 0.763051,
+            "amber": 0.57855,
+            "luma": 0.465241
+          },
+          "rear_lightsr": {
+            "pixels": 237,
+            "red": 0.756664,
+            "amber": 0.617333,
+            "luma": 0.53281
+          },
+          "light_breake": {
+            "pixels": 93,
+            "red": 0.466287,
+            "amber": 0.376576,
+            "luma": 0.324815
+          }
+        },
+        "response": {
+          "rear_lights": {
+            "pixels": 1603,
+            "lit_fraction": 0.00125,
+            "amber_lit_fraction": 0.00062,
+            "p95_red_delta": 0.00392,
+            "p95_amber_delta": 0.00196,
+            "mean_red_delta": 0.00032,
+            "visible_delta_threshold": 0.05
+          },
+          "rear_lightsl": {
+            "pixels": 365,
+            "lit_fraction": 1.0,
+            "amber_lit_fraction": 1.0,
+            "p95_red_delta": 0.38431,
+            "p95_amber_delta": 0.29216,
+            "mean_red_delta": 0.33923,
+            "visible_delta_threshold": 0.05
+          },
+          "rear_lightsr": {
+            "pixels": 237,
+            "lit_fraction": 0.98312,
+            "amber_lit_fraction": 0.95359,
+            "p95_red_delta": 0.30275,
+            "p95_amber_delta": 0.22549,
+            "mean_red_delta": 0.24448,
+            "visible_delta_threshold": 0.05
+          },
+          "light_breake": {
+            "pixels": 93,
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "p95_red_delta": 0.00392,
+            "p95_amber_delta": 0.00196,
+            "mean_red_delta": -0.00021,
+            "visible_delta_threshold": 0.05
+          }
+        }
+      },
+      {
+        "state": "HEADLIGHT",
+        "applied": {
+          "LEFT:rear_lights:0": {
+            "lamp": "rear_lights",
+            "channels": [
+              "RUNNING"
+            ],
+            "guide_material": "M_TailGuide_RUNNING",
+            "lens_material": "M_TailLens_RUNNING_v4"
+          },
+          "LEFT:rear_lightsl:0": {
+            "lamp": "rear_lightsl",
+            "channels": [],
+            "guide_material": "M_TailGuide_OFF",
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "RIGHT:rear_lights:1": {
+            "lamp": "rear_lights",
+            "channels": [
+              "RUNNING"
+            ],
+            "guide_material": "M_TailGuide_RUNNING",
+            "lens_material": "M_TailLens_RUNNING_v4"
+          },
+          "RIGHT:rear_lightsr:0": {
+            "lamp": "rear_lightsr",
+            "channels": [],
+            "guide_material": "M_TailGuide_OFF",
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "rear_lights": {
+            "lamp": "rear_lights",
+            "channels": [
+              "RUNNING"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_RUNNING_v4"
+          },
+          "rear_lightsl": {
+            "lamp": "rear_lightsl",
+            "channels": [],
+            "guide_material": null,
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "rear_lightsr": {
+            "lamp": "rear_lightsr",
+            "channels": [],
+            "guide_material": null,
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "light_breake": {
+            "lamp": "light_breake",
+            "channels": [
+              "RUNNING"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_RUNNING_v4"
+          }
+        },
+        "emissive_materials": {
+          "Cavity_LEFT:rear_lights:0_5.0mm": [
+            0.0
+          ],
+          "Cavity_LEFT:rear_lightsl:0_6.0mm": [
+            0.0
+          ],
+          "Cavity_RIGHT:rear_lights:1_5.0mm": [
+            0.0
+          ],
+          "Cavity_RIGHT:rear_lightsr:0_6.0mm": [
+            0.0
+          ],
+          "light_breake": [
+            0.9
+          ],
+          "rear_lights": [
+            0.9
+          ],
+          "rear_lightsl": [
+            0.0
+          ],
+          "rear_lightsr": [
+            0.0
+          ],
+          "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run0_s0": [
+            1.6
+          ],
+          "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run1_s0": [
+            1.6
+          ],
+          "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s0": [
+            0.0
+          ],
+          "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s1": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s0": [
+            1.6
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s1": [
+            1.6
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run1_s0": [
+            1.6
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s0": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s1": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s2": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s3": [
+            0.0
+          ]
+        },
+        "render": "assets/checkpoints/taillight_freeze/state_HEADLIGHT.png",
+        "energy": {
+          "rear_lights": {
+            "pixels": 1603,
+            "red": 0.538043,
+            "amber": 0.401348,
+            "luma": 0.322314
+          },
+          "rear_lightsl": {
+            "pixels": 365,
+            "red": 0.423949,
+            "amber": 0.325807,
+            "luma": 0.269244
+          },
+          "rear_lightsr": {
+            "pixels": 237,
+            "red": 0.51217,
+            "amber": 0.441689,
+            "luma": 0.401006
+          },
+          "light_breake": {
+            "pixels": 93,
+            "red": 0.509214,
+            "amber": 0.399136,
+            "luma": 0.335552
+          }
+        },
+        "response": {
+          "rear_lights": {
+            "pixels": 1603,
+            "lit_fraction": 0.92202,
+            "amber_lit_fraction": 0.65752,
+            "p95_red_delta": 0.12157,
+            "p95_amber_delta": 0.06667,
+            "mean_red_delta": 0.09412,
+            "visible_delta_threshold": 0.05
+          },
+          "rear_lightsl": {
+            "pixels": 365,
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "p95_red_delta": 0.00392,
+            "p95_amber_delta": 0.00196,
+            "mean_red_delta": 0.00013,
+            "visible_delta_threshold": 0.05
+          },
+          "rear_lightsr": {
+            "pixels": 237,
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "p95_red_delta": 0.00392,
+            "p95_amber_delta": 0.00196,
+            "mean_red_delta": -2e-05,
+            "visible_delta_threshold": 0.05
+          },
+          "light_breake": {
+            "pixels": 93,
+            "lit_fraction": 0.31183,
+            "amber_lit_fraction": 0.0,
+            "p95_red_delta": 0.08,
+            "p95_amber_delta": 0.04,
+            "mean_red_delta": 0.04272,
+            "visible_delta_threshold": 0.05
+          }
+        }
+      },
+      {
+        "state": "BRAKE_LEFT",
+        "applied": {
+          "LEFT:rear_lights:0": {
+            "lamp": "rear_lights",
+            "channels": [
+              "BRAKE"
+            ],
+            "guide_material": "M_TailGuide_BRAKE",
+            "lens_material": "M_TailLens_BRAKE_v4"
+          },
+          "LEFT:rear_lightsl:0": {
+            "lamp": "rear_lightsl",
+            "channels": [
+              "INDICATOR_LEFT"
+            ],
+            "guide_material": "M_TailGuide_IND_L",
+            "lens_material": "M_TailLens_IND_L_v4"
+          },
+          "RIGHT:rear_lights:1": {
+            "lamp": "rear_lights",
+            "channels": [
+              "BRAKE"
+            ],
+            "guide_material": "M_TailGuide_BRAKE",
+            "lens_material": "M_TailLens_BRAKE_v4"
+          },
+          "RIGHT:rear_lightsr:0": {
+            "lamp": "rear_lightsr",
+            "channels": [],
+            "guide_material": "M_TailGuide_OFF",
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "rear_lights": {
+            "lamp": "rear_lights",
+            "channels": [
+              "BRAKE"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_BRAKE_v4"
+          },
+          "rear_lightsl": {
+            "lamp": "rear_lightsl",
+            "channels": [
+              "INDICATOR_LEFT"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_IND_L_v4"
+          },
+          "rear_lightsr": {
+            "lamp": "rear_lightsr",
+            "channels": [],
+            "guide_material": null,
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "light_breake": {
+            "lamp": "light_breake",
+            "channels": [
+              "BRAKE"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_BRAKE_v4"
+          }
+        },
+        "emissive_materials": {
+          "Cavity_LEFT:rear_lights:0_5.0mm": [
+            0.0
+          ],
+          "Cavity_LEFT:rear_lightsl:0_6.0mm": [
+            0.0
+          ],
+          "Cavity_RIGHT:rear_lights:1_5.0mm": [
+            0.0
+          ],
+          "Cavity_RIGHT:rear_lightsr:0_6.0mm": [
+            0.0
+          ],
+          "light_breake": [
+            3.0
+          ],
+          "rear_lights": [
+            3.0
+          ],
+          "rear_lightsl": [
+            3.4
+          ],
+          "rear_lightsr": [
+            0.0
+          ],
+          "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run0_s0": [
+            6.0
+          ],
+          "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run1_s0": [
+            6.0
+          ],
+          "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s0": [
+            7.0
+          ],
+          "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s1": [
+            7.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s0": [
+            6.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s1": [
+            6.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run1_s0": [
+            6.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s0": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s1": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s2": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s3": [
+            0.0
+          ]
+        },
+        "render": "assets/checkpoints/taillight_freeze/state_BRAKE_LEFT.png",
+        "energy": {
+          "rear_lights": {
+            "pixels": 1603,
+            "red": 0.746478,
+            "amber": 0.536838,
+            "luma": 0.414419
+          },
+          "rear_lightsl": {
+            "pixels": 365,
+            "red": 0.763008,
+            "amber": 0.578485,
+            "luma": 0.465163
+          },
+          "rear_lightsr": {
+            "pixels": 237,
+            "red": 0.512385,
+            "amber": 0.441855,
+            "luma": 0.401144
+          },
+          "light_breake": {
+            "pixels": 93,
+            "red": 0.669534,
+            "amber": 0.494834,
+            "luma": 0.393218
+          }
+        },
+        "response": {
+          "rear_lights": {
+            "pixels": 1603,
+            "lit_fraction": 0.96444,
+            "amber_lit_fraction": 0.95446,
+            "p95_red_delta": 0.36471,
+            "p95_amber_delta": 0.23137,
+            "mean_red_delta": 0.30256,
+            "visible_delta_threshold": 0.05
+          },
+          "rear_lightsl": {
+            "pixels": 365,
+            "lit_fraction": 1.0,
+            "amber_lit_fraction": 1.0,
+            "p95_red_delta": 0.38431,
+            "p95_amber_delta": 0.29216,
+            "mean_red_delta": 0.33919,
+            "visible_delta_threshold": 0.05
+          },
+          "rear_lightsr": {
+            "pixels": 237,
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "p95_red_delta": 0.00392,
+            "p95_amber_delta": 0.00196,
+            "mean_red_delta": 0.0002,
+            "visible_delta_threshold": 0.05
+          },
+          "light_breake": {
+            "pixels": 93,
+            "lit_fraction": 0.97849,
+            "amber_lit_fraction": 0.94624,
+            "p95_red_delta": 0.33882,
+            "p95_amber_delta": 0.20627,
+            "mean_red_delta": 0.20304,
+            "visible_delta_threshold": 0.05
+          }
+        }
+      },
+      {
+        "state": "BRAKE_RIGHT",
+        "applied": {
+          "LEFT:rear_lights:0": {
+            "lamp": "rear_lights",
+            "channels": [
+              "BRAKE"
+            ],
+            "guide_material": "M_TailGuide_BRAKE",
+            "lens_material": "M_TailLens_BRAKE_v4"
+          },
+          "LEFT:rear_lightsl:0": {
+            "lamp": "rear_lightsl",
+            "channels": [],
+            "guide_material": "M_TailGuide_OFF",
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "RIGHT:rear_lights:1": {
+            "lamp": "rear_lights",
+            "channels": [
+              "BRAKE"
+            ],
+            "guide_material": "M_TailGuide_BRAKE",
+            "lens_material": "M_TailLens_BRAKE_v4"
+          },
+          "RIGHT:rear_lightsr:0": {
+            "lamp": "rear_lightsr",
+            "channels": [
+              "INDICATOR_RIGHT"
+            ],
+            "guide_material": "M_TailGuide_IND_R",
+            "lens_material": "M_TailLens_IND_R_v4"
+          },
+          "rear_lights": {
+            "lamp": "rear_lights",
+            "channels": [
+              "BRAKE"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_BRAKE_v4"
+          },
+          "rear_lightsl": {
+            "lamp": "rear_lightsl",
+            "channels": [],
+            "guide_material": null,
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "rear_lightsr": {
+            "lamp": "rear_lightsr",
+            "channels": [
+              "INDICATOR_RIGHT"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_IND_R_v4"
+          },
+          "light_breake": {
+            "lamp": "light_breake",
+            "channels": [
+              "BRAKE"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_BRAKE_v4"
+          }
+        },
+        "emissive_materials": {
+          "Cavity_LEFT:rear_lights:0_5.0mm": [
+            0.0
+          ],
+          "Cavity_LEFT:rear_lightsl:0_6.0mm": [
+            0.0
+          ],
+          "Cavity_RIGHT:rear_lights:1_5.0mm": [
+            0.0
+          ],
+          "Cavity_RIGHT:rear_lightsr:0_6.0mm": [
+            0.0
+          ],
+          "light_breake": [
+            3.0
+          ],
+          "rear_lights": [
+            3.0
+          ],
+          "rear_lightsl": [
+            0.0
+          ],
+          "rear_lightsr": [
+            3.4
+          ],
+          "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run0_s0": [
+            6.0
+          ],
+          "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run1_s0": [
+            6.0
+          ],
+          "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s0": [
+            0.0
+          ],
+          "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s1": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s0": [
+            6.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s1": [
+            6.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run1_s0": [
+            6.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s0": [
+            7.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s1": [
+            7.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s2": [
+            7.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s3": [
+            7.0
+          ]
+        },
+        "render": "assets/checkpoints/taillight_freeze/state_BRAKE_RIGHT.png",
+        "energy": {
+          "rear_lights": {
+            "pixels": 1603,
+            "red": 0.746674,
+            "amber": 0.536953,
+            "luma": 0.414484
+          },
+          "rear_lightsl": {
+            "pixels": 365,
+            "red": 0.423852,
+            "amber": 0.325668,
+            "luma": 0.26908
+          },
+          "rear_lightsr": {
+            "pixels": 237,
+            "red": 0.757161,
+            "amber": 0.617755,
+            "luma": 0.533186
+          },
+          "light_breake": {
+            "pixels": 93,
+            "red": 0.670588,
+            "amber": 0.495383,
+            "luma": 0.393472
+          }
+        },
+        "response": {
+          "rear_lights": {
+            "pixels": 1603,
+            "lit_fraction": 0.96569,
+            "amber_lit_fraction": 0.95571,
+            "p95_red_delta": 0.36471,
+            "p95_amber_delta": 0.23137,
+            "mean_red_delta": 0.30276,
+            "visible_delta_threshold": 0.05
+          },
+          "rear_lightsl": {
+            "pixels": 365,
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "p95_red_delta": 0.00392,
+            "p95_amber_delta": 0.00196,
+            "mean_red_delta": 3e-05,
+            "visible_delta_threshold": 0.05
+          },
+          "rear_lightsr": {
+            "pixels": 237,
+            "lit_fraction": 0.98312,
+            "amber_lit_fraction": 0.95781,
+            "p95_red_delta": 0.30588,
+            "p95_amber_delta": 0.22549,
+            "mean_red_delta": 0.24497,
+            "visible_delta_threshold": 0.05
+          },
+          "light_breake": {
+            "pixels": 93,
+            "lit_fraction": 0.97849,
+            "amber_lit_fraction": 0.94624,
+            "p95_red_delta": 0.33882,
+            "p95_amber_delta": 0.20627,
+            "mean_red_delta": 0.20409,
+            "visible_delta_threshold": 0.05
+          }
+        }
+      },
+      {
+        "state": "BRAKE_HAZARD",
+        "applied": {
+          "LEFT:rear_lights:0": {
+            "lamp": "rear_lights",
+            "channels": [
+              "BRAKE"
+            ],
+            "guide_material": "M_TailGuide_BRAKE",
+            "lens_material": "M_TailLens_BRAKE_v4"
+          },
+          "LEFT:rear_lightsl:0": {
+            "lamp": "rear_lightsl",
+            "channels": [
+              "INDICATOR_LEFT"
+            ],
+            "guide_material": "M_TailGuide_IND_L",
+            "lens_material": "M_TailLens_IND_L_v4"
+          },
+          "RIGHT:rear_lights:1": {
+            "lamp": "rear_lights",
+            "channels": [
+              "BRAKE"
+            ],
+            "guide_material": "M_TailGuide_BRAKE",
+            "lens_material": "M_TailLens_BRAKE_v4"
+          },
+          "RIGHT:rear_lightsr:0": {
+            "lamp": "rear_lightsr",
+            "channels": [
+              "INDICATOR_RIGHT"
+            ],
+            "guide_material": "M_TailGuide_IND_R",
+            "lens_material": "M_TailLens_IND_R_v4"
+          },
+          "rear_lights": {
+            "lamp": "rear_lights",
+            "channels": [
+              "BRAKE"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_BRAKE_v4"
+          },
+          "rear_lightsl": {
+            "lamp": "rear_lightsl",
+            "channels": [
+              "INDICATOR_LEFT"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_IND_L_v4"
+          },
+          "rear_lightsr": {
+            "lamp": "rear_lightsr",
+            "channels": [
+              "INDICATOR_RIGHT"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_IND_R_v4"
+          },
+          "light_breake": {
+            "lamp": "light_breake",
+            "channels": [
+              "BRAKE"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_BRAKE_v4"
+          }
+        },
+        "emissive_materials": {
+          "Cavity_LEFT:rear_lights:0_5.0mm": [
+            0.0
+          ],
+          "Cavity_LEFT:rear_lightsl:0_6.0mm": [
+            0.0
+          ],
+          "Cavity_RIGHT:rear_lights:1_5.0mm": [
+            0.0
+          ],
+          "Cavity_RIGHT:rear_lightsr:0_6.0mm": [
+            0.0
+          ],
+          "light_breake": [
+            3.0
+          ],
+          "rear_lights": [
+            3.0
+          ],
+          "rear_lightsl": [
+            3.4
+          ],
+          "rear_lightsr": [
+            3.4
+          ],
+          "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run0_s0": [
+            6.0
+          ],
+          "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run1_s0": [
+            6.0
+          ],
+          "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s0": [
+            7.0
+          ],
+          "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s1": [
+            7.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s0": [
+            6.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s1": [
+            6.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run1_s0": [
+            6.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s0": [
+            7.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s1": [
+            7.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s2": [
+            7.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s3": [
+            7.0
+          ]
+        },
+        "render": "assets/checkpoints/taillight_freeze/state_BRAKE_HAZARD.png",
+        "energy": {
+          "rear_lights": {
+            "pixels": 1603,
+            "red": 0.746715,
+            "amber": 0.537004,
+            "luma": 0.41454
+          },
+          "rear_lightsl": {
+            "pixels": 365,
+            "red": 0.763094,
+            "amber": 0.578528,
+            "luma": 0.465186
+          },
+          "rear_lightsr": {
+            "pixels": 237,
+            "red": 0.757061,
+            "amber": 0.617639,
+            "luma": 0.533064
+          },
+          "light_breake": {
+            "pixels": 93,
+            "red": 0.670504,
+            "amber": 0.495319,
+            "luma": 0.393436
+          }
+        },
+        "response": {
+          "rear_lights": {
+            "pixels": 1603,
+            "lit_fraction": 0.96569,
+            "amber_lit_fraction": 0.95571,
+            "p95_red_delta": 0.36471,
+            "p95_amber_delta": 0.23137,
+            "mean_red_delta": 0.3028,
+            "visible_delta_threshold": 0.05
+          },
+          "rear_lightsl": {
+            "pixels": 365,
+            "lit_fraction": 1.0,
+            "amber_lit_fraction": 1.0,
+            "p95_red_delta": 0.38431,
+            "p95_amber_delta": 0.29216,
+            "mean_red_delta": 0.33927,
+            "visible_delta_threshold": 0.05
+          },
+          "rear_lightsr": {
+            "pixels": 237,
+            "lit_fraction": 0.98312,
+            "amber_lit_fraction": 0.95359,
+            "p95_red_delta": 0.30275,
+            "p95_amber_delta": 0.22549,
+            "mean_red_delta": 0.24487,
+            "visible_delta_threshold": 0.05
+          },
+          "light_breake": {
+            "pixels": 93,
+            "lit_fraction": 0.98925,
+            "amber_lit_fraction": 0.94624,
+            "p95_red_delta": 0.33882,
+            "p95_amber_delta": 0.20627,
+            "mean_red_delta": 0.20401,
+            "visible_delta_threshold": 0.05
+          }
+        }
+      },
+      {
+        "state": "HEADLIGHT_LEFT",
+        "applied": {
+          "LEFT:rear_lights:0": {
+            "lamp": "rear_lights",
+            "channels": [
+              "RUNNING"
+            ],
+            "guide_material": "M_TailGuide_RUNNING",
+            "lens_material": "M_TailLens_RUNNING_v4"
+          },
+          "LEFT:rear_lightsl:0": {
+            "lamp": "rear_lightsl",
+            "channels": [
+              "INDICATOR_LEFT"
+            ],
+            "guide_material": "M_TailGuide_IND_L",
+            "lens_material": "M_TailLens_IND_L_v4"
+          },
+          "RIGHT:rear_lights:1": {
+            "lamp": "rear_lights",
+            "channels": [
+              "RUNNING"
+            ],
+            "guide_material": "M_TailGuide_RUNNING",
+            "lens_material": "M_TailLens_RUNNING_v4"
+          },
+          "RIGHT:rear_lightsr:0": {
+            "lamp": "rear_lightsr",
+            "channels": [],
+            "guide_material": "M_TailGuide_OFF",
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "rear_lights": {
+            "lamp": "rear_lights",
+            "channels": [
+              "RUNNING"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_RUNNING_v4"
+          },
+          "rear_lightsl": {
+            "lamp": "rear_lightsl",
+            "channels": [
+              "INDICATOR_LEFT"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_IND_L_v4"
+          },
+          "rear_lightsr": {
+            "lamp": "rear_lightsr",
+            "channels": [],
+            "guide_material": null,
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "light_breake": {
+            "lamp": "light_breake",
+            "channels": [
+              "RUNNING"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_RUNNING_v4"
+          }
+        },
+        "emissive_materials": {
+          "Cavity_LEFT:rear_lights:0_5.0mm": [
+            0.0
+          ],
+          "Cavity_LEFT:rear_lightsl:0_6.0mm": [
+            0.0
+          ],
+          "Cavity_RIGHT:rear_lights:1_5.0mm": [
+            0.0
+          ],
+          "Cavity_RIGHT:rear_lightsr:0_6.0mm": [
+            0.0
+          ],
+          "light_breake": [
+            0.9
+          ],
+          "rear_lights": [
+            0.9
+          ],
+          "rear_lightsl": [
+            3.4
+          ],
+          "rear_lightsr": [
+            0.0
+          ],
+          "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run0_s0": [
+            1.6
+          ],
+          "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run1_s0": [
+            1.6
+          ],
+          "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s0": [
+            7.0
+          ],
+          "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s1": [
+            7.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s0": [
+            1.6
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s1": [
+            1.6
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run1_s0": [
+            1.6
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s0": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s1": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s2": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s3": [
+            0.0
+          ]
+        },
+        "render": "assets/checkpoints/taillight_freeze/state_HEADLIGHT_LEFT.png",
+        "energy": {
+          "rear_lights": {
+            "pixels": 1603,
+            "red": 0.53806,
+            "amber": 0.40135,
+            "luma": 0.322312
+          },
+          "rear_lightsl": {
+            "pixels": 365,
+            "red": 0.763073,
+            "amber": 0.578539,
+            "luma": 0.465218
+          },
+          "rear_lightsr": {
+            "pixels": 237,
+            "red": 0.512319,
+            "amber": 0.441805,
+            "luma": 0.401102
+          },
+          "light_breake": {
+            "pixels": 93,
+            "red": 0.509467,
+            "amber": 0.399452,
+            "luma": 0.335893
+          }
+        },
+        "response": {
+          "rear_lights": {
+            "pixels": 1603,
+            "lit_fraction": 0.9214,
+            "amber_lit_fraction": 0.65939,
+            "p95_red_delta": 0.12157,
+            "p95_amber_delta": 0.06667,
+            "mean_red_delta": 0.09414,
+            "visible_delta_threshold": 0.05
+          },
+          "rear_lightsl": {
+            "pixels": 365,
+            "lit_fraction": 1.0,
+            "amber_lit_fraction": 1.0,
+            "p95_red_delta": 0.38431,
+            "p95_amber_delta": 0.29216,
+            "mean_red_delta": 0.33925,
+            "visible_delta_threshold": 0.05
+          },
+          "rear_lightsr": {
+            "pixels": 237,
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "p95_red_delta": 0.00392,
+            "p95_amber_delta": 0.00196,
+            "mean_red_delta": 0.00013,
+            "visible_delta_threshold": 0.05
+          },
+          "light_breake": {
+            "pixels": 93,
+            "lit_fraction": 0.33333,
+            "amber_lit_fraction": 0.0,
+            "p95_red_delta": 0.07843,
+            "p95_amber_delta": 0.04,
+            "mean_red_delta": 0.04297,
+            "visible_delta_threshold": 0.05
+          }
+        }
+      },
+      {
+        "state": "HEADLIGHT_RIGHT",
+        "applied": {
+          "LEFT:rear_lights:0": {
+            "lamp": "rear_lights",
+            "channels": [
+              "RUNNING"
+            ],
+            "guide_material": "M_TailGuide_RUNNING",
+            "lens_material": "M_TailLens_RUNNING_v4"
+          },
+          "LEFT:rear_lightsl:0": {
+            "lamp": "rear_lightsl",
+            "channels": [],
+            "guide_material": "M_TailGuide_OFF",
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "RIGHT:rear_lights:1": {
+            "lamp": "rear_lights",
+            "channels": [
+              "RUNNING"
+            ],
+            "guide_material": "M_TailGuide_RUNNING",
+            "lens_material": "M_TailLens_RUNNING_v4"
+          },
+          "RIGHT:rear_lightsr:0": {
+            "lamp": "rear_lightsr",
+            "channels": [
+              "INDICATOR_RIGHT"
+            ],
+            "guide_material": "M_TailGuide_IND_R",
+            "lens_material": "M_TailLens_IND_R_v4"
+          },
+          "rear_lights": {
+            "lamp": "rear_lights",
+            "channels": [
+              "RUNNING"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_RUNNING_v4"
+          },
+          "rear_lightsl": {
+            "lamp": "rear_lightsl",
+            "channels": [],
+            "guide_material": null,
+            "lens_material": "M_TailLens_Outer_v4.001"
+          },
+          "rear_lightsr": {
+            "lamp": "rear_lightsr",
+            "channels": [
+              "INDICATOR_RIGHT"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_IND_R_v4"
+          },
+          "light_breake": {
+            "lamp": "light_breake",
+            "channels": [
+              "RUNNING"
+            ],
+            "guide_material": null,
+            "lens_material": "M_TailLens_RUNNING_v4"
+          }
+        },
+        "emissive_materials": {
+          "Cavity_LEFT:rear_lights:0_5.0mm": [
+            0.0
+          ],
+          "Cavity_LEFT:rear_lightsl:0_6.0mm": [
+            0.0
+          ],
+          "Cavity_RIGHT:rear_lights:1_5.0mm": [
+            0.0
+          ],
+          "Cavity_RIGHT:rear_lightsr:0_6.0mm": [
+            0.0
+          ],
+          "light_breake": [
+            0.9
+          ],
+          "rear_lights": [
+            0.9
+          ],
+          "rear_lightsl": [
+            0.0
+          ],
+          "rear_lightsr": [
+            3.4
+          ],
+          "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run0_s0": [
+            1.6
+          ],
+          "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run1_s0": [
+            1.6
+          ],
+          "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s0": [
+            0.0
+          ],
+          "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s1": [
+            0.0
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s0": [
+            1.6
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s1": [
+            1.6
+          ],
+          "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run1_s0": [
+            1.6
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s0": [
+            7.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s1": [
+            7.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s2": [
+            7.0
+          ],
+          "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s3": [
+            7.0
+          ]
+        },
+        "render": "assets/checkpoints/taillight_freeze/state_HEADLIGHT_RIGHT.png",
+        "energy": {
+          "rear_lights": {
+            "pixels": 1603,
+            "red": 0.538231,
+            "amber": 0.401435,
+            "luma": 0.322345
+          },
+          "rear_lightsl": {
+            "pixels": 365,
+            "red": 0.423895,
+            "amber": 0.32578,
+            "luma": 0.269236
+          },
+          "rear_lightsr": {
+            "pixels": 237,
+            "red": 0.756912,
+            "amber": 0.617581,
+            "luma": 0.53305
+          },
+          "light_breake": {
+            "pixels": 93,
+            "red": 0.50934,
+            "amber": 0.399136,
+            "luma": 0.335483
+          }
+        },
+        "response": {
+          "rear_lights": {
+            "pixels": 1603,
+            "lit_fraction": 0.92327,
+            "amber_lit_fraction": 0.65752,
+            "p95_red_delta": 0.12157,
+            "p95_amber_delta": 0.06667,
+            "mean_red_delta": 0.09431,
+            "visible_delta_threshold": 0.05
+          },
+          "rear_lightsl": {
+            "pixels": 365,
+            "lit_fraction": 0.0,
+            "amber_lit_fraction": 0.0,
+            "p95_red_delta": 0.00392,
+            "p95_amber_delta": 0.00196,
+            "mean_red_delta": 8e-05,
+            "visible_delta_threshold": 0.05
+          },
+          "rear_lightsr": {
+            "pixels": 237,
+            "lit_fraction": 0.98312,
+            "amber_lit_fraction": 0.95781,
+            "p95_red_delta": 0.30588,
+            "p95_amber_delta": 0.22549,
+            "mean_red_delta": 0.24473,
+            "visible_delta_threshold": 0.05
+          },
+          "light_breake": {
+            "pixels": 93,
+            "lit_fraction": 0.31183,
+            "amber_lit_fraction": 0.0,
+            "p95_red_delta": 0.07843,
+            "p95_amber_delta": 0.04,
+            "mean_red_delta": 0.04284,
+            "visible_delta_threshold": 0.05
+          }
+        }
+      }
+    ],
+    "verdicts": {
+      "brake_lights_both_sides": {
+        "pass": true,
+        "outer_lamp": {
+          "pixels": 1603,
+          "lit_fraction": 0.96444,
+          "amber_lit_fraction": 0.95446,
+          "p95_red_delta": 0.36471,
+          "p95_amber_delta": 0.23137,
+          "mean_red_delta": 0.30256,
+          "visible_delta_threshold": 0.05
+        },
+        "brake_lamp": {
+          "pixels": 93,
+          "lit_fraction": 0.97849,
+          "amber_lit_fraction": 0.94624,
+          "p95_red_delta": 0.33882,
+          "p95_amber_delta": 0.20627,
+          "mean_red_delta": 0.2032,
+          "visible_delta_threshold": 0.05
+        },
+        "inner_lamp_must_stay_off": {
+          "pixels": 365,
+          "lit_fraction": 0.0,
+          "amber_lit_fraction": 0.0,
+          "p95_red_delta": 0.00392,
+          "p95_amber_delta": 0.00196,
+          "mean_red_delta": -2e-05,
+          "visible_delta_threshold": 0.05
+        },
+        "rule": "BRAKE lights the outer lamp and the brake lamp (which has no interior and is lit by emission alone) and leaves the indicator lamps alone"
+      },
+      "left_indicator_is_one_sided": {
+        "pass": true,
+        "left_inner_lamp": {
+          "pixels": 365,
+          "lit_fraction": 1.0,
+          "amber_lit_fraction": 0.99726,
+          "p95_red_delta": 0.38431,
+          "p95_amber_delta": 0.29216,
+          "mean_red_delta": 0.33905,
+          "visible_delta_threshold": 0.05
+        },
+        "right_inner_lamp": {
+          "pixels": 237,
+          "lit_fraction": 0.0,
+          "amber_lit_fraction": 0.0,
+          "p95_red_delta": 0.00392,
+          "p95_amber_delta": 0.00196,
+          "mean_red_delta": -2e-05,
+          "visible_delta_threshold": 0.05
+        },
+        "rule": "LEFT_INDICATOR lights the LEFT inner lamp and leaves the right inner lamp unchanged"
+      },
+      "right_indicator_is_one_sided": {
+        "pass": true,
+        "left_inner_lamp": {
+          "pixels": 365,
+          "lit_fraction": 0.0,
+          "amber_lit_fraction": 0.0,
+          "p95_red_delta": 0.00392,
+          "p95_amber_delta": 0.00196,
+          "mean_red_delta": 0.00013,
+          "visible_delta_threshold": 0.05
+        },
+        "right_inner_lamp": {
+          "pixels": 237,
+          "lit_fraction": 0.98312,
+          "amber_lit_fraction": 0.95359,
+          "p95_red_delta": 0.30588,
+          "p95_amber_delta": 0.22549,
+          "mean_red_delta": 0.24453,
+          "visible_delta_threshold": 0.05
+        },
+        "rule": "RIGHT_INDICATOR lights the RIGHT inner lamp and leaves the left inner lamp unchanged"
+      },
+      "hazard_drives_both_sides": {
+        "pass": true,
+        "left_inner_lamp": {
+          "pixels": 365,
+          "lit_fraction": 1.0,
+          "amber_lit_fraction": 1.0,
+          "p95_red_delta": 0.38431,
+          "p95_amber_delta": 0.29216,
+          "mean_red_delta": 0.33923,
+          "visible_delta_threshold": 0.05
+        },
+        "right_inner_lamp": {
+          "pixels": 237,
+          "lit_fraction": 0.98312,
+          "amber_lit_fraction": 0.95359,
+          "p95_red_delta": 0.30275,
+          "p95_amber_delta": 0.22549,
+          "mean_red_delta": 0.24448,
+          "visible_delta_threshold": 0.05
+        },
+        "rule": "HAZARD lights both inner lamps"
+      },
+      "headlight_is_running_not_brake": {
+        "pass": true,
+        "running_light": {
+          "pixels": 1603,
+          "lit_fraction": 0.92202,
+          "amber_lit_fraction": 0.65752,
+          "p95_red_delta": 0.12157,
+          "p95_amber_delta": 0.06667,
+          "mean_red_delta": 0.09412,
+          "visible_delta_threshold": 0.05
+        },
+        "brake_for_comparison": {
+          "pixels": 1603,
+          "lit_fraction": 0.96444,
+          "amber_lit_fraction": 0.95446,
+          "p95_red_delta": 0.36471,
+          "p95_amber_delta": 0.23137,
+          "mean_red_delta": 0.30256,
+          "visible_delta_threshold": 0.05
+        },
+        "rule": "HEADLIGHT lights the outer lamp as a running light, strictly dimmer than BRAKE"
+      },
+      "brake_does_not_erase_indicator": {
+        "pass": true,
+        "outer_lamp_brake": {
+          "pixels": 1603,
+          "lit_fraction": 0.96444,
+          "amber_lit_fraction": 0.95446,
+          "p95_red_delta": 0.36471,
+          "p95_amber_delta": 0.23137,
+          "mean_red_delta": 0.30256,
+          "visible_delta_threshold": 0.05
+        },
+        "left_inner_indicator": {
+          "pixels": 365,
+          "lit_fraction": 1.0,
+          "amber_lit_fraction": 1.0,
+          "p95_red_delta": 0.38431,
+          "p95_amber_delta": 0.29216,
+          "mean_red_delta": 0.33919,
+          "visible_delta_threshold": 0.05
+        },
+        "right_inner_must_stay_off": {
+          "pixels": 237,
+          "lit_fraction": 0.0,
+          "amber_lit_fraction": 0.0,
+          "p95_red_delta": 0.00392,
+          "p95_amber_delta": 0.00196,
+          "mean_red_delta": 0.0002,
+          "visible_delta_threshold": 0.05
+        },
+        "rule": "BRAKE_LEFT shows brake and left indicator together, and leaves the right indicator at OFF"
+      },
+      "brake_hazard_composes": {
+        "pass": true,
+        "outer_lamp_brake": {
+          "pixels": 1603,
+          "lit_fraction": 0.96569,
+          "amber_lit_fraction": 0.95571,
+          "p95_red_delta": 0.36471,
+          "p95_amber_delta": 0.23137,
+          "mean_red_delta": 0.3028,
+          "visible_delta_threshold": 0.05
+        },
+        "left_inner_indicator": {
+          "pixels": 365,
+          "lit_fraction": 1.0,
+          "amber_lit_fraction": 1.0,
+          "p95_red_delta": 0.38431,
+          "p95_amber_delta": 0.29216,
+          "mean_red_delta": 0.33927,
+          "visible_delta_threshold": 0.05
+        },
+        "right_inner_indicator": {
+          "pixels": 237,
+          "lit_fraction": 0.98312,
+          "amber_lit_fraction": 0.95359,
+          "p95_red_delta": 0.30275,
+          "p95_amber_delta": 0.22549,
+          "mean_red_delta": 0.24487,
+          "visible_delta_threshold": 0.05
+        },
+        "rule": "BRAKE_HAZARD shows brake and both indicators"
+      },
+      "off_state_has_no_lighting_residue": {
+        "pass": true,
+        "detail": {
+          "max_emission_strength": 0.0,
+          "max_added_light": 0.0,
+          "max_internal_structure_visible_by_darkening": -0.0,
+          "rule": "no emission, and OFF adds no light anywhere relative to the same render with the taillights hidden",
+          "off_render": "assets/checkpoints/taillight_freeze/state_OFF.png",
+          "control_render": "assets/checkpoints/taillight_freeze/state_OFF_no_taillight_geometry.png",
+          "pass": true
+        },
+        "rule": "the OFF render is pixel-identical to the same render with every guide and cavity hidden, and no taillight material emits in OFF"
+      }
+    },
+    "pass": true
+  },
+  "outputs": {
+    "source_renders": {
+      "OFF": "assets/checkpoints/taillight_freeze/state_OFF.png",
+      "BRAKE": "assets/checkpoints/taillight_freeze/state_BRAKE.png",
+      "LEFT_INDICATOR": "assets/checkpoints/taillight_freeze/state_LEFT_INDICATOR.png",
+      "RIGHT_INDICATOR": "assets/checkpoints/taillight_freeze/state_RIGHT_INDICATOR.png",
+      "HAZARD": "assets/checkpoints/taillight_freeze/state_HAZARD.png",
+      "HEADLIGHT": "assets/checkpoints/taillight_freeze/state_HEADLIGHT.png",
+      "BRAKE_LEFT": "assets/checkpoints/taillight_freeze/state_BRAKE_LEFT.png",
+      "BRAKE_RIGHT": "assets/checkpoints/taillight_freeze/state_BRAKE_RIGHT.png",
+      "BRAKE_HAZARD": "assets/checkpoints/taillight_freeze/state_BRAKE_HAZARD.png",
+      "HEADLIGHT_LEFT": "assets/checkpoints/taillight_freeze/state_HEADLIGHT_LEFT.png",
+      "HEADLIGHT_RIGHT": "assets/checkpoints/taillight_freeze/state_HEADLIGHT_RIGHT.png"
+    },
+    "lamp_bbox": [
+      640,
+      214,
+      1001,
+      327
+    ],
+    "states": [
+      "OFF",
+      "BRAKE",
+      "LEFT_INDICATOR",
+      "RIGHT_INDICATOR",
+      "HAZARD",
+      "HEADLIGHT"
+    ],
+    "per_state": [
+      {
+        "state": "OFF",
+        "px_600": "assets/checkpoints/taillight_freeze/state_off_600px.png",
+        "horizon": "assets/checkpoints/taillight_freeze/horizon_state_off.png",
+        "horizon_1to1": "assets/checkpoints/taillight_freeze/state_off_horizon1to1.png",
+        "measure_600": {
+          "pixels": 17242,
+          "red": 0.62503,
+          "amber": 0.6145,
+          "region_xy": [
+            411,
+            277,
+            644,
+            351
+          ],
+          "image": "state_off_600px.png",
+          "lit_fraction": 0.0,
+          "amber_lit_fraction": 0.0,
+          "mean_delta_x": 0.0,
+          "p95_delta": 0.0,
+          "visible_delta_threshold": 0.05
+        },
+        "measure_horizon": {
+          "pixels": 22950,
+          "red": 0.62559,
+          "amber": 0.61505,
+          "region_xy": [
+            521,
+            253,
+            791,
+            338
+          ],
+          "image": "state_off_horizon1to1.png",
+          "lit_fraction": 0.0,
+          "amber_lit_fraction": 0.0,
+          "mean_delta_x": 0.0,
+          "p95_delta": 0.0,
+          "visible_delta_threshold": 0.05
+        },
+        "lamp_measures": {
+          "600px": {
+            "rear_lights": {
+              "pixels": 17242,
+              "red": 0.62503,
+              "amber": 0.6145,
+              "region_xy": [
+                411,
+                277,
+                644,
+                351
+              ],
+              "image": "state_off_600px.png",
+              "lit_fraction": 0.0,
+              "amber_lit_fraction": 0.0,
+              "mean_delta_x": 0.0,
+              "p95_delta": 0.0,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 661.5
+            },
+            "rear_lightsl": {
+              "pixels": 560,
+              "red": 0.43207,
+              "amber": 0.34213,
+              "region_xy": [
+                451,
+                326,
+                491,
+                340
+              ],
+              "image": "state_off_600px.png",
+              "lit_fraction": 0.0,
+              "amber_lit_fraction": 0.0,
+              "mean_delta_x": 0.0,
+              "p95_delta": 0.0,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 150.6
+            },
+            "rear_lightsr": {
+              "pixels": 588,
+              "red": 0.54198,
+              "amber": 0.49402,
+              "region_xy": [
+                607,
+                284,
+                628,
+                312
+              ],
+              "image": "state_off_600px.png",
+              "lit_fraction": 0.0,
+              "amber_lit_fraction": 0.0,
+              "mean_delta_x": 0.0,
+              "p95_delta": 0.0,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 97.8
+            },
+            "light_breake": {
+              "pixels": 10192,
+              "red": 0.63461,
+              "amber": 0.62744,
+              "region_xy": [
+                432,
+                288,
+                640,
+                337
+              ],
+              "image": "state_off_600px.png",
+              "lit_fraction": 0.0,
+              "amber_lit_fraction": 0.0,
+              "mean_delta_x": 0.0,
+              "p95_delta": 0.0,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 38.4
+            }
+          },
+          "horizon": {
+            "rear_lights": {
+              "pixels": 22950,
+              "red": 0.62559,
+              "amber": 0.61505,
+              "region_xy": [
+                521,
+                253,
+                791,
+                338
+              ],
+              "image": "state_off_horizon1to1.png",
+              "lit_fraction": 0.0,
+              "amber_lit_fraction": 0.0,
+              "mean_delta_x": 0.0,
+              "p95_delta": 0.0,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 900.4
+            },
+            "rear_lightsl": {
+              "pixels": 705,
+              "red": 0.43127,
+              "amber": 0.34076,
+              "region_xy": [
+                567,
+                310,
+                614,
+                325
+              ],
+              "image": "state_off_horizon1to1.png",
+              "lit_fraction": 0.0,
+              "amber_lit_fraction": 0.0,
+              "mean_delta_x": 0.0,
+              "p95_delta": 0.0,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 205.0
+            },
+            "rear_lightsr": {
+              "pixels": 775,
+              "red": 0.54343,
+              "amber": 0.49638,
+              "region_xy": [
+                748,
+                262,
+                773,
+                293
+              ],
+              "image": "state_off_horizon1to1.png",
+              "lit_fraction": 0.0,
+              "amber_lit_fraction": 0.0,
+              "mean_delta_x": 0.0,
+              "p95_delta": 0.0,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 133.1
+            },
+            "light_breake": {
+              "pixels": 13496,
+              "red": 0.63571,
+              "amber": 0.62877,
+              "region_xy": [
+                545,
+                266,
+                786,
+                322
+              ],
+              "image": "state_off_horizon1to1.png",
+              "lit_fraction": 0.0,
+              "amber_lit_fraction": 0.0,
+              "mean_delta_x": 0.0,
+              "p95_delta": 0.0,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 52.2
+            }
+          }
+        }
+      },
+      {
+        "state": "BRAKE",
+        "px_600": "assets/checkpoints/taillight_freeze/state_brake_600px.png",
+        "horizon": "assets/checkpoints/taillight_freeze/horizon_state_brake.png",
+        "horizon_1to1": "assets/checkpoints/taillight_freeze/state_brake_horizon1to1.png",
+        "measure_600": {
+          "pixels": 17242,
+          "red": 0.63897,
+          "amber": 0.62298,
+          "region_xy": [
+            411,
+            277,
+            644,
+            351
+          ],
+          "image": "state_brake_600px.png",
+          "lit_fraction": 0.05115,
+          "amber_lit_fraction": 0.04628,
+          "mean_delta_x": 0.013939,
+          "p95_delta": 0.06255,
+          "visible_delta_threshold": 0.05
+        },
+        "measure_horizon": {
+          "pixels": 22950,
+          "red": 0.6391,
+          "amber": 0.62328,
+          "region_xy": [
+            521,
+            253,
+            791,
+            338
+          ],
+          "image": "state_brake_horizon1to1.png",
+          "lit_fraction": 0.04824,
+          "amber_lit_fraction": 0.04449,
+          "mean_delta_x": 0.013514,
+          "p95_delta": 0.03137,
+          "visible_delta_threshold": 0.05
+        },
+        "lamp_measures": {
+          "600px": {
+            "rear_lights": {
+              "pixels": 17242,
+              "red": 0.63897,
+              "amber": 0.62298,
+              "region_xy": [
+                411,
+                277,
+                644,
+                351
+              ],
+              "image": "state_brake_600px.png",
+              "lit_fraction": 0.05115,
+              "amber_lit_fraction": 0.04628,
+              "mean_delta_x": 0.013939,
+              "p95_delta": 0.06255,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 661.5
+            },
+            "rear_lightsl": {
+              "pixels": 560,
+              "red": 0.43224,
+              "amber": 0.34212,
+              "region_xy": [
+                451,
+                326,
+                491,
+                340
+              ],
+              "image": "state_brake_600px.png",
+              "lit_fraction": 0.0,
+              "amber_lit_fraction": 0.0,
+              "mean_delta_x": 0.000175,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 150.6
+            },
+            "rear_lightsr": {
+              "pixels": 588,
+              "red": 0.54205,
+              "amber": 0.49399,
+              "region_xy": [
+                607,
+                284,
+                628,
+                312
+              ],
+              "image": "state_brake_600px.png",
+              "lit_fraction": 0.0,
+              "amber_lit_fraction": 0.0,
+              "mean_delta_x": 7.3e-05,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 97.8
+            },
+            "light_breake": {
+              "pixels": 10192,
+              "red": 0.63971,
+              "amber": 0.63051,
+              "region_xy": [
+                432,
+                288,
+                640,
+                337
+              ],
+              "image": "state_brake_600px.png",
+              "lit_fraction": 0.02159,
+              "amber_lit_fraction": 0.01864,
+              "mean_delta_x": 0.005105,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 38.4
+            }
+          },
+          "horizon": {
+            "rear_lights": {
+              "pixels": 22950,
+              "red": 0.6391,
+              "amber": 0.62328,
+              "region_xy": [
+                521,
+                253,
+                791,
+                338
+              ],
+              "image": "state_brake_horizon1to1.png",
+              "lit_fraction": 0.04824,
+              "amber_lit_fraction": 0.04449,
+              "mean_delta_x": 0.013514,
+              "p95_delta": 0.03137,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 900.4
+            },
+            "rear_lightsl": {
+              "pixels": 705,
+              "red": 0.43166,
+              "amber": 0.34091,
+              "region_xy": [
+                567,
+                310,
+                614,
+                325
+              ],
+              "image": "state_brake_horizon1to1.png",
+              "lit_fraction": 0.00284,
+              "amber_lit_fraction": 0.00284,
+              "mean_delta_x": 0.000389,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 205.0
+            },
+            "rear_lightsr": {
+              "pixels": 775,
+              "red": 0.54353,
+              "amber": 0.49641,
+              "region_xy": [
+                748,
+                262,
+                773,
+                293
+              ],
+              "image": "state_brake_horizon1to1.png",
+              "lit_fraction": 0.0,
+              "amber_lit_fraction": 0.0,
+              "mean_delta_x": 9.6e-05,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 133.1
+            },
+            "light_breake": {
+              "pixels": 13496,
+              "red": 0.64053,
+              "amber": 0.63167,
+              "region_xy": [
+                545,
+                266,
+                786,
+                322
+              ],
+              "image": "state_brake_horizon1to1.png",
+              "lit_fraction": 0.01956,
+              "amber_lit_fraction": 0.01712,
+              "mean_delta_x": 0.004817,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 52.2
+            }
+          }
+        }
+      },
+      {
+        "state": "LEFT_INDICATOR",
+        "px_600": "assets/checkpoints/taillight_freeze/state_left_indicator_600px.png",
+        "horizon": "assets/checkpoints/taillight_freeze/horizon_state_left_indicator.png",
+        "horizon_1to1": "assets/checkpoints/taillight_freeze/state_left_indicator_horizon1to1.png",
+        "measure_600": {
+          "pixels": 17242,
+          "red": 0.62843,
+          "amber": 0.61698,
+          "region_xy": [
+            411,
+            277,
+            644,
+            351
+          ],
+          "image": "state_left_indicator_600px.png",
+          "lit_fraction": 0.01195,
+          "amber_lit_fraction": 0.01137,
+          "mean_delta_x": 0.003402,
+          "p95_delta": 0.00392,
+          "visible_delta_threshold": 0.05
+        },
+        "measure_horizon": {
+          "pixels": 22950,
+          "red": 0.62906,
+          "amber": 0.61758,
+          "region_xy": [
+            521,
+            253,
+            791,
+            338
+          ],
+          "image": "state_left_indicator_horizon1to1.png",
+          "lit_fraction": 0.01163,
+          "amber_lit_fraction": 0.01098,
+          "mean_delta_x": 0.003469,
+          "p95_delta": 0.00392,
+          "visible_delta_threshold": 0.05
+        },
+        "lamp_measures": {
+          "600px": {
+            "rear_lights": {
+              "pixels": 17242,
+              "red": 0.62843,
+              "amber": 0.61698,
+              "region_xy": [
+                411,
+                277,
+                644,
+                351
+              ],
+              "image": "state_left_indicator_600px.png",
+              "lit_fraction": 0.01195,
+              "amber_lit_fraction": 0.01137,
+              "mean_delta_x": 0.003402,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 661.5
+            },
+            "rear_lightsl": {
+              "pixels": 560,
+              "red": 0.52716,
+              "amber": 0.41213,
+              "region_xy": [
+                451,
+                326,
+                491,
+                340
+              ],
+              "image": "state_left_indicator_600px.png",
+              "lit_fraction": 0.30893,
+              "amber_lit_fraction": 0.29643,
+              "mean_delta_x": 0.095098,
+              "p95_delta": 0.37647,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 150.6
+            },
+            "rear_lightsr": {
+              "pixels": 588,
+              "red": 0.5421,
+              "amber": 0.49413,
+              "region_xy": [
+                607,
+                284,
+                628,
+                312
+              ],
+              "image": "state_left_indicator_600px.png",
+              "lit_fraction": 0.0,
+              "amber_lit_fraction": 0.0,
+              "mean_delta_x": 0.000127,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 97.8
+            },
+            "light_breake": {
+              "pixels": 10192,
+              "red": 0.63998,
+              "amber": 0.63137,
+              "region_xy": [
+                432,
+                288,
+                640,
+                337
+              ],
+              "image": "state_left_indicator_600px.png",
+              "lit_fraction": 0.01894,
+              "amber_lit_fraction": 0.01796,
+              "mean_delta_x": 0.005365,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 38.4
+            }
+          },
+          "horizon": {
+            "rear_lights": {
+              "pixels": 22950,
+              "red": 0.62906,
+              "amber": 0.61758,
+              "region_xy": [
+                521,
+                253,
+                791,
+                338
+              ],
+              "image": "state_left_indicator_horizon1to1.png",
+              "lit_fraction": 0.01163,
+              "amber_lit_fraction": 0.01098,
+              "mean_delta_x": 0.003469,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 900.4
+            },
+            "rear_lightsl": {
+              "pixels": 705,
+              "red": 0.52984,
+              "amber": 0.41335,
+              "region_xy": [
+                567,
+                310,
+                614,
+                325
+              ],
+              "image": "state_left_indicator_horizon1to1.png",
+              "lit_fraction": 0.31915,
+              "amber_lit_fraction": 0.30071,
+              "mean_delta_x": 0.098573,
+              "p95_delta": 0.37647,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 205.0
+            },
+            "rear_lightsr": {
+              "pixels": 775,
+              "red": 0.54353,
+              "amber": 0.49649,
+              "region_xy": [
+                748,
+                262,
+                773,
+                293
+              ],
+              "image": "state_left_indicator_horizon1to1.png",
+              "lit_fraction": 0.0,
+              "amber_lit_fraction": 0.0,
+              "mean_delta_x": 9.6e-05,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 133.1
+            },
+            "light_breake": {
+              "pixels": 13496,
+              "red": 0.6411,
+              "amber": 0.63272,
+              "region_xy": [
+                545,
+                266,
+                786,
+                322
+              ],
+              "image": "state_left_indicator_horizon1to1.png",
+              "lit_fraction": 0.01815,
+              "amber_lit_fraction": 0.01726,
+              "mean_delta_x": 0.005396,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 52.2
+            }
+          }
+        }
+      },
+      {
+        "state": "RIGHT_INDICATOR",
+        "px_600": "assets/checkpoints/taillight_freeze/state_right_indicator_600px.png",
+        "horizon": "assets/checkpoints/taillight_freeze/horizon_state_right_indicator.png",
+        "horizon_1to1": "assets/checkpoints/taillight_freeze/state_right_indicator_horizon1to1.png",
+        "measure_600": {
+          "pixels": 17242,
+          "red": 0.6268,
+          "amber": 0.61574,
+          "region_xy": [
+            411,
+            277,
+            644,
+            351
+          ],
+          "image": "state_right_indicator_600px.png",
+          "lit_fraction": 0.00783,
+          "amber_lit_fraction": 0.00737,
+          "mean_delta_x": 0.001772,
+          "p95_delta": 0.00392,
+          "visible_delta_threshold": 0.05
+        },
+        "measure_horizon": {
+          "pixels": 22950,
+          "red": 0.62739,
+          "amber": 0.61631,
+          "region_xy": [
+            521,
+            253,
+            791,
+            338
+          ],
+          "image": "state_right_indicator_horizon1to1.png",
+          "lit_fraction": 0.00797,
+          "amber_lit_fraction": 0.00732,
+          "mean_delta_x": 0.0018,
+          "p95_delta": 0.00392,
+          "visible_delta_threshold": 0.05
+        },
+        "lamp_measures": {
+          "600px": {
+            "rear_lights": {
+              "pixels": 17242,
+              "red": 0.6268,
+              "amber": 0.61574,
+              "region_xy": [
+                411,
+                277,
+                644,
+                351
+              ],
+              "image": "state_right_indicator_600px.png",
+              "lit_fraction": 0.00783,
+              "amber_lit_fraction": 0.00737,
+              "mean_delta_x": 0.001772,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 661.5
+            },
+            "rear_lightsl": {
+              "pixels": 560,
+              "red": 0.43214,
+              "amber": 0.34216,
+              "region_xy": [
+                451,
+                326,
+                491,
+                340
+              ],
+              "image": "state_right_indicator_600px.png",
+              "lit_fraction": 0.0,
+              "amber_lit_fraction": 0.0,
+              "mean_delta_x": 7.7e-05,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 150.6
+            },
+            "rear_lightsr": {
+              "pixels": 588,
+              "red": 0.59044,
+              "amber": 0.52805,
+              "region_xy": [
+                607,
+                284,
+                628,
+                312
+              ],
+              "image": "state_right_indicator_600px.png",
+              "lit_fraction": 0.21429,
+              "amber_lit_fraction": 0.20238,
+              "mean_delta_x": 0.048466,
+              "p95_delta": 0.28235,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 97.8
+            },
+            "light_breake": {
+              "pixels": 10192,
+              "red": 0.63727,
+              "amber": 0.62931,
+              "region_xy": [
+                432,
+                288,
+                640,
+                337
+              ],
+              "image": "state_right_indicator_600px.png",
+              "lit_fraction": 0.01168,
+              "amber_lit_fraction": 0.01099,
+              "mean_delta_x": 0.002661,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 38.4
+            }
+          },
+          "horizon": {
+            "rear_lights": {
+              "pixels": 22950,
+              "red": 0.62739,
+              "amber": 0.61631,
+              "region_xy": [
+                521,
+                253,
+                791,
+                338
+              ],
+              "image": "state_right_indicator_horizon1to1.png",
+              "lit_fraction": 0.00797,
+              "amber_lit_fraction": 0.00732,
+              "mean_delta_x": 0.0018,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 900.4
+            },
+            "rear_lightsl": {
+              "pixels": 705,
+              "red": 0.43115,
+              "amber": 0.34071,
+              "region_xy": [
+                567,
+                310,
+                614,
+                325
+              ],
+              "image": "state_right_indicator_horizon1to1.png",
+              "lit_fraction": 0.0,
+              "amber_lit_fraction": 0.0,
+              "mean_delta_x": -0.000117,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 205.0
+            },
+            "rear_lightsr": {
+              "pixels": 775,
+              "red": 0.59337,
+              "amber": 0.53145,
+              "region_xy": [
+                748,
+                262,
+                773,
+                293
+              ],
+              "image": "state_right_indicator_horizon1to1.png",
+              "lit_fraction": 0.22194,
+              "amber_lit_fraction": 0.20387,
+              "mean_delta_x": 0.049933,
+              "p95_delta": 0.28745,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 133.1
+            },
+            "light_breake": {
+              "pixels": 13496,
+              "red": 0.63836,
+              "amber": 0.63063,
+              "region_xy": [
+                545,
+                266,
+                786,
+                322
+              ],
+              "image": "state_right_indicator_horizon1to1.png",
+              "lit_fraction": 0.01171,
+              "amber_lit_fraction": 0.01074,
+              "mean_delta_x": 0.002654,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 52.2
+            }
+          }
+        }
+      },
+      {
+        "state": "HAZARD",
+        "px_600": "assets/checkpoints/taillight_freeze/state_hazard_600px.png",
+        "horizon": "assets/checkpoints/taillight_freeze/horizon_state_hazard.png",
+        "horizon_1to1": "assets/checkpoints/taillight_freeze/state_hazard_horizon1to1.png",
+        "measure_600": {
+          "pixels": 17242,
+          "red": 0.6302,
+          "amber": 0.61821,
+          "region_xy": [
+            411,
+            277,
+            644,
+            351
+          ],
+          "image": "state_hazard_600px.png",
+          "lit_fraction": 0.01972,
+          "amber_lit_fraction": 0.01873,
+          "mean_delta_x": 0.00517,
+          "p95_delta": 0.00392,
+          "visible_delta_threshold": 0.05
+        },
+        "measure_horizon": {
+          "pixels": 22950,
+          "red": 0.63084,
+          "amber": 0.61882,
+          "region_xy": [
+            521,
+            253,
+            791,
+            338
+          ],
+          "image": "state_hazard_horizon1to1.png",
+          "lit_fraction": 0.01965,
+          "amber_lit_fraction": 0.01843,
+          "mean_delta_x": 0.005252,
+          "p95_delta": 0.00392,
+          "visible_delta_threshold": 0.05
+        },
+        "lamp_measures": {
+          "600px": {
+            "rear_lights": {
+              "pixels": 17242,
+              "red": 0.6302,
+              "amber": 0.61821,
+              "region_xy": [
+                411,
+                277,
+                644,
+                351
+              ],
+              "image": "state_hazard_600px.png",
+              "lit_fraction": 0.01972,
+              "amber_lit_fraction": 0.01873,
+              "mean_delta_x": 0.00517,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 661.5
+            },
+            "rear_lightsl": {
+              "pixels": 560,
+              "red": 0.52702,
+              "amber": 0.41198,
+              "region_xy": [
+                451,
+                326,
+                491,
+                340
+              ],
+              "image": "state_hazard_600px.png",
+              "lit_fraction": 0.30893,
+              "amber_lit_fraction": 0.29643,
+              "mean_delta_x": 0.094951,
+              "p95_delta": 0.37647,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 150.6
+            },
+            "rear_lightsr": {
+              "pixels": 588,
+              "red": 0.5905,
+              "amber": 0.52801,
+              "region_xy": [
+                607,
+                284,
+                628,
+                312
+              ],
+              "image": "state_hazard_600px.png",
+              "lit_fraction": 0.21259,
+              "amber_lit_fraction": 0.20068,
+              "mean_delta_x": 0.048519,
+              "p95_delta": 0.28098,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 97.8
+            },
+            "light_breake": {
+              "pixels": 10192,
+              "red": 0.64262,
+              "amber": 0.63322,
+              "region_xy": [
+                432,
+                288,
+                640,
+                337
+              ],
+              "image": "state_hazard_600px.png",
+              "lit_fraction": 0.03051,
+              "amber_lit_fraction": 0.02894,
+              "mean_delta_x": 0.008011,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 38.4
+            }
+          },
+          "horizon": {
+            "rear_lights": {
+              "pixels": 22950,
+              "red": 0.63084,
+              "amber": 0.61882,
+              "region_xy": [
+                521,
+                253,
+                791,
+                338
+              ],
+              "image": "state_hazard_horizon1to1.png",
+              "lit_fraction": 0.01965,
+              "amber_lit_fraction": 0.01843,
+              "mean_delta_x": 0.005252,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 900.4
+            },
+            "rear_lightsl": {
+              "pixels": 705,
+              "red": 0.52963,
+              "amber": 0.41324,
+              "region_xy": [
+                567,
+                310,
+                614,
+                325
+              ],
+              "image": "state_hazard_horizon1to1.png",
+              "lit_fraction": 0.31915,
+              "amber_lit_fraction": 0.30071,
+              "mean_delta_x": 0.098362,
+              "p95_delta": 0.37647,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 205.0
+            },
+            "rear_lightsr": {
+              "pixels": 775,
+              "red": 0.59335,
+              "amber": 0.53142,
+              "region_xy": [
+                748,
+                262,
+                773,
+                293
+              ],
+              "image": "state_hazard_horizon1to1.png",
+              "lit_fraction": 0.22194,
+              "amber_lit_fraction": 0.20645,
+              "mean_delta_x": 0.049918,
+              "p95_delta": 0.28745,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 133.1
+            },
+            "light_breake": {
+              "pixels": 13496,
+              "red": 0.64374,
+              "amber": 0.63456,
+              "region_xy": [
+                545,
+                266,
+                786,
+                322
+              ],
+              "image": "state_hazard_horizon1to1.png",
+              "lit_fraction": 0.02986,
+              "amber_lit_fraction": 0.02816,
+              "mean_delta_x": 0.008033,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 52.2
+            }
+          }
+        }
+      },
+      {
+        "state": "HEADLIGHT",
+        "px_600": "assets/checkpoints/taillight_freeze/state_headlight_600px.png",
+        "horizon": "assets/checkpoints/taillight_freeze/horizon_state_headlight.png",
+        "horizon_1to1": "assets/checkpoints/taillight_freeze/state_headlight_horizon1to1.png",
+        "measure_600": {
+          "pixels": 17242,
+          "red": 0.62932,
+          "amber": 0.61684,
+          "region_xy": [
+            411,
+            277,
+            644,
+            351
+          ],
+          "image": "state_headlight_600px.png",
+          "lit_fraction": 0.03973,
+          "amber_lit_fraction": 0.02587,
+          "mean_delta_x": 0.004294,
+          "p95_delta": 0.01961,
+          "visible_delta_threshold": 0.05
+        },
+        "measure_horizon": {
+          "pixels": 22950,
+          "red": 0.62976,
+          "amber": 0.61733,
+          "region_xy": [
+            521,
+            253,
+            791,
+            338
+          ],
+          "image": "state_headlight_horizon1to1.png",
+          "lit_fraction": 0.03861,
+          "amber_lit_fraction": 0.0261,
+          "mean_delta_x": 0.004177,
+          "p95_delta": 0.01176,
+          "visible_delta_threshold": 0.05
+        },
+        "lamp_measures": {
+          "600px": {
+            "rear_lights": {
+              "pixels": 17242,
+              "red": 0.62932,
+              "amber": 0.61684,
+              "region_xy": [
+                411,
+                277,
+                644,
+                351
+              ],
+              "image": "state_headlight_600px.png",
+              "lit_fraction": 0.03973,
+              "amber_lit_fraction": 0.02587,
+              "mean_delta_x": 0.004294,
+              "p95_delta": 0.01961,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 661.5
+            },
+            "rear_lightsl": {
+              "pixels": 560,
+              "red": 0.43211,
+              "amber": 0.34209,
+              "region_xy": [
+                451,
+                326,
+                491,
+                340
+              ],
+              "image": "state_headlight_600px.png",
+              "lit_fraction": 0.0,
+              "amber_lit_fraction": 0.0,
+              "mean_delta_x": 4.9e-05,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 150.6
+            },
+            "rear_lightsr": {
+              "pixels": 588,
+              "red": 0.54202,
+              "amber": 0.49403,
+              "region_xy": [
+                607,
+                284,
+                628,
+                312
+              ],
+              "image": "state_headlight_600px.png",
+              "lit_fraction": 0.0,
+              "amber_lit_fraction": 0.0,
+              "mean_delta_x": 4e-05,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 97.8
+            },
+            "light_breake": {
+              "pixels": 10192,
+              "red": 0.63612,
+              "amber": 0.62826,
+              "region_xy": [
+                432,
+                288,
+                640,
+                337
+              ],
+              "image": "state_headlight_600px.png",
+              "lit_fraction": 0.01344,
+              "amber_lit_fraction": 0.00589,
+              "mean_delta_x": 0.001515,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 38.4
+            }
+          },
+          "horizon": {
+            "rear_lights": {
+              "pixels": 22950,
+              "red": 0.62976,
+              "amber": 0.61733,
+              "region_xy": [
+                521,
+                253,
+                791,
+                338
+              ],
+              "image": "state_headlight_horizon1to1.png",
+              "lit_fraction": 0.03861,
+              "amber_lit_fraction": 0.0261,
+              "mean_delta_x": 0.004177,
+              "p95_delta": 0.01176,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 900.4
+            },
+            "rear_lightsl": {
+              "pixels": 705,
+              "red": 0.43123,
+              "amber": 0.34069,
+              "region_xy": [
+                567,
+                310,
+                614,
+                325
+              ],
+              "image": "state_headlight_horizon1to1.png",
+              "lit_fraction": 0.0,
+              "amber_lit_fraction": 0.0,
+              "mean_delta_x": -3.3e-05,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 205.0
+            },
+            "rear_lightsr": {
+              "pixels": 775,
+              "red": 0.54355,
+              "amber": 0.49645,
+              "region_xy": [
+                748,
+                262,
+                773,
+                293
+              ],
+              "image": "state_headlight_horizon1to1.png",
+              "lit_fraction": 0.0,
+              "amber_lit_fraction": 0.0,
+              "mean_delta_x": 0.000121,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 133.1
+            },
+            "light_breake": {
+              "pixels": 13496,
+              "red": 0.63715,
+              "amber": 0.62955,
+              "region_xy": [
+                545,
+                266,
+                786,
+                322
+              ],
+              "image": "state_headlight_horizon1to1.png",
+              "lit_fraction": 0.01297,
+              "amber_lit_fraction": 0.0063,
+              "mean_delta_x": 0.001445,
+              "p95_delta": 0.00392,
+              "visible_delta_threshold": 0.05,
+              "lamp_silhouette_px": 52.2
+            }
+          }
+        }
+      }
+    ],
+    "render_alpha_bbox": [
+      78,
+      147,
+      1012,
+      683
+    ],
+    "regions": {
+      "600px": [
+        411,
+        277,
+        644,
+        351
+      ],
+      "horizon": [
+        521,
+        253,
+        791,
+        338
+      ]
+    },
+    "lamp_regions": {
+      "600px": {
+        "rear_lights": [
+          411,
+          277,
+          644,
+          351
+        ],
+        "rear_lightsl": [
+          451,
+          326,
+          491,
+          340
+        ],
+        "rear_lightsr": [
+          607,
+          284,
+          628,
+          312
+        ],
+        "light_breake": [
+          432,
+          288,
+          640,
+          337
+        ]
+      },
+      "horizon": {
+        "rear_lights": [
+          521,
+          253,
+          791,
+          338
+        ],
+        "rear_lightsl": [
+          567,
+          310,
+          614,
+          325
+        ],
+        "rear_lightsr": [
+          748,
+          262,
+          773,
+          293
+        ],
+        "light_breake": [
+          545,
+          266,
+          786,
+          322
+        ]
+      }
+    },
+    "verdicts": {
+      "600px_brake_lamp_lit": {
+        "pass": true,
+        "outer_lamp_changed_px": 881.9,
+        "outer_lamp_silhouette_px": 661.5,
+        "brake_lamp_changed_px": 220.0,
+        "brake_lamp_silhouette_px": 38.4,
+        "rule": "at least 25% of that lamp's own projected silhouette changes at this scale"
+      },
+      "600px_indicator_one_sided": {
+        "pass": true,
+        "left_lamp_in_LEFT_px": 166.0,
+        "right_lamp_in_LEFT_px": 0.0,
+        "right_lamp_in_RIGHT_px": 119.0,
+        "left_lamp_in_RIGHT_px": 0.0,
+        "rule": "each indicator changes its own inner lamp and leaves the other side quiet"
+      },
+      "600px_hazard_both_sides": {
+        "pass": true,
+        "left_lamp_changed_px": 166.0,
+        "right_lamp_changed_px": 118.0,
+        "rule": "HAZARD changes both inner lamps"
+      },
+      "600px_off_shows_nothing": {
+        "pass": true,
+        "rule": "OFF is the baseline: no lamp changes relative to itself, and the lamp region is not empty"
+      },
+      "horizon_brake_lamp_lit": {
+        "pass": true,
+        "outer_lamp_changed_px": 1107.1,
+        "outer_lamp_silhouette_px": 900.4,
+        "brake_lamp_changed_px": 264.0,
+        "brake_lamp_silhouette_px": 52.2,
+        "rule": "at least 25% of that lamp's own projected silhouette changes at this scale"
+      },
+      "horizon_indicator_one_sided": {
+        "pass": true,
+        "left_lamp_in_LEFT_px": 212.0,
+        "right_lamp_in_LEFT_px": 0.0,
+        "right_lamp_in_RIGHT_px": 158.0,
+        "left_lamp_in_RIGHT_px": 0.0,
+        "rule": "each indicator changes its own inner lamp and leaves the other side quiet"
+      },
+      "horizon_hazard_both_sides": {
+        "pass": true,
+        "left_lamp_changed_px": 212.0,
+        "right_lamp_changed_px": 160.0,
+        "rule": "HAZARD changes both inner lamps"
+      },
+      "horizon_off_shows_nothing": {
+        "pass": true,
+        "rule": "OFF is the baseline: no lamp changes relative to itself, and the lamp region is not empty"
+      }
+    },
+    "pass": true
+  },
+  "gate_table": {
+    "gates": {
+      "left_right_split": "PASS",
+      "inward_direction": "PASS",
+      "surface_offset_cavity": "PASS",
+      "closed_manifold": "PASS",
+      "valid_volume": "PASS",
+      "self_intersection_policy": "PASS",
+      "usable_thickness": "PASS",
+      "guide_coverage": "PASS",
+      "guide_containment_100": "PASS",
+      "guide_clearance_over_epsilon": "PASS",
+      "brake_internal_guide_geometry": "N/A_WITH_EVIDENCE",
+      "guide_body_collision": "PASS",
+      "guide_trunk_collision": "PASS",
+      "guide_unrelated_lamp_collision": "PASS",
+      "cavity_body_collision": "INFORMATIONAL",
+      "collision_detector_self_test": "PASS",
+      "escaped_guide_pixels": "PASS",
+      "escaped_cavity_pixels": "PASS",
+      "visible_guide_protrusion": "PASS",
+      "visible_cavity_protrusion": "PASS",
+      "trunk_ownership": "PASS",
+      "trunk_motion_0": "PASS",
+      "trunk_motion_25": "PASS",
+      "trunk_motion_50": "PASS",
+      "trunk_motion_75": "PASS",
+      "trunk_motion_100": "PASS",
+      "on_states": "PASS",
+      "state_brake_lights_both_sides": "PASS",
+      "state_left_indicator_is_one_sided": "PASS",
+      "state_right_indicator_is_one_sided": "PASS",
+      "state_hazard_drives_both_sides": "PASS",
+      "state_headlight_is_running_not_brake": "PASS",
+      "state_brake_does_not_erase_indicator": "PASS",
+      "state_brake_hazard_composes": "PASS",
+      "state_off_state_has_no_lighting_residue": "PASS",
+      "off_600px": "PASS",
+      "horizon_actual_size": "PASS",
+      "presentation_600px_brake_lamp_lit": "PASS",
+      "presentation_600px_indicator_one_sided": "PASS",
+      "presentation_600px_hazard_both_sides": "PASS",
+      "presentation_600px_off_shows_nothing": "PASS",
+      "presentation_horizon_brake_lamp_lit": "PASS",
+      "presentation_horizon_indicator_one_sided": "PASS",
+      "presentation_horizon_hazard_both_sides": "PASS",
+      "presentation_horizon_off_shows_nothing": "PASS"
+    },
+    "blocking": {},
+    "gates_never_computed": [],
+    "evidence": {
+      "brake_internal_guide_geometry": "assets/checkpoints/taillight_final/taillight_candidate_search_v4.json - light_breake: inward offset collapses at 2-5 mm (median wall 0.80-0.92 mm, 35-175 self-intersecting pairs) and is not a valid closed manifold at 6-12 mm; usable x span 0.0 m at every offset. No interior exists to place a guide in; the brake lamp is lit by lens emission instead (see the reported BRAKE state result)."
+    },
+    "lockable": true,
+    "counts": {
+      "pass": 43,
+      "fail": 0,
+      "not_run": 0,
+      "n_a_with_evidence": 1,
+      "informational": 1
+    }
+  },
+  "master_status": "LOCKED"
+}

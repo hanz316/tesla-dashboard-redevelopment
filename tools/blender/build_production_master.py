@@ -35,10 +35,13 @@ import hmi_studio_photoreal as photoreal  # noqa: E402
 import hmi_studio_reference as reference  # noqa: E402
 import hmi_studio_v4 as v4  # noqa: E402
 import render_vehicle_visual_v2 as vehicle_v2  # noqa: E402
+import taillight_finalize as tail_base  # noqa: E402
+import taillight_guide_v4 as tg4  # noqa: E402
 import taillight_system as tail  # noqa: E402
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 PROD_HDRI = "assets/source/hdri/photo_studio_01_2k.hdr"
+TAILIGHT_GEOMETRY_VERSION = "surface-offset-cavity-lightguide-v3"
 
 # Part 1: the measured policy. Do NOT normalise this into a whole-car pass.
 NORMAL_POLICY = {
@@ -274,69 +277,127 @@ def build_cavity(name, bbox_min, bbox_max, material):
     return obj
 
 
-def finalize_taillights(report):
-    """Closed internal cavity + light guide v2, both proven contained.
+def is_segment_object(name, prefix, label):
+    """Segment objects carry their label, so several lamps can coexist."""
+    return name.startswith(prefix + label + ("" if prefix == "Cavity_"
+                                             else "_"))
 
-    Structure per lamp: original outer lens (untouched) -> closed manifold
-    cavity -> curved internal light pipe -> reflector (original geometry).
+
+def lamp_owner(label, boot_name="boot", contact_m=0.030):
+    """FIXED_BODY or TRUNK_MOVING, decided from geometry rather than names.
+
+    A lamp piece that belongs to the trunk lid sits on the lid panel, so it is
+    within a few millimetres of the boot mesh. A piece that belongs to the body
+    keeps its distance from the lid. Distances are measured vertex to surface,
+    not bounding box to bounding box - a boot bounding box covers most of the
+    rear of the car and labelled every lamp as trunk-mounted.
+    """
+    src = bpy.data.objects.get(label.split(":")[1])
+    boot = bpy.data.objects.get(boot_name)
+    if src is None or boot is None:
+        return "UNKNOWN", {"error": "source or boot missing"}
+    tree = tail_base.bvh_of(boot)
+    if tree is None:
+        return "UNKNOWN", {"error": "boot has no triangles"}
+    mw = src.matrix_world
+    ds = []
+    step = max(1, len(src.data.vertices) // 400)
+    sampled = list(src.data.vertices)[::step]
+    for v in sampled:
+        p = mw @ v.co
+        res = tree.find_nearest(p, 1.0)
+        if res[0] is not None:
+            ds.append(res[3])
+    if not ds:
+        return "UNKNOWN", {"error": "no distance samples"}
+    ds.sort()
+    median = ds[len(ds) // 2]
+    owner = "TRUNK_MOVING" if median <= contact_m else "FIXED_BODY"
+    return owner, {"samples": len(ds), "median_distance_to_boot_m":
+                   round(median, 5), "p05_m": round(ds[len(ds) // 20], 5),
+                   "min_m": round(ds[0], 5), "contact_threshold_m": contact_m}
+
+
+def finalize_taillights(report):
+    """Surface-offset cavity + medial light guide, solved per lamp component.
+
+    Structure per optical segment: original outer lens (untouched) -> closed
+    surface-offset cavity -> medial light guide, with the guide proven contained
+    and clear by the v4 geometry stage. A lamp piece whose source geometry
+    cannot host a cavity of any usable thickness (the brake light) gets no
+    guide at all and is lit by material/emission instead - no geometry beats
+    protruding geometry.
     """
     _, _, _, cavity_mat, _, _, _ = v4.build_taillight()
     channels = tail.channel_materials()
+    left_sign, err = tail_base.resolve_left_sign()
+    if left_sign is None:
+        report["light_guides_failed"].append(
+            {"source": "all", "stage": "left_sign", "detail": err})
+        return []
+
+    segments = []
+    for comp in tg4.component_sources(left_sign):
+        entry = tg4.evaluate_segment(comp, tg4.OFFSET_CANDIDATES_M, True,
+                                     None, None)
+        if entry is not None:
+            segments.append(entry)
+    tg4.pair_offsets(segments)
 
     built = []
-    for name in TAILLIGHT_OBJECTS:
-        src = bpy.data.objects.get(name)
-        if src is None or src.type != "MESH":
+    owners = {}
+    for entry in segments:
+        if not entry.get("passed"):
+            report["light_guides_failed"].append({
+                "source": entry["label"], "stage": "geometry",
+                "detail": entry.get("evidence") or entry.get("offsets", [])[-1:]})
             continue
-        cav, cav_info = tail.build_closed_cavity(src, f"{name}_Cavity")
-        if cav is None:
-            report["light_guides_failed"].append(
-                {"source": name, "stage": "cavity", "detail": cav_info})
-            print(f"[master] cavity FAILED for {name}: {cav_info}")
-            continue
-        if not cav_info["health"]["watertight"]:
-            report["light_guides_failed"].append(
-                {"source": name, "stage": "cavity_not_watertight",
-                 "detail": cav_info["health"]})
-            continue
-        for slot in cav.material_slots:
-            slot.material = cavity_mat
-        if not cav.data.materials:
-            cav.data.materials.append(cavity_mat)
-        else:
-            cav.data.materials[0] = cavity_mat
+        owner_class, owner_evidence = lamp_owner(entry["label"])
+        owners[entry["label"]] = {"owner": owner_class,
+                                  "evidence": owner_evidence}
+        tg4.discard_unselected(entry)
+        for obj in bpy.data.objects:
+            if is_segment_object(obj.name, "Cavity_", entry["label"]):
+                # The cavity is a containment volume, not a visible part: its
+                # outer wall is coincident with the lens and its inner wall
+                # surrounds the guide. It stays in the master (it is what the
+                # guide is proven inside, and the screen-space QA renders it),
+                # but it must not occlude the guide in production renders.
+                obj.hide_render = True
+                for slot in obj.material_slots:
+                    slot.material = cavity_mat
+                if not obj.data.materials:
+                    obj.data.materials.append(cavity_mat)
+                else:
+                    obj.data.materials[0] = cavity_mat
+            if is_segment_object(obj.name, "TailGuide_", entry["label"]):
+                for slot in obj.material_slots:
+                    slot.material = channels["OFF"]
+        report["light_guides"].append({
+            "segment": entry["label"], "lamp": entry["lamp"],
+            "owner": owner_class, "owner_evidence": owner_evidence,
+            "offset_m": entry["selected_thickness_m"],
+            "pair_offset_m": entry.get("pair_offset_m"),
+            "cavity": [o.name for o in bpy.data.objects
+                       if is_segment_object(o.name, "Cavity_", entry["label"])],
+            "guides": [o.name for o in bpy.data.objects
+                       if is_segment_object(o.name, "TailGuide_",
+                                            entry["label"])],
+            "summary": entry.get("summary"),
+        })
+        built += [o.name for o in bpy.data.objects
+                  if is_segment_object(o.name, "Cavity_", entry["label"])]
+        built += [o.name for o in bpy.data.objects
+                  if is_segment_object(o.name, "TailGuide_", entry["label"])]
+        print(f"[master] {entry['label']}: offset={entry['selected_thickness_m']} "
+              f"containment={entry['summary']['worst_containment_percent']} "
+              f"clearance={entry['summary']['worst_min_clearance_m']} "
+              f"coverage={(entry['summary']['coverage'] or {}).get('coverage_ratio_of_usable')}")
 
-        guide, guide_info = tail.build_light_guide_v2(
-            cav, src, f"{name}_LightGuide", channels["OFF"])
-        if guide is None:
-            report["light_guides_failed"].append(
-                {"source": name, "stage": "guide", "detail": guide_info})
-            continue
-        contain = tail.containment(cav, guide)
-        entry = {
-            "source_object": name,
-            "cavity": cav.name,
-            "guide": guide.name,
-            "cavity_health": cav_info["health"],
-            "cavity_shrink": cav_info["shrink"],
-            "guide_profile": guide_info.get("profile"),
-            "cross_section_m": guide_info.get("cross_section_m"),
-            "containment": contain,
-            "contained": contain.get("inside_percent") == 100.0,
-        }
-        report["light_guides"].append(entry)
-        built += [cav.name, guide.name]
-        print(f"[master] {name}: cavity watertight="
-              f"{cav_info['health']['watertight']} "
-              f"boundary={cav_info['health']['boundary_edges']} "
-              f"guide inside={contain.get('inside_percent')}% "
-              f"min_clearance={contain.get('min_clearance_m')}m")
-
-    # Channel materials are stored on the master for later state switching.
     report["channels"] = sorted(channels.keys())
-    owner, err = tail.trunk_ownership(TAILLIGHT_OBJECTS)
-    report["trunk_ownership"] = owner
-    report["trunk_ownership_error"] = err
+    report["segments"] = segments
+    report["trunk_ownership"] = owners
+    report["trunk_ownership_error"] = None
     return built
 
 
@@ -421,37 +482,32 @@ def main():
             "untouched_objects": 107 - len(report["processed"]),
         },
         "taillight_geometry": {
-            "version": "lens-cavity-reflector (light guide REMOVED)",
-            "status": "BLOCKED_BY_SOURCE_GEOMETRY",
+            "version": TAILIGHT_GEOMETRY_VERSION,
+            "status": "GEOMETRY_STAGE_COMPLETE_PENDING_FREEZE_GATE",
             "outer_lens": "unchanged MODEL A geometry",
             "added": report["light_guides"],
             "failed": report["light_guides_failed"],
             "v1_defect": "lightguide-v1 fitted the rod to the lamp BOUNDING "
                          "BOX, so parts protruded through the curved lens and "
                          "read as red rods. Rejected in review.",
-            "why_still_blocked": "rear_lights / rear_lightsl / rear_lightsr / "
-                                 "light_breake are OPEN SHELLS (lens surfaces), "
-                                 "not closed volumes. An inside/outside parity "
-                                 "test is undefined on them, and a "
-                                 "5-direction outward occlusion test rejected "
-                                 "every candidate placement (all 336 ring "
-                                 "vertices escaped in at least one exterior "
-                                 "direction even at a 3.8 mm radius). The "
-                                 "master therefore ships with the guide "
-                                 "REMOVED: no protruding geometry is strictly "
-                                 "better than protruding geometry.",
-            "minimal_fix_plan": [
-                "1. Build a CLOSED inner cavity volume lofted from the lens "
-                "shell's boundary ring. That gives the lamp a well-defined "
-                "interior, after which the existing parity containment test "
-                "becomes valid and the rod can be placed with a proof.",
-                "2. Alternatively verify by RENDER: place the rod, render the "
-                "guide in isolation (emission material with the lens and body "
-                "as holdouts) and require every guide pixel to fall inside the "
-                "lens screen-space silhouette. This tests the actual defect "
-                "(visibility) instead of a geometric proxy.",
-                "Until one of those is implemented and passes, do not add a "
-                "light guide to the production master.",
+            "solved_by": "The lens shells are OPEN SHELLS, so a parity "
+                         "containment test is undefined on them directly. The "
+                         "interior is therefore derived from the SURFACE: the "
+                         "shell is offset inward along its own normals into a "
+                         "closed surface-offset cavity, which makes the parity "
+                         "test valid and gives the guide a proven interior. "
+                         "See docs/TAILLIGHT_GUIDE_V4.md.",
+            "excluded_by_source_geometry": [
+                {"lamp": "light_breake",
+                 "measured": "the inward offset collapses at 2-5 mm (median "
+                             "wall 0.80-0.92 mm against a 2-5 mm offset, "
+                             "35-175 self-intersecting face pairs) and is not a "
+                             "valid closed manifold at 6-12 mm; usable x span "
+                             "0.0 m at every offset",
+                 "consequence": "no internal guide; the brake light is lit by "
+                                "material/emission on the lens. This is an "
+                                "optical VISUAL_APPROXIMATION, not proven "
+                                "OEM-exact segmentation."},
             ],
             "states_prepared": ["LIGHT_OFF", "BRAKE_ON",
                                 "LEFT_INDICATOR", "RIGHT_INDICATOR"],

@@ -323,11 +323,12 @@ def place_guide_run(tree, pts, r0s, profile, scale, inside_test, name,
         built, changed, log_row = [], False, {"iteration": iteration,
                                               "stretches": len(stretches)}
         worst_inside, worst_clear = 100.0, None
-        for run in stretches:
+        for stretch_i, run in enumerate(stretches):
             kept_pts = [pts[i] for i in run]
             kept_r = [radii[i] for i in run]
             kept_global = [global_indices[i] for i in run]
-            guide = medial.build_guide(kept_pts, kept_r, profile, name)
+            guide = medial.build_guide(kept_pts, kept_r, profile,
+                                       f"{name}_s{stretch_i}")
             records = medial.guide_sample_records(guide, kept_pts,
                                                   RING_SEGMENTS)
             ev = medial.evaluate_samples(tree, records, inside_test)
@@ -487,7 +488,7 @@ def place_guide(tree, points, r0_list, profile, scale, inside_test, name,
 
 
 def evaluate_offset(sign, copy, thickness, refine, inside_factory,
-                    source_verts, source_normals):
+                    source_verts, source_normals, label=""):
     """Cavity -> centreline -> guide for one segment at one offset."""
     mesh = off.solidify(copy, thickness, sign["flip_needed"])
     health = off.health(mesh)
@@ -496,7 +497,9 @@ def evaluate_offset(sign, copy, thickness, refine, inside_factory,
             and health["signed_volume_m3"] > 0):
         row["rejected"] = "cavity is not a valid closed manifold"
         return None, row
-    cov = bpy.data.objects.new(f"Cavity_{thickness}", mesh)
+    cov = bpy.data.objects.new(
+        f"Cavity_{label}_{thickness * 1000.0:.1f}mm" if label
+        else f"Cavity_{thickness}", mesh)
     bpy.context.scene.collection.objects.link(cov)
     tree = base.bvh_of(cov)
     inside_test = inside_factory(tree)
@@ -559,7 +562,10 @@ def evaluate_offset(sign, copy, thickness, refine, inside_factory,
     for profile in PROFILES:
         for scale in SCALES:
             built, res = place_guide(tree, points, r0_list, profile, scale,
-                                     inside_test, f"TailGuide_{profile}_{scale}",
+                                     inside_test,
+                                     f"TailGuide_{label}_"
+                                     f"{thickness * 1000.0:.1f}mm_"
+                                     f"{profile}_{scale}",
                                      usable_x, slab_spacing, seed_x, cov)
             if built is not None:
                 guides, kept_points, kept_runs, res = built
@@ -636,7 +642,7 @@ def evaluate_segment(comp, offsets, refine, debug_dir, only):
              "source_vertices": comp["vertices"],
              "source_faces": comp["faces_count"],
              "x_span_m": comp["x_span_m"], "offsets": []}
-    copy, cleanup = off.cleaned_copy(f"Cavity_{label}_src", comp["verts"],
+    copy, cleanup = off.cleaned_copy(f"CavitySrc_{label}", comp["verts"],
                                      [tuple(f) for f in comp["faces"]])
     consistency, flipped = off.normals_consistent(copy.data)
     sign = off.inward_sign(copy, 1.0, comp["side"])
@@ -651,7 +657,7 @@ def evaluate_segment(comp, offsets, refine, debug_dir, only):
     selected = None
     for th in offsets:
         cov, row = evaluate_offset(sign, copy, th, refine, inside_factory,
-                                   comp["verts"], comp["normals"])
+                                   comp["verts"], comp["normals"], label)
         entry["offsets"].append(row)
         if debug_dir and cov is not None and "slabs" in row:
             os.makedirs(debug_dir, exist_ok=True)
@@ -717,6 +723,80 @@ def row_at(entry, target):
         if abs(row["thickness_m"] - target) < 1e-9 and row.get("selected"):
             return row
     return None
+
+
+def pair_offsets(segments):
+    """Both sides of one physical lamp must end up on one cavity offset.
+
+    The left and right lamps are mirror images, so a different offset per side
+    would give the two lamps a different wall separation and read as an
+    asymmetry on the car. Where both sides pass at a common offset, the larger
+    of the two selections is adopted for both.
+    """
+    pairs = {}
+    for s in segments:
+        pairs.setdefault(PAIR_KEYS.get(s["lamp"], s["lamp"]), []).append(s)
+    for key, group in pairs.items():
+        if len(group) != 2 or not all(s["passed"] for s in group):
+            continue
+        offsets_sel = [s["selected_thickness_m"] for s in group]
+        if offsets_sel[0] == offsets_sel[1]:
+            for s in group:
+                s["pair_offset_m"] = offsets_sel[0]
+            continue
+        target = max(offsets_sel)
+        rows = [(s, row_at(s, target)) for s in group]
+        if all(r is not None for _s, r in rows):
+            for s, r in rows:
+                apply_row(s, r)
+                s["pair_offset_m"] = target
+                s["pair_offset_note"] = (
+                    "raised to the common pair offset %d mm so both sides of "
+                    "the %s lamp match" % (target * 1000.0, key))
+        else:
+            for s in group:
+                s["pair_offset_m"] = None
+                s["pair_offset_note"] = (
+                    "no common offset passes on both sides; per-side offsets "
+                    "kept (%s) and the asymmetry is recorded"
+                    % ", ".join("%d mm" % (o * 1000.0) for o in offsets_sel))
+    return segments
+
+
+def discard_unselected(entry):
+    """Keep only the winning offset's cavity and the winning attempt's guides.
+
+    Every offset is evaluated so the pair rule can see all of them, which
+    leaves several cavities and many candidate guides in the scene. The
+    production master must contain exactly one cavity and one guide set per
+    optical segment, so the losers are removed here.
+    """
+    label = entry["label"]
+    keep_mm = entry.get("selected_thickness_m")
+    guide = entry.get("guide") or {}
+    keep_tag = None
+    if (keep_mm is not None and guide.get("profile")
+            and guide.get("scale") is not None):
+        keep_tag = (f"_{keep_mm * 1000.0:.1f}mm_"
+                    f"{guide['profile']}_{guide['scale']}")
+    removed = []
+    for obj in list(bpy.data.objects):
+        name = obj.name
+        if name.startswith(f"CavitySrc_{label}"):
+            removed.append(name)
+            bpy.data.objects.remove(obj, do_unlink=True)
+            continue
+        if name.startswith(f"Cavity_{label}_"):
+            suffix = name[len(f"Cavity_{label}_"):].replace(".001", "")
+            if keep_mm is None or suffix != f"{keep_mm * 1000.0:.1f}mm":
+                removed.append(name)
+                bpy.data.objects.remove(obj, do_unlink=True)
+            continue
+        if name.startswith(f"TailGuide_{label}_"):
+            if keep_tag is None or keep_tag not in name:
+                removed.append(name)
+                bpy.data.objects.remove(obj, do_unlink=True)
+    return removed
 
 
 def slim_slab(slab):
@@ -840,34 +920,7 @@ def main():
     # the two lamps different wall separation and read as an asymmetry on the
     # car. Where both sides pass at a common offset, the larger of the two
     # selections is adopted for both.
-    pairs = {}
-    for s in segs:
-        pairs.setdefault(PAIR_KEYS.get(s["lamp"], s["lamp"]), []).append(s)
-    for key, group in pairs.items():
-        if len(group) != 2 or not all(s["passed"] for s in group):
-            continue
-        offsets_sel = [s["selected_thickness_m"] for s in group]
-        if offsets_sel[0] == offsets_sel[1]:
-            for s in group:
-                s["pair_offset_m"] = offsets_sel[0]
-            continue
-        target = max(offsets_sel)
-        rows = [(s, row_at(s, target)) for s in group]
-        if all(r is not None for _s, r in rows):
-            for s, r in rows:
-                apply_row(s, r)
-                s["pair_offset_m"] = target
-                s["pair_offset_note"] = (
-                    "raised to the common pair offset %d mm so both sides of "
-                    "the %s lamp match" % (target * 1000.0, key))
-        else:
-            for s in group:
-                s["pair_offset_m"] = None
-                s["pair_offset_note"] = (
-                    "no common offset passes on both sides; per-side offsets "
-                    "kept (%s) and the asymmetry is recorded"
-                    % ", ".join("%d mm" % (o * 1000.0) for o in offsets_sel))
-
+    pair_offsets(segs)
     passed = [s for s in segs if s["passed"]]
     report["freeze_gate_v3"] = {
         "every_segment_has_a_guide_or_measured_exclusion": all(

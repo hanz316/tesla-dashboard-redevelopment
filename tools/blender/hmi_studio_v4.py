@@ -336,7 +336,14 @@ def apply_v4_materials(meshes, paint="d", silver="neutral", mode="combined",
             if role in ("LENS_RED", "LENS_CLEAR") and (
                     "rear" in lowered_obj or "breake" in lowered_obj
                     or "boot" in lowered_obj or "belakang" in lowered_obj):
-                slot.material = lens_red if role == "LENS_RED" else cavity
+                # These objects are the tail lamp lenses themselves ("left
+                # rear light", "breaklight l"). Mapping a LENS_CLEAR-classified
+                # lamp to the near-black CAVITY material is what made the tail
+                # lamps read as dead panels and blocked every bit of light from
+                # the guide behind them. The red outer lens material exists for
+                # exactly this surface. This is a material MAPPING correction,
+                # not a re-tune: no frozen material definition changes.
+                slot.material = lens_red
                 counts["TAIL_LENS" if role == "LENS_RED" else "TAIL_CAVITY"] = \
                     counts.get("TAIL_LENS" if role == "LENS_RED"
                                else "TAIL_CAVITY", 0) + 1

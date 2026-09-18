@@ -309,6 +309,8 @@ def channel_materials():
 
     return {
         "OFF": make("M_TailGuide_OFF", (0.165, 0.020, 0.022)),
+        "RUNNING": make("M_TailGuide_RUNNING", (0.240, 0.022, 0.024),
+                        emission=(0.85, 0.05, 0.05), strength=1.6),
         "BRAKE": make("M_TailGuide_BRAKE", (0.320, 0.030, 0.032),
                       emission=(1.00, 0.060, 0.055), strength=6.0),
         "INDICATOR_LEFT": make("M_TailGuide_IND_L", (0.320, 0.150, 0.020),
@@ -316,6 +318,99 @@ def channel_materials():
         "INDICATOR_RIGHT": make("M_TailGuide_IND_R", (0.320, 0.150, 0.020),
                                 emission=(1.00, 0.45, 0.06), strength=7.0),
     }
+
+
+def lens_channel_materials(base_name="M_TailLens_Outer_v4", base=None):
+    """The same channels, carried by the LENS rather than by the guide.
+
+    A guide inside a 36 %-transmissive red lens reads as a thin internal glow;
+    the lens is what the viewer actually sees. So every channel also exists as a
+    lens material, and the brake lamp - which has no interior at all - is lit
+    this way and only this way. It stays one system: the same channel key
+    selects the guide material and the lens material.
+    """
+    if base is None:
+        base = bpy.data.materials.get(base_name)
+        if base is None:            # the builder may have stored a copy
+            for mat in bpy.data.materials:
+                if mat.name.startswith(base_name):
+                    base = mat
+                    break
+    return {
+        "OFF": base,
+        "RUNNING": _lens_channel(base, "M_TailLens_RUNNING_v4",
+                                 (0.62, 0.050, 0.050), 0.9),
+        "BRAKE": _lens_channel(base, "M_TailLens_BRAKE_v4",
+                               (1.00, 0.070, 0.060), 3.0),
+        "INDICATOR_LEFT": _lens_channel(base, "M_TailLens_IND_L_v4",
+                                        (1.00, 0.42, 0.055), 3.4),
+        "INDICATOR_RIGHT": _lens_channel(base, "M_TailLens_IND_R_v4",
+                                         (1.00, 0.42, 0.055), 3.4),
+    }
+
+
+def _lens_channel(base, name, emission, strength):
+    """A copy of the frozen lens material with one channel's emission added."""
+    mat = base.copy() if base is not None else bpy.data.materials.new(name)
+    mat.name = name
+    if not mat.use_nodes:
+        return mat
+    b = mat.node_tree.nodes.get("Principled BSDF")
+    if b is None:
+        return mat
+    for key in ("Emission Color", "Emission"):
+        if key in b.inputs:
+            b.inputs[key].default_value = emission + (1.0,)
+            break
+    if "Emission Strength" in b.inputs:
+        b.inputs["Emission Strength"].default_value = strength
+    return mat
+
+
+def assign_lamp_material(obj, material):
+    """One material per lamp, whatever slots it started with."""
+    if not obj.data.materials:
+        obj.data.materials.append(material)
+        return
+    for index in range(len(obj.data.materials)):
+        obj.data.materials[index] = material
+
+
+def apply_state(state, segments, lamps, guide_channels, lens_channels):
+    """The one place a state becomes materials. Nothing else sets emission.
+
+    `segments` is {label: {"guides": [...], "cavity": [...]}} and `lamps` is
+    {lamp_name: object}. Returns the per-lamp channel assignment that was
+    applied, so a report can state exactly what a state did.
+    """
+    import taillight_states as states
+
+    per_lamp = states.lamp_channels(state)
+    applied = {}
+    for label, parts in segments.items():
+        lamp = label.split(":")[1]
+        channels = per_lamp.get(lamp, frozenset())
+        guide_key = states.material_key(channels) if channels else "OFF"
+        lens_key = guide_key
+        material = guide_channels.get(guide_key, guide_channels["OFF"])
+        for guide in parts.get("guides", []):
+            assign_lamp_material(guide, material)
+        applied[label] = {"lamp": lamp, "channels": sorted(channels),
+                          "guide_material": material.name,
+                          "lens_material": (lens_channels.get(lens_key)
+                                            or lens_channels["OFF"]).name
+                          if lens_channels.get(lens_key) else None}
+    for lamp, obj in lamps.items():
+        channels = per_lamp.get(lamp, frozenset())
+        key = states.material_key(channels) if channels else "OFF"
+        material = lens_channels.get(key) or lens_channels.get("OFF")
+        if material is not None:
+            assign_lamp_material(obj, material)
+        applied.setdefault(lamp, {"lamp": lamp, "channels": sorted(channels),
+                                  "guide_material": None,
+                                  "lens_material": material.name
+                                  if material else None})
+    return applied
 
 
 def trunk_ownership(lamp_names, boot_name="boot"):

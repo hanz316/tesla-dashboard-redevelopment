@@ -1,0 +1,57 @@
+{
+  "renders": {
+    "OFF": "assets/checkpoints/taillight_freeze/state_OFF.png",
+    "BRAKE": "assets/checkpoints/taillight_freeze/state_BRAKE.png",
+    "LEFT_INDICATOR": "assets/checkpoints/taillight_freeze/state_LEFT_INDICATOR.png",
+    "RIGHT_INDICATOR": "assets/checkpoints/taillight_freeze/state_RIGHT_INDICATOR.png",
+    "HAZARD": "assets/checkpoints/taillight_freeze/state_HAZARD.png",
+    "HEADLIGHT": "assets/checkpoints/taillight_freeze/state_HEADLIGHT.png",
+    "BRAKE_LEFT": "assets/checkpoints/taillight_freeze/state_BRAKE_LEFT.png",
+    "BRAKE_RIGHT": "assets/checkpoints/taillight_freeze/state_BRAKE_RIGHT.png",
+    "BRAKE_HAZARD": "assets/checkpoints/taillight_freeze/state_BRAKE_HAZARD.png",
+    "HEADLIGHT_LEFT": "assets/checkpoints/taillight_freeze/state_HEADLIGHT_LEFT.png",
+    "HEADLIGHT_RIGHT": "assets/checkpoints/taillight_freeze/state_HEADLIGHT_RIGHT.png"
+  },
+  "lamp_bbox_px_1100x760": [
+    640,
+    214,
+    1001,
+    327
+  ],
+  "lamp_bboxes_px_1100x760": {
+    "rear_lights": [
+      640,
+      214,
+      1001,
+      327
+    ],
+    "rear_lightsl": [
+      702,
+      231,
+      764,
+      252
+    ],
+    "rear_lightsr": [
+      943,
+      274,
+      976,
+      316
+    ],
+    "light_breake": [
+      673,
+      235,
+      994,
+      310
+    ]
+  },
+  "lamp_mask_pixels": {
+    "rear_lights": 1603,
+    "rear_lightsl": 365,
+    "rear_lightsr": 237,
+    "light_breake": 93
+  },
+  "render_size": [
+    1100,
+    760
+  ]
+}

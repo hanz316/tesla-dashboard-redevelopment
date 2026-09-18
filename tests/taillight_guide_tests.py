@@ -18,6 +18,7 @@ were expensive to learn:
 """
 
 import math
+import json
 import os
 import re
 import sys
@@ -228,6 +229,86 @@ def main():
     check(not offenders,
           "no forced positive minimum radius in the active pipeline (%s)"
           % (", ".join(offenders) if offenders else "clean"))
+
+    print("taillight state semantics")
+    sys.path.insert(0, os.path.join(REPO, "tools", "blender"))
+    import taillight_states as states
+
+    off = states.lamp_channels("OFF")
+    check(all(not v for v in off.values()), "OFF lights nothing")
+    brake = states.lamp_channels("BRAKE")
+    check("BRAKE" in brake["rear_lights"], "BRAKE lights the outer lamp")
+    check("BRAKE" in brake["light_breake"],
+          "BRAKE lights the brake lamp (which has no guide)")
+    check(not brake["rear_lightsl"] and not brake["rear_lightsr"],
+          "BRAKE alone does not light an indicator lamp")
+    left = states.lamp_channels("LEFT_INDICATOR")
+    check("INDICATOR_LEFT" in left["rear_lightsl"]
+          and not left["rear_lightsr"],
+          "LEFT_INDICATOR is independent of the right side")
+    hazard = states.lamp_channels("HAZARD")
+    check("INDICATOR_LEFT" in hazard["rear_lightsl"]
+          and "INDICATOR_RIGHT" in hazard["rear_lightsr"],
+          "HAZARD drives both sides")
+    bl = states.lamp_channels("BRAKE_LEFT")
+    check("BRAKE" in bl["rear_lights"] and "INDICATOR_LEFT" in bl["rear_lightsl"],
+          "BRAKE_LEFT keeps the brake and the indicator, on separate lamps")
+    for name, per_lamp in ((s, states.lamp_channels(s)) for s in states.STATES):
+        for lamp, channels in per_lamp.items():
+            states.material_key(channels)  # raises if a lamp needs two
+    check(True, "no state ever asks one lamp to show brake and indicator")
+    check(states.lamp_channels("HEADLIGHT")["rear_lights"] == frozenset(
+        {"RUNNING"}), "HEADLIGHT is the rear running light, not the brake")
+    check("BRAKE" in states.lamp_channels("BRAKE_HAZARD")["light_breake"],
+          "BRAKE_HAZARD still brakes")
+
+    print("freeze gate artifacts")
+    freeze_path = os.path.join(REPO, "assets", "checkpoints", "taillight_freeze",
+                               "freeze_gate_v3.json")
+    manifest_path = os.path.join(REPO, "assets", "checkpoints",
+                                 "model_a_production_master",
+                                 "MODEL_A_PRODUCTION_MASTER.json")
+    check(os.path.exists(freeze_path), "the freeze report exists")
+    check(os.path.exists(manifest_path), "the production master manifest exists")
+    if os.path.exists(freeze_path) and os.path.exists(manifest_path):
+        with open(freeze_path) as fh:
+            freeze = json.load(fh)
+        with open(manifest_path) as fh:
+            manifest = json.load(fh)
+        table = freeze.get("gate_table", {})
+        gates = table.get("gates", {})
+        required = [g for g in gates if g != "brake_internal_guide_geometry"]
+        check(bool(required), "the freeze report carries a gate table")
+        check(not table.get("gates_never_computed"),
+              "no required gate was left uncomputed")
+        unresolved = {k: v for k, v in gates.items()
+                      if k in required and v not in ("PASS", "INFORMATIONAL")}
+        check(not unresolved,
+              "every required gate is PASS or explicitly informational (%s)"
+              % (unresolved or "none"))
+        check(gates.get("brake_internal_guide_geometry") == "N/A_WITH_EVIDENCE",
+              "the brake guide geometry is N/A with evidence, not a silent pass")
+        lockable = table.get("lockable")
+        status = manifest.get("status")
+        check((lockable is True) == (status == "LOCKED"),
+              "the master is LOCKED exactly when the table is lockable")
+        version = manifest["taillight_geometry"]["version"]
+        check(version == "surface-offset-cavity-lightguide-v3",
+              f"the frozen geometry version is recorded ({version})")
+        # Every state the gate claims to have measured must have a render on
+        # disk, so the report cannot cite evidence that does not exist.
+        states_dir = os.path.join(REPO, "assets", "checkpoints",
+                                  "taillight_freeze")
+        missing = [s for s in ("OFF", "BRAKE", "LEFT_INDICATOR",
+                               "RIGHT_INDICATOR", "HAZARD", "HEADLIGHT")
+                   if not os.path.exists(os.path.join(
+                       states_dir, f"state_{s.lower()}_600px.png"))]
+        check(not missing, "the 600 px renders cited by the gate exist "
+                           f"({missing or 'all present'})")
+        horizon_missing = [s for s in ("OFF", "BRAKE")
+                           if not os.path.exists(os.path.join(
+                               states_dir, f"state_{s.lower()}_horizon1to1.png"))]
+        check(not horizon_missing, "the Horizon renders cited by the gate exist")
 
     print("")
     if FAILURES:
