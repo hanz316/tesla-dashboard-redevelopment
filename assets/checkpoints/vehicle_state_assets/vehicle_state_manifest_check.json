@@ -4,6 +4,8 @@
     356,
     236
   ],
+  "production_assets_present": true,
+  "verified_against": "RENDERED_MODEL3",
   "source": {
     "selected": "RENDERED_MODEL3",
     "mode": "auto",

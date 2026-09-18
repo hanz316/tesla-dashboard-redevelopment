@@ -46,6 +46,10 @@ def parse_args():
     ap = argparse.ArgumentParser()
     ap.add_argument("--manifest", default=DEFAULT_MANIFEST)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--allow-placeholder-fallback", action="store_true",
+                    help="in a checkout without the generated production "
+                         "assets, verify the contract against the committed "
+                         "placeholder tree and say so explicitly")
     return ap.parse_args()
 
 
@@ -80,9 +84,23 @@ def main():
     with open(manifest_path) as fh:
         manifest = json.load(fh)
     provider = VehicleAssetProvider(REPO_ROOT, manifest)
-    provider.resolve(allow_placeholder=False)
+    production_present = provider.rendered_model3_available()
+    verified_against = "RENDERED_MODEL3"
+    try:
+        provider.resolve(allow_placeholder=False)
+    except RuntimeError:
+        if not args.allow_placeholder_fallback:
+            raise
+        # A fresh checkout (CI) has no generated vehicle tree: it is
+        # gitignored and rebuilt locally. The contract can still be verified
+        # against the committed placeholder art, but the production assertions
+        # must then be reported as skipped rather than passed.
+        provider.resolve(allow_placeholder=True)
+        verified_against = provider.selected
     width, height = manifest["canvas"]["width"], manifest["canvas"]["height"]
     report = {"manifest": args.manifest, "canvas": [width, height],
+              "production_assets_present": production_present,
+              "verified_against": verified_against,
               "source": {"selected": provider.selected,
                          "mode": provider.mode,
                          "rendered_available":
@@ -178,9 +196,15 @@ def main():
         report["source"]["selected"] == "RENDERED_MODEL3"
         and not manifest.get("vehicle_source", {}).get(
             "production_allows_placeholder", False))
+    if not production_present:
+        report["production_assertions_skipped"] = (
+            "the generated production vehicle tree is not in this checkout "
+            "(assets/rendered/vehicle is gitignored and rebuilt by "
+            "tools/blender/build_vehicle_state_assets.py); the contract was "
+            "verified against the committed placeholder art instead")
     report["pass"] = (not report["missing"] and not report["canvas_mismatch"]
                       and all(h["pass"] for h in report["horizon"].values())
-                      and report["production_mode_ok"])
+                      and (report["production_mode_ok"] or not production_present))
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     with open(args.out, "w") as fh:
         json.dump(report, fh, indent=2)
@@ -191,6 +215,9 @@ def main():
           f"{ {k: v['pass'] for k, v in report['horizon'].items()} }")
     print(f"[check] production_mode_ok={report['production_mode_ok']} "
           f"pass={report['pass']}")
+    if not production_present:
+        print("[check] NOTICE: production assets absent; verified against "
+              f"{verified_against}")
     return 0 if report["pass"] else 1
 
 

@@ -60,6 +60,11 @@ ACTIONS = {
     "Frunk_Open": ("frunk", 14),
     "Trunk_Open": ("trunk", 14),
     "Brake_On": ("brake", 1),
+    # The rear running light shares the brake lamp in the frozen production
+    # system, so its placeholder is the brake placeholder. It exists because
+    # assets/manifest.json declares vehicle.running: a committed placeholder
+    # tree has to satisfy the same contract the runtime reads.
+    "Running_On": ("running", 1),
     "Headlight_On": ("headlight", 1),
     "Indicator_Left": ("indicator_left", 12),
     "Indicator_Right": ("indicator_right", 12),
@@ -72,6 +77,7 @@ DIRS = {
     "Door_RL_Open": "door_rl", "Door_RR_Open": "door_rr",
     "Frunk_Open": "frunk", "Trunk_Open": "trunk",
     "Brake_On": "brake_on", "Headlight_On": "headlight_on",
+    "Running_On": "running_on",
     "Indicator_Left": "indicator_left",
     "Indicator_Right": "indicator_right", "Hazard": "hazard",
 }
@@ -131,11 +137,13 @@ def draw_light(d, kind, strength):
     if strength <= 0.01:
         return
     alpha = int(255 * min(1.0, strength))
-    if kind == "brake":
+    if kind in ("brake", "running"):
         for cx in (66, 268):
             x, y = pt(cx, 52)
+            # The running light is the same lamp at a lower intensity.
+            alpha_run = int(alpha * 0.45) if kind == "running" else alpha
             d.ellipse([x - s(13), y - s(8), x + s(13), y + s(8)],
-                      fill=COL_BRAKE[:3] + (alpha,))
+                      fill=COL_BRAKE[:3] + (alpha_run,))
     elif kind == "headlight":
         for cx in (304, 304):
             x, y = pt(cx - 10, 52)
@@ -184,8 +192,8 @@ def render_action(action, out_dir):
             x1, y1 = pt(244, y + 14)
             d.rectangle([x0, y0, x1, y1], outline=COL_BODY_EDGE,
                         fill=(150, 156, 162, 200), width=max(1, int(s(1.5))))
-        elif kind == "brake":
-            draw_light(d, "brake", 1.0)
+        elif kind in ("brake", "running"):
+            draw_light(d, "running" if kind == "running" else "brake", 1.0)
         elif kind == "headlight":
             draw_light(d, "headlight", 1.0)
         elif kind in ("indicator_left", "indicator_right", "hazard"):
