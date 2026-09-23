@@ -193,8 +193,10 @@ std::vector<std::string> pageBindingNamesV6(DashboardPageV6 page) {
         case DashboardPageV6::Horizon:
             names = {"actual_soc", "brake", "closures", "commander_detail",
                      "commander_link", "gear", "headlight", "indicator_left",
-                     "indicator_right", "range", "speed", "temperature_primary",
-                     "uart_health", "warning_active", "warning_text"};
+                     "indicator_right", "nav_distance", "nav_instruction",
+                     "nav_manoeuvre", "position_light", "range", "speed",
+                     "speed_limit", "temperature_primary", "uart_health",
+                     "warning_active", "warning_text", "driver_status_text"};
             break;
         case DashboardPageV6::Mono:
             names = {"brake", "closures", "gear", "headlight", "indicator_left",
@@ -446,6 +448,50 @@ PageProjectionV6 buildPageProjectionV6(DashboardPageV6 page,
             put("indicator_right", fromFlag(state.turn_signal_right));
             put("headlight", fromFlag(state.headlights));
             put("brake", fromFlag(state.brake_light));
+            put("position_light", fromFlag(state.position_light));
+            // The speed limit comes from the module (its own decoding of the
+            // car's bus); an absent limit hides the sign rather than inventing
+            // one, so this value is valid only when a limit was actually read.
+            put("speed_limit", fromSignal(state.speed_limit, Unit::KilometerPerHour));
+            // Navigation is a placeholder interface: with no route data the
+            // pill hides itself and no instruction is produced.
+            {
+                const bool nav_usable = product.navigation.available &&
+                                        product.navigation.has(
+                                            NavigationCapability::BasicManeuver);
+                const std::string maneuver =
+                    nav_usable ? formatManeuverText(product.navigation) : std::string();
+                put("nav_manoeuvre",
+                    maneuver.empty()
+                        ? ProjectedValueV6::unavailable(ProjectedValueV6::Kind::Text)
+                        : textValue(maneuver, SignalSource::PhoneBridge,
+                                    SignalQuality::Confirmed));
+                put("nav_distance",
+                    nav_usable ? fromSignal(product.navigation.next_turn_distance_m,
+                                            Unit::None)
+                               : ProjectedValueV6::unavailable());
+                const std::string instruction =
+                    nav_usable ? product.navigation.road_name : std::string();
+                put("nav_instruction",
+                    instruction.empty()
+                        ? ProjectedValueV6::unavailable(ProjectedValueV6::Kind::Text)
+                        : textValue(instruction, SignalSource::PhoneBridge,
+                                    SignalQuality::Confirmed));
+            }
+            // One short driver-facing word, and only when it is true: READY
+            // means the car is on and no warning is up. It is not a place for
+            // link or protocol state.
+            if (environment.warning.active) {
+                put("driver_status_text",
+                    ProjectedValueV6::unavailable(ProjectedValueV6::Kind::Text));
+            } else if (live(state.speed)) {
+                put("driver_status_text",
+                    textValue("READY", SignalSource::OriginalMcu,
+                              SignalQuality::Inferred));
+            } else {
+                put("driver_status_text",
+                    ProjectedValueV6::unavailable(ProjectedValueV6::Kind::Text));
+            }
             put("warning_text", warning_text);
             put("warning_active", warning_active);
             put("uart_health", uart_health);

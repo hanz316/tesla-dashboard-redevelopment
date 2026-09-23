@@ -273,6 +273,109 @@ MOCK_STATES.update({
         "dev_memory": "RSS 3.7 MB · resident assets 1.6 MB",
         "dev_hint": "DEV/REPLAY · mock state, never vehicle data",
     },
+    # ---------------------------------------------------------- Horizon V2
+    # Developer fixtures for the Horizon V2 screenshot harness and its layout
+    # QA. These are the only place a Horizon V2 screen gets its values, and they
+    # live in the previewer's mock table like every other fixture: the runtime
+    # projection is the production path and has no mock data at all.
+    "h2_neutral": {
+        "speed": 88, "gear": 4, "range": 253, "actual_soc": 63,
+        "temperature_primary": 22, "position_light": True, "headlight": True,
+        "brake": False, "indicator_left": False, "indicator_right": False,
+        "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False,
+        "frunk": False, "trunk": False, "battery_power": -12.4,
+        "warning_active": False, "warning_text": "",
+    },
+    "h2_brake": {
+        "speed": 88, "gear": 4, "range": 253, "actual_soc": 63,
+        "temperature_primary": 22, "position_light": True, "headlight": True,
+        "brake": True, "indicator_left": False, "indicator_right": False,
+        "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False,
+        "frunk": False, "trunk": False, "battery_power": -12.4,
+        "warning_active": False, "warning_text": "",
+    },
+    "h2_left": {
+        "speed": 88, "gear": 4, "range": 253, "actual_soc": 63,
+        "temperature_primary": 22, "position_light": True, "headlight": True,
+        "brake": False, "indicator_left": True, "indicator_right": False,
+        "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False,
+        "frunk": False, "trunk": False, "battery_power": -12.4,
+        "warning_active": False, "warning_text": "",
+    },
+    "h2_right": {
+        "speed": 88, "gear": 4, "range": 253, "actual_soc": 63,
+        "temperature_primary": 22, "position_light": True, "headlight": True,
+        "brake": False, "indicator_left": False, "indicator_right": True,
+        "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False,
+        "frunk": False, "trunk": False, "battery_power": -12.4,
+        "warning_active": False, "warning_text": "",
+    },
+    "h2_hazard": {
+        # Hazard is both channels, exactly as the runtime's safety layer
+        # presents it; there is no third lamp.
+        "speed": 88, "gear": 4, "range": 253, "actual_soc": 63,
+        "temperature_primary": 22, "position_light": True, "headlight": True,
+        "brake": False, "indicator_left": True, "indicator_right": True,
+        "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False,
+        "frunk": False, "trunk": False, "battery_power": -12.4,
+        "warning_active": False, "warning_text": "",
+    },
+    "h2_door_fl": {
+        "speed": 88, "gear": 4, "range": 253, "actual_soc": 63,
+        "temperature_primary": 22, "position_light": True, "headlight": True,
+        "brake": False, "indicator_left": False, "indicator_right": False,
+        "door_fl": True, "door_fr": False, "door_rl": False, "door_rr": False,
+        "frunk": False, "trunk": False, "battery_power": -12.4,
+        "warning_active": False, "warning_text": "",
+    },
+    "h2_all_doors": {
+        "speed": 88, "gear": 4, "range": 253, "actual_soc": 63,
+        "temperature_primary": 22, "position_light": True, "headlight": True,
+        "brake": False, "indicator_left": False, "indicator_right": False,
+        "door_fl": True, "door_fr": True, "door_rl": True, "door_rr": True,
+        "frunk": False, "trunk": False, "battery_power": -12.4,
+        "warning_active": False, "warning_text": "",
+    },
+    "h2_frunk": {
+        "speed": 88, "gear": 4, "range": 253, "actual_soc": 63,
+        "temperature_primary": 22, "position_light": True, "headlight": True,
+        "brake": False, "indicator_left": False, "indicator_right": False,
+        "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False,
+        "frunk": True, "trunk": False, "battery_power": -12.4,
+        "warning_active": False, "warning_text": "",
+    },
+    "h2_trunk": {
+        "speed": 88, "gear": 4, "range": 253, "actual_soc": 63,
+        "temperature_primary": 22, "position_light": True, "headlight": True,
+        "brake": False, "indicator_left": False, "indicator_right": False,
+        "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False,
+        "frunk": False, "trunk": True, "battery_power": -12.4,
+        "warning_active": False, "warning_text": "",
+    },
+    "h2_low_soc": {
+        "speed": 74, "gear": 4, "range": 42, "actual_soc": 14,
+        "temperature_primary": 19, "position_light": True, "headlight": True,
+        "brake": False, "indicator_left": False, "indicator_right": False,
+        "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False,
+        "frunk": False, "trunk": False, "battery_power": -18.5,
+        "warning_active": False, "warning_text": "",
+    },
+    "h2_unknown": {
+        # Nothing from the car and nothing from the module: every value on the
+        # screen must be its placeholder, and no zero may stand in for a value
+        # nobody sent.
+        "warning_active": False, "warning_text": "",
+    },
+    "h2_navigation": {
+        "speed": 68, "gear": 4, "range": 251, "actual_soc": 62,
+        "temperature_primary": 23, "position_light": True, "headlight": True,
+        "brake": False, "indicator_left": False, "indicator_right": False,
+        "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False,
+        "frunk": False, "trunk": False, "battery_power": -14.2,
+        "warning_active": False, "warning_text": "",
+        "nav_manoeuvre": "IN 300 M TURN RIGHT", "nav_distance": 300,
+        "nav_instruction": "TURN RIGHT ONTO QUEEN ST",
+    },
 })
 
 
@@ -328,6 +431,10 @@ def condition_holds(cond, state):
     sig = state.signal(cond.get("signal", ""))
     if "equals" in cond:
         return sig.value == cond["equals"]
+    if "lte" in cond:
+        return sig.valid and sig.value is not None and float(sig.value) <= float(cond["lte"])
+    if "gte" in cond:
+        return sig.valid and sig.value is not None and float(sig.value) >= float(cond["gte"])
     if "valid" in cond:
         return sig.valid == cond["valid"]
     if "is_true" in cond:
@@ -340,6 +447,30 @@ def pick_color(node, state, default_key="color"):
         if condition_holds(rule["when"], state):
             return rule["color"]
     return node.get(default_key, "#F2F4F6")
+
+
+def progress_color(progress, state):
+    """The fill colour of a value-driven bar.
+
+    A bar whose colour depends on its own value (SOC turning amber, then red)
+    states that as `color_when` rules on the progress block, the same way a node
+    states its own colour. Falls back to a plain `color`.
+    """
+    for rule in progress.get("color_when", []):
+        if condition_holds(rule["when"], state):
+            return rule["color"]
+    return progress.get("color", "#3D9BFF")
+
+
+def progress_ratio(progress, state):
+    """Value / max, or None when there is no value to draw."""
+    sig = state.signal(progress["signal"])
+    if not sig.valid or sig.value is None:
+        return None
+    maximum = float(progress.get("max", 100.0))
+    if maximum <= 0:
+        return 0.0
+    return max(0.0, min(1.0, float(sig.value) / maximum))
 
 
 def resolve_value(node, state):
@@ -546,21 +677,25 @@ def draw_vector(img, node, state):
 
     if shape == "roundrect":
         radius = node.get("radius", 10)
-        draw.rounded_rectangle([x, y, x + w, y + h], radius=radius,
-                               fill=hex_to_rgb(node.get("fill", "#182028"),
-                                               int(255 * opacity)))
+        progress = node.get("progress")
+        # A value-driven bar may be just the fill: when the layout draws its own
+        # track as a separate node, this shape must not paint a filled block
+        # underneath it.
+        if "fill" in node or progress is None:
+            draw.rounded_rectangle([x, y, x + w, y + h], radius=radius,
+                                   fill=hex_to_rgb(node.get("fill", "#182028"),
+                                                   int(255 * opacity)))
         if "stroke" in node:
             draw.rounded_rectangle([x, y, x + w, y + h], radius=radius,
                                    outline=hex_to_rgb(node["stroke"]), width=2)
-        progress = node.get("progress")
         if progress:
-            sig = state.signal(progress["signal"])
-            if sig.valid and sig.value is not None:
-                ratio = max(0.0, min(1.0, float(sig.value) / 100.0))
+            ratio = progress_ratio(progress, state)
+            if ratio is not None:
                 fill_w = max(4.0, w * ratio)
                 draw.rounded_rectangle([x, y, x + fill_w, y + h], radius=radius,
-                                       fill=hex_to_rgb(progress.get("color",
-                                                                   "#3D9BFF")))
+                                       fill=hex_to_rgb(progress_color(progress, state),
+                                                       int(255 * opacity *
+                                                           progress.get("opacity", 1.0))))
         return
 
     draw.rectangle([x, y, x + w, y + h],
@@ -712,17 +847,14 @@ def draw_vbar(draw, node, state, opacity):
     prog = node.get("progress")
     if not prog:
         return
-    sig = state.signal(prog["signal"])
-    if not sig.valid or sig.value is None:
+    ratio = progress_ratio(prog, state)
+    if ratio is None:
         return
-    maximum = float(prog.get("max", 100.0))
-    ratio = 0.0 if maximum <= 0 else max(0.0,
-                                         min(1.0, float(sig.value) / maximum))
     if ratio <= 0.0:
         return
     fill_h = max(2.0, h * ratio)
     draw.rounded_rectangle([x, y + h - fill_h, x + w, y + h], radius=radius,
-                           fill=hex_to_rgb(prog.get("color", "#C9D4DF"),
+                           fill=hex_to_rgb(progress_color(prog, state),
                                            int(255 * opacity *
                                                prog.get("opacity", 1.0))))
 

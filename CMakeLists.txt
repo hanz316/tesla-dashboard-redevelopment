@@ -185,6 +185,11 @@ if(BUILD_HOST_TOOLS)
         add_test(NAME dashboard_v6_pages_state_matrix_tests
                  COMMAND "${PYTHON3_EXECUTABLE}"
                          "${CMAKE_CURRENT_SOURCE_DIR}/tests/v6_pages_state_matrix_tests.py")
+        # Horizon V2: the layout is the design source, the scene is generated
+        # from it, and the screenshots have to agree with both.
+        add_test(NAME dashboard_horizon_v2_tests
+                 COMMAND "${PYTHON3_EXECUTABLE}"
+                         "${CMAKE_CURRENT_SOURCE_DIR}/tests/horizon_v2_tests.py")
     else()
         message(WARNING "python3 not found: taillight guide regression tests disabled")
     endif()

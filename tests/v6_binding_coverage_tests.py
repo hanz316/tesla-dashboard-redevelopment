@@ -57,6 +57,16 @@ def names_used_by_scene(path):
             signal = (rule.get("when") or {}).get("signal")
             if signal:
                 used.add(signal)
+        # Conditional alpha and colour also read a signal: a node that shows
+        # itself only when navigation is valid is using navigation.
+        for key in ("alpha_when", "color_when"):
+            for rule in node.get(key) or []:
+                signal = (rule.get("when") or {}).get("signal")
+                if signal:
+                    used.add(signal)
+        for value in (node.get("visibility") or {}).values():
+            if isinstance(value, str) and value and not value.endswith("_ms"):
+                used.add(value)
         progress = node.get("progress")
         if isinstance(progress, dict) and progress.get("signal"):
             used.add(progress["signal"])
@@ -85,6 +95,12 @@ def main():
     dump_json = json.loads(raw)
     pages = dump_json["pages"]
 
+    # Horizon V2 is a candidate design for the same page. While it awaits human
+    # approval the runtime offers the values both designs need, so the names it
+    # adds are not "unused" - they are used by the V2 scene.
+    v2_path = os.path.join(SCENES, "horizon_v2.scene")
+    v2_names = names_used_by_scene(v2_path) if os.path.exists(v2_path) else set()
+
     check(set(pages) == set(PAGE_FILES),
           f"the runtime knows the same nine pages ({sorted(pages)})")
 
@@ -93,9 +109,13 @@ def main():
         scene_path = os.path.join(SCENES, scene_id + ".scene")
         used = names_used_by_scene(scene_path)
         offered = set(pages.get(name, {}).get("bindings", []))
+        if scene_id == "v6_horizon":
+            used_for_coverage = used | v2_names
+        else:
+            used_for_coverage = used
         total_names += len(used)
         missing = sorted(used - offered)
-        unused = sorted(offered - used)
+        unused = sorted(offered - used_for_coverage)
         check(not missing,
               f"{scene_id}: every bound name is produced by the projection "
               f"(missing: {missing or 'none'})")

@@ -1,0 +1,84 @@
+{
+  "schema": "design-tokens v1",
+  "scope": "horizon-v2",
+  "why": "One definition per semantic value. Components reference tokens; they never carry raw hex or raw sizes. A test asserts that the committed scene contains colours only from this file.",
+  "colors": {
+    "background": "#04070A",
+    "background_elevated": "#0A0F14",
+    "surface": "#0C1218",
+    "primary_text": "#E9EEF3",
+    "secondary_text": "#C3CDD7",
+    "muted_text": "#7C8894",
+    "hairline": "#141B22",
+    "accent": "#58C8D8",
+    "active_gear": "#7BD2C4",
+    "indicator": "#3FBF6A",
+    "warning": "#D8A657",
+    "critical": "#D8674F",
+    "soc_normal": "#6FB3C6",
+    "soc_low": "#D8A657",
+    "soc_critical": "#D8674F",
+    "speed_limit_face": "#E9EEF3",
+    "speed_limit_ring": "#D8674F",
+    "road_plane": "#070B10",
+    "road_lane": "#131A21",
+    "atmosphere_top": "#0A1017"
+  },
+  "typography": {
+    "why": "Exactly four tiers. Nothing in a component picks its own size.",
+    "tiers": {
+      "DISPLAY": {"size": 120, "role": "bold", "tracking": -2.0},
+      "TITLE": {"size": 62, "role": "bold", "tracking": 0.0},
+      "BODY": {"size": 28, "role": "medium", "tracking": 1.2},
+      "CAPTION": {"size": 22, "role": "medium", "tracking": 1.6}
+    },
+    "notes": [
+      "The prompt asked for a 22-26 px unit and an 18-20 px label. One CAPTION tier at 22 px satisfies the unit and is 2 px above the label suggestion; those two are separated by opacity, not by a fifth size.",
+      "The speed unit is part of the speed component and renders at CAPTION, baseline-aligned to the bottom of the DISPLAY number."
+    ]
+  },
+  "spacing": {
+    "zone_gap": 20,
+    "stack_tight": 8,
+    "stack_normal": 16,
+    "stack_loose": 34,
+    "label_gap": 10
+  },
+  "radii": {
+    "pill": 10,
+    "bar": 6,
+    "sign": 27
+  },
+  "opacity": {
+    "muted": 0.55,
+    "dim": 0.38,
+    "inactive_gear": 0.28,
+    "active_gear": 1.0,
+    "soc_fill": 0.9,
+    "road_plane": 0.55,
+    "atmosphere": 0.5,
+    "nav_pill_fill": 0.86,
+    "nav_pill_stroke": 0.35
+  },
+  "animation": {
+    "why": "Timings the scene may use. Vehicle panel sequences are asset-driven; everything else is a short fade so a state change is legible without motion.",
+    "state_fade_ms": 220,
+    "nav_fade_ms": 200,
+    "warning_fade_ms": 160,
+    "gear_fade_ms": 140
+  },
+  "vehicle": {
+    "why": "The brake, headlight and running lamps come from the Model A asset itself, not from a colour token; the asset carries its own light.",
+    "brake_source": "asset",
+    "headlight_source": "asset",
+    "indicator_color": "#3FBF6A",
+    "measurements": {
+      "why": "Measured from the committed Model A renders. Golden numbers so layout maths does not depend on reading PNGs; the QA re-measures when the assets are present and fails on drift.",
+      "frame_width": 356,
+      "frame_height": 236,
+      "closed_bbox": [51, 57, 307, 199],
+      "open_union_bbox": [50, 21, 307, 199],
+      "open_union_note": "Union over base, brake, headlight, running, all four doors, frunk, trunk and both indicator sequences. The frunk lid is what reaches y=21; the trunk indicator variant reaches x=50."
+    }
+  }
+}
