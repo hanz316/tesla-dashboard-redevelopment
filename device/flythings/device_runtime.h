@@ -1,6 +1,7 @@
 #pragma once
 
 #include "dashboard/commander_link.h"
+#include "dashboard/dashboard_services.h"
 #include "dashboard/original_mcu_adapter.h"
 #include "dashboard/page_projection_v6.h"
 
@@ -20,6 +21,8 @@ struct RuntimeSnapshot {
     AdapterStats adapter;
     CommanderDecoderStats commander_stats;
     DataSourceHealth health;
+    TripSummary trip;
+    WarningState warning;
     bool uart_connected{false};
     bool uart_receiving{false};
     CommanderLinkStatus commander_status{CommanderLinkStatus::Disabled};
@@ -61,6 +64,8 @@ private:
     OriginalMcuAdapter adapter_;
     CommanderTelemetryDecoder commander_decoder_;
     CommanderLink commander_link_;
+    TripComputer trip_;
+    WarningManager warnings_;
     VehicleState commander_state_;
     pthread_mutex_t mutex_;
     pthread_t thread_{};

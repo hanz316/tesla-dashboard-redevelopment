@@ -46,6 +46,20 @@ Simulation / Commander / PhoneBridge 数据源预留同一 `VehicleState`
 - UART Record/Replay 数据源与 Developer Mode。
 - 多主题与最终产品 UI（保留 1920×480 布局与 `/res` 资源）。
 
+## V6 仪表页集
+
+当前产品形态是 **9 屏**：Horizon / Mono / Pulse / Route / Studio / Energy /
+Nocturne 七套行车仪表，加 Settings 与 Developer。每屏的功能、数据绑定、
+真机性能预算、指挥官接入边界与验证状态见
+[`docs/V6_PAGE_SET.md`](docs/V6_PAGE_SET.md)。
+
+```bash
+python3 tools/preview/build_v6_pages.py          # 重新生成九屏场景
+python3 tests/v6_pages_tests.py                  # 九屏规则（预算/SOC/未知态）
+python3 tests/v6_pages_state_matrix_tests.py     # 九屏 × 四状态的模拟校验
+./build/dashboard_page_dump                      # 每屏绑定名（与场景双向比对）
+```
+
 ## 构建与验证
 
 Mac 端：

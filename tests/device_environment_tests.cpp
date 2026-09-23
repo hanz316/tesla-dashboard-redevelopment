@@ -138,6 +138,46 @@ int main() {
         std::cout << "a linked Commander supplies SOC and cannot rewrite speed\n";
     }
 
+    // Trip metrics and warnings come out of the device's own services, so a
+    // screen showing them is reading something the device actually computed.
+    {
+        RuntimeSnapshot snapshot = healthySnapshot();
+        snapshot.trip.valid = true;
+        snapshot.trip.distance_km = 42.6F;
+        snapshot.trip.duration_ms = 58ULL * 60ULL * 1000ULL;
+        snapshot.trip.average_speed_kph = 44.0F;
+        const PageEnvironmentV6 environment = buildDevicePageEnvironment(snapshot);
+        const PageProjectionV6 route = buildPageProjectionV6(
+            DashboardPageV6::Route, snapshot.state, ProductStateV6{},
+            DashboardSettings{}, environment);
+        assert(textOf(route, "trip_time_text", "{}", "--:--") == "0:58");
+        assert(textOf(route, "trip_distance", "{:.1f} km", "-- km") == "42.6 km");
+        assert(textOf(route, "average_speed", "avg {:.0f} km/h", "avg --") ==
+               "avg 44 km/h");
+
+        // A door open while moving is a warning on every screen that has one.
+        RuntimeSnapshot moving = healthySnapshot();
+        moving.state.speed.update(40, 1000, SignalSource::OriginalMcu,
+                                  SignalQuality::Confirmed,
+                                  Unit::KilometerPerHour);
+        moving.state.door_fl.update(true, 1000, SignalSource::OriginalMcu,
+                                    SignalQuality::Confirmed, Unit::None);
+        WarningManager warnings;
+        moving.warning = warnings.evaluate(moving.state);
+        assert(moving.warning.active);
+        const PageEnvironmentV6 warn_environment =
+            buildDevicePageEnvironment(moving);
+        const PageProjectionV6 horizon = buildPageProjectionV6(
+            DashboardPageV6::Horizon, moving.state, ProductStateV6{},
+            DashboardSettings{}, warn_environment);
+        assert(horizon.at("warning_active").valid && horizon.at("warning_active").flag);
+        assert(textOf(horizon, "warning_text", "{}", "") ==
+               "DOOR OPEN WHILE MOVING");
+        // And the closure line refuses to say "ALL CLOSED".
+        assert(!horizon.at("closures").valid);
+        std::cout << "trip metrics and warnings are computed on the device\n";
+    }
+
     std::cout << "all device environment checks passed\n";
     return 0;
 }

@@ -71,6 +71,8 @@ RuntimeSnapshot DeviceRuntime::snapshot() {
     result.adapter = adapter_.adapterStats();
     result.commander_stats = commander_decoder_.stats();
     result.health = adapter_.health();
+    result.trip = trip_.summary(TripSlot::CurrentDrive);
+    result.warning = warnings_.evaluate(adapter_.state());
     result.uart_connected = uart_fd_ >= 0;
     result.uart_receiving = uart_fd_ >= 0 &&
                             adapter_.parserStats().valid_packets > 0;
@@ -123,6 +125,12 @@ PageEnvironmentV6 buildDevicePageEnvironment(const RuntimeSnapshot& snapshot) {
     environment.parser_frames = snapshot.parser.valid_packets;
     environment.parser_checksum_errors = snapshot.parser.checksum_errors;
     environment.parser_unknown_commands = snapshot.adapter.unknown_commands;
+    environment.trip_known = snapshot.trip.valid;
+    environment.trip_distance_km = snapshot.trip.distance_km;
+    environment.trip_duration_ms = snapshot.trip.duration_ms;
+    environment.trip_average_kph = snapshot.trip.average_speed_kph;
+    environment.trip_max_kph = snapshot.trip.max_speed_kph;
+    environment.warning = snapshot.warning;
     // Frame timing and RSS come from the render backend, which is not wired
     // yet; the Developer screen shows its placeholder until it is.
     environment.frame_stats_known = false;
@@ -171,6 +179,9 @@ void DeviceRuntime::readLoop() {
         // stale, not "last known good forever".
         commander_state_.invalidateStale(now_ms);
         commander_link_.tick(now_ms);
+        // Trip accounting runs on the car's own speed, and only while that
+        // speed is a live reading.
+        trip_.update(now_ms, adapter_.state());
         if (now_ms >= last_report_ms + 5000) {
             const auto& ps = adapter_.parserStats();
             const auto& as = adapter_.adapterStats();

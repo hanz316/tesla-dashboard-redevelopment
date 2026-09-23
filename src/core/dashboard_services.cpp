@@ -5,6 +5,24 @@
 
 namespace dashboard {
 
+namespace {
+
+// The original MCU's SOC byte is a REJECTED mapping on this car (it read a
+// stuck 97 % while driving) and the adapter marks it Estimated. Trip SOC
+// accounting uses the Commander's actual_soc, or a SOC from a source that is
+// not that rejected byte. Anything else would quietly turn an untrustworthy
+// number into a "percent used" readout.
+const Signal<std::uint8_t>* trustworthySoc(const VehicleState& state) {
+    if (state.actual_soc.valid && !state.actual_soc.stale) return &state.actual_soc;
+    if (state.soc.valid && !state.soc.stale &&
+        state.soc.quality != SignalQuality::Estimated) {
+        return &state.soc;
+    }
+    return nullptr;
+}
+
+}  // namespace
+
 void TripComputer::initializeSlot(SlotState& slot, std::uint64_t now_ms, const VehicleState& state) {
     slot.summary = {};
     slot.summary.valid = true;
@@ -13,12 +31,9 @@ void TripComputer::initializeSlot(SlotState& slot, std::uint64_t now_ms, const V
     slot.last_ms = now_ms;
     slot.last_speed_valid = state.speed.valid && !state.speed.stale;
     slot.last_speed_kph = slot.last_speed_valid ? static_cast<float>(state.speed.value) : 0.0F;
-    if (state.actual_soc.valid && !state.actual_soc.stale) {
+    if (const Signal<std::uint8_t>* soc = trustworthySoc(state)) {
         slot.summary.soc_start_valid = true;
-        slot.summary.soc_start = state.actual_soc.value;
-    } else if (state.soc.valid && !state.soc.stale) {
-        slot.summary.soc_start_valid = true;
-        slot.summary.soc_start = state.soc.value;
+        slot.summary.soc_start = soc->value;
     }
 }
 
@@ -47,12 +62,9 @@ void TripComputer::updateSlot(SlotState& slot, std::uint64_t now_ms, const Vehic
     slot.last_speed_kph = speed_valid ? static_cast<float>(state.speed.value) : 0.0F;
     slot.last_ms = now_ms;
 
-    if (state.actual_soc.valid && !state.actual_soc.stale) {
+    if (const Signal<std::uint8_t>* soc = trustworthySoc(state)) {
         slot.summary.soc_current_valid = true;
-        slot.summary.soc_current = state.actual_soc.value;
-    } else if (state.soc.valid && !state.soc.stale) {
-        slot.summary.soc_current_valid = true;
-        slot.summary.soc_current = state.soc.value;
+        slot.summary.soc_current = soc->value;
     }
     if (slot.summary.soc_start_valid && slot.summary.soc_current_valid) {
         slot.summary.soc_used_valid = true;

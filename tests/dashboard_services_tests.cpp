@@ -40,6 +40,34 @@ int main() {
     }
 
     {
+        // The MCU's SOC byte is a rejected mapping; it may not become a
+        // "percent used" readout on a trip.
+        VehicleState state;
+        state.soc.update(97, 0, SignalSource::OriginalMcu,
+                         SignalQuality::Estimated, Unit::Percent);
+        setSpeed(state, 0, 1000);
+        TripComputer trip;
+        trip.reset(TripSlot::CurrentDrive, 1000, state);
+        setSpeed(state, 60, 61000);
+        trip.update(61000, state);
+        const TripSummary& rejected = trip.summary(TripSlot::CurrentDrive);
+        assert(!rejected.soc_start_valid);
+        assert(!rejected.soc_used_valid);
+        assert(std::fabs(rejected.distance_km - 0.5F) < 0.02F);  // distance still works
+
+        // With the Commander's actual_soc the accounting is real again.
+        state.actual_soc.update(63, 61000, SignalSource::Commander,
+                                SignalQuality::Confirmed, Unit::Percent);
+        trip.update(121000, state);
+        const TripSummary& trusted = trip.summary(TripSlot::CurrentDrive);
+        assert(trusted.soc_current_valid && trusted.soc_current == 63);
+        // The start of this trip was never known (the only SOC at reset was the
+        // rejected byte), so "percent used" stays unavailable rather than
+        // being computed against a guess.
+        assert(!trusted.soc_used_valid);
+    }
+
+    {
         PerformanceTimer timer;
         timer.configure(PerformancePreset::ZeroTo100);
         timer.arm();
