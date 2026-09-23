@@ -18,18 +18,47 @@ So the simplest reliable solution is the existing containerised path, unchanged:
 lightweight option on macOS (no Docker Desktop licence, no GUI); it is not a
 redesign of the build system, just a container runtime for the same script.
 
-### The one action this run could not take
-
-Installing software on the user's machine is the point where this run stops:
+### The working recipe (verified on 2026-09-23)
 
 ```bash
-brew install colima docker
-colima start --arch x86_64 --cpu 4 --memory 6
+brew install colima docker qemu
+brew install lima-additional-guestagents   # required: the x86_64 guest agent
+colima start --arch x86_64 --cpu 4 --memory 6 --disk 25
 scripts/build_t113.sh          # unchanged, linux/amd64, existing Dockerfile
-scripts/package_dev_bundle.sh  # writes dist/dev-bundle + BUILD_INFO.json
+scripts/package_dev_bundle.sh  # verifies the artifact, writes dist/dev-bundle
 ```
 
-Everything after that is prepared and tested (see below).
+Two failures were hit and are worth keeping in the recipe: without `qemu`
+colima refuses to emulate x86_64 at all, and without
+`lima-additional-guestagents` it fails with "guest agent binary could not be
+found for Linux-x86_64". With both installed the VM comes up and reports
+`docker: server=amd64`.
+
+## The build result
+
+`scripts/build_t113.sh` completes against current HEAD in about 3m40s under
+emulation and produces:
+
+```
+build-t113/libzkgui.so: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV)
+```
+
+`tools/device/verify_elf_artifact.py` reads the headers rather than trusting
+the build log, and every field matches the artifact that was previously run on
+the real instrument:
+
+| field | new build | previously device-validated | match |
+|---|---|---|---|
+| class / endianness | ELF32 / little | same | yes |
+| machine | 40 (ARM) | 40 | yes |
+| ABI | EABI5 | EABI5 | yes |
+| float ABI | hard (`e_flags 0x05000400`) | same | yes |
+| needed libs | libc, libeasyui, libgcc_s, liblog, libstdc++, libzkhardware, libzknet | same | yes |
+
+That equality is the practical compatibility argument: the previous artifact
+ran on the instrument, and this one has the same ABI and the same dependencies.
+`package_dev_bundle.sh` refuses to package an artifact that fails the check, so
+a host binary cannot be shipped by mistake.
 
 ## What the build must produce
 

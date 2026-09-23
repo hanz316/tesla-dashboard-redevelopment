@@ -1,0 +1,33 @@
+{
+  "class": "ELF32",
+  "endianness": "little",
+  "machine": 40,
+  "type": "DYN (shared object)",
+  "e_flags": "0x05000400",
+  "abi": "EABI5",
+  "float_abi": "hard",
+  "arm_attributes_hex": "413c000000616561626900013200000005436f727465782d413700060a074108",
+  "needed_libraries": [
+    "libc.so",
+    "libeasyui.so",
+    "libgcc_s.so.1",
+    "liblog.so",
+    "libstdc++.so.6",
+    "libzkhardware.so",
+    "libzknet.so"
+  ],
+  "path": "build-t113/libzkgui.so",
+  "bytes": 68208,
+  "sha256": "c5c860a8e886b72fa2eb9fcf97faadc64084af10e9af1791ff1a6d0197a0634a",
+  "source_commit": "b1bf10ab14a8176f94c402567b86a803a8ca4ea1",
+  "checks": {
+    "is_elf": true,
+    "elf32": true,
+    "arm": true,
+    "little_endian": true,
+    "eabi5": true,
+    "hard_float": true,
+    "shared_object": true
+  },
+  "target_ok": true
+}

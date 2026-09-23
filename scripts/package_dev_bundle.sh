@@ -29,6 +29,18 @@ mode="${BUILD_MODE:-Release}"
 stamp="$(date -u '+%Y%m%dT%H%M%SZ')"
 hash="$(shasum -a 256 "$artifact" | awk '{print $1}')"
 
+# The build runs in an emulated x86-64 container, so the one mechanical check
+# worth making is that what came out is really an ARM hard-float musl shared
+# object for the T113 and not something the host produced.
+verification="$repo_root/dist/t113_artifact_verification.json"
+python3 "$repo_root/tools/device/verify_elf_artifact.py" \
+  --artifact "$artifact" --json "$verification" >/dev/null || {
+    echo "Refusing to package: $artifact is not a T113 target binary." >&2
+    python3 "$repo_root/tools/device/verify_elf_artifact.py" \
+      --artifact "$artifact" >&2 || true
+    exit 1
+  }
+
 mkdir -p "$bundle/tesla-dashboard-mvp/lib"
 cp "$artifact" "$bundle/tesla-dashboard-mvp/lib/libzkgui.so"
 cp "$repo_root/deploy/temporary-adb/EasyUI.cfg" "$bundle/EasyUI.cfg"
@@ -42,6 +54,7 @@ cat > "$bundle/BUILD_INFO.json" <<EOF
   "target": "allwinner-t113 / armv7 / musl / hard-float",
   "artifact": "tesla-dashboard-mvp/lib/libzkgui.so",
   "artifact_sha256": "$hash",
+  "artifact_verification": "dist/t113_artifact_verification.json",
   "builder": "scripts/build_t113.sh (docker, linux/amd64)",
   "assets_owned_by_app": [],
   "notes": [
