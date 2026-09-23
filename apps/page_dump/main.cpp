@@ -11,6 +11,8 @@
 
 #include "dashboard/page_projection_v6.h"
 
+#include "dashboard/input_router_v6.h"
+
 #include <iostream>
 
 namespace {
@@ -44,6 +46,16 @@ int main() {
     std::cout << "{\n  \"schema\": \"v6-page-bindings v1\",\n  \"pages\": {\n";
     bool first = true;
     for (DashboardPageV6 page : pages) printPage(page, first);
-    std::cout << "\n  }\n}\n";
+    std::cout << "\n  },\n  \"settings_rows\": [";
+    const auto rows = dashboard::settingsRowsV6();
+    for (std::size_t i = 0; i < rows.size(); ++i) {
+        if (i != 0) std::cout << ",";
+        std::cout << "\n    {\"row\": " << static_cast<int>(rows[i].row)
+                  << ", \"label\": \"" << rows[i].label << "\""
+                  << ", \"x\": " << rows[i].x << ", \"y\": " << rows[i].y
+                  << ", \"width\": " << rows[i].width
+                  << ", \"height\": " << rows[i].height << "}";
+    }
+    std::cout << "\n  ]\n}\n";
     return 0;
 }

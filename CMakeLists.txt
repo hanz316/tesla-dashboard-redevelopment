@@ -20,6 +20,7 @@ add_library(dashboard_core
     src/core/page_projection_v6.cpp
     src/core/commander_link.cpp
     src/core/settings_store_v6.cpp
+    src/core/input_router_v6.cpp
     src/core/horizon_v6.cpp
     src/core/v6_asset_catalog.cpp
     src/core/motion_quality.cpp
@@ -86,6 +87,11 @@ if(BUILD_HOST_TOOLS)
     target_link_libraries(dashboard_settings_store_tests PRIVATE dashboard_core)
     target_compile_options(dashboard_settings_store_tests PRIVATE -Wall -Wextra -Wpedantic)
     add_test(NAME dashboard_settings_store_tests COMMAND dashboard_settings_store_tests)
+
+    add_executable(dashboard_input_router_tests tests/input_router_tests.cpp)
+    target_link_libraries(dashboard_input_router_tests PRIVATE dashboard_core)
+    target_compile_options(dashboard_input_router_tests PRIVATE -Wall -Wextra -Wpedantic)
+    add_test(NAME dashboard_input_router_tests COMMAND dashboard_input_router_tests)
 
     # The device's own view of the world, compiled from the same source the
     # T113 build uses, so the mapping from runtime snapshot to screen is not

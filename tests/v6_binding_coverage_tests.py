@@ -82,7 +82,8 @@ def main():
                  f"(got {dump!r})")
 
     raw = subprocess.check_output([dump], text=True)
-    pages = json.loads(raw)["pages"]
+    dump_json = json.loads(raw)
+    pages = dump_json["pages"]
 
     check(set(pages) == set(PAGE_FILES),
           f"the runtime knows the same nine pages ({sorted(pages)})")
@@ -104,6 +105,25 @@ def main():
 
     check(pages["Developer"]["binding_count"] <= 18,
           "the developer page stays inside its larger live-text allowance")
+
+    # The settings hit boxes live in C++ and the labels live in the scene. If
+    # they drift, a driver taps "brightness" and changes something else.
+    with open(os.path.join(SCENES, "v6_settings.scene")) as fh:
+        settings_scene = json.load(fh)
+    labels = {node["id"]: node for node in settings_scene["nodes"]
+              if node.get("type") == "text" and node["id"].endswith(".label")}
+    rows = dump_json["settings_rows"]
+    check(len(rows) == 9, f"nine settings rows are declared ({len(rows)})")
+    for row in rows:
+        node = labels.get(row["label"] + ".label")
+        if node is None:
+            check(False, f"settings row {row['label']} has a matching scene label")
+            continue
+        inside = (row["x"] <= node["x"] <= row["x"] + row["width"] and
+                  row["y"] <= node["y"] <= row["y"] + row["height"])
+        check(inside,
+              f"settings row {row['label']} contains its label at "
+              f"({node['x']}, {node['y']})")
     print(f"checked {total_names} bound names across {len(PAGE_FILES)} pages")
     if FAILURES:
         print(f"\n{len(FAILURES)} FAILED: " + "; ".join(FAILURES))
