@@ -88,16 +88,27 @@ def main():
         if os.path.exists(artifact):
             head = subprocess.run(["git", "-C", REPO, "rev-parse", "HEAD"],
                                   capture_output=True, text=True).stdout.strip()
+            bundle_commit = json.load(open(
+                os.path.join(bundle, "BUILD_INFO.json")))["source_commit"]
             proc = subprocess.run(
                 ["bash", os.path.join(REPO, "scripts/deploy_dev_bundle.sh"),
                  "--serial", "FAKE:5555", "--dry-run"],
                 capture_output=True, text=True)
-            output = proc.stdout
-            same = head in output
-            check(proc.returncode == 0 and same,
-                  "a dry run against the current bundle reports the local HEAD")
-            check("ROLLBACK" in output,
-                  "the dry run prints the rollback command")
+            output = proc.stdout + proc.stderr
+            if bundle_commit == head:
+                check(proc.returncode == 0 and head in output,
+                      "a bundle built from HEAD passes the guard and names "
+                      "that HEAD")
+                check("ROLLBACK" in output and "ARTIFACT HASH" in output,
+                      "the dry run prints the hash and the rollback command")
+            else:
+                # The guard must refuse a bundle whose recorded commit is not
+                # the current HEAD - that is the whole point of recording it.
+                check(proc.returncode != 0 and "Refusing" in output,
+                      "a bundle built from an older commit is refused "
+                      f"(bundle {bundle_commit[:8]}, HEAD {head[:8]})")
+                check(bundle_commit in output,
+                      "the refusal names the commit the bundle came from")
         else:
             proc = subprocess.run(
                 ["bash", os.path.join(REPO, "scripts/deploy_dev_bundle.sh"),
