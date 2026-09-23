@@ -126,6 +126,43 @@ def main():
     check(not offenders,
           f"no second mock state table exists ({offenders or 'clean'})")
 
+    print("an unknown gear is never drawn as a confident letter")
+    for path in paths:
+        scene = load(path)
+        for node in scene.get("nodes", []):
+            value_map = node.get("value_map")
+            if not value_map or "gear" not in str(node.get("bind", "")):
+                continue
+            check("0" not in value_map,
+                  f"{os.path.basename(path)}:{node['id']} has no mapping for "
+                  f"gear 0 (unknown)")
+
+    print("the preview and the runtime render an absent signal the same way")
+    sys.path.insert(0, os.path.join(REPO, "tools", "preview"))
+    try:
+        import scene_preview
+    except ImportError as error:  # pragma: no cover
+        check(False, f"the previewer is importable ({error})")
+    else:
+        missing = scene_preview.State({})
+        mismatches = []
+        for path in paths:
+            scene = load(path)
+            for node in scene.get("nodes", []):
+                if node.get("type") != "text" or not node.get("bind"):
+                    continue
+                expected = node.get("invalid_text")
+                if expected is None:
+                    continue
+                text, valid = scene_preview.resolve_value(node, missing)
+                if valid or text != expected:
+                    mismatches.append(
+                        "%s:%s drew %r instead of %r" % (
+                            os.path.basename(path), node["id"], text, expected))
+        check(not mismatches,
+              "every bound node falls back to its invalid_text "
+              f"({mismatches[:3] if mismatches else 'ok'})")
+
     print("")
     if FAILURES:
         print("%d FAILED: %s" % (len(FAILURES), "; ".join(FAILURES)))

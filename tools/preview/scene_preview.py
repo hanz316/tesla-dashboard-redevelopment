@@ -358,6 +358,12 @@ def resolve_value(node, state):
         return "", False
     sig = state.signal(bind)
     if not sig.valid or sig.value is None:
+        # The node's own placeholder, not a generic "--": those placeholders
+        # carry meaning on the panel ("NO ROUTE", "CLOSURES ?", "-- km") and
+        # the runtime uses the same field, so the preview must not show a
+        # different picture from the device.
+        if "invalid_text" in node:
+            return node["invalid_text"], False
         fmt = node.get("format", "{}")
         return fmt.replace("{}", "--"), False
     value = sig.value

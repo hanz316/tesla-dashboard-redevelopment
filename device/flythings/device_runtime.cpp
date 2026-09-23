@@ -3,6 +3,7 @@
 #include <cerrno>
 #include <cstdio>
 #include <cstdint>
+#include <cstring>
 #include <fcntl.h>
 #include <termios.h>
 #include <time.h>
@@ -65,12 +66,68 @@ RuntimeSnapshot DeviceRuntime::snapshot() {
     RuntimeSnapshot result;
     pthread_mutex_lock(&mutex_);
     result.state = adapter_.state();
+    result.commander_state = commander_state_;
     result.parser = adapter_.parserStats();
     result.adapter = adapter_.adapterStats();
+    result.commander_stats = commander_decoder_.stats();
     result.health = adapter_.health();
     result.uart_connected = uart_fd_ >= 0;
+    result.uart_receiving = uart_fd_ >= 0 &&
+                            adapter_.parserStats().valid_packets > 0;
+    result.commander_status = commander_link_.status();
+    result.commander_module_info_known = commander_decoder_.module_info_known();
+    result.commander_version = commander_decoder_.version();
+    result.commander_detail = commander_link_.detail("NativeBle");
     pthread_mutex_unlock(&mutex_);
     return result;
+}
+
+void DeviceRuntime::feedCommander(const std::uint8_t* data, std::size_t length) {
+    if (data == nullptr || length == 0) return;
+    pthread_mutex_lock(&mutex_);
+    const std::uint64_t now_ms = monotonicMilliseconds();
+    if (!commander_transport_connected_) {
+        // A transport that is delivering bytes is connected, whatever it
+        // reported about its own socket.
+        commander_transport_connected_ = true;
+        commander_link_.setTransport(true, now_ms);
+    }
+    const std::uint64_t frames_before = commander_decoder_.stats().frames;
+    commander_decoder_.decode(data, length, commander_state_, now_ms);
+    if (commander_decoder_.stats().frames > frames_before) {
+        commander_link_.noteFrame(now_ms);
+    }
+    if (commander_decoder_.module_info_known()) {
+        commander_link_.setModuleInfo(commander_decoder_.version(),
+                                      commander_decoder_.features());
+    }
+    pthread_mutex_unlock(&mutex_);
+}
+
+void DeviceRuntime::setCommanderEnabled(bool enabled) {
+    pthread_mutex_lock(&mutex_);
+    commander_link_.setEnabled(enabled, monotonicMilliseconds());
+    pthread_mutex_unlock(&mutex_);
+}
+
+PageEnvironmentV6 buildDevicePageEnvironment(const RuntimeSnapshot& snapshot) {
+    PageEnvironmentV6 environment;
+    environment.uart_connected = snapshot.uart_connected;
+    environment.uart_receiving = snapshot.uart_receiving;
+    environment.commander_status = snapshot.commander_status;
+    environment.commander_detail_known = snapshot.commander_module_info_known ||
+                                         snapshot.commander_status !=
+                                             CommanderLinkStatus::Disabled;
+    environment.commander_detail = snapshot.commander_detail;
+    environment.parser_stats_known = snapshot.uart_connected;
+    environment.parser_frames = snapshot.parser.valid_packets;
+    environment.parser_checksum_errors = snapshot.parser.checksum_errors;
+    environment.parser_unknown_commands = snapshot.adapter.unknown_commands;
+    // Frame timing and RSS come from the render backend, which is not wired
+    // yet; the Developer screen shows its placeholder until it is.
+    environment.frame_stats_known = false;
+    environment.memory_stats_known = false;
+    return environment;
 }
 
 void* DeviceRuntime::threadEntry(void* context) {
@@ -110,6 +167,10 @@ void DeviceRuntime::readLoop() {
         const std::uint64_t now_ms = monotonicMilliseconds();
         pthread_mutex_lock(&mutex_);
         adapter_.tick(now_ms);
+        // The enhanced link ages the same way the vehicle link does: silent is
+        // stale, not "last known good forever".
+        commander_state_.invalidateStale(now_ms);
+        commander_link_.tick(now_ms);
         if (now_ms >= last_report_ms + 5000) {
             const auto& ps = adapter_.parserStats();
             const auto& as = adapter_.adapterStats();
@@ -132,7 +193,8 @@ void DeviceRuntime::readLoop() {
                 std::fprintf(
                     log,
                     "  sig speed=%u gear=%d soc=%u range=%u doors=%d%d%d%d%d%d "
-                    "tires=%.2f/%.2f/%.2f/%.2f temp=%d/%d\n",
+                    "tires=%.2f/%.2f/%.2f/%.2f temp=%d/%d cmdr=%s cmdr_frames=%llu "
+                    "cmdr_errors=%llu\n",
                     st.speed.valid ? static_cast<unsigned>(st.speed.value) : 0U,
                     st.gear.valid ? static_cast<int>(st.gear.value) : -1,
                     st.soc.valid ? static_cast<unsigned>(st.soc.value) : 0U,
@@ -152,7 +214,11 @@ void DeviceRuntime::readLoop() {
                         : 0,
                     st.temperature_secondary.valid
                         ? static_cast<int>(st.temperature_secondary.value)
-                        : 0);
+                        : 0,
+                    commanderLinkName(commander_link_.status()),
+                    static_cast<unsigned long long>(commander_decoder_.stats().frames),
+                    static_cast<unsigned long long>(
+                        commander_decoder_.stats().checksum_errors));
                 std::fclose(log);
             }
             last_report_ms = now_ms;

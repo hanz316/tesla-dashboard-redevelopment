@@ -5,6 +5,7 @@
 
 #include <cstdio>
 #include <ctime>
+#include <string>
 
 namespace {
 
@@ -42,6 +43,16 @@ const char* sourceStatus(const dashboard::DataSourceHealth& health) {
         default:
             return "OFF";
     }
+}
+
+// The value a page binds, or its placeholder. The device draws the same
+// projection the Mac preview does, so "what the screen shows" has one rule.
+std::string projected(const dashboard::PageProjectionV6& page,
+                      const char* name, const std::string& format,
+                      const std::string& invalid_text) {
+    const auto it = page.find(name);
+    if (it == page.end()) return invalid_text;
+    return dashboard::formatSceneTextV6(format, it->second, invalid_text);
 }
 
 }  // namespace
@@ -83,18 +94,29 @@ void mainActivity::updateDashboard() {
     const auto snapshot = dashboard::flythings::DeviceRuntime::instance().snapshot();
     char text[128];
 
+    // Speed, gear, range, closures, lamps and tires are the car's own readings
+    // and stay on the MCU path; only the enhanced fields are merged in, so the
+    // Commander can add SOC without rewriting anything the cluster reads
+    // directly.
+    dashboard::VehicleState merged = snapshot.state;
+    dashboard::mergeCommanderInto(merged, snapshot.commander_state);
+    const dashboard::PageEnvironmentV6 environment =
+        dashboard::flythings::buildDevicePageEnvironment(snapshot);
+    const dashboard::DashboardSettings settings;
+    const dashboard::PageProjectionV6 horizon = dashboard::buildPageProjectionV6(
+        dashboard::DashboardPageV6::Horizon, merged, dashboard::ProductStateV6{},
+        settings, environment);
+
     if (speed_ != nullptr) {
-        speed_->setText(dashboard::flythings::formatSpeed(
-            snapshot.state.speed).c_str());
+        speed_->setText(projected(horizon, "speed", "{}", "--").c_str());
     }
     if (range_ != nullptr) {
-        range_->setText(dashboard::flythings::formatRange(
-            snapshot.state.range).c_str());
+        range_->setText(projected(horizon, "range", "{} km", "-- km").c_str());
     }
     if (soc_ != nullptr) {
-        // The MCU's SOC byte is a rejected mapping; it renders as unavailable.
-        soc_->setText(dashboard::flythings::formatSoc(
-            snapshot.state.soc).c_str());
+        // SOC comes from the Commander's actual_soc. The MCU's own SOC byte is
+        // a rejected mapping on this car and is never printed as a percentage.
+        soc_->setText(projected(horizon, "actual_soc", "{}%", "-- %").c_str());
     }
     if (gear_ != nullptr) {
         if (dashboard::flythings::gearIsDisplayable(snapshot.state.gear)) {
@@ -106,10 +128,12 @@ void mainActivity::updateDashboard() {
         // the diagnostic line below instead, where "?" means unknown.
     }
     if (doors_ != nullptr) {
+        const std::string closures = projected(horizon, "closures", "{}", "?");
         std::snprintf(
             text,
             sizeof(text),
-            "Doors %c%c%c%c F%c T%c G:%s %s %s P:%llu CRC:%llu U:%llu",
+            "%s | %c%c%c%c F%c T%c G:%s %s %s P:%llu CRC:%llu U:%llu C:%s %llu/%llu",
+            closures.c_str(),
             openMarker(snapshot.state.door_fl),
             openMarker(snapshot.state.door_fr),
             openMarker(snapshot.state.door_rl),
@@ -122,7 +146,11 @@ void mainActivity::updateDashboard() {
             sourceStatus(snapshot.health),
             static_cast<unsigned long long>(snapshot.parser.valid_packets),
             static_cast<unsigned long long>(snapshot.parser.checksum_errors),
-            static_cast<unsigned long long>(snapshot.adapter.unknown_commands));
+            static_cast<unsigned long long>(snapshot.adapter.unknown_commands),
+            dashboard::commanderLinkName(snapshot.commander_status),
+            static_cast<unsigned long long>(snapshot.commander_stats.frames),
+            static_cast<unsigned long long>(
+                snapshot.commander_stats.checksum_errors));
         doors_->setText(text);
     }
     if (tire_front_ != nullptr) {

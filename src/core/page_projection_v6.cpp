@@ -475,8 +475,10 @@ PageProjectionV6 buildPageProjectionV6(DashboardPageV6 page,
             // The bar needs a magnitude: a discharging pack is a negative
             // number, and a bar of a negative length is not a reading.
             if (power.valid) {
+                const double magnitude =
+                    power.number < 0.0 ? -power.number : power.number;
                 put("battery_power_abs", ProjectedValueV6::makeNumber(
-                        std::abs(power.number), Unit::Kilowatt, power.source,
+                        magnitude, Unit::Kilowatt, power.source,
                         power.quality));
             } else {
                 put("battery_power_abs",

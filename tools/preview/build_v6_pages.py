@@ -158,7 +158,10 @@ def top_rail(right_text=None):
     return nodes
 
 
-GEAR_MAP = {"0": "P", "1": "P", "2": "R", "3": "N", "4": "D"}
+# Gear values follow the internal enum: 1 = P, 2 = R, 3 = N, 4 = D. There is
+# deliberately no entry for 0: 0 is "unknown", and mapping it to P would put a
+# confident letter on the panel for a gear nobody has decoded.
+GEAR_MAP = {"1": "P", "2": "R", "3": "N", "4": "D"}
 
 
 def gear_node(x, y, size=34, align="left", color=SECONDARY):

@@ -19,6 +19,7 @@ add_library(dashboard_core
     src/core/ui_framework_v6.cpp
     src/core/page_projection_v6.cpp
     src/core/commander_link.cpp
+    src/core/settings_store_v6.cpp
     src/core/horizon_v6.cpp
     src/core/v6_asset_catalog.cpp
     src/core/motion_quality.cpp
@@ -80,6 +81,24 @@ if(BUILD_HOST_TOOLS)
     target_link_libraries(dashboard_page_projection_tests PRIVATE dashboard_core)
     target_compile_options(dashboard_page_projection_tests PRIVATE -Wall -Wextra -Wpedantic)
     add_test(NAME dashboard_page_projection_tests COMMAND dashboard_page_projection_tests)
+
+    add_executable(dashboard_settings_store_tests tests/settings_store_tests.cpp)
+    target_link_libraries(dashboard_settings_store_tests PRIVATE dashboard_core)
+    target_compile_options(dashboard_settings_store_tests PRIVATE -Wall -Wextra -Wpedantic)
+    add_test(NAME dashboard_settings_store_tests COMMAND dashboard_settings_store_tests)
+
+    # The device's own view of the world, compiled from the same source the
+    # T113 build uses, so the mapping from runtime snapshot to screen is not
+    # only testable on the panel.
+    add_executable(dashboard_device_environment_tests
+        tests/device_environment_tests.cpp
+        device/flythings/device_runtime.cpp
+    )
+    target_include_directories(dashboard_device_environment_tests PRIVATE
+        device/flythings include)
+    target_link_libraries(dashboard_device_environment_tests PRIVATE dashboard_core)
+    target_compile_options(dashboard_device_environment_tests PRIVATE -Wall -Wextra -Wpedantic)
+    add_test(NAME dashboard_device_environment_tests COMMAND dashboard_device_environment_tests)
 
     # Binds the committed scenes to the runtime projection. Host tool, no
     # vehicle data: it prints the names each page offers so the scene files can
@@ -146,6 +165,11 @@ if(BUILD_HOST_TOOLS)
                  COMMAND "${PYTHON3_EXECUTABLE}"
                          "${CMAKE_CURRENT_SOURCE_DIR}/tests/v6_binding_coverage_tests.py"
                          "$<TARGET_FILE:dashboard_page_dump>")
+        # The whole set through the states that decide whether an instrument is
+        # trustworthy, not just the happy path.
+        add_test(NAME dashboard_v6_pages_state_matrix_tests
+                 COMMAND "${PYTHON3_EXECUTABLE}"
+                         "${CMAKE_CURRENT_SOURCE_DIR}/tests/v6_pages_state_matrix_tests.py")
     else()
         message(WARNING "python3 not found: taillight guide regression tests disabled")
     endif()
