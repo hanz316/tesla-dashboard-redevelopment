@@ -4,6 +4,7 @@
 #include "dashboard/v6_cockpit.h"
 
 #include <cstdint>
+#include <vector>
 
 namespace dashboard {
 
@@ -55,11 +56,37 @@ public:
     DashboardPageV6 current() const { return state_.current; }
     const PageTransitionState& state() const { return state_; }
     void request(DashboardPageV6 page, bool safety_interrupt = false);
+    // Swipe navigation. A step of +1 is the next page in the ring, -1 the
+    // previous one. Developer is not in the ring: it is only entered from
+    // Settings with developer mode on, so a swipe can never land on it.
+    void requestNext(int step, bool developer_mode_enabled);
     void update(std::uint32_t dt_ms, MotionQuality quality);
 
 private:
     PageTransitionState state_;
 };
+
+// The order the driver swipes through: the seven vehicle looks then Settings.
+std::vector<DashboardPageV6> swipeOrderV6();
+
+// Pages that present live driving data. Settings and Developer are not
+// driving pages, so a page transition that must show the car returns to
+// Horizon, and a safety interrupt can only ever land on a driving page.
+bool isDrivingPageV6(DashboardPageV6 page);
+
+// A page reachable right now. Developer needs developer mode; everything else
+// is always reachable.
+bool pageIsReachableV6(DashboardPageV6 page, bool developer_mode_enabled);
+
+// The page after `current` by `step` places, skipping pages that are not
+// reachable. Wraps around the ring. Returns `current` only if the ring is
+// empty, which it is not.
+DashboardPageV6 stepPageV6(DashboardPageV6 current, int step,
+                           bool developer_mode_enabled);
+
+// Where a critical interruption lands. A loss of vehicle data is not shown on
+// a diagnostic or settings screen.
+DashboardPageV6 safetyPageV6();
 
 enum class DataAvailabilityLevel : std::uint8_t {
     Available = 0,

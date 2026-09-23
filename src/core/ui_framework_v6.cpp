@@ -19,6 +19,78 @@ PageManagerV6::PageManagerV6(DashboardPageV6 initial) {
     state_.target = initial;
 }
 
+std::vector<DashboardPageV6> swipeOrderV6() {
+    return {DashboardPageV6::Horizon, DashboardPageV6::Mono,
+            DashboardPageV6::Pulse, DashboardPageV6::Route,
+            DashboardPageV6::Studio, DashboardPageV6::Energy,
+            DashboardPageV6::Nocturne, DashboardPageV6::Settings};
+}
+
+bool isDrivingPageV6(DashboardPageV6 page) {
+    switch (page) {
+        case DashboardPageV6::Horizon:
+        case DashboardPageV6::Mono:
+        case DashboardPageV6::Pulse:
+        case DashboardPageV6::Route:
+        case DashboardPageV6::Studio:
+        case DashboardPageV6::Energy:
+        case DashboardPageV6::Nocturne:
+            return true;
+        case DashboardPageV6::Settings:
+        case DashboardPageV6::Developer:
+        default:
+            return false;
+    }
+}
+
+bool pageIsReachableV6(DashboardPageV6 page, bool developer_mode_enabled) {
+    if (page == DashboardPageV6::Developer) return developer_mode_enabled;
+    return true;
+}
+
+DashboardPageV6 stepPageV6(DashboardPageV6 current, int step,
+                           bool developer_mode_enabled) {
+    const std::vector<DashboardPageV6> ring = swipeOrderV6();
+    if (ring.empty()) return current;
+
+    const auto position = [&ring](DashboardPageV6 page) {
+        for (std::size_t i = 0; i < ring.size(); ++i) {
+            if (ring[i] == page) return static_cast<int>(i);
+        }
+        return -1;
+    };
+
+    const int size = static_cast<int>(ring.size());
+    int index = position(current);
+    if (index < 0) {
+        // Entering the ring from a screen that is not in it (Developer, or a
+        // page from a future build): forwards starts at the first page,
+        // backwards at the last.
+        index = step >= 0 ? -1 : size;
+    }
+    int direction = step >= 0 ? 1 : -1;
+    const int magnitude = step >= 0 ? step : -step;
+    for (int i = 0; i < magnitude; ++i) {
+        index = ((index + direction) % size + size) % size;
+    }
+    DashboardPageV6 candidate = ring[static_cast<std::size_t>(index)];
+    if (!pageIsReachableV6(candidate, developer_mode_enabled)) {
+        // The ring only contains reachable pages today; this guard keeps the
+        // rule true if Developer is ever added to it.
+        return current;
+    }
+    return candidate;
+}
+
+DashboardPageV6 safetyPageV6() {
+    return DashboardPageV6::Horizon;
+}
+
+void PageManagerV6::requestNext(int step, bool developer_mode_enabled) {
+    if (step == 0) return;
+    request(stepPageV6(state_.current, step, developer_mode_enabled));
+}
+
 void PageManagerV6::request(DashboardPageV6 page, bool safety_interrupt) {
     if (page == state_.current && !state_.active) return;
     state_.target = page;

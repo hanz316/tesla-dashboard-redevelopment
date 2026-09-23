@@ -17,6 +17,8 @@ add_library(dashboard_core
     src/core/dashboard_services.cpp
     src/core/replay.cpp
     src/core/ui_framework_v6.cpp
+    src/core/page_projection_v6.cpp
+    src/core/commander_link.cpp
     src/core/horizon_v6.cpp
     src/core/v6_asset_catalog.cpp
     src/core/motion_quality.cpp
@@ -73,6 +75,19 @@ if(BUILD_HOST_TOOLS)
     target_compile_options(dashboard_vehicle_visual_tests PRIVATE -Wall -Wextra -Wpedantic)
     add_test(NAME dashboard_vehicle_visual_tests COMMAND dashboard_vehicle_visual_tests)
 
+    # What each screen can draw, and what it draws when a signal is missing.
+    add_executable(dashboard_page_projection_tests tests/page_projection_tests.cpp)
+    target_link_libraries(dashboard_page_projection_tests PRIVATE dashboard_core)
+    target_compile_options(dashboard_page_projection_tests PRIVATE -Wall -Wextra -Wpedantic)
+    add_test(NAME dashboard_page_projection_tests COMMAND dashboard_page_projection_tests)
+
+    # Binds the committed scenes to the runtime projection. Host tool, no
+    # vehicle data: it prints the names each page offers so the scene files can
+    # be checked against them.
+    add_executable(dashboard_page_dump apps/page_dump/main.cpp)
+    target_link_libraries(dashboard_page_dump PRIVATE dashboard_core)
+    target_compile_options(dashboard_page_dump PRIVATE -Wall -Wextra -Wpedantic)
+
     # The device benchmark plan is platform independent, so the state list, the
     # sequence playback maths, the frame statistics and the fallback decision
     # are verified on the host before the T113 is ever connected.
@@ -125,6 +140,12 @@ if(BUILD_HOST_TOOLS)
         add_test(NAME dashboard_v6_pages_tests
                  COMMAND "${PYTHON3_EXECUTABLE}"
                          "${CMAKE_CURRENT_SOURCE_DIR}/tests/v6_pages_tests.py")
+        # The scenes name the values they bind; the runtime projection is C++.
+        # This compares the two lists in both directions.
+        add_test(NAME dashboard_v6_binding_coverage_tests
+                 COMMAND "${PYTHON3_EXECUTABLE}"
+                         "${CMAKE_CURRENT_SOURCE_DIR}/tests/v6_binding_coverage_tests.py"
+                         "$<TARGET_FILE:dashboard_page_dump>")
     else()
         message(WARNING "python3 not found: taillight guide regression tests disabled")
     endif()
