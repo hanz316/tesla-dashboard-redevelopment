@@ -36,6 +36,13 @@ assets/rendered/**/*_ss/
 assets/source/download/
 assets/source/downloads/
 
+# The control module's own mini program, decompiled by the owner. It is a
+# third party's product, so it is a local reference only: the protocol facts
+# read out of it are recorded in docs/COMMANDER_PROTOCOL.md, and the code
+# itself is never committed or published.
+wx64f19032ca1ea79e_unpacked/
+**/*.wxapkg
+
 # Studio HDRIs for the photoreal lighting study (large; provenance, licence and
 # URL are recorded in assets/ATTRIBUTION.md, regenerable from Poly Haven).
 assets/source/hdri/

@@ -19,7 +19,16 @@ struct RuntimeSnapshot {
     VehicleState commander_state;
     ProtocolParserStats parser;
     AdapterStats adapter;
-    CommanderDecoderStats commander_stats;
+    std::uint64_t commander_frames{0};
+    std::uint64_t commander_checksum_errors{0};
+    std::uint64_t commander_dropped_partials{0};
+    // Frames we asked the module for (gauge polls, pack polls) as opposed to
+    // frames it sent us unasked.
+    std::uint64_t commander_requests{0};
+    bool commander_info_known{false};
+    CommanderDeviceInfoV6 commander_info;
+    CommanderGaugeV6 commander_gauge;
+    CommanderPackV6 commander_pack;
     DataSourceHealth health;
     TripSummary trip;
     WarningState warning;
@@ -62,11 +71,19 @@ private:
     static std::uint64_t monotonicMilliseconds();
 
     OriginalMcuAdapter adapter_;
-    CommanderTelemetryDecoder commander_decoder_;
+    CommanderFrameReaderV6 commander_reader_;
     CommanderLink commander_link_;
     TripComputer trip_;
     WarningManager warnings_;
     VehicleState commander_state_;
+    CommanderGaugeV6 commander_gauge_;
+    CommanderPackV6 commander_pack_;
+    CommanderDcdcV6 commander_dcdc_;
+    CommanderDeviceInfoV6 commander_info_;
+    std::uint64_t commander_frames_{0};
+    std::uint64_t commander_checksum_errors_{0};
+    std::uint64_t commander_dropped_partials_{0};
+    std::uint64_t commander_module_frames_{0};
     pthread_mutex_t mutex_;
     pthread_t thread_{};
     int uart_fd_{-1};

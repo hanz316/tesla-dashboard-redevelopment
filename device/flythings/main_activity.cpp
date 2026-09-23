@@ -148,9 +148,8 @@ void mainActivity::updateDashboard() {
             static_cast<unsigned long long>(snapshot.parser.checksum_errors),
             static_cast<unsigned long long>(snapshot.adapter.unknown_commands),
             dashboard::commanderLinkName(snapshot.commander_status),
-            static_cast<unsigned long long>(snapshot.commander_stats.frames),
-            static_cast<unsigned long long>(
-                snapshot.commander_stats.checksum_errors));
+            static_cast<unsigned long long>(snapshot.commander_frames),
+            static_cast<unsigned long long>(snapshot.commander_checksum_errors));
         doors_->setText(text);
     }
     if (tire_front_ != nullptr) {

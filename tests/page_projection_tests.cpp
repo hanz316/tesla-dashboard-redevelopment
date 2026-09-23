@@ -424,73 +424,278 @@ int main() {
 
     // ------------------------------------------------------- commander frames
     {
-        CommanderTelemetryDecoder decoder;
-        VehicleState decoded;
+        // Frames are built with the module's own framing: 55 7F, command,
+        // length high/low, payload, checksum = sum(cmd, length, payload).
+        const auto frameFor = [](std::uint8_t command,
+                                 const std::vector<std::uint8_t>& payload) {
+            return CommanderFrameV6::encode(command, payload);
+        };
+
+        CommanderFrameReaderV6 reader;
+        std::vector<CommanderFrameReaderV6::Frame> received;
+        const auto feedAll = [&reader, &received](const std::vector<std::uint8_t>& bytes,
+                                                  std::uint64_t now) {
+            CommanderFrameReaderV6::Frame frame;
+            for (std::uint8_t byte : bytes) {
+                if (reader.feed(byte, now, frame)) received.push_back(frame);
+            }
+        };
         const std::uint64_t t = 5'000;
 
-        // Pack: soc 63 %, 372.5 V (3725 = 0x0E8D), -33.2 A (-332 = 0xFEB4),
-        // -12.4 kW (-124 = 0xFF84). Multi-byte values are little-endian.
-        std::vector<std::uint8_t> frame = {0xB5, 0x01, 0x07,
-                                           63, 0x8D, 0x0E, 0xB4, 0xFE, 0x84, 0xFF};
-        frame.push_back(CommanderTelemetryDecoder::checksum(0x01, 0x07, &frame[3]));
-        decoder.decode(frame.data(), frame.size(), decoded, t);
-        assert(decoder.stats().frames == 1);
-        assert(decoder.stats().decoded == 1);
-        assert(decoded.actual_soc.valid && decoded.actual_soc.value == 63);
-        assert(decoded.actual_soc.source == SignalSource::Commander);
-        assert(std::fabs(decoded.battery_voltage.value - 372.5F) < 0.01F);
-        assert(std::fabs(decoded.battery_current.value + 33.2F) < 0.01F);
-        assert(std::fabs(decoded.battery_power.value + 12.4F) < 0.01F);
+        // The checksum is the module's rule, checked against a hand-summed
+        // example rather than against itself.
+        {
+            const std::vector<std::uint8_t> payload = {1};
+            // 160 + 0x00 + 0x01 + 1 = 162 = 0xA2
+            assert(CommanderFrameV6::checksum(160, payload) == 0xA2);
+            const auto encoded = frameFor(176, {1});
+            assert(encoded.size() == CommanderFrameV6::kOverhead + 1);
+            assert(encoded[0] == 0x55 && encoded[1] == 0x7F && encoded[2] == 176);
+            assert(encoded[3] == 0x00 && encoded[4] == 0x01);
+            assert(encoded[5] == 1);
+            assert(encoded[6] == CommanderFrameV6::checksum(176, payload));
+        }
+
+        // A gauge frame (command 176) with the fields the screens read.
+        {
+            std::vector<std::uint8_t> payload(33, 0);
+            // payload[0..3]: speed 88 (bits 0-8), gear 4 = D (bits 9-11),
+            // turn 1 = left (12-13), autopilot 2 (14-15), door bits 0x5 =
+            // driver + passenger (16-19), lamp bits 0x22 = low beam + brake
+            // (20-23), SOC 63 (24-30).
+            const std::uint32_t first = 88U | (4U << 9) | (1U << 12) | (2U << 14) |
+                                        (0x5U << 16) | (0x2U << 20) | (63U << 24);
+            payload[0] = static_cast<std::uint8_t>(first & 0xFF);
+            payload[1] = static_cast<std::uint8_t>((first >> 8) & 0xFF);
+            payload[2] = static_cast<std::uint8_t>((first >> 16) & 0xFF);
+            payload[3] = static_cast<std::uint8_t>((first >> 24) & 0xFF);
+            // payload[4..7]: trunk open (bit 5), sport (bit 3), range 253.0 km
+            // (bits 6-31, /10). Bit 4 of payload[4] is the module's other
+            // brake-lamp input: the client folds it into the lamp word as
+            // bit 5.
+            const std::uint32_t second = 0x1U | (1U << 4) | (1U << 5) |
+                                         (1U << 3) | (2530U << 6);
+            payload[4] = static_cast<std::uint8_t>(second & 0xFF);
+            payload[5] = static_cast<std::uint8_t>((second >> 8) & 0xFF);
+            payload[6] = static_cast<std::uint8_t>((second >> 16) & 0xFF);
+            payload[7] = static_cast<std::uint8_t>((second >> 24) & 0xFF);
+            // Tire pressures: 113 and 114 counts = 2.825 / 2.85 bar, and two
+            // sensors that are not reporting (0 and 255).
+            payload[8] = 113;
+            payload[9] = 114;
+            payload[10] = 0;
+            payload[11] = 255;
+            // payload[12..15]: accelerator 45 counts of 250 (18 %), rear motor
+            // -18.5 kW (signed 11 bits, /2), front motor +11.0 kW.
+            const int rear_count = -37;   // /2 = -18.5 kW
+            const int front_count = 22;   // /2 = 11.0 kW
+            const std::uint32_t third = 45U |
+                ((static_cast<std::uint32_t>(rear_count) & 0x7FFU) << 8) |
+                ((static_cast<std::uint32_t>(front_count) & 0x7FFU) << 19);
+            payload[12] = static_cast<std::uint8_t>(third & 0xFF);
+            payload[13] = static_cast<std::uint8_t>((third >> 8) & 0xFF);
+            payload[14] = static_cast<std::uint8_t>((third >> 16) & 0xFF);
+            payload[15] = static_cast<std::uint8_t>((third >> 24) & 0xFF);
+            payload[17] = 0x40;  // imperial units bit set, nothing else
+            payload[27] = 124;   // ambient 0.5 * 124 - 40 = 22.0 C
+            // payload[28..31]: cell voltage 3.700 V (1850 = 0x073A),
+            // rated range 253.0 km (157 counts * 1.61), battery temp 20.0 C
+            // ((120) * 0.5 - 40).
+            const std::uint32_t pack = 1850U | (157U << 12) | (120U << 22);
+            payload[28] = static_cast<std::uint8_t>(pack & 0xFF);
+            payload[29] = static_cast<std::uint8_t>((pack >> 8) & 0xFF);
+            payload[30] = static_cast<std::uint8_t>((pack >> 16) & 0xFF);
+            payload[31] = static_cast<std::uint8_t>((pack >> 24) & 0xFF);
+            payload[32] = 0x00;
+
+            feedAll(frameFor(176, payload), t);
+            assert(received.size() == 1);
+            assert(received[0].command == 176);
+
+            CommanderGaugeV6 gauge;
+            assert(decodeCommanderGaugeV6(received[0].payload, t, gauge));
+            assert(gauge.speed_kph == 88);
+            assert(gauge.gear == Gear::Drive);
+            assert(gauge.turn == 1 && gauge.indicator_left && !gauge.indicator_right);
+            assert(gauge.autopilot == 2);
+            // Door bits are not in door order: driver is bit 0 and passenger
+            // is bit 2, so 0x5 is driver + passenger, not driver + rear left.
+            assert(gauge.door_fl && gauge.door_fr && !gauge.door_rl && !gauge.door_rr);
+            assert(gauge.headlight && !gauge.high_beam && !gauge.fog_light);
+            assert(gauge.brake_light);
+            assert(gauge.soc_percent == 63);
+            assert(gauge.trunk_open && !gauge.frunk_open);
+            assert(gauge.sport_mode && !gauge.screen_on);
+            assert(std::fabs(gauge.range_km - 253.0F) < 0.05F);
+            assert(gauge.tire_valid[0] && gauge.tire_valid[1]);
+            assert(!gauge.tire_valid[2] && !gauge.tire_valid[3]);
+            assert(std::fabs(gauge.tire_bar[0] - 2.825F) < 0.001F);
+            assert(std::fabs(gauge.tire_bar[1] - 2.85F) < 0.001F);
+            assert(std::fabs(gauge.accelerator_percent - 18.0F) < 0.2F);
+            assert(std::fabs(gauge.rear_motor_kw + 18.5F) < 0.01F);
+            assert(std::fabs(gauge.front_motor_kw - 11.0F) < 0.01F);
+            assert(std::fabs(gauge.ambient_temp_c - 22.0F) < 0.01F);
+            assert(std::fabs(gauge.cell_voltage_v - 3.700F) < 0.001F);
+            assert(std::fabs(gauge.rated_range_km - 252.77F) < 0.05F);
+            assert(std::fabs(gauge.battery_temp_c - 20.0F) < 0.01F);
+        }
+
+        // A pack frame (command 208): voltage, current with the module's own
+        // wrap fix, energy counters, cells, and the actual SOC the module
+        // derives from remaining and full energy.
+        {
+            std::vector<std::uint8_t> payload(29, 0);
+            const std::uint32_t volts = 39800;  // 398.00 V
+            const std::uint32_t amps = 1200;    // -120.0 A
+            payload[0] = static_cast<std::uint8_t>(volts & 0xFF);
+            payload[1] = static_cast<std::uint8_t>((volts >> 8) & 0xFF);
+            payload[2] = static_cast<std::uint8_t>(amps & 0xFF);
+            payload[3] = static_cast<std::uint8_t>((amps >> 8) & 0xFF);
+            const std::uint32_t discharged = 790100;  // 790.1 kWh
+            const std::uint32_t charged = 812400;     // 812.4 kWh
+            payload[4] = static_cast<std::uint8_t>(discharged & 0xFF);
+            payload[5] = static_cast<std::uint8_t>((discharged >> 8) & 0xFF);
+            payload[6] = static_cast<std::uint8_t>((discharged >> 16) & 0xFF);
+            payload[7] = static_cast<std::uint8_t>((discharged >> 24) & 0xFF);
+            payload[8] = static_cast<std::uint8_t>(charged & 0xFF);
+            payload[9] = static_cast<std::uint8_t>((charged >> 8) & 0xFF);
+            payload[10] = static_cast<std::uint8_t>((charged >> 16) & 0xFF);
+            payload[11] = static_cast<std::uint8_t>((charged >> 24) & 0xFF);
+            // Energy: remaining 37.50 kWh (1875 counts * 0.02), full
+            // 75.00 kWh (3750 counts * 0.02).
+            const std::uint32_t energy = 1875U | (3750U << 16);
+            payload[12] = static_cast<std::uint8_t>(energy & 0xFF);
+            payload[13] = static_cast<std::uint8_t>((energy >> 8) & 0xFF);
+            payload[14] = static_cast<std::uint8_t>((energy >> 16) & 0xFF);
+            payload[15] = static_cast<std::uint8_t>((energy >> 24) & 0xFF);
+            const std::uint32_t reserve = 250;  // 2.50 kWh
+            payload[16] = static_cast<std::uint8_t>(reserve & 0xFF);
+            payload[17] = static_cast<std::uint8_t>((reserve >> 8) & 0xFF);
+            // Cells: max 3.900 V (1950 counts), min 3.850 V (1925 counts).
+            const std::uint32_t cells = 1950U | (1925U << 12);
+            payload[18] = static_cast<std::uint8_t>(cells & 0xFF);
+            payload[19] = static_cast<std::uint8_t>((cells >> 8) & 0xFF);
+            payload[20] = static_cast<std::uint8_t>((cells >> 16) & 0xFF);
+            // Capacity/range/temperature/SOC: factory 75.0 kWh, range 402.5 km
+            // (250 * 1.61), battery temp 20.0 C, car SOC 63 (7 bits at 7).
+            const std::uint32_t capacity = 750U | (250U << 10) | (120U << 22);
+            payload[21] = static_cast<std::uint8_t>(capacity & 0xFF);
+            payload[22] = static_cast<std::uint8_t>((capacity >> 8) & 0xFF);
+            payload[23] = static_cast<std::uint8_t>((capacity >> 16) & 0xFF);
+            // payload[24] is shared: its low seven bits are bits 24-30 of the
+            // temperature/capacity word above, and its bit 7 is bit 0 of the
+            // car's 16-bit SOC at payload[24..25]. A frame that sets one and
+            // zeroes the other is not a frame this module would send.
+            const std::uint32_t soc_and_temp = (63U << 7);
+            payload[24] = static_cast<std::uint8_t>(((capacity >> 24) & 0x7FU) |
+                                                    (soc_and_temp & 0x80U));
+            payload[25] = static_cast<std::uint8_t>((soc_and_temp >> 8) & 0xFF);
+            const std::uint32_t odometer = 123456U << 6;  // 12345.6 km
+            payload[26] = static_cast<std::uint8_t>((odometer >> 8) & 0xFF);
+            payload[27] = static_cast<std::uint8_t>((odometer >> 16) & 0xFF);
+            payload[28] = static_cast<std::uint8_t>((odometer >> 24) & 0xFF);
+
+            feedAll(frameFor(208, payload), t + 10);
+            assert(received.size() == 2 && received[1].command == 208);
+            CommanderPackV6 pack;
+            assert(decodeCommanderPackV6(received[1].payload, t + 10, pack));
+            assert(std::fabs(pack.pack_voltage_v - 398.00F) < 0.01F);
+            assert(std::fabs(pack.pack_current_a + 120.0F) < 0.01F);
+            assert(std::fabs(pack.pack_power_kw + 47.76F) < 0.05F);
+            assert(std::fabs(pack.total_charged_kwh - 812.4F) < 0.01F);
+            assert(std::fabs(pack.total_discharged_kwh - 790.1F) < 0.01F);
+            assert(std::fabs(pack.remaining_kwh - 37.5F) < 0.01F);
+            assert(std::fabs(pack.full_kwh - 75.0F) < 0.01F);
+            assert(std::fabs(pack.reserve_kwh - 2.5F) < 0.01F);
+            assert(std::fabs(pack.max_cell_v - 3.900F) < 0.001F);
+            assert(std::fabs(pack.min_cell_v - 3.850F) < 0.001F);
+            assert(std::fabs(pack.cell_delta_mv - 50.0F) < 0.1F);
+            // (37.5 - 2.5) / (75 - 2.5) * 100 = 48.28 %
+            assert(pack.actual_soc_known);
+            assert(std::fabs(pack.actual_soc_percent - 48.28F) < 0.05F);
+            // The car's own 7-bit SOC is reported separately and is not used
+            // when the energy ratio is available.
+            assert(pack.car_soc_percent == 63);
+            assert(std::fabs(pack.battery_temp_c - 20.0F) < 0.01F);
+            assert(std::fabs(pack.odometer_km - 12345.6F) < 0.1F);
+
+            // Applying it writes the enhanced fields and nothing the car
+            // already reports.
+            VehicleState state;
+            state.speed.update(55, t, SignalSource::OriginalMcu,
+                               SignalQuality::Confirmed, Unit::KilometerPerHour);
+            state.soc.update(97, t, SignalSource::OriginalMcu,
+                             SignalQuality::Estimated, Unit::Percent);
+            CommanderGaugeV6 gauge;
+            gauge.valid = true;
+            gauge.speed_kph = 250;   // a wrong second opinion
+            gauge.gear = Gear::Reverse;
+            CommanderDcdcV6 dcdc;
+            applyCommanderReadingsV6(gauge, pack, dcdc, state, t);
+            assert(state.speed.value == 55);          // untouched
+            assert(state.gear.value == Gear::Unknown);
+            assert(state.soc.value == 97);            // the rejected byte stays put
+            assert(state.actual_soc.value == 48);     // the module's SOC lands
+            assert(state.actual_soc.source == SignalSource::Commander);
+            assert(std::fabs(state.battery_voltage.value - 398.0F) < 0.01F);
+            assert(std::fabs(state.battery_power.value + 47.76F) < 0.05F);
+
+            // The opt-in fallback is the only path that lets the module's
+            // reading of the car replace the car's own reading.
+            CommanderFallbackV6 fallback;
+            fallback.speed = true;
+            fallback.gear = true;
+            applyCommanderFallbackV6(gauge, fallback, state, t);
+            assert(state.speed.value == 250);
+            assert(state.gear.value == Gear::Reverse);
+            assert(state.speed.quality == SignalQuality::Inferred);
+        }
 
         // A corrupted frame is rejected and counted, and changes nothing.
-        std::vector<std::uint8_t> bad = frame;
-        bad.back() ^= 0xFF;
-        VehicleState untouched;
-        decoder.decode(bad.data(), bad.size(), untouched, t);
-        assert(decoder.stats().checksum_errors == 1);
-        assert(!untouched.actual_soc.valid);
+        {
+            auto bad = frameFor(176, std::vector<std::uint8_t>(33, 0));
+            bad.back() ^= 0xFF;
+            const std::uint64_t before = reader.frames();
+            feedAll(bad, t + 20);
+            assert(reader.frames() == before);
+            assert(reader.checksum_errors() == 1);
+        }
 
-        // An unknown message type is counted, never guessed into a field.
-        std::vector<std::uint8_t> unknown = {0xB5, 0x7F, 0x02, 1, 2};
-        unknown.push_back(CommanderTelemetryDecoder::checksum(0x7F, 0x02, &unknown[3]));
-        decoder.decode(unknown.data(), unknown.size(), decoded, t);
-        assert(decoder.stats().unknown_types == 1);
+        // A partial frame that stops receiving is abandoned, exactly as the
+        // module's own receiver does, instead of blocking the stream forever.
+        {
+            const auto frame = frameFor(176, std::vector<std::uint8_t>(33, 0));
+            CommanderFrameReaderV6 partial;
+            CommanderFrameReaderV6::Frame out;
+            for (std::size_t i = 0; i + 2 < frame.size(); ++i) {
+                partial.feed(frame[i], 1000, out);
+            }
+            assert(partial.frames() == 0);
+            assert(partial.dropped_partials() == 0);
+            partial.feed(frame[2], 1000 + CommanderFrameV6::kInterFrameGapMs + 1, out);
+            assert(partial.dropped_partials() == 1);
+        }
 
-        // A partial frame at the end of a read is not an error: the rest may
-        // still arrive.
-        const std::uint64_t errors_before = decoder.stats().checksum_errors +
-                                            decoder.stats().malformed;
-        decoder.decode(frame.data(), 5, decoded, t);
-        assert(decoder.stats().checksum_errors + decoder.stats().malformed ==
-               errors_before);
-
-        // Cells and inputs.
-        // 3856 mV (0x0F10) and 3872 mV (0x0F20).
-        std::vector<std::uint8_t> cell_frame = {0xB5, 0x03, 0x05, 2, 0x10, 0x0F,
-                                                0x20, 0x0F};
-        cell_frame.push_back(
-            CommanderTelemetryDecoder::checksum(0x03, 0x05, &cell_frame[3]));
-        decoder.decode(cell_frame.data(), cell_frame.size(), decoded, t);
-        assert(decoded.cell_voltages.size() == 2);
-        assert(std::fabs(decoded.min_cell_voltage.value - 3.856F) < 0.001F);
-        assert(std::fabs(decoded.max_cell_voltage.value - 3.872F) < 0.001F);
-        assert(std::fabs(decoded.cell_delta.value - 0.016F) < 0.001F);
-
-        std::vector<std::uint8_t> input_frame = {0xB5, 0x04, 0x02, 36, 0};  // 18.0 %
-        input_frame.push_back(
-            CommanderTelemetryDecoder::checksum(0x04, 0x02, &input_frame[3]));
-        decoder.decode(input_frame.data(), input_frame.size(), decoded, t);
-        assert(std::fabs(decoded.accelerator_position.value - 18.0F) < 0.001F);
-
-        // Info frame: version and feature flags.
-        std::vector<std::uint8_t> info_frame = {0xB5, 0x05, 0x04, 1, 2, 0, 0x0F};
-        info_frame.push_back(
-            CommanderTelemetryDecoder::checksum(0x05, 0x04, &info_frame[3]));
-        decoder.decode(info_frame.data(), info_frame.size(), decoded, t);
-        assert(decoder.module_info_known());
-        assert(decoder.version().major == 1 && decoder.version().minor == 2);
-        assert(decoder.features().power);
-        std::cout << "commander frames decode, bad frames are rejected\n";
+        // The instrument may only ask. Every control command is refused by
+        // name, including the control word and the module's restart/reset.
+        {
+            assert(commanderCommandIsQueryV6(160));   // status
+            assert(commanderCommandIsQueryV6(176));   // gauge
+            assert(commanderCommandIsQueryV6(208));   // pack
+            assert(commanderCommandIsQueryV6(209));
+            assert(commanderCommandIsQueryV6(210));
+            assert(commanderCommandIsQueryV6(193));
+            const std::uint8_t control[] = {161, 162, 163, 164, 165, 166,
+                                            167, 168, 169, 171, 173, 174,
+                                            175, 185, 186, 187, 192, 240};
+            for (std::uint8_t command : control) {
+                assert(commanderCommandIsControlV6(command));
+                assert(!commanderCommandIsQueryV6(command));
+            }
+            // An unknown command is not a query either.
+            assert(!commanderCommandIsQueryV6(0x5A));
+        }
+        std::cout << "commander frames decode against the real protocol\n";
     }
 
     // -------------------------------------------------------- commander link

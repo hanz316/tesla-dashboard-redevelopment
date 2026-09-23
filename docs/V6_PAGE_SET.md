@@ -139,27 +139,27 @@ DEVICE TEST**。
 - 3 s 没有帧 → `Stale`，屏幕显示未连接（而不是继续显示旧值）。
 - 未启用 → 徽标画占位符，不是"0 = 未连接"。
 
-### 5.4 帧格式（dashboard 侧契约，**尚未与真实指挥官固件核对**）
+### 5.4 帧格式（真协议，来自模块自带控制软件）
 
 ```text
-0xB5 | TYPE | LEN | PAYLOAD | CHK        CHK = ~(TYPE+LEN+sum(PAYLOAD)) & 0xFF
-0x01 PACK     soc u8 %; voltage u16 0.1V; current i16 0.1A; power i16 0.1kW
-0x02 ENERGY   charged u32 0.1kWh; discharged u32 0.1kWh; remaining u16 0.1kWh
-0x03 CELLS    count u8; count × u16 mV
-0x04 INPUTS   accelerator u8 0.5%; brake u8 0.5%
-0x05 INFO     major/minor/patch u8; feature flags u8
-0x06 TEMPS    battery/ambient/cabin i16 0.1°C
+55 7F CMD LEN_HI LEN_LO DATA... CHK
+CHK = (CMD + LEN_HI + LEN_LO + sum(DATA)) & 0xFF     长度大端，最大 4096
+160 读模块状态    176 仪表盘数据流 [1]开 [0]停    208 电池包概要
+209 单体电压      210 DC/DC                      167 = 车辆控制（永不发送）
 ```
 
-多字节一律小端。未知 TYPE 只计数、不猜；校验错误丢帧并计数；读到半帧不算错误
-（等下一块数据）。这些都是 dashboard 侧的解码契约：**真机必须抓一次真实
-指挥官输出并复核这张表**，在那之前它只是我们自己定的接口，不是实车事实。
+完整字段表（176 的位布局、208 的共用字节、209/210、以及仍未确定的 7 项）
+见 [`docs/COMMANDER_PROTOCOL.md`](COMMANDER_PROTOCOL.md)。那份文档每一行
+偏移都标注了来源文件；**尚未与实物模块抓包核对**，所以"已实现"指的是按
+源码实现的解码链，不是"已在实车验证"。
 
 ### 5.5 真机侧现状
 
 `DeviceRuntime::feedCommander()` 是传输线程的接入点；本 build 里没有任何
 东西打开 BLE，所以 `CommanderLink` 报的就是实情（未启用 / 搜索中）。
 原生 BLE（FFF0/FFF1）客户端属于平台任务，见 `docs/device-capabilities.md`。
+手机小程序本来就是这台模块的 BLE Central，所以 PhoneBridge（手机收数据、
+经 Wi-Fi 转发给仪表）是当前最省事的一条路。
 
 ---
 
@@ -170,7 +170,7 @@ DEVICE TEST**。
 | 9 屏场景与预算 | 已验证（host） | `tests/v6_pages_tests.py` |
 | 绑定名双向一致 | 已验证（host） | `tests/v6_binding_coverage_tests.py` |
 | 投影规则（未知态、SOC、档位、门、指挥官徽标） | 已验证（host） | `tests/page_projection_tests.cpp` |
-| 指挥官解码 / 校验 / 链路状态机 | 已验证（host，对契约） | `tests/page_projection_tests.cpp` |
+| 指挥官解码 / 校验 / 链路状态机 | 已验证（host，按模块自带控制软件还原的真协议） | `tests/page_projection_tests.cpp` |
 | 合并规则不可反向覆盖 | 已验证（host） | 同上 |
 | 设备侧环境映射（UART OK/STALE/LOST、计数器） | 已验证（host，编译同一份 device 源码） | `tests/device_environment_tests.cpp` |
 | 设置持久化与钳制 | 已验证（host） | `tests/settings_store_tests.cpp` |
@@ -190,7 +190,8 @@ DEVICE TEST**。
 2. **车辆位图 + 门动画**：`ZKImageAnim` 能力探测（变帧尺寸 / 任意 x-y /
    变 delta / fixed-tight），决策规则已写在 `device/bench/bench_plan.cpp`。
 3. **指挥官传输线程**：打开一次真实传输，把字节喂给 `feedCommander()`，
-   抓取真实输出并复核 §5.4 的表。
+   抓取真实输出并复核 `docs/COMMANDER_PROTOCOL.md` 的字段表（尤其是 §7 的
+   7 项未确定内容）。
 4. **真机 benchmark**：帧时、CPU、RSS、解码常驻内存，写入 Developer 页
    （现在那里是占位符，不编数字）。
 5. **实车复核**：档位（0x02 byte 3）、轮胎轮位顺序、`0x07` 温度可信度，

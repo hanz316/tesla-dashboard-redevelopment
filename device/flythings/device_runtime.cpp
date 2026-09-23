@@ -69,7 +69,14 @@ RuntimeSnapshot DeviceRuntime::snapshot() {
     result.commander_state = commander_state_;
     result.parser = adapter_.parserStats();
     result.adapter = adapter_.adapterStats();
-    result.commander_stats = commander_decoder_.stats();
+    result.commander_frames = commander_frames_;
+    result.commander_checksum_errors = commander_checksum_errors_;
+    result.commander_dropped_partials = commander_dropped_partials_;
+    result.commander_requests = commander_module_frames_;
+    result.commander_info_known = commander_info_.valid;
+    result.commander_info = commander_info_;
+    result.commander_gauge = commander_gauge_;
+    result.commander_pack = commander_pack_;
     result.health = adapter_.health();
     result.trip = trip_.summary(TripSlot::CurrentDrive);
     result.warning = warnings_.evaluate(adapter_.state());
@@ -77,8 +84,12 @@ RuntimeSnapshot DeviceRuntime::snapshot() {
     result.uart_receiving = uart_fd_ >= 0 &&
                             adapter_.parserStats().valid_packets > 0;
     result.commander_status = commander_link_.status();
-    result.commander_module_info_known = commander_decoder_.module_info_known();
-    result.commander_version = commander_decoder_.version();
+    result.commander_module_info_known = commander_info_.valid;
+    CommanderModuleVersion version;
+    version.major = commander_info_.hardware_version;
+    version.minor = commander_info_.firmware_version;
+    version.patch = commander_info_.bootloader_version;
+    result.commander_version = version;
     result.commander_detail = commander_link_.detail("NativeBle");
     pthread_mutex_unlock(&mutex_);
     return result;
@@ -94,15 +105,69 @@ void DeviceRuntime::feedCommander(const std::uint8_t* data, std::size_t length) 
         commander_transport_connected_ = true;
         commander_link_.setTransport(true, now_ms);
     }
-    const std::uint64_t frames_before = commander_decoder_.stats().frames;
-    commander_decoder_.decode(data, length, commander_state_, now_ms);
-    if (commander_decoder_.stats().frames > frames_before) {
+    CommanderFrameReaderV6::Frame frame;
+    for (std::size_t i = 0; i < length; ++i) {
+        if (!commander_reader_.feed(data[i], now_ms, frame)) continue;
+        ++commander_frames_;
         commander_link_.noteFrame(now_ms);
+        switch (static_cast<CommanderCommandV6>(frame.command)) {
+            case CommanderCommandV6::ReadDeviceInfo:
+                decodeCommanderDeviceInfoV6(frame.payload, now_ms, commander_info_);
+                break;
+            case CommanderCommandV6::Gauge: {
+                // Apply at decode time, not later: a reading re-stamped with
+                // the current clock would look fresh forever, and a silent
+                // module would keep showing its last number as if it were new.
+                CommanderGaugeV6 gauge;
+                if (decodeCommanderGaugeV6(frame.payload, now_ms, gauge)) {
+                    commander_gauge_ = gauge;
+                    applyCommanderReadingsV6(commander_gauge_, CommanderPackV6{},
+                                             CommanderDcdcV6{}, commander_state_,
+                                             now_ms);
+                }
+                break;
+            }
+            case CommanderCommandV6::Battery: {
+                CommanderPackV6 pack;
+                if (decodeCommanderPackV6(frame.payload, now_ms, pack)) {
+                    commander_pack_ = pack;
+                    applyCommanderReadingsV6(CommanderGaugeV6{}, commander_pack_,
+                                             CommanderDcdcV6{}, commander_state_,
+                                             now_ms);
+                }
+                break;
+            }
+            case CommanderCommandV6::Dcdc: {
+                CommanderDcdcV6 dcdc;
+                if (decodeCommanderDcdcV6(frame.payload, now_ms, dcdc)) {
+                    commander_dcdc_ = dcdc;
+                    applyCommanderReadingsV6(CommanderGaugeV6{}, CommanderPackV6{},
+                                             commander_dcdc_, commander_state_,
+                                             now_ms);
+                }
+                break;
+            }
+            default:
+                // A reply we did not ask for and do not decode is counted, not
+                // guessed at.
+                break;
+        }
     }
-    if (commander_decoder_.module_info_known()) {
-        commander_link_.setModuleInfo(commander_decoder_.version(),
-                                      commander_decoder_.features());
+    if (commander_info_.valid) {
+        CommanderModuleVersion version;
+        version.major = commander_info_.hardware_version;
+        version.minor = commander_info_.firmware_version;
+        version.patch = commander_info_.bootloader_version;
+        CommanderFeatureFlags features;
+        features.enabled = true;
+        features.raw_can = commander_info_.can_channel(0);
+        features.bms = commander_pack_.valid;
+        features.cells = commander_pack_.valid;
+        features.power = commander_gauge_.has_extended;
+        commander_link_.setModuleInfo(version, features);
     }
+    commander_checksum_errors_ = commander_reader_.checksum_errors();
+    commander_dropped_partials_ = commander_reader_.dropped_partials();
     pthread_mutex_unlock(&mutex_);
 }
 
@@ -227,9 +292,8 @@ void DeviceRuntime::readLoop() {
                         ? static_cast<int>(st.temperature_secondary.value)
                         : 0,
                     commanderLinkName(commander_link_.status()),
-                    static_cast<unsigned long long>(commander_decoder_.stats().frames),
-                    static_cast<unsigned long long>(
-                        commander_decoder_.stats().checksum_errors));
+                    static_cast<unsigned long long>(commander_frames_),
+                    static_cast<unsigned long long>(commander_checksum_errors_));
                 std::fclose(log);
             }
             last_report_ms = now_ms;

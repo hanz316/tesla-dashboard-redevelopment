@@ -6,15 +6,31 @@
 #include <cstddef>
 #include <cstdint>
 #include <string>
+#include <vector>
 
 namespace dashboard {
 
-// Link state of the enhanced telemetry source (Commander).
+// Enhanced telemetry from the aftermarket control module.
+//
+// Source of the wire format below: the module's own control software, which
+// the owner supplied as an unpacked mini program. The frame header, the length
+// encoding, the checksum rule, the command numbers and the bit layouts in the
+// decoders were read out of that code, and the offsets are quoted beside them.
+// That makes this a decoded protocol rather than a guess - but it is decoded
+// from the client, not confirmed against a live module, so anything the code
+// does not state stays out of the decoders.
+//
+// The instrument only ever ASKS this module for data. The same command set
+// carries the vehicle's controls (unlocking, seat memory, cutting a motor,
+// restarting the module). Those are listed so they can be refused by name:
+// see commanderCommandIsQueryV6().
+
+// Link state of the enhanced telemetry source.
 //
 // The original MCU already carries speed, gear, range, doors, lamps and tire
-// pressures, and those stay on the MCU path. The Commander is the only source
-// for pack SOC, power, energy counters, cell voltages and the accelerator
-// pedal, so its link state is a first-class thing the screens show rather than
+// pressures, and those stay on the MCU path. The module is the source for pack
+// SOC, pack power, energy counters, cell voltages and the accelerator pedal,
+// so its link state is a first-class thing the screens show rather than
 // something that silently produces zeros.
 enum class CommanderLinkStatus : std::uint8_t {
     Disabled = 0,   // the module is switched off in settings
@@ -26,9 +42,6 @@ enum class CommanderLinkStatus : std::uint8_t {
 
 const char* commanderLinkName(CommanderLinkStatus status);
 
-// How the module decides a link is alive. Values are deliberately generous:
-// the Commander pushes at a low rate, and a short dropout must not flap the
-// screen between two states.
 struct CommanderLinkPolicy {
     std::uint64_t frame_timeout_ms{3000};
     std::uint64_t reconnect_backoff_ms{1500};
@@ -65,7 +78,7 @@ public:
     std::uint64_t dropped_frames() const { return dropped_frames_; }
     std::uint64_t last_frame_ms() const { return last_frame_ms_; }
 
-    // "NativeBle · v1.2.0" - what the detail line under the badge shows.
+    // "NativeBle v1.2.0" - what the detail line under the badge shows.
     std::string detail(const char* transport_name) const;
 
 private:
@@ -83,78 +96,271 @@ private:
     std::uint64_t enabled_since_ms_{0};
 };
 
-// ---------------------------------------------------------------- telemetry
+// ------------------------------------------------------------------ framing
 
-// The frame format the dashboard decodes.
-//
-//   0xB5 | TYPE | LEN | PAYLOAD | CHK
-//   CHK = ~(TYPE + LEN + sum(PAYLOAD)) & 0xFF
-//
-// This mirrors the original MCU framing so one checksum helper serves both
-// links, and it is deliberately explicit about scaling: every multi-byte value
-// is little-endian, and every scaled value states its unit in the field name.
-//
-// IMPORTANT: this is the dashboard-side contract, not a captured Commander
-// firmware spec. It is the shape the module emits and the shape the screens
-// were built against. When a real Commander is on the bench its actual output
-// must be captured and this table re-verified; until then the decode path is
-// tested against the contract, and no capture of a real Commander exists.
-struct CommanderFrameHeader {
-    static constexpr std::uint8_t kHeader = 0xB5;
-    static constexpr std::size_t kOverhead = 4;  // header, type, len, checksum
-};
+struct CommanderFrameV6 {
+    // 55 7F CMD LEN_HI LEN_LO DATA... CHK
+    static constexpr std::uint8_t kHeader0 = 0x55;
+    static constexpr std::uint8_t kHeader1 = 0x7F;
+    static constexpr std::size_t kHeaderBytes = 2;
+    static constexpr std::size_t kLengthBytes = 2;
+    static constexpr std::size_t kChecksumBytes = 1;
+    static constexpr std::size_t kOverhead =
+        kHeaderBytes + 1 + kLengthBytes + kChecksumBytes;
+    // The module's own receiver refuses anything longer than this.
+    static constexpr std::uint16_t kMaxPayload = 4096;
+    // The module's receiver abandons a partial frame after this gap, which is
+    // why a reader has to do the same instead of waiting forever.
+    static constexpr std::uint64_t kInterFrameGapMs = 500;
 
-enum class CommanderMessageType : std::uint8_t {
-    Pack = 0x01,       // soc u8 %, voltage u16 0.1 V, current i16 0.1 A, power i16 0.1 kW
-    Energy = 0x02,     // charged u32 0.1 kWh, discharged u32 0.1 kWh, remaining u16 0.1 kWh
-    Cells = 0x03,      // count u8, then count x u16 millivolts
-    Inputs = 0x04,     // accelerator u8 0.5 %, brake u8 0.5 %
-    Info = 0x05,       // major u8, minor u8, patch u8, feature flags u8
-    Temperatures = 0x06,  // battery i16 0.1 C, ambient i16 0.1 C, cabin i16 0.1 C
-};
-
-struct CommanderDecoderStats {
-    std::uint64_t frames{0};
-    std::uint64_t checksum_errors{0};
-    std::uint64_t malformed{0};
-    std::uint64_t unknown_types{0};
-    std::uint64_t decoded{0};
-};
-
-class CommanderTelemetryDecoder {
-public:
-    // Decodes every complete frame in the buffer. Fields the frame does not
-    // carry are left untouched, so a partial frame cannot clear a good value.
-    // Only fields the Commander actually owns are written.
-    void decode(const std::uint8_t* data, std::size_t length,
-                VehicleState& out, std::uint64_t now_ms);
-
-    const CommanderDecoderStats& stats() const { return stats_; }
-    CommanderModuleVersion version() const { return version_; }
-    CommanderFeatureFlags features() const { return features_; }
-    bool module_info_known() const { return module_info_known_; }
-    void resetStats() { stats_ = CommanderDecoderStats{}; }
-
-    static std::uint8_t checksum(std::uint8_t type, std::uint8_t length,
+    // Sum of the command, the two length bytes and the payload, low 8 bits.
+    static std::uint8_t checksum(std::uint8_t command, std::uint16_t length,
                                  const std::uint8_t* payload);
+    static std::uint8_t checksum(std::uint8_t command,
+                                 const std::vector<std::uint8_t>& payload);
+
+    // Builds a complete frame. Used by the phone bridge and by tests; the
+    // instrument itself only reads.
+    static std::vector<std::uint8_t> encode(
+        std::uint8_t command, const std::vector<std::uint8_t>& payload = {});
+};
+
+enum class CommanderCommandV6 : std::uint8_t {
+    ReadDeviceInfo = 160,   // 0xA0 status refresh
+    ApAssist = 161,
+    ButtonReport = 162,
+    SaveParameters = 163,
+    FactoryReset = 164,
+    Restart = 165,
+    ApRestoreState = 166,
+    Control = 167,          // the control word: locks, seats, motors, ESP
+    PasswordCheck = 168,
+    PasswordChange = 169,
+    WriteButtonAndParameters = 171,
+    WarehouseReset = 173,
+    Deactivate = 174,
+    Activate = 175,
+    Gauge = 176,            // 0xB0 dashboard stream: start [1], stop [0]
+    AmbientLight = 185,
+    ButtonPanel = 186,
+    GenericButton = 187,
+    Passthrough = 192,
+    ReadValue = 193,
+    Battery = 208,          // pack summary
+    BatteryCells = 209,     // six cell voltages per message
+    Dcdc = 210,
+    BleHost = 240,
+};
+
+// A query asks the module to report something. A control asks the car to do
+// something. The instrument is a display: it may only send queries.
+bool commanderCommandIsQueryV6(std::uint8_t command);
+bool commanderCommandIsControlV6(std::uint8_t command);
+
+// A frame reader for the byte stream coming back from the module. It mirrors
+// the module's own receiver, including the partial-frame timeout, because the
+// module's replies are longer than one BLE packet and arrive in pieces.
+class CommanderFrameReaderV6 {
+public:
+    struct Frame {
+        std::uint8_t command{0};
+        std::vector<std::uint8_t> payload;
+    };
+
+    // Feeds one byte. Returns true when that byte completed a valid frame.
+    bool feed(std::uint8_t byte, std::uint64_t now_ms, Frame& frame);
+    void reset();
+
+    std::uint64_t frames() const { return frames_; }
+    std::uint64_t checksum_errors() const { return checksum_errors_; }
+    std::uint64_t dropped_partials() const { return dropped_partials_; }
+    std::uint64_t malformed() const { return malformed_; }
+    std::uint64_t bytes() const { return bytes_; }
 
 private:
-    void decodeMessage(std::uint8_t type, const std::uint8_t* payload,
-                       std::uint8_t length, VehicleState& out,
-                       std::uint64_t now_ms);
-
-    CommanderDecoderStats stats_;
-    CommanderModuleVersion version_;
-    CommanderFeatureFlags features_;
-    bool module_info_known_{false};
+    enum class State : std::uint8_t {
+        Idle = 0, Header1, Command, LengthHigh, LengthLow, Payload, Checksum,
+    };
+    State state_{State::Idle};
+    std::uint8_t command_{0};
+    std::uint16_t length_{0};
+    std::uint16_t index_{0};
+    std::uint8_t running_{0};
+    std::vector<std::uint8_t> payload_;
+    std::uint64_t last_byte_ms_{0};
+    std::uint64_t frames_{0};
+    std::uint64_t checksum_errors_{0};
+    std::uint64_t dropped_partials_{0};
+    std::uint64_t malformed_{0};
+    std::uint64_t bytes_{0};
 };
 
-// Copies the enhanced fields onto the cluster's state.
+// ---------------------------------------------------------------- decoding
+
+// Command 160, the module's own status: hardware revision, wiring, runtime,
+// CAN channels. Module state, not car telemetry.
+struct CommanderDeviceInfoV6 {
+    bool valid{false};
+    std::uint8_t hardware_version{0};    // payload[0]
+    std::uint8_t bootloader_version{0};  // payload[1]
+    std::uint8_t firmware_version{0};    // payload[2]
+    std::uint8_t flags{0};               // payload[3]
+    std::uint8_t ap_restore_state{0};    // payload[18]
+    std::uint8_t state_bits{0};          // payload[19]
+    float runtime_s{0.0F};               // payload[20..21], little-endian, /1000
+    std::uint8_t data0{0};               // payload[22]
+    std::uint8_t data1{0};               // payload[23]
+    bool has_battery_voltage{false};
+    float battery_voltage_v{0.0F};       // payload[20..21], little-endian, /1000
+    std::uint8_t charge_state{0};        // payload[19]
+    bool has_ambient_light{false};
+    std::uint8_t light_brightness{0};    // payload[18], capped at 100
+    std::uint8_t light_rgb[3]{0, 0, 0};  // payload[20..22]
+    std::uint64_t timestamp_ms{0};
+
+    bool wiring_fault() const { return (state_bits >> 7 & 1) != 0; }
+    bool running() const { return (state_bits & 1) != 0; }
+    std::uint8_t vehicle_type() const {
+        return static_cast<std::uint8_t>(data0 >> 0 & 31);
+    }
+    bool vehicle_type_identified() const { return (data0 >> 7 & 1) != 0; }
+    bool can_channel(std::uint8_t index) const {
+        return index < 3 && ((data1 >> index) & 1) != 0;
+    }
+};
+
+// Command 176, the dashboard stream: the module's decoding of the car's buses.
+// Field offsets are quoted from the module's own parser.
+struct CommanderGaugeV6 {
+    bool valid{false};
+    std::uint16_t speed_kph{0};   // payload[0..3] bits 0-8
+    Gear gear{Gear::Unknown};     // bits 9-11: 1=P 2=R 3=N 4=D
+    std::uint8_t turn{0};         // bits 12-13
+    std::uint8_t autopilot{0};    // bits 14-15
+    bool door_fl{false};
+    bool door_fr{false};
+    bool door_rl{false};
+    bool door_rr{false};
+    std::uint8_t door_bits{0};    // bits 16-19
+    std::uint8_t light_bits{0};   // bits 20-23, 27 and payload[4] bit 1
+    bool headlight{false};
+    bool high_beam{false};
+    bool fog_light{false};
+    bool brake_light{false};
+    bool indicator_left{false};
+    bool indicator_right{false};
+    std::uint8_t soc_percent{0};  // bits 24-30: the car's own 7-bit SOC
+    bool frunk_open{false};       // payload[4..7] bit 1
+    bool trunk_open{false};       // bit 5
+    bool screen_on{false};        // bit 0
+    bool dark_theme{false};       // bit 2
+    bool sport_mode{false};       // bit 3
+    float range_km{0.0F};         // bits 6-31, /10 (the client labels this remaining range)
+    bool tire_valid[4]{false, false, false, false};
+    float tire_bar[4]{0.0F, 0.0F, 0.0F, 0.0F};  // payload[8..11] * 0.025
+    float accelerator_percent{0.0F};            // payload[12], 0-255 of 250 counts
+    float rear_motor_kw{0.0F};                  // payload[12..15] bits 8-18, signed, /2
+    float front_motor_kw{0.0F};                 // bits 19-29, signed, /2
+    bool has_extended{false};                   // payload length >= 33
+    float elevation_m{0.0F};                    // payload[15..17] bits 6-19, signed
+    std::uint8_t battery_heating{0};            // payload[17] bits 4-5
+    bool imperial_units{false};                 // payload[17] bit 6
+    bool hands_on_wheel{false};                 // payload[17] bit 7
+    float brake_temp_c[4]{0.0F, 0.0F, 0.0F, 0.0F};  // payload[18..22], 10-bit, -40
+    float hvac_blower_rpm{0.0F};                // payload[23..26] bits 0-9, *5
+    float hvac_evaporator_w{0.0F};              // bits 10-20, *5
+    float cabin_temp_c{0.0F};                   // bits 21-31, *0.1, -40
+    float ambient_temp_c{0.0F};                 // payload[27] *0.5, -40
+    float cell_voltage_v{0.0F};                 // payload[28..31] bits 0-11, *0.002
+    float rated_range_km{0.0F};                 // bits 12-21, *1.61
+    float battery_temp_c{0.0F};                 // bits 22-30, *0.5, -40
+    float speed_limit_kph{0.0F};                // payload[31..32] bits 7-11, *5
+    std::uint8_t blind_spot_rear_left{0};       // bits 12-13
+    std::uint8_t blind_spot_rear_right{0};      // bits 14-15
+    std::uint64_t timestamp_ms{0};
+};
+
+bool decodeCommanderDeviceInfoV6(const std::vector<std::uint8_t>& payload,
+                                 std::uint64_t now_ms,
+                                 CommanderDeviceInfoV6& out);
+bool decodeCommanderGaugeV6(const std::vector<std::uint8_t>& payload,
+                            std::uint64_t now_ms, CommanderGaugeV6& out);
+
+// Command 208, the pack summary. This is where a trustworthy SOC comes from:
+// the module reports remaining and full energy, and the actual SOC is their
+// ratio rather than a byte decoded by somebody else.
+struct CommanderPackV6 {
+    bool valid{false};
+    float pack_voltage_v{0.0F};        // payload[0..1], *0.01
+    float pack_current_a{0.0F};        // payload[2..3], *-0.1 with the module's wrap fix
+    float pack_power_kw{0.0F};
+    float total_charged_kwh{0.0F};     // payload[8..11], *0.001
+    float total_discharged_kwh{0.0F};  // payload[4..7], *0.001
+    float max_cell_v{0.0F};            // payload[18..20] bits 0-11, *0.002
+    float min_cell_v{0.0F};            // bits 12-23, *0.002
+    float cell_delta_mv{0.0F};
+    bool remaining_known{false};
+    float remaining_kwh{0.0F};         // payload[12..15] bits 0-15, *0.02
+    float full_kwh{0.0F};              // bits 16-31, *0.02
+    float reserve_kwh{0.0F};           // payload[16..17], *0.01
+    float factory_capacity_kwh{0.0F};  // payload[21..24] bits 0-9, *0.1
+    float range_km{0.0F};              // bits 10-19, *1.61
+    std::uint8_t car_soc_percent{0};   // payload[24..25] bits 7-13
+    bool actual_soc_known{false};
+    float actual_soc_percent{0.0F};    // (remaining - reserve) / (full - reserve)
+    float battery_temp_c{0.0F};        // bits 22-31 of payload[21..24], *0.5, -40
+    bool heating{false};
+    float odometer_km{0.0F};           // payload[25..28] bits 6-31, /10
+    std::uint64_t timestamp_ms{0};
+};
+
+bool decodeCommanderPackV6(const std::vector<std::uint8_t>& payload,
+                           std::uint64_t now_ms, CommanderPackV6& out);
+
+// Command 210, the DC/DC converter.
+struct CommanderDcdcV6 {
+    bool valid{false};
+    float input_voltage_v{0.0F};   // payload[0..3] bits 16-31, *0.1
+    float output_voltage_v{0.0F};  // bits 0-15, *0.01
+    float output_current_a{0.0F};  // payload[4..7] bits 0-15, *0.1
+    float output_power_w{0.0F};
+    std::uint64_t timestamp_ms{0};
+};
+
+bool decodeCommanderDcdcV6(const std::vector<std::uint8_t>& payload,
+                           std::uint64_t now_ms, CommanderDcdcV6& out);
+
+// ------------------------------------------------------------ application
+
+// Writes the decoded module readings onto the cluster's state.
 //
-// The Commander owns only what the original MCU does not carry. Speed, gear,
-// range, the SOC byte, doors, lamps, tire pressures and trip data are read
-// from the car by the cluster already; this function never overwrites them,
-// so an enhanced source can never rewrite a directly read value.
+// Only the enhanced fields are written. Speed, gear, range, the MCU SOC byte,
+// doors, lamps and tire pressures are read from the car by the cluster already
+// and are deliberately left alone here, even though this module also reports
+// them: an enhanced source may add, but it may not overwrite a directly read
+// value.
+void applyCommanderReadingsV6(const CommanderGaugeV6& gauge,
+                              const CommanderPackV6& pack,
+                              const CommanderDcdcV6& dcdc,
+                              VehicleState& out, std::uint64_t now_ms);
+
+// The opt-in fallback: when the car's own link is silent, the module's
+// decoding of the car can stand in. It is a separate function, per signal, so
+// that "the instrument shows the module's numbers instead of the car's" is
+// always a deliberate choice and never a side effect of plugging the module in.
+struct CommanderFallbackV6 {
+    bool speed{false};
+    bool gear{false};
+    bool range{false};
+    bool closures{false};
+    bool tire_pressure{false};
+};
+
+void applyCommanderFallbackV6(const CommanderGaugeV6& gauge,
+                              const CommanderFallbackV6& which,
+                              VehicleState& out, std::uint64_t now_ms);
+
+// Copies the enhanced fields from one state onto another.
 void mergeCommanderInto(VehicleState& target, const VehicleState& commander);
 
 }  // namespace dashboard
