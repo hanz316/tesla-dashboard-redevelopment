@@ -164,8 +164,10 @@ std::string CommanderLink::detail(const char* transport_name) const {
     char text[96];
     const char* transport = transport_name != nullptr ? transport_name : "?";
     if (module_info_known_) {
-        // The same separator the rest of the screens use between items.
-        std::snprintf(text, sizeof(text), "%s · v%u.%u.%u", transport,
+        // Three different numbers, not a semantic version: the module reports
+        // a hardware revision, a firmware version and a bootloader version.
+        // Printing them as "v1.2.0" would imply a build number nobody sent.
+        std::snprintf(text, sizeof(text), "%s · HW %u · FW %u · BT %u", transport,
                       static_cast<unsigned>(version_.major),
                       static_cast<unsigned>(version_.minor),
                       static_cast<unsigned>(version_.patch));

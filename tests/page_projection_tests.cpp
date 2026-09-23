@@ -719,7 +719,7 @@ int main() {
         CommanderFeatureFlags flags;
         flags.enabled = true;
         link.setModuleInfo(version, flags);
-        assert(link.detail("NativeBle") == "NativeBle · v1.2.0");
+        assert(link.detail("NativeBle") == "NativeBle · HW 1 · FW 2 · BT 0");
 
         link.tick(kNow + 20 + 4000);          // beyond the frame timeout
         assert(link.status() == CommanderLinkStatus::Stale);
