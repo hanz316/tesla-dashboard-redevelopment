@@ -19,6 +19,7 @@ add_library(dashboard_core
     src/core/ui_framework_v6.cpp
     src/core/page_projection_v6.cpp
     src/core/commander_link.cpp
+    src/core/commander_transport.cpp
     src/core/settings_store_v6.cpp
     src/core/input_router_v6.cpp
     src/core/horizon_v6.cpp
@@ -92,6 +93,14 @@ if(BUILD_HOST_TOOLS)
     target_link_libraries(dashboard_input_router_tests PRIVATE dashboard_core)
     target_compile_options(dashboard_input_router_tests PRIVATE -Wall -Wextra -Wpedantic)
     add_test(NAME dashboard_input_router_tests COMMAND dashboard_input_router_tests)
+
+    # Auto-connect, the frame path and the phone-bridge receive path. The UDP
+    # part uses a real socket on loopback, so the transport is exercised rather
+    # than mocked.
+    add_executable(dashboard_commander_bridge_tests tests/commander_bridge_tests.cpp)
+    target_link_libraries(dashboard_commander_bridge_tests PRIVATE dashboard_core)
+    target_compile_options(dashboard_commander_bridge_tests PRIVATE -Wall -Wextra -Wpedantic)
+    add_test(NAME dashboard_commander_bridge_tests COMMAND dashboard_commander_bridge_tests)
 
     # The device's own view of the world, compiled from the same source the
     # T113 build uses, so the mapping from runtime snapshot to screen is not

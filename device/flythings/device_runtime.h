@@ -1,6 +1,7 @@
 #pragma once
 
 #include "dashboard/commander_link.h"
+#include "dashboard/commander_transport.h"
 #include "dashboard/dashboard_services.h"
 #include "dashboard/original_mcu_adapter.h"
 #include "dashboard/page_projection_v6.h"
@@ -29,6 +30,8 @@ struct RuntimeSnapshot {
     CommanderDeviceInfoV6 commander_info;
     CommanderGaugeV6 commander_gauge;
     CommanderPackV6 commander_pack;
+    bool commander_enabled{false};
+    bool commander_should_connect{false};
     DataSourceHealth health;
     TripSummary trip;
     WarningState warning;
@@ -71,26 +74,17 @@ private:
     static std::uint64_t monotonicMilliseconds();
 
     OriginalMcuAdapter adapter_;
-    CommanderFrameReaderV6 commander_reader_;
-    CommanderLink commander_link_;
+    // The whole enhanced-telemetry receive path - reader, link state, decoded
+    // readings and the connect schedule - is one object, and it is the same
+    // object the host tests drive over a real socket.
+    CommanderBridgeV6 commander_;
     TripComputer trip_;
     WarningManager warnings_;
-    VehicleState commander_state_;
-    CommanderGaugeV6 commander_gauge_;
-    CommanderPackV6 commander_pack_;
-    CommanderDcdcV6 commander_dcdc_;
-    CommanderDeviceInfoV6 commander_info_;
-    std::uint64_t commander_frames_{0};
-    std::uint64_t commander_checksum_errors_{0};
-    std::uint64_t commander_dropped_partials_{0};
-    std::uint64_t commander_module_frames_{0};
     pthread_mutex_t mutex_;
     pthread_t thread_{};
     int uart_fd_{-1};
     bool running_{false};
     bool thread_started_{false};
-    std::uint64_t started_ms_{0};
-    bool commander_transport_connected_{false};
 };
 
 // The projection environment for the current frame, built from the same

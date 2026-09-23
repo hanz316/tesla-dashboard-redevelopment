@@ -122,15 +122,34 @@ DEVICE TEST**。
 `cell_voltages`、`battery/ambient/cabin_temperature`、`battery_heating`、
 `dcdc_*`、`hvac_*`。
 
-### 5.2 它**不可以**覆盖什么
+### 5.2 冲突时谁说话（车主决定：指挥官优先）
 
-速度、档位、续航、MCU 的 SOC 字节、车门/前备箱/后备箱、灯光、胎压、
-行程与总里程 —— 这些是仪表**本来就直接读得到**的数据，沿用原车已有规则。
-测试里专门让一个"不守规矩的指挥官"同时携带 `speed=250`、`gear=R`、
-`range=1`、`door_fl=OPEN`、`tire_fl=0.1`、`headlights=OFF`，
-断言合并后这些值一个都没变。
+```text
+指挥官有值（且未过期）  →  用指挥官的
+指挥官没值 / 已过期      →  用原车 MCU 的（兜底）
+SOC                      →  只认指挥官的，MCU 的 SOC 字节永不参与
+```
 
-### 5.3 链路状态是真实的，不猜
+规则实现为 `buildArbitratedStateV6(mcu, commander, now, priority)`：两份状态
+各存各的，屏幕读的是仲裁后的视图。`CommanderPriorityV6` 允许逐信号关闭
+该优先级，方便以后就某个字段单独讨论，而不是改整条策略。
+
+其中温度一项做了明确的取舍：模块的环境温度比原车那个不可信的温度字段
+（`0x07` 曾读出 −23…68 ℃）可信，所以温度优先用模块的读数。
+
+### 5.3 车辆控制（车主决定：全部由指挥官执行）
+
+仪表不向原车 MCU 发任何命令（`/dev/ttyS5` 只读）。将来所有控制功能——
+开合车门/前备箱/后备箱、座椅记忆、模式切换、用电器开关——都经指挥官的
+控制字（命令 167）执行，命令表见
+[`docs/COMMANDER_PROTOCOL.md`](COMMANDER_PROTOCOL.md) §4.2。
+
+因此仪表侧只有**查询白名单**（`commanderCommandIsQueryV6`）：160/176/193/
+208/209/210，其余命令——包括 167 与模块重启/复位/密码——一律拒绝；测试
+逐个断言它们不是查询。控制 UI 尚未实现，实现时也必须遵守模块自己的前置
+条件（开门要求车速为 0、加速测试要求 D 档且车速为 0）。
+
+### 5.4 链路状态是真实的，不猜
 
 `CommanderLinkStatus`：`Disabled / Searching / Linked / NoFrames / Stale`。
 
@@ -139,7 +158,7 @@ DEVICE TEST**。
 - 3 s 没有帧 → `Stale`，屏幕显示未连接（而不是继续显示旧值）。
 - 未启用 → 徽标画占位符，不是"0 = 未连接"。
 
-### 5.4 帧格式（真协议，来自模块自带控制软件）
+### 5.5 帧格式（真协议，来自模块自带控制软件）
 
 ```text
 55 7F CMD LEN_HI LEN_LO DATA... CHK
@@ -153,13 +172,26 @@ CHK = (CMD + LEN_HI + LEN_LO + sum(DATA)) & 0xFF     长度大端，最大 4096
 偏移都标注了来源文件；**尚未与实物模块抓包核对**，所以"已实现"指的是按
 源码实现的解码链，不是"已在实车验证"。
 
-### 5.5 真机侧现状
+### 5.6 真机侧现状与自动连接
 
-`DeviceRuntime::feedCommander()` 是传输线程的接入点；本 build 里没有任何
-东西打开 BLE，所以 `CommanderLink` 报的就是实情（未启用 / 搜索中）。
-原生 BLE（FFF0/FFF1）客户端属于平台任务，见 `docs/device-capabilities.md`。
-手机小程序本来就是这台模块的 BLE Central，所以 PhoneBridge（手机收数据、
-经 Wi-Fi 转发给仪表）是当前最省事的一条路。
+自动连接已经实现为两条**与传输无关**的东西，换链路不用改它们：
+
+- `CommanderConnectScheduleV6`：启用即尝试；失败按 1 s→2 s→4 s… 退避、
+  封顶 30 s；连上后清零并停止尝试；已工作过的链路一旦静默就立刻按最短
+  间隔重试（而不是等退避长满）。
+- `CommanderBridgeV6`：reader + link + 解码结果 + 连接计划合成一条接收
+  路径，`tick()` 让静默表现为 `Stale` 并作废旧读数。
+
+传输本身有两条路，详见
+[`docs/COMMANDER_PROTOCOL.md`](COMMANDER_PROTOCOL.md) §10：
+
+| 路 | 现状 |
+|---|---|
+| **PhoneBridge（推荐，可实现）** | 手机小程序继续做 BLE Central，把收到的帧经 Wi-Fi 转发；仪表侧用 `CommanderUdpListenerV6`（只收不发）接住，已用 loopback 做过端到端测试 |
+| 仪表直连 BLE | 平台的 `blink` 里**本来就有** LE 扫描/GATT 客户端（`ON_BLINK_GATT_SEARCH_START/STOP`、characteristic 枚举、notify），应用侧经 `/dev/BT_serial` 命令通道驱动；应用层 SDK 未开放通用 GATT 接口，需要平台侧工作 |
+
+本 build 里没有任何东西打开这两条路，所以 `CommanderLink` 报的就是实情
+（未启用 / 搜索中）。
 
 ---
 

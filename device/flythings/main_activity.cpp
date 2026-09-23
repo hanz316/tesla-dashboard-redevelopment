@@ -94,12 +94,12 @@ void mainActivity::updateDashboard() {
     const auto snapshot = dashboard::flythings::DeviceRuntime::instance().snapshot();
     char text[128];
 
-    // Speed, gear, range, closures, lamps and tires are the car's own readings
-    // and stay on the MCU path; only the enhanced fields are merged in, so the
-    // Commander can add SOC without rewriting anything the cluster reads
-    // directly.
-    dashboard::VehicleState merged = snapshot.state;
-    dashboard::mergeCommanderInto(merged, snapshot.commander_state);
+    // The owner's rule for this car: where the module has a value and the
+    // cluster has one too, the module wins. Where the module is silent, the
+    // cluster's own reading is what the screen shows.
+    const std::uint64_t now_ms = 0;
+    const dashboard::VehicleState merged = dashboard::buildArbitratedStateV6(
+        snapshot.state, snapshot.commander_state, now_ms);
     const dashboard::PageEnvironmentV6 environment =
         dashboard::flythings::buildDevicePageEnvironment(snapshot);
     const dashboard::DashboardSettings settings;

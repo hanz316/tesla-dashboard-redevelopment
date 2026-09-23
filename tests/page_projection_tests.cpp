@@ -619,36 +619,63 @@ int main() {
             assert(std::fabs(pack.battery_temp_c - 20.0F) < 0.01F);
             assert(std::fabs(pack.odometer_km - 12345.6F) < 0.1F);
 
-            // Applying it writes the enhanced fields and nothing the car
-            // already reports.
+            // The cluster's own reading, and the module's reading of the same
+            // car, kept in separate states.
             VehicleState state;
             state.speed.update(55, t, SignalSource::OriginalMcu,
                                SignalQuality::Confirmed, Unit::KilometerPerHour);
             state.soc.update(97, t, SignalSource::OriginalMcu,
                              SignalQuality::Estimated, Unit::Percent);
+            state.door_fl.update(false, t, SignalSource::OriginalMcu,
+                                 SignalQuality::Confirmed, Unit::None);
             CommanderGaugeV6 gauge;
             gauge.valid = true;
-            gauge.speed_kph = 250;   // a wrong second opinion
+            gauge.speed_kph = 250;   // the module's reading
             gauge.gear = Gear::Reverse;
+            gauge.door_fl = true;
             CommanderDcdcV6 dcdc;
-            applyCommanderReadingsV6(gauge, pack, dcdc, state, t);
-            assert(state.speed.value == 55);          // untouched
+            VehicleState module_state;
+            applyCommanderReadingsV6(gauge, pack, dcdc, module_state, t);
+            assert(module_state.speed.value == 250);
+            assert(module_state.speed.source == SignalSource::Commander);
+            assert(module_state.gear.value == Gear::Reverse);
+            assert(module_state.door_fl.value == true);
+            assert(module_state.actual_soc.value == 48);  // the energy ratio
+            assert(std::fabs(module_state.battery_voltage.value - 398.0F) < 0.01F);
+            assert(std::fabs(module_state.battery_power.value + 47.76F) < 0.05F);
+            // The cluster's own state is not touched by the module's decode.
+            assert(state.speed.value == 55);
             assert(state.gear.value == Gear::Unknown);
-            assert(state.soc.value == 97);            // the rejected byte stays put
-            assert(state.actual_soc.value == 48);     // the module's SOC lands
-            assert(state.actual_soc.source == SignalSource::Commander);
-            assert(std::fabs(state.battery_voltage.value - 398.0F) < 0.01F);
-            assert(std::fabs(state.battery_power.value + 47.76F) < 0.05F);
+            assert(state.soc.value == 97);   // the rejected byte stays where it is
 
-            // The opt-in fallback is the only path that lets the module's
-            // reading of the car replace the car's own reading.
-            CommanderFallbackV6 fallback;
-            fallback.speed = true;
-            fallback.gear = true;
-            applyCommanderFallbackV6(gauge, fallback, state, t);
-            assert(state.speed.value == 250);
-            assert(state.gear.value == Gear::Reverse);
-            assert(state.speed.quality == SignalQuality::Inferred);
+            // The owner's rule: where both have a value, the module wins.
+            const VehicleState arbitrated =
+                buildArbitratedStateV6(state, module_state, t);
+            assert(arbitrated.speed.value == 250);
+            assert(arbitrated.speed.source == SignalSource::Commander);
+            assert(arbitrated.gear.value == Gear::Reverse);
+            assert(arbitrated.door_fl.value == true);
+            assert(arbitrated.actual_soc.value == 48);
+            // A stale module reading is not a vote: the car's value stands.
+            VehicleState stale_commander = module_state;
+            stale_commander.speed.markStale(t + 5000);
+            const VehicleState fallen_back =
+                buildArbitratedStateV6(state, stale_commander, t + 5000);
+            assert(fallen_back.speed.value == 55);
+            assert(fallen_back.speed.source == SignalSource::OriginalMcu);
+            // With no module value at all, the cluster's own reading is used.
+            const VehicleState mcu_only =
+                buildArbitratedStateV6(state, VehicleState{}, t);
+            assert(mcu_only.speed.value == 55);
+            assert(!mcu_only.actual_soc.valid);   // and no SOC is invented
+            // Turning the priority off is possible per signal, and then the
+            // car's own reading wins even when the module has one.
+            CommanderPriorityV6 mcu_first;
+            mcu_first.speed = false;
+            mcu_first.gear = false;
+            const VehicleState overridden =
+                buildArbitratedStateV6(state, module_state, t, mcu_first);
+            assert(overridden.speed.value == 55);
         }
 
         // A corrupted frame is rejected and counted, and changes nothing.

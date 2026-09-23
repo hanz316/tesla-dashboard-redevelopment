@@ -332,33 +332,99 @@ bool decodeCommanderDcdcV6(const std::vector<std::uint8_t>& payload,
 
 // ------------------------------------------------------------ application
 
-// Writes the decoded module readings onto the cluster's state.
+// Writes every decoded module reading onto a state of its own.
 //
-// Only the enhanced fields are written. Speed, gear, range, the MCU SOC byte,
-// doors, lamps and tire pressures are read from the car by the cluster already
-// and are deliberately left alone here, even though this module also reports
-// them: an enhanced source may add, but it may not overwrite a directly read
-// value.
+// This state is the module's opinion, kept beside the cluster's own readings
+// rather than inside them: which of the two a screen shows is decided by
+// buildArbitratedStateV6(), not by whoever wrote last.
 void applyCommanderReadingsV6(const CommanderGaugeV6& gauge,
                               const CommanderPackV6& pack,
                               const CommanderDcdcV6& dcdc,
                               VehicleState& out, std::uint64_t now_ms);
 
-// The opt-in fallback: when the car's own link is silent, the module's
-// decoding of the car can stand in. It is a separate function, per signal, so
-// that "the instrument shows the module's numbers instead of the car's" is
-// always a deliberate choice and never a side effect of plugging the module in.
-struct CommanderFallbackV6 {
-    bool speed{false};
-    bool gear{false};
-    bool range{false};
-    bool closures{false};
-    bool tire_pressure{false};
+// ----------------------------------------------------------------- priority
+
+// Which source wins when both have a value for the same thing.
+//
+// The owner's rule for this car: **the module wins**. The cluster's own MCU
+// reading is the fallback, used whenever the module has nothing to say (no
+// value, or its value has gone stale). The module is the richer source - it
+// decodes more buses than the original cluster - and it is the only source of
+// the pack data, so it is the one that is trusted for what it carries.
+//
+// The switch exists per signal rather than as one flag so that a future
+// disagreement can be argued about one field at a time instead of by
+// rewriting the whole policy.
+struct CommanderPriorityV6 {
+    bool speed{true};
+    bool gear{true};
+    bool range{true};
+    bool closures{true};
+    bool lighting{true};
+    bool tire_pressure{true};
+    bool soc{true};
+    bool odometer{true};
+    bool temperature{true};
 };
 
-void applyCommanderFallbackV6(const CommanderGaugeV6& gauge,
-                              const CommanderFallbackV6& which,
-                              VehicleState& out, std::uint64_t now_ms);
+// The state a screen should read: the module's value wherever the module has
+// one and the policy lets it through, the car's own reading everywhere else.
+//
+// Note what is deliberately NOT here: the MCU's SOC byte is never a candidate
+// for the SOC field, because that mapping is rejected on this car. SOC comes
+// from the module or it is unavailable - the byte does not get promoted by
+// being the only thing left.
+VehicleState buildArbitratedStateV6(const VehicleState& mcu,
+                                    const VehicleState& commander,
+                                    std::uint64_t now_ms,
+                                    const CommanderPriorityV6& priority = {});
+
+// ----------------------------------------------------------------- connect
+
+// When the transport should try to (re)establish the link.
+//
+// Auto-connect is three rules: try as soon as the module is enabled, back off
+// after a failure so a module that is not there does not get hammered, and
+// start over as soon as a link actually works. Silence on a link that was
+// working is a disconnect, not a state to sit in.
+struct CommanderConnectPolicyV6 {
+    std::uint64_t min_backoff_ms{1000};
+    std::uint64_t max_backoff_ms{30000};
+    // After this many failed attempts the interval stays at the maximum rather
+    // than growing without bound.
+    std::uint32_t attempts_before_cap{5};
+};
+
+class CommanderConnectScheduleV6 {
+public:
+    explicit CommanderConnectScheduleV6(CommanderConnectPolicyV6 policy = {})
+        : policy_(policy) {}
+
+    void setEnabled(bool enabled, std::uint64_t now_ms);
+    bool enabled() const { return enabled_; }
+
+    // True when the transport should open a connection now.
+    bool shouldAttempt(std::uint64_t now_ms) const;
+    // The transport reports the outcome.
+    void noteAttempt(std::uint64_t now_ms);
+    void noteConnected(std::uint64_t now_ms);
+    void noteDisconnected(std::uint64_t now_ms);
+    // Called when the link was working and stopped delivering frames.
+    void noteLinkLost(std::uint64_t now_ms);
+
+    std::uint32_t attempts() const { return attempts_; }
+    std::uint64_t next_attempt_ms() const { return next_attempt_ms_; }
+    std::uint64_t current_backoff_ms() const { return backoff_ms_; }
+    bool connected() const { return connected_; }
+
+private:
+    CommanderConnectPolicyV6 policy_;
+    bool enabled_{false};
+    bool connected_{false};
+    std::uint32_t attempts_{0};
+    std::uint64_t backoff_ms_{0};
+    std::uint64_t next_attempt_ms_{0};
+};
 
 // Copies the enhanced fields from one state onto another.
 void mergeCommanderInto(VehicleState& target, const VehicleState& commander);

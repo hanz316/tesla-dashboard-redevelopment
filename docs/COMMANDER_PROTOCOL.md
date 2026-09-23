@@ -296,3 +296,76 @@ PhoneBridge（手机拿数据，经 Wi-Fi 送给仪表）——本节与第 3 �
 2. 确认 §7 的 7 项未确定内容，尤其是胎压轮位与 `209/210` 的推送方式。
 3. 若做 PhoneBridge：手机侧用这份协议收数据，经 Wi-Fi 原样转发给仪表，
    仪表只跑上面的解码链。
+
+---
+
+## 10. 仪表怎么自动连上模块
+
+先说结论：**自动连接的两条路都已经定下来，逻辑部分已经写完并有测试；
+剩下要选的是走哪条传输。**
+
+### 10.1 传输无关的部分（已实现）
+
+```text
+启用模块 ──► schedule.shouldAttempt() ──► 传输尝试连接
+                ▲                              │
+                │ 失败：1s→2s→4s…封顶 30s        │ 成功
+                └──────────────────────────────┘
+                │ 已连上但 3 s 没帧 → Stale → 立刻按 1 s 重试
+```
+
+* `CommanderConnectScheduleV6`：退避、封顶、连上清零、静默立刻重试。
+* `CommanderBridgeV6`：把收到的字节送进 `CommanderFrameReaderV6`，维护
+  `CommanderLink` 状态、解码结果与连接计划，`tick()` 负责老化。
+* 这两者与传输完全解耦：换 BLE、换 Wi-Fi、换串口都不需要改它们。
+
+测试：`tests/commander_bridge_tests.cpp`（退避曲线、静默→Stale→重试、
+真实 loopback UDP 收发、跨数据报的半帧重组）。
+
+### 10.2 路 A：手机转发（PhoneBridge）—— 现在就能做
+
+模块本来就是靠手机小程序控制的，小程序**已经是**这台模块的 BLE Central
+（服务 FFF0 / 特征 FFF1，带 notify）。所以最短路径是：
+
+```text
+模块 ──BLE──► 手机（小程序/独立 App，保持连接与自动重连）
+                  └── Wi-Fi/UDP ──► 仪表 CommanderUdpListenerV6 ──► 解码链
+```
+
+仪表侧已经实现：`CommanderUdpListenerV6` 绑定一个 UDP 端口（设备上绑
+`0.0.0.0`，测试绑 loopback），**只收不发**——没有发送路径，就不可能变成
+第二条控制通道。收到什么就喂给同一个 reader，跨数据报的半帧会自动重组。
+
+手机侧要做的改动很小：连接成功后把 notify 回调里收到的 `Uint8Array` 原样
+`wx.sendSocketMessage`/UDP 发出去即可；断线重连用小程序已有的机制。
+
+### 10.3 路 B：仪表直连模块 —— 能力在，接口没开放
+
+对仪表固件与平台自带蓝牙守护进程 `blink` 的实测结论：
+
+| 事实 | 证据 |
+|---|---|
+| `blink` 里有完整 LE 扫描与建连 | 二进制含 `hci_le_create_connection`、`hci_le_set_scan_parameters`、`hci_le_add_device_to_white_list` |
+| `blink` 里有 GATT 客户端 | 含 `ON_BLINK_GATT_SEARCH_START/STOP`、`GATT_CHARACTERISTIC_VALUE_QUERY_RESULT`、`GATT_NOTIFICATION/INDICATION`、`[BLE: browser] ... characteristic uuid` |
+| 应用侧与 `blink` 的通道 | `/dev/BT_serial`（pty），文本命令，日志形如 `----CMD: [%s]----`、`The CMD Is Not Find (%-6s)` |
+| 应用层 SDK | `libzkhardware.so` 里没有 BLE/GATT 符号；stock 应用的 `bt::` 只暴露经典协议 |
+| 平台无 BlueZ | 无 `bluetoothd`/hcitool/gatttool 可用 |
+
+结论：**不是"没有能力"，而是"没有公开的开箱接口"**。要让仪表自己连，需要
+在平台侧做一件事（任一）：
+
+1. 用 `/dev/BT_serial` 的命令通道驱动 `blink` 的 LE/GATT（需要把命令词表
+   摸清，例如 `ON_BLINK_CONNECT_DEVICE`、`BLINK_CONNECT_DEVICE`、
+   `ON_BLINK_GATT_SEARCH_START`，以及 characteristic 读写/订阅命令）；
+2. 让厂商在 SDK 里开放通用 GATT client API（正路，但要厂商配合）；
+3. 自行接管 BT 串口（`/dev/ttyS3`）/HCI——风险最高，会和 `blink` 抢控制器，
+   不建议。
+
+这条路需要真机联调，属于平台工程；在它完成之前，路 A 完全够用。
+
+### 10.4 建议
+
+先用 **路 A** 把整条链路和九个屏幕跑通（不需要任何平台改动，仪表侧代码
+已经就绪）；等平台侧愿意开放 GATT 或确认 `blink` 命令词表后，再换成
+**路 B** 让仪表自己连。两条路共用同一份帧解析、仲裁与 UI，换的时候只换
+传输。

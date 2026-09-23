@@ -546,6 +546,60 @@ void applyCommanderReadingsV6(const CommanderGaugeV6& gauge,
                               const CommanderDcdcV6& dcdc,
                               VehicleState& out, std::uint64_t now_ms) {
     if (gauge.valid) {
+        // The module decodes the car's own buses, so it also carries the
+        // signals the cluster reads directly. They are written here as the
+        // module's opinion; buildArbitratedStateV6() decides whether a screen
+        // sees them or the cluster's own reading.
+        set(out.speed, gauge.speed_kph, now_ms, SignalQuality::Confirmed,
+            Unit::KilometerPerHour);
+        if (gauge.gear != Gear::Unknown) {
+            set(out.gear, gauge.gear, now_ms, SignalQuality::Confirmed, Unit::None);
+        }
+        if (gauge.range_km > 0.0F) {
+            set(out.range, static_cast<std::uint16_t>(gauge.range_km), now_ms,
+                SignalQuality::Confirmed, Unit::Kilometer);
+        }
+        set(out.door_fl, gauge.door_fl, now_ms, SignalQuality::Confirmed, Unit::None);
+        set(out.door_fr, gauge.door_fr, now_ms, SignalQuality::Confirmed, Unit::None);
+        set(out.door_rl, gauge.door_rl, now_ms, SignalQuality::Confirmed, Unit::None);
+        set(out.door_rr, gauge.door_rr, now_ms, SignalQuality::Confirmed, Unit::None);
+        set(out.frunk, gauge.frunk_open, now_ms, SignalQuality::Confirmed, Unit::None);
+        set(out.trunk, gauge.trunk_open, now_ms, SignalQuality::Confirmed, Unit::None);
+        set(out.headlights, gauge.headlight, now_ms, SignalQuality::Confirmed, Unit::None);
+        set(out.high_beam, gauge.high_beam, now_ms, SignalQuality::Confirmed, Unit::None);
+        set(out.position_light, gauge.fog_light, now_ms, SignalQuality::Confirmed,
+            Unit::None);
+        set(out.brake_light, gauge.brake_light, now_ms, SignalQuality::Confirmed,
+            Unit::None);
+        set(out.turn_signal_left, gauge.indicator_left, now_ms,
+            SignalQuality::Confirmed, Unit::None);
+        set(out.turn_signal_right, gauge.indicator_right, now_ms,
+            SignalQuality::Confirmed, Unit::None);
+        // A tire byte of 0 or 255 is "no reading", so it leaves the field
+        // alone instead of writing a zero that reads as a flat tire.
+        if (gauge.tire_valid[0]) set(out.tire_fl, gauge.tire_bar[0], now_ms, SignalQuality::Confirmed, Unit::Bar);
+        if (gauge.tire_valid[1]) set(out.tire_fr, gauge.tire_bar[1], now_ms, SignalQuality::Confirmed, Unit::Bar);
+        if (gauge.tire_valid[2]) set(out.tire_rl, gauge.tire_bar[2], now_ms, SignalQuality::Confirmed, Unit::Bar);
+        if (gauge.tire_valid[3]) set(out.tire_rr, gauge.tire_bar[3], now_ms, SignalQuality::Confirmed, Unit::Bar);
+        if (gauge.soc_percent > 0) {
+            // The module's own read of the car's SOC. It is the weaker of the
+            // module's two SOC sources (the pack summary computes a real one
+            // from energy), so it is marked Inferred and never overwrites a
+            // value the pack already provided.
+            if (!(out.actual_soc.valid && !out.actual_soc.stale)) {
+                set(out.actual_soc, gauge.soc_percent, now_ms,
+                    SignalQuality::Inferred, Unit::Percent);
+            }
+        }
+        set(out.blind_spot_left, gauge.blind_spot_rear_left != 0, now_ms,
+            SignalQuality::Confirmed, Unit::None);
+        set(out.blind_spot_right, gauge.blind_spot_rear_right != 0, now_ms,
+            SignalQuality::Confirmed, Unit::None);
+        set(out.overspeed, gauge.speed_kph > 0 &&
+                               gauge.speed_limit_kph > 0.0F &&
+                               static_cast<float>(gauge.speed_kph) >
+                                   gauge.speed_limit_kph,
+            now_ms, SignalQuality::Inferred, Unit::None);
         set(out.accelerator_position, gauge.accelerator_percent, now_ms,
             SignalQuality::Confirmed, Unit::Percent);
         set(out.front_motor_power, gauge.front_motor_kw, now_ms,
@@ -625,9 +679,6 @@ void applyCommanderReadingsV6(const CommanderGaugeV6& gauge,
             set(out.actual_soc, pack.car_soc_percent, now_ms,
                 SignalQuality::Inferred, Unit::Percent);
         }
-    } else if (gauge.valid && gauge.soc_percent > 0) {
-        set(out.actual_soc, gauge.soc_percent, now_ms, SignalQuality::Inferred,
-            Unit::Percent);
     }
 
     if (dcdc.valid) {
@@ -642,38 +693,169 @@ void applyCommanderReadingsV6(const CommanderGaugeV6& gauge,
     }
 }
 
-void applyCommanderFallbackV6(const CommanderGaugeV6& gauge,
-                              const CommanderFallbackV6& which,
-                              VehicleState& out, std::uint64_t now_ms) {
-    if (!gauge.valid) return;
-    // Everything here is the module's decoding of the car standing in for the
-    // car's own link. It is marked Inferred precisely because it is a second
-    // decoder's opinion, not the reading the cluster was built around.
-    constexpr SignalQuality quality = SignalQuality::Inferred;
-    if (which.speed) {
-        set(out.speed, gauge.speed_kph, now_ms, quality, Unit::KilometerPerHour);
+namespace {
+
+template <typename T>
+void choose(Signal<T>& out, const Signal<T>& commander, const Signal<T>& mcu,
+            bool commander_may_win) {
+    if (commander_may_win && commander.valid && !commander.stale) {
+        out = commander;
+        return;
     }
-    if (which.gear && gauge.gear != Gear::Unknown) {
-        set(out.gear, gauge.gear, now_ms, quality, Unit::None);
+    out = mcu;
+}
+
+}  // namespace
+
+VehicleState buildArbitratedStateV6(const VehicleState& mcu,
+                                    const VehicleState& commander,
+                                    std::uint64_t now_ms,
+                                    const CommanderPriorityV6& priority) {
+    VehicleState out = mcu;
+    // (void)now_ms keeps the signature honest for callers that pass a clock;
+    // freshness is already carried by each Signal's own stale flag.
+    (void)now_ms;
+
+    choose(out.speed, commander.speed, mcu.speed, priority.speed);
+    choose(out.gear, commander.gear, mcu.gear, priority.gear);
+    choose(out.range, commander.range, mcu.range, priority.range);
+
+    choose(out.door_fl, commander.door_fl, mcu.door_fl, priority.closures);
+    choose(out.door_fr, commander.door_fr, mcu.door_fr, priority.closures);
+    choose(out.door_rl, commander.door_rl, mcu.door_rl, priority.closures);
+    choose(out.door_rr, commander.door_rr, mcu.door_rr, priority.closures);
+    choose(out.frunk, commander.frunk, mcu.frunk, priority.closures);
+    choose(out.trunk, commander.trunk, mcu.trunk, priority.closures);
+
+    choose(out.headlights, commander.headlights, mcu.headlights, priority.lighting);
+    choose(out.high_beam, commander.high_beam, mcu.high_beam, priority.lighting);
+    choose(out.position_light, commander.position_light, mcu.position_light,
+           priority.lighting);
+    choose(out.brake_light, commander.brake_light, mcu.brake_light,
+           priority.lighting);
+    choose(out.auto_light, commander.auto_light, mcu.auto_light, priority.lighting);
+    choose(out.turn_signal_left, commander.turn_signal_left,
+           mcu.turn_signal_left, priority.lighting);
+    choose(out.turn_signal_right, commander.turn_signal_right,
+           mcu.turn_signal_right, priority.lighting);
+
+    choose(out.tire_fl, commander.tire_fl, mcu.tire_fl, priority.tire_pressure);
+    choose(out.tire_fr, commander.tire_fr, mcu.tire_fr, priority.tire_pressure);
+    choose(out.tire_rl, commander.tire_rl, mcu.tire_rl, priority.tire_pressure);
+    choose(out.tire_rr, commander.tire_rr, mcu.tire_rr, priority.tire_pressure);
+
+    choose(out.odometer, commander.odometer, mcu.odometer, priority.odometer);
+    // Temperature: the module's own field if it ever carries one, otherwise
+    // its ambient reading, otherwise the cluster's. The cluster's own
+    // temperature field is the least credible of the three on this car, so it
+    // is the last choice rather than the first.
+    if (priority.temperature && commander.temperature_primary.valid &&
+        !commander.temperature_primary.stale) {
+        out.temperature_primary = commander.temperature_primary;
+    } else if (priority.temperature && commander.ambient_temperature.valid &&
+               !commander.ambient_temperature.stale) {
+        out.temperature_primary.update(
+            static_cast<std::int16_t>(commander.ambient_temperature.value),
+            commander.ambient_temperature.timestamp_ms,
+            SignalSource::Commander, SignalQuality::Confirmed, Unit::Celsius);
+    } else {
+        out.temperature_primary = mcu.temperature_primary;
     }
-    if (which.range && gauge.range_km > 0.0F) {
-        set(out.range, static_cast<std::uint16_t>(gauge.range_km), now_ms,
-            quality, Unit::Kilometer);
+
+    // SOC never falls back to the MCU byte: that mapping is rejected on this
+    // car, so "the only value left" is still not a value.
+    if (priority.soc && commander.actual_soc.valid && !commander.actual_soc.stale) {
+        out.actual_soc = commander.actual_soc;
+    } else {
+        out.actual_soc = Signal<std::uint8_t>{};
     }
-    if (which.closures) {
-        set(out.door_fl, gauge.door_fl, now_ms, quality, Unit::None);
-        set(out.door_fr, gauge.door_fr, now_ms, quality, Unit::None);
-        set(out.door_rl, gauge.door_rl, now_ms, quality, Unit::None);
-        set(out.door_rr, gauge.door_rr, now_ms, quality, Unit::None);
-        set(out.frunk, gauge.frunk_open, now_ms, quality, Unit::None);
-        set(out.trunk, gauge.trunk_open, now_ms, quality, Unit::None);
-    }
-    if (which.tire_pressure) {
-        if (gauge.tire_valid[0]) set(out.tire_fl, gauge.tire_bar[0], now_ms, quality, Unit::Bar);
-        if (gauge.tire_valid[1]) set(out.tire_fr, gauge.tire_bar[1], now_ms, quality, Unit::Bar);
-        if (gauge.tire_valid[2]) set(out.tire_rl, gauge.tire_bar[2], now_ms, quality, Unit::Bar);
-        if (gauge.tire_valid[3]) set(out.tire_rr, gauge.tire_bar[3], now_ms, quality, Unit::Bar);
-    }
+
+    // Everything the MCU does not produce at all comes straight from the
+    // module when it has it, and stays as the MCU left it (invalid) when not.
+    const auto takeIfPresent = [](auto& target, const auto& source) {
+        if (source.valid && !source.stale) target = source;
+    };
+    takeIfPresent(out.accelerator_position, commander.accelerator_position);
+    takeIfPresent(out.front_motor_power, commander.front_motor_power);
+    takeIfPresent(out.rear_motor_power, commander.rear_motor_power);
+    takeIfPresent(out.battery_power, commander.battery_power);
+    takeIfPresent(out.battery_voltage, commander.battery_voltage);
+    takeIfPresent(out.battery_current, commander.battery_current);
+    takeIfPresent(out.energy_remaining, commander.energy_remaining);
+    takeIfPresent(out.energy_full_estimate, commander.energy_full_estimate);
+    takeIfPresent(out.energy_reserve, commander.energy_reserve);
+    takeIfPresent(out.total_charged_energy, commander.total_charged_energy);
+    takeIfPresent(out.total_discharged_energy, commander.total_discharged_energy);
+    takeIfPresent(out.max_cell_voltage, commander.max_cell_voltage);
+    takeIfPresent(out.min_cell_voltage, commander.min_cell_voltage);
+    takeIfPresent(out.cell_delta, commander.cell_delta);
+    takeIfPresent(out.battery_temperature, commander.battery_temperature);
+    takeIfPresent(out.ambient_temperature, commander.ambient_temperature);
+    takeIfPresent(out.cabin_temperature, commander.cabin_temperature);
+    takeIfPresent(out.battery_heating, commander.battery_heating);
+    takeIfPresent(out.dcdc_input_voltage, commander.dcdc_input_voltage);
+    takeIfPresent(out.dcdc_output_voltage, commander.dcdc_output_voltage);
+    takeIfPresent(out.dcdc_output_current, commander.dcdc_output_current);
+    takeIfPresent(out.dcdc_output_power, commander.dcdc_output_power);
+    takeIfPresent(out.hvac_blower_rpm, commander.hvac_blower_rpm);
+    takeIfPresent(out.hvac_power_demand, commander.hvac_power_demand);
+    takeIfPresent(out.brake_temp_fl, commander.brake_temp_fl);
+    takeIfPresent(out.brake_temp_fr, commander.brake_temp_fr);
+    takeIfPresent(out.brake_temp_rl, commander.brake_temp_rl);
+    takeIfPresent(out.brake_temp_rr, commander.brake_temp_rr);
+    takeIfPresent(out.speed_limit, commander.speed_limit);
+    takeIfPresent(out.blind_spot_left, commander.blind_spot_left);
+    takeIfPresent(out.blind_spot_right, commander.blind_spot_right);
+    takeIfPresent(out.overspeed, commander.overspeed);
+    return out;
+}
+
+void CommanderConnectScheduleV6::setEnabled(bool enabled, std::uint64_t now_ms) {
+    enabled_ = enabled;
+    connected_ = false;
+    attempts_ = 0;
+    backoff_ms_ = 0;
+    next_attempt_ms_ = now_ms;
+}
+
+bool CommanderConnectScheduleV6::shouldAttempt(std::uint64_t now_ms) const {
+    if (!enabled_ || connected_) return false;
+    return now_ms >= next_attempt_ms_;
+}
+
+void CommanderConnectScheduleV6::noteAttempt(std::uint64_t now_ms) {
+    ++attempts_;
+    // Backoff grows from the first failed attempt; the first attempt itself
+    // happens immediately when the module is enabled.
+    const std::uint64_t growth =
+        attempts_ >= policy_.attempts_before_cap
+            ? policy_.max_backoff_ms
+            : policy_.min_backoff_ms *
+                  (1ULL << (attempts_ > 20 ? 20 : attempts_ - 1));
+    backoff_ms_ = growth < policy_.min_backoff_ms
+                      ? policy_.min_backoff_ms
+                      : (growth > policy_.max_backoff_ms ? policy_.max_backoff_ms
+                                                         : growth);
+    next_attempt_ms_ = now_ms + backoff_ms_;
+}
+
+void CommanderConnectScheduleV6::noteConnected(std::uint64_t now_ms) {
+    connected_ = true;
+    attempts_ = 0;
+    backoff_ms_ = 0;
+    next_attempt_ms_ = now_ms;
+}
+
+void CommanderConnectScheduleV6::noteDisconnected(std::uint64_t now_ms) {
+    connected_ = false;
+    // A link that failed after working is retried on the shortest interval,
+    // not on whatever long backoff an earlier outage had grown to.
+    backoff_ms_ = policy_.min_backoff_ms;
+    next_attempt_ms_ = now_ms + backoff_ms_;
+}
+
+void CommanderConnectScheduleV6::noteLinkLost(std::uint64_t now_ms) {
+    noteDisconnected(now_ms);
 }
 
 void mergeCommanderInto(VehicleState& target, const VehicleState& commander) {

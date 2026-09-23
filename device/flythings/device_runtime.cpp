@@ -65,32 +65,31 @@ void DeviceRuntime::stop() {
 RuntimeSnapshot DeviceRuntime::snapshot() {
     RuntimeSnapshot result;
     pthread_mutex_lock(&mutex_);
+    const std::uint64_t now_ms = monotonicMilliseconds();
     result.state = adapter_.state();
-    result.commander_state = commander_state_;
+    result.commander_state = commander_.state();
     result.parser = adapter_.parserStats();
     result.adapter = adapter_.adapterStats();
-    result.commander_frames = commander_frames_;
-    result.commander_checksum_errors = commander_checksum_errors_;
-    result.commander_dropped_partials = commander_dropped_partials_;
-    result.commander_requests = commander_module_frames_;
-    result.commander_info_known = commander_info_.valid;
-    result.commander_info = commander_info_;
-    result.commander_gauge = commander_gauge_;
-    result.commander_pack = commander_pack_;
+    result.commander_frames = commander_.reader().frames();
+    result.commander_checksum_errors = commander_.reader().checksum_errors();
+    result.commander_dropped_partials = commander_.reader().dropped_partials();
+    result.commander_info_known = commander_.info().valid;
+    result.commander_info = commander_.info();
+    result.commander_gauge = commander_.gauge();
+    result.commander_pack = commander_.pack();
+    result.commander_enabled = commander_.enabled();
+    result.commander_should_connect = commander_.shouldConnect(now_ms);
     result.health = adapter_.health();
     result.trip = trip_.summary(TripSlot::CurrentDrive);
-    result.warning = warnings_.evaluate(adapter_.state());
+    result.warning = warnings_.evaluate(
+        buildArbitratedStateV6(result.state, result.commander_state, now_ms));
     result.uart_connected = uart_fd_ >= 0;
     result.uart_receiving = uart_fd_ >= 0 &&
                             adapter_.parserStats().valid_packets > 0;
-    result.commander_status = commander_link_.status();
-    result.commander_module_info_known = commander_info_.valid;
-    CommanderModuleVersion version;
-    version.major = commander_info_.hardware_version;
-    version.minor = commander_info_.firmware_version;
-    version.patch = commander_info_.bootloader_version;
-    result.commander_version = version;
-    result.commander_detail = commander_link_.detail("NativeBle");
+    result.commander_status = commander_.link().status();
+    result.commander_module_info_known = commander_.link().module_info_known();
+    result.commander_version = commander_.link().version();
+    result.commander_detail = commander_.link().detail("PhoneBridge");
     pthread_mutex_unlock(&mutex_);
     return result;
 }
@@ -98,82 +97,13 @@ RuntimeSnapshot DeviceRuntime::snapshot() {
 void DeviceRuntime::feedCommander(const std::uint8_t* data, std::size_t length) {
     if (data == nullptr || length == 0) return;
     pthread_mutex_lock(&mutex_);
-    const std::uint64_t now_ms = monotonicMilliseconds();
-    if (!commander_transport_connected_) {
-        // A transport that is delivering bytes is connected, whatever it
-        // reported about its own socket.
-        commander_transport_connected_ = true;
-        commander_link_.setTransport(true, now_ms);
-    }
-    CommanderFrameReaderV6::Frame frame;
-    for (std::size_t i = 0; i < length; ++i) {
-        if (!commander_reader_.feed(data[i], now_ms, frame)) continue;
-        ++commander_frames_;
-        commander_link_.noteFrame(now_ms);
-        switch (static_cast<CommanderCommandV6>(frame.command)) {
-            case CommanderCommandV6::ReadDeviceInfo:
-                decodeCommanderDeviceInfoV6(frame.payload, now_ms, commander_info_);
-                break;
-            case CommanderCommandV6::Gauge: {
-                // Apply at decode time, not later: a reading re-stamped with
-                // the current clock would look fresh forever, and a silent
-                // module would keep showing its last number as if it were new.
-                CommanderGaugeV6 gauge;
-                if (decodeCommanderGaugeV6(frame.payload, now_ms, gauge)) {
-                    commander_gauge_ = gauge;
-                    applyCommanderReadingsV6(commander_gauge_, CommanderPackV6{},
-                                             CommanderDcdcV6{}, commander_state_,
-                                             now_ms);
-                }
-                break;
-            }
-            case CommanderCommandV6::Battery: {
-                CommanderPackV6 pack;
-                if (decodeCommanderPackV6(frame.payload, now_ms, pack)) {
-                    commander_pack_ = pack;
-                    applyCommanderReadingsV6(CommanderGaugeV6{}, commander_pack_,
-                                             CommanderDcdcV6{}, commander_state_,
-                                             now_ms);
-                }
-                break;
-            }
-            case CommanderCommandV6::Dcdc: {
-                CommanderDcdcV6 dcdc;
-                if (decodeCommanderDcdcV6(frame.payload, now_ms, dcdc)) {
-                    commander_dcdc_ = dcdc;
-                    applyCommanderReadingsV6(CommanderGaugeV6{}, CommanderPackV6{},
-                                             commander_dcdc_, commander_state_,
-                                             now_ms);
-                }
-                break;
-            }
-            default:
-                // A reply we did not ask for and do not decode is counted, not
-                // guessed at.
-                break;
-        }
-    }
-    if (commander_info_.valid) {
-        CommanderModuleVersion version;
-        version.major = commander_info_.hardware_version;
-        version.minor = commander_info_.firmware_version;
-        version.patch = commander_info_.bootloader_version;
-        CommanderFeatureFlags features;
-        features.enabled = true;
-        features.raw_can = commander_info_.can_channel(0);
-        features.bms = commander_pack_.valid;
-        features.cells = commander_pack_.valid;
-        features.power = commander_gauge_.has_extended;
-        commander_link_.setModuleInfo(version, features);
-    }
-    commander_checksum_errors_ = commander_reader_.checksum_errors();
-    commander_dropped_partials_ = commander_reader_.dropped_partials();
+    commander_.feed(data, length, monotonicMilliseconds());
     pthread_mutex_unlock(&mutex_);
 }
 
 void DeviceRuntime::setCommanderEnabled(bool enabled) {
     pthread_mutex_lock(&mutex_);
-    commander_link_.setEnabled(enabled, monotonicMilliseconds());
+    commander_.setEnabled(enabled, monotonicMilliseconds());
     pthread_mutex_unlock(&mutex_);
 }
 
@@ -242,8 +172,7 @@ void DeviceRuntime::readLoop() {
         adapter_.tick(now_ms);
         // The enhanced link ages the same way the vehicle link does: silent is
         // stale, not "last known good forever".
-        commander_state_.invalidateStale(now_ms);
-        commander_link_.tick(now_ms);
+        commander_.tick(now_ms);
         // Trip accounting runs on the car's own speed, and only while that
         // speed is a live reading.
         trip_.update(now_ms, adapter_.state());
@@ -291,9 +220,10 @@ void DeviceRuntime::readLoop() {
                     st.temperature_secondary.valid
                         ? static_cast<int>(st.temperature_secondary.value)
                         : 0,
-                    commanderLinkName(commander_link_.status()),
-                    static_cast<unsigned long long>(commander_frames_),
-                    static_cast<unsigned long long>(commander_checksum_errors_));
+                    commanderLinkName(commander_.link().status()),
+                    static_cast<unsigned long long>(commander_.reader().frames()),
+                    static_cast<unsigned long long>(
+                        commander_.reader().checksum_errors()));
                 std::fclose(log);
             }
             last_report_ms = now_ms;
