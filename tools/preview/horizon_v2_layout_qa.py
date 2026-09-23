@@ -258,7 +258,7 @@ def check_debug(scene, layout, check):
 
 def check_text(scene, previewer, check):
     print("text collisions")
-    if not HAVE_PIL:
+    if previewer is None or not HAVE_PIL:
         note("Pillow is absent: text collision measurement is skipped")
         return
     for state_name in ("h2_neutral", "h2_unknown", "h2_low_soc", "h2_navigation"):
@@ -276,6 +276,24 @@ def check_text(scene, previewer, check):
 
 def check_unknown(scene, previewer, check):
     print("unknown behaviour")
+    if previewer is None:
+        # Without the previewer the value resolution cannot be replayed, so the
+        # rule is checked where it is written instead: every bound text must
+        # carry a placeholder, and that placeholder must not be a number.
+        offenders = []
+        for node in scene["nodes"]:
+            if node["type"] != "text" or not node.get("bind"):
+                continue
+            if invalid_hidden(node):
+                continue  # design says: hide the whole element when unknown
+            placeholder = node.get("invalid_text", "")
+            if placeholder == "" or any(c.isdigit() for c in placeholder):
+                offenders.append(f"{node['id']}={placeholder!r}")
+        check(not offenders,
+              f"every bound value states a non-numeric placeholder ({offenders})")
+        note("the previewer is unavailable here: the unknown-state replay is "
+             "skipped")
+        return
     unknown = previewer.State(previewer.MOCK_STATES["h2_unknown"])
     fakes = []
     for node in scene["nodes"]:
@@ -304,7 +322,14 @@ def main():
     tokens = load(TOKENS)
     scene = load(SCENE)
 
-    import scene_preview as previewer
+    try:
+        import scene_preview as previewer
+    except (ImportError, SystemExit) as error:
+        # The previewer needs Pillow, and exits with a message rather than
+        # raising when it is missing. The geometric checks below do not need it.
+        previewer = None
+        note(f"the previewer is unavailable here ({error}); its checks are "
+             f"skipped, the geometry checks still run")
 
     components = {c["id"]: c for c in layout["components"]}
     check_golden(scene, layout, components, check)

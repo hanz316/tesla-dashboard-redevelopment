@@ -141,7 +141,9 @@ def main():
     sys.path.insert(0, os.path.join(REPO, "tools", "preview"))
     try:
         import scene_preview
-    except ImportError as error:  # pragma: no cover
+    # The previewer exits with a message when Pillow is missing rather than
+    # raising, so both outcomes mean "this environment cannot run the check".
+    except (ImportError, SystemExit) as error:  # pragma: no cover
         # The previewer needs Pillow. Where it is absent (a bare CI image) this
         # rule simply cannot be exercised; say so instead of failing a rule
         # that the environment, not the code, cannot run.
