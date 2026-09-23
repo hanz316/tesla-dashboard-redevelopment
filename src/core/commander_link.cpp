@@ -4,6 +4,19 @@
 #include <cstdio>
 
 namespace dashboard {
+
+// Out-of-line definitions for the frame constants that are ODR-used: the
+// vector/insert calls take their argument by reference, so the address of the
+// constant has to exist. Clang inlines these; GCC on the CI runner needs them.
+constexpr std::uint8_t CommanderFrameV6::kHeader0;
+constexpr std::uint8_t CommanderFrameV6::kHeader1;
+constexpr std::size_t CommanderFrameV6::kHeaderBytes;
+constexpr std::size_t CommanderFrameV6::kLengthBytes;
+constexpr std::size_t CommanderFrameV6::kChecksumBytes;
+constexpr std::size_t CommanderFrameV6::kOverhead;
+constexpr std::uint16_t CommanderFrameV6::kMaxPayload;
+constexpr std::uint64_t CommanderFrameV6::kInterFrameGapMs;
+
 namespace {
 
 std::uint32_t readU16(const std::uint8_t* p) {

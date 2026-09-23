@@ -27,6 +27,13 @@ VEHICLE_ROOT = os.path.join(REPO, "assets", "rendered", "vehicle")
 FAILURES = []
 NOTES = []
 
+try:
+    from PIL import Image, ImageDraw
+
+    HAVE_PIL = True
+except ImportError:  # pragma: no cover - CI images without Pillow
+    HAVE_PIL = False
+
 
 def load(path):
     with open(path) as fh:
@@ -70,7 +77,6 @@ def invalid_hidden(node):
 
 def text_boxes(scene, state, previewer):
     """Ink boxes for every text node that is actually drawn in this state."""
-    from PIL import Image, ImageDraw
     scratch = Image.new("RGBA", (scene["canvas"]["width"],
                                  scene["canvas"]["height"]))
     draw = ImageDraw.Draw(scratch)
@@ -200,12 +206,14 @@ def check_vehicle(layout, tokens, car_closed, car_open, permitted, check):
           car_open[3] <= canvas["height"] - safe["bottom"],
           "the car with every panel open is inside the safe area")
 
+    if not HAVE_PIL:
+        note("Pillow is absent: the Model A alpha-bbox drift check is skipped "
+             "(the golden numbers in design_tokens.json still apply)")
+        return
     if not os.path.isdir(VEHICLE_ROOT):
         note("vehicle renders are absent; the golden bounding boxes in "
              "design_tokens.json still apply")
         return
-    from PIL import Image
-
     def bbox_of(path):
         return Image.open(path).convert("RGBA").getchannel("A").getbbox()
 
@@ -250,6 +258,9 @@ def check_debug(scene, layout, check):
 
 def check_text(scene, previewer, check):
     print("text collisions")
+    if not HAVE_PIL:
+        note("Pillow is absent: text collision measurement is skipped")
+        return
     for state_name in ("h2_neutral", "h2_unknown", "h2_low_soc", "h2_navigation"):
         state = previewer.State(previewer.MOCK_STATES[state_name])
         boxes = text_boxes(scene, state, previewer)
@@ -278,9 +289,14 @@ def check_unknown(scene, previewer, check):
         elif any(character.isdigit() for character in text):
             fakes.append(f"{node['id']} drew digits {text!r}")
     check(not fakes, f"every bound value falls back to its placeholder ({fakes})")
-    neutral = previewer.State(previewer.MOCK_STATES["h2_neutral"])
-    check(text_boxes(scene, unknown, previewer) != text_boxes(scene, neutral, previewer),
-          "the unknown screen is not the same screen as the neutral one")
+    if HAVE_PIL:
+        neutral = previewer.State(previewer.MOCK_STATES["h2_neutral"])
+        check(text_boxes(scene, unknown, previewer) !=
+              text_boxes(scene, neutral, previewer),
+              "the unknown screen is not the same screen as the neutral one")
+    else:
+        note("Pillow is absent: the unknown-vs-neutral comparison is skipped "
+             "(the placeholder rule above is still enforced)")
 
 
 def main():

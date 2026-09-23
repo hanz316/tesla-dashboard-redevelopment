@@ -10,6 +10,14 @@
 #include <vector>
 
 namespace dashboard {
+
+// Out-of-line definitions for the C++14 static constexpr members that are
+// ODR-used (std::min/std::max take their arguments by const reference, which
+// needs an address to exist). Clang inlines these and links anyway; GCC on the
+// CI runner does not.
+constexpr std::uint8_t SettingsStoreV6::kMinBrightness;
+constexpr std::uint8_t SettingsStoreV6::kMaxBrightness;
+
 namespace {
 
 const char* appearanceName(AppearanceMode mode) {
