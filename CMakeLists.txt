@@ -119,6 +119,12 @@ if(BUILD_HOST_TOOLS)
         add_test(NAME dashboard_deploy_safety_tests
                  COMMAND "${PYTHON3_EXECUTABLE}"
                          "${CMAKE_CURRENT_SOURCE_DIR}/tests/deploy_safety_tests.py")
+        # The V6 page set is generated, but the runtime reads the committed
+        # scenes. These checks run on the scenes so a stale generation or a
+        # dropped rule is caught before the instrument ever sees it.
+        add_test(NAME dashboard_v6_pages_tests
+                 COMMAND "${PYTHON3_EXECUTABLE}"
+                         "${CMAKE_CURRENT_SOURCE_DIR}/tests/v6_pages_tests.py")
     else()
         message(WARNING "python3 not found: taillight guide regression tests disabled")
     endif()

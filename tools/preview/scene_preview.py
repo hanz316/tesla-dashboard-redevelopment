@@ -230,6 +230,49 @@ MOCK_STATES.update({
         "range": 253, "range_trusted": True,
         "uart_health": "UART STALE", "closures": "DOORS --",
     },
+    # A fully populated DEV state for the V6 page set: every signal the pages
+    # can bind, including the Commander telemetry that drives the energy and
+    # pulse screens. Developer preview only - production Horizon never sees
+    # this, which is why the SOC here comes from the Commander field and not
+    # from the rejected MCU byte.
+    "v6_pages_dev": {
+        "speed": 88, "gear": 4, "soc": 97, "soc_trusted": False,
+        "range": 253, "range_trusted": True, "temperature_primary": 22,
+        "uart_health": "UART OK", "closures": "ALL CLOSED",
+        "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False,
+        "frunk": False, "trunk": False,
+        "indicator_left": True, "indicator_right": False,
+        "brake": False, "headlight": True,
+        "closures_detail": "FL -  FR -  RL -  RR -   FRUNK -  TRUNK -",
+        "lights_detail": "HEADLIGHT ON · RUNNING ON · INDICATOR L",
+        "tires_detail": "F 2.83 2.85 · R 2.93 2.75 bar",
+        "actual_soc": 63,
+        "battery_power": -12.4, "battery_power_abs": 12.4,
+        "battery_voltage": 372.5, "battery_current": -33.2,
+        "total_charged_energy": 812.4, "total_discharged_energy": 790.1,
+        "accelerator_position": 18.0,
+        "commander_link": 1, "commander_detail": "NativeBle · v1.2.0",
+        "nav_manoeuvre": "IN 300 M TURN RIGHT",
+        "nav_distance": 300, "nav_eta": "14:32",
+        "nav_capability": "BASIC_MANEUVER",
+        "trip_distance": 42.6, "trip_time_text": "0:58",
+        "average_speed": 44.0,
+        "warning_active": False, "warning_text": "",
+        "developer_mode": True,
+        "appearance_text": "AUTO", "brightness_text": "80 %",
+        "speed_unit_text": "km/h", "temperature_unit_text": "°C",
+        "tire_pressure_unit_text": "bar", "clock_text": "24 h",
+        "default_page_text": "Horizon", "warning_sound_text": "ON",
+        "developer_mode_text": "ON",
+        "dev_uart": "UART OK · /dev/ttyS5 38400 · READ-ONLY",
+        "dev_parser": "2637 frames · 0 checksum errors",
+        "dev_commander": "CMDR NativeBle · connected · SOC override active",
+        "dev_soc": "SOC: MCU 97 (rejected) → Commander 63",
+        "dev_gear": "GEAR: mapping unconfirmed (0x02 byte 3 LIKELY)",
+        "dev_frame": "frame 18.4 ms · 54 fps · budget 33.3 ms",
+        "dev_memory": "RSS 3.7 MB · resident assets 1.6 MB",
+        "dev_hint": "DEV/REPLAY · mock state, never vehicle data",
+    },
 })
 
 
