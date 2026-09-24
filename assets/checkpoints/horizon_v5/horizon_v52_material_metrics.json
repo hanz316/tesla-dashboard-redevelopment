@@ -42,9 +42,9 @@
     "lit_row_fraction": 0.836
    },
    "support_surface": {
-    "supported_area_fraction": 0.00546,
-    "peak_darkening_levels": 207.0,
-    "mean_darkening_levels": 72.2,
+    "supported_area_fraction": 0.00023,
+    "peak_darkening_levels": 187.7,
+    "mean_darkening_levels": 107.14,
     "pass_rule": "supporting pixels (darkening > 40 levels) must be at most 2 % of the cluster regions"
    }
   },
@@ -52,45 +52,45 @@
    "status": "MEASURED",
    "plate": "assets/ui/horizon_v5_background_day.png",
    "environment": {
-    "horizon_row": 169,
-    "sky": 165.5,
-    "sky_top": 164.5,
-    "haze": 163.9,
-    "ground_far": 94.8,
-    "ground_near": 84.9,
-    "ground_to_sky_ratio": 0.513,
+    "horizon_row": 166,
+    "sky": 181.4,
+    "sky_top": 184.2,
+    "haze": 187.3,
+    "ground_far": 116.8,
+    "ground_near": 111.2,
+    "ground_to_sky_ratio": 0.613,
     "terrain_depth": {
      "strongest_edge_steps": [
-      -81.7,
-      -56.0,
-      -54.7
+      -66.0,
+      -48.0,
+      -43.7
      ],
-     "max_abs_edge_step": 81.7
+     "max_abs_edge_step": 66.0
     }
    },
    "vehicle": {
-    "body_pixels": 56308,
-    "paint_mean": 163.6,
-    "paint_spread": 23.1,
-    "glass_mean": 36.0,
-    "tyre_mean": 83.8,
-    "rim_mean": 160.6,
-    "highlight_coverage": 0.0375,
-    "glass_minus_paint": -127.6,
-    "tyre_minus_paint": -79.8,
-    "rim_minus_tyre": 76.8
+    "body_pixels": 56330,
+    "paint_mean": 162.2,
+    "paint_spread": 22.0,
+    "glass_mean": 34.2,
+    "tyre_mean": 76.7,
+    "rim_mean": 160.8,
+    "highlight_coverage": 0.0292,
+    "glass_minus_paint": -128.0,
+    "tyre_minus_paint": -85.5,
+    "rim_minus_tyre": 84.1
    },
    "reflection": {
     "contact_row": 346,
-    "length_px": 103,
-    "mean_magnitude": 2.6,
-    "peak_magnitude": 65.0,
-    "lit_row_fraction": 0.769
+    "length_px": 86,
+    "mean_magnitude": 2.8,
+    "peak_magnitude": 84.0,
+    "lit_row_fraction": 0.642
    },
    "support_surface": {
-    "supported_area_fraction": 0.13222,
-    "peak_darkening_levels": 79.3,
-    "mean_darkening_levels": 48.17,
+    "supported_area_fraction": 0.00406,
+    "peak_darkening_levels": 68.3,
+    "mean_darkening_levels": 54.35,
     "pass_rule": "supporting pixels (darkening > 40 levels) must be at most 2 % of the cluster regions"
    }
   },
@@ -134,9 +134,9 @@
     "lit_row_fraction": 0.843
    },
    "support_surface": {
-    "supported_area_fraction": 0.00541,
-    "peak_darkening_levels": 211.0,
-    "mean_darkening_levels": 74.08,
+    "supported_area_fraction": 0.00022,
+    "peak_darkening_levels": 191.0,
+    "mean_darkening_levels": 114.62,
     "pass_rule": "supporting pixels (darkening > 40 levels) must be at most 2 % of the cluster regions"
    }
   },
@@ -180,9 +180,9 @@
     "lit_row_fraction": 0.896
    },
    "support_surface": {
-    "supported_area_fraction": 0.00532,
-    "peak_darkening_levels": 212.7,
-    "mean_darkening_levels": 76.37,
+    "supported_area_fraction": 0.00025,
+    "peak_darkening_levels": 198.7,
+    "mean_darkening_levels": 116.94,
     "pass_rule": "supporting pixels (darkening > 40 levels) must be at most 2 % of the cluster regions"
    }
   }

@@ -1,0 +1,52 @@
+{
+  "page": "v6_mono",
+  "source": "VehicleState + shared EnvironmentTimeSystem palette",
+  "device_validation": "UNKNOWN_UNTIL_DEVICE_TEST",
+  "records": [
+    {
+      "phase": "day",
+      "state": "driving",
+      "size": [
+        1920,
+        480
+      ],
+      "bright_pixels": 1622,
+      "neutral_mid_pixels": 0,
+      "output": "assets/checkpoints/v6_pages/mono/mono_day_normal.png"
+    },
+    {
+      "phase": "night",
+      "state": "driving",
+      "size": [
+        1920,
+        480
+      ],
+      "bright_pixels": 21030,
+      "neutral_mid_pixels": 1840,
+      "output": "assets/checkpoints/v6_pages/mono/mono_night_normal.png"
+    },
+    {
+      "phase": "day",
+      "state": "lost",
+      "size": [
+        1920,
+        480
+      ],
+      "bright_pixels": 2653,
+      "neutral_mid_pixels": 0,
+      "output": "assets/checkpoints/v6_pages/mono/mono_day_lost.png"
+    },
+    {
+      "phase": "day",
+      "state": "door_open",
+      "size": [
+        1920,
+        480
+      ],
+      "bright_pixels": 1569,
+      "neutral_mid_pixels": 0,
+      "output": "assets/checkpoints/v6_pages/mono/mono_day_door.png"
+    }
+  ],
+  "status": "HOST_BASELINE_PASS"
+}

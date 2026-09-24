@@ -280,6 +280,11 @@ MOCK_STATES.update({
     # live in the previewer's mock table like every other fixture: the runtime
     # projection is the production path and has no mock data at all.
     "v5_neutral": {"speed": 88, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": False, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -12.4, "warning_active": False, "warning_text": '', "speed_limit": 120, "driver_status_text": "READY"},
+    "blind_left": {"speed": 48, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "blind_left": True, "battery_power": -12.4, "warning_active": False, "warning_text": '', "driver_status_text": "READY"},
+    "blind_right": {"speed": 48, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "blind_right": True, "battery_power": -12.4, "warning_active": False, "warning_text": '', "driver_status_text": "READY"},
+    "blind_both": {"speed": 48, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "blind_left": True, "blind_right": True, "battery_power": -12.4, "warning_active": False, "warning_text": '', "driver_status_text": "READY"},
+    "blind_left_indicator": {"speed": 48, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "blind_left": True, "indicator_left": True, "battery_power": -12.4, "warning_active": False, "warning_text": '', "driver_status_text": "READY"},
+    "blind_right_indicator": {"speed": 48, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "blind_right": True, "indicator_right": True, "battery_power": -12.4, "warning_active": False, "warning_text": '', "driver_status_text": "READY"},
     # Motion evidence anchors (developer preview only): the same scene at the
     # four reference speeds, so the motion channels can be measured.
     "v5_motion_000": {"speed": 0, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": False, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -12.4, "warning_active": False, "warning_text": '', "speed_limit": 120, "driver_status_text": "READY"},
@@ -1488,6 +1493,13 @@ def blend_vehicle_layers(first, second, fraction):
                            "RGBA"), (x0, y0)
 
 
+def presentation_bounds(x, y, width, height, spec):
+    scale = spec.get("scale", 1.0)
+    ax, ay = spec.get("anchor", [954, 345])
+    return (round(ax+(x-ax)*scale), round(ay+(y-ay)*scale),
+            max(1, round(width*scale)), max(1, round(height*scale)))
+
+
 def render(scene, provider, raw_state, out_path, t_norm=1.0,
            banner=None, vehicle_image=None, vehicle_crop=False,
            environment=None):
@@ -1541,6 +1553,11 @@ def render(scene, provider, raw_state, out_path, t_norm=1.0,
                         source, origin = blend_vehicle_layers(
                             phase_layer, next_layer,
                             float(environment.get("blend", 0.0)))
+                        x, y, w, h = presentation_bounds(
+                            *origin, *source.size, node.get("presentation", {}))
+                        if (w, h) != source.size:
+                            source = source.resize((w, h), Image.Resampling.LANCZOS)
+                        origin = (x, y)
                         if alpha < 1:
                             source.putalpha(source.getchannel("A").point(
                                 lambda value: round(value * alpha)))
@@ -1555,6 +1572,8 @@ def render(scene, provider, raw_state, out_path, t_norm=1.0,
             if path and os.path.isfile(path):
                 x, y = node.get("x", 0), node.get("y", 0)
                 width, height = node.get("width", 0), node.get("height", 0)
+                x, y, width, height = presentation_bounds(
+                    x, y, width, height, node.get("presentation", {}))
                 alpha = node.get("opacity", 1.0) * alpha_when(node, state)
                 if "environment_opacity" in node:
                     table = node["environment_opacity"]
@@ -1699,6 +1718,23 @@ def environment_context(tokens, when=None, phase=None, blend=0.0,
         token = tokens.get("colors", {}).get(name)
         if isinstance(token, str):
             colour_map[token.upper()] = value
+    # The V6 page generator predates the Horizon token document and keeps its
+    # shared text/rail colours as literals.  These aliases let the same
+    # EnvironmentTimeSystem palette flow through Mono (and the other low-cost
+    # pages) without changing semantic amber/gold warning colours or the dark
+    # canvas itself.
+    page_aliases = {
+        "#E8EDF2": "primary_text",
+        "#C9D4DF": "secondary_text",
+        "#8A96A2": "muted_text",
+        "#5A646E": "dim_text",
+        "#171E25": "rule",
+        "#1A222B": "rule",
+    }
+    for literal, name in page_aliases.items():
+        value = palette.get(name)
+        if isinstance(value, str):
+            colour_map[literal] = value
     def layers_for(phase):
         suffix = "" if phase == "night" else "_" + phase
         manifest = os.path.join(root, "assets", "rendered", "vehicle",

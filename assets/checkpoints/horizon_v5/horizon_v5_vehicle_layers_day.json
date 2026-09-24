@@ -5,11 +5,11 @@
   14.0
  ],
  "reflection": {
-  "squash": 0.36,
-  "blur": 10.0,
-  "alpha": 0.2,
-  "falloff": 2.6,
-  "ripple": 0.34,
+  "squash": 0.56,
+  "blur": 8.0,
+  "alpha": 0.26,
+  "falloff": 2.1,
+  "ripple": 0.24,
   "ripple_cycles": 7.0,
   "tint": [
    0.42,
@@ -24,204 +24,204 @@
   {
    "state": "base",
    "crop_box": [
-    697,
+    653,
     103,
-    1195,
-    480
+    1209,
+    477
    ],
    "layer_size": [
-    498,
-    377
+    556,
+    374
    ],
-   "solid_car_pixels": 56669,
-   "response_pixels": 28632,
+   "solid_car_pixels": 56658,
+   "response_pixels": 26298,
    "reflection_box": [
     757,
     346,
-    1151,
-    425
+    1152,
+    469
    ],
    "car_box": [
     757,
     127,
-    1151,
+    1152,
     346
    ],
-   "decoded_rgba_bytes": 750984,
+   "decoded_rgba_bytes": 831776,
    "background_decoded_rgba_bytes": 3686400
   },
   {
    "state": "running",
    "crop_box": [
-    697,
+    656,
     103,
-    1195,
-    480
+    1209,
+    477
    ],
    "layer_size": [
-    498,
-    377
+    553,
+    374
    ],
-   "solid_car_pixels": 56669,
-   "response_pixels": 28641,
+   "solid_car_pixels": 56658,
+   "response_pixels": 26303,
    "reflection_box": [
     757,
     346,
-    1151,
-    425
+    1152,
+    469
    ],
    "car_box": [
     757,
     127,
-    1151,
+    1152,
     346
    ],
-   "decoded_rgba_bytes": 750984,
+   "decoded_rgba_bytes": 827288,
    "background_decoded_rgba_bytes": 3686400
   },
   {
    "state": "brake",
    "crop_box": [
-    697,
+    657,
     103,
-    1195,
-    480
+    1209,
+    477
    ],
    "layer_size": [
-    498,
-    377
+    552,
+    374
    ],
-   "solid_car_pixels": 56669,
-   "response_pixels": 28652,
+   "solid_car_pixels": 56658,
+   "response_pixels": 26296,
    "reflection_box": [
     757,
     346,
-    1151,
-    425
+    1152,
+    469
    ],
    "car_box": [
     757,
     127,
-    1151,
+    1152,
     346
    ],
-   "decoded_rgba_bytes": 750984,
+   "decoded_rgba_bytes": 825792,
    "background_decoded_rgba_bytes": 3686400
   },
   {
    "state": "headlight",
    "crop_box": [
-    697,
+    657,
     103,
-    1195,
-    480
+    1209,
+    477
    ],
    "layer_size": [
-    498,
-    377
+    552,
+    374
    ],
-   "solid_car_pixels": 56669,
-   "response_pixels": 28652,
+   "solid_car_pixels": 56658,
+   "response_pixels": 26296,
    "reflection_box": [
     757,
     346,
-    1151,
-    425
+    1152,
+    469
    ],
    "car_box": [
     757,
     127,
-    1151,
+    1152,
     346
    ],
-   "decoded_rgba_bytes": 750984,
+   "decoded_rgba_bytes": 825792,
    "background_decoded_rgba_bytes": 3686400
   },
   {
    "state": "indicator_left",
    "crop_box": [
-    697,
+    653,
     103,
-    1195,
-    480
+    1209,
+    477
    ],
    "layer_size": [
-    498,
-    377
+    556,
+    374
    ],
-   "solid_car_pixels": 56669,
-   "response_pixels": 28655,
+   "solid_car_pixels": 56658,
+   "response_pixels": 26291,
    "reflection_box": [
     757,
     346,
-    1151,
-    425
+    1152,
+    469
    ],
    "car_box": [
     757,
     127,
-    1151,
+    1152,
     346
    ],
-   "decoded_rgba_bytes": 750984,
+   "decoded_rgba_bytes": 831776,
    "background_decoded_rgba_bytes": 3686400
   },
   {
    "state": "indicator_right",
    "crop_box": [
-    697,
+    653,
     103,
-    1195,
-    480
+    1209,
+    477
    ],
    "layer_size": [
-    498,
-    377
+    556,
+    374
    ],
-   "solid_car_pixels": 56669,
-   "response_pixels": 28656,
+   "solid_car_pixels": 56658,
+   "response_pixels": 26296,
    "reflection_box": [
     757,
     346,
-    1151,
-    425
+    1152,
+    469
    ],
    "car_box": [
     757,
     127,
-    1151,
+    1152,
     346
    ],
-   "decoded_rgba_bytes": 750984,
+   "decoded_rgba_bytes": 831776,
    "background_decoded_rgba_bytes": 3686400
   },
   {
    "state": "hazard",
    "crop_box": [
-    697,
+    653,
     103,
-    1195,
-    480
+    1209,
+    477
    ],
    "layer_size": [
-    498,
-    377
+    556,
+    374
    ],
-   "solid_car_pixels": 56669,
-   "response_pixels": 28654,
+   "solid_car_pixels": 56658,
+   "response_pixels": 26293,
    "reflection_box": [
     757,
     346,
-    1151,
-    425
+    1152,
+    469
    ],
    "car_box": [
     757,
     127,
-    1151,
+    1152,
     346
    ],
-   "decoded_rgba_bytes": 750984,
+   "decoded_rgba_bytes": 831776,
    "background_decoded_rgba_bytes": 3686400
   }
  ]

@@ -1,0 +1,17 @@
+{
+  "schema": "horizon-presentation v1",
+  "scale": 1.0,
+  "anchor": [
+    954,
+    345
+  ],
+  "safe_x": [
+    672,
+    1248
+  ],
+  "scale_trials": [
+    1.06,
+    1.09,
+    1.12
+  ]
+}

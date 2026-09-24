@@ -147,6 +147,7 @@ PanelVisual VehicleVisualController::panelStep(PanelVisual previous,
 const VehicleVisualFrame& VehicleVisualController::update(
     const VehicleState& state, std::uint64_t now_ms) {
     note_ = "ok";
+    frame_.awareness = projectVehicleAwareness(state, now_ms, policy_, developer_mode_);
     const std::uint64_t light = policy_.lighting_ms;
     const std::uint64_t vehicle = policy_.vehicle_ms;
 
@@ -241,6 +242,15 @@ void VehicleVisualController::buildLayers() {
         frame_.layers.push_back({"vehicle.indicator.left", 0, false});
     } else if (right) {
         frame_.layers.push_back({"vehicle.indicator.right", 0, false});
+    }
+
+    // Awareness is a semantic projection, so the renderer receives only
+    // validated left/right presence. It never sees the UART candidate bits.
+    if (frame_.awareness.left.present) {
+        frame_.layers.push_back({"horizon.blind.left", 0, false});
+    }
+    if (frame_.awareness.right.present) {
+        frame_.layers.push_back({"horizon.blind.right", 0, false});
     }
 }
 

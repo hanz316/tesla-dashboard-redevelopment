@@ -1,0 +1,24 @@
+{
+  "schema": "horizon-v5.4-scrim v1",
+  "candidates": {
+    "scrim": {
+      "file": "assets/ui/horizon_v54_surface_scrim.png",
+      "box": [
+        132,
+        31,
+        1789,
+        457
+      ],
+      "peak_alpha": 36,
+      "decoded_rgba_bytes": 2823528
+    }
+  },
+  "centre_max_alpha": 0,
+  "max_adjacent_alpha_step": 1,
+  "phase_strength": {
+    "day": 1,
+    "dawn": 0.25,
+    "dusk": 0.25,
+    "night": 0.03
+  }
+}

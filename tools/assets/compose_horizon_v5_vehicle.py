@@ -233,8 +233,8 @@ def main():
                  "falloff": 2.0, "ripple": 0.22},
         "dusk": {"squash": 0.52, "blur": 8.0, "alpha": 0.32,
                  "falloff": 2.1, "ripple": 0.26},
-        "day": {"squash": 0.36, "blur": 10.0, "alpha": 0.20,
-                "falloff": 2.6, "ripple": 0.34},
+        "day": {"squash": 0.56, "blur": 8.0, "alpha": 0.26,
+                "falloff": 2.1, "ripple": 0.24},
     }
     reflection_spec = {
         "squash": args.reflection_squash,
@@ -276,10 +276,9 @@ def main():
                "pixel the car changes about the wet road. Rendered with the "
                "frozen ortho Horizon camera, so the frozen 356x236 asset "
                "contract is untouched.",
-        "camera": {"ortho_scale": 18.91305160522461,
-                   "shift_x": 0.0038402501959353685,
-                   "shift_y": -0.011006813496351242,
-                   "projected_box_px": [753.5, 123.8, 1154.5, 345.0]},
+        "camera": {"body_box_px": next((r["car_box"] for r in records
+                                             if r["state"] == "base"), None),
+                   "source": "measured alpha; camera parameters belong to the render report"},
         "layers": layers,
     }
     with open(args.manifest, "w") as handle:

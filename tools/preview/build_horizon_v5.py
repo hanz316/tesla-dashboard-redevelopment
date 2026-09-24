@@ -61,11 +61,11 @@ MICRO_MOTION_HZ = 0.55
 # contrast but costs four times the memory and stays visible at night. The
 # alternative candidates remain switchable for a human comparison.
 SURFACE_CANDIDATE = os.environ.get("HORIZON_SUPPORT_CANDIDATE") or "scrim"
-SURFACES = os.path.join(REPO, "assets", "checkpoints", "horizon_v5",
-                        "horizon_v53_surfaces.json")
+SURFACES = os.path.join(REPO, "assets", "checkpoints", "horizon_v54",
+                        "scrim.json")
 # How strongly the readability support appears, by environment. DAY needs the
 # most help, night almost none - and it interpolates, never switches.
-SURFACE_STRENGTH = {"day": 1.0, "dawn": 0.38, "dusk": 0.38, "night": 0.03}
+SURFACE_STRENGTH = {"day": 1.0, "dawn": 0.25, "dusk": 0.25, "night": 0.03}
 
 
 def support_surface_components(candidate):
@@ -195,6 +195,30 @@ def motion_components(assets, vehicle_layers):
                            exempt_reason="the baked rotational blur of the "
                                          "wheels; transparent at 0 km/h"))
     return nodes
+
+
+def blind_zone_components():
+    """Bounded semantic awareness layer; protocol bits never reach this list."""
+    nodes = []
+    for side, binding, x, flip in (
+            ("left", "blind_left", 604, False),
+            ("right", "blind_right", 1184, True)):
+        source = f"assets/ui/horizon_v54_blind_ghost_{side}.png"
+        nodes.append(image(f"blind.{side}.peripheral", "assets/ui/horizon_v54_blind_glow.png",
+                           {"x": x - 18, "y": 164, "w": 180, "h": 220}, z=17,
+                           layer="dynamic", role="awareness", opacity=0.82,
+                           visibility={"binding": binding, "show_when_true": True},
+                           visible_opacity=0.82,
+                           exempt_from_safe_area=True,
+                           exempt_reason="bounded amber semantic awareness field"))
+        nodes.append(image(f"blind.{side}.ghost", source,
+                           {"x": x, "y": 226, "w": 132, "h": 88}, z=18,
+                           layer="dynamic", role="awareness", opacity=0.92,
+                           visibility={"binding": binding, "show_when_true": True},
+                           visible_opacity=0.92,
+                           exempt_from_safe_area=True,
+                           exempt_reason="baked low-opacity adjacent vehicle silhouette"))
+    return nodes
 V2_LAYOUT = os.path.join(UI, "horizon_v2_layout.json")
 
 CONTENT_SCALE = 480 / 724.0
@@ -268,6 +292,7 @@ def text(node_id, box_name, align="left", tier=None, colour=None, **kw):
     if colour is not None:
         node["color_token"] = colour
     node.update(kw)
+    node["shadow"] = False
     return node
 
 
@@ -325,11 +350,11 @@ def build_tokens(measurements, ui_assets):
         },
         "horizon_row": measurements["horizon"]["horizon_row"],
         "typography": {"tiers": {
-            "DISPLAY": {"size": 98, "role": "bold", "tracking": -3.0},
-            "TITLE": {"size": 58, "role": "bold", "tracking": -1.0},
+            "DISPLAY": {"size": 98, "role": "medium", "tracking": -3.0},
+            "TITLE": {"size": 58, "role": "medium", "tracking": -1.0},
             "BODY": {"size": 30, "role": "medium", "tracking": 0.6},
             "CAPTION": {"size": 22, "role": "medium", "tracking": 1.0},
-            "LABEL": {"size": 16, "role": "medium", "tracking": 3.0}}},
+            "LABEL": {"size": 17, "role": "medium", "tracking": 2.0}}},
         "spacing": {"zone_gap": 20, "stack_tight": 8, "stack_normal": 16,
                     "stack_loose": 34, "label_gap": 10},
         "radii": {"pill": 10, "bar": 6, "sign": 30, "capsule": 12},
@@ -396,7 +421,8 @@ def build_components(measurements, ui_assets, vehicle, alignment):
                             exempt_from_safe_area=True, role="environment",
                             exempt_reason="the environment plate is the whole "
                                           "canvas and is itself clear of the "
-                                          "panel mask by construction"))
+                            "panel mask by construction"))
+    components.extend(blind_zone_components())
     # A glow is the element's own emission: it is strong at night and held back
     # in daylight, where the arc has to read as a shape rather than as light.
     glow_backing = {"day": 0.35, "dawn": 0.7, "dusk": 0.7, "night": 1.0}
@@ -693,6 +719,10 @@ def build_components(measurements, ui_assets, vehicle, alignment):
                               "visibility": {"binding": "warning_active",
                                              "show_when_true": True},
                               "visible_opacity": 1.0}))
+    presentation = json.load(open(os.path.join(UI, "horizon_v54_presentation.json")))
+    for component in components:
+        if component.get("role") in ("vehicle", "motion") and component["id"] != "motion.roadflow":
+            component["presentation"] = presentation
     return components
 
 
@@ -729,7 +759,7 @@ def main():
                   "energy": {"x": 1248, "right": 1680}},
         "reference_state": "MEASURED_FROM_REFERENCE",
         "support_candidate": SURFACE_CANDIDATE,
-        "support_candidate_alternatives": ["none", "frost", "smoked"],
+        "support_candidate_alternatives": [],
         "support_candidate_why": "A soft optical scrim: colourless low-opacity "
                                  "luminance control with a two-level-per-pixel "
                                  "alpha slope and no shape, so it cannot be "

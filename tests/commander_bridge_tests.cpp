@@ -30,6 +30,7 @@ std::vector<std::uint8_t> sampleGaugeFrame() {
     payload[9] = 255;   // no reading
     payload[10] = 0;    // no reading
     payload[11] = 114;  // 2.85 bar
+    payload[32] = 0xF0; // candidate 0x38 blind bits; deliberately unvalidated
     return CommanderFrameV6::encode(176, payload);
 }
 
@@ -114,6 +115,10 @@ int main() {
         assert(bridge.state().speed.valid && bridge.state().speed.value == 42);
         assert(bridge.state().speed.source == SignalSource::Commander);
         assert(bridge.state().gear.value == Gear::Drive);
+        assert(bridge.gauge().blind_spot_rear_left != 0);
+        assert(bridge.gauge().blind_spot_rear_right != 0);
+        assert(!bridge.state().blind_spot_left.valid);
+        assert(!bridge.state().blind_spot_right.valid);
         // Only the wheels that reported are written.
         assert(std::fabs(bridge.state().tire_fl.value - 2.825F) < 0.001F);
         assert(std::fabs(bridge.state().tire_rr.value - 2.85F) < 0.001F);

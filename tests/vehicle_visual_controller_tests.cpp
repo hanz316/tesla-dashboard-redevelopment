@@ -46,6 +46,44 @@ bool hasLayer(const VehicleVisualFrame& frame, const char* id) {
 
 int main() {
     const std::uint64_t t0 = 1'000'000;
+    // Production awareness rejects unvalidated mappings and developer data.
+    {
+        VehicleVisualController controller;
+        VehicleState state = allClosed(t0);
+        state.blind_spot_left = fresh(true, t0);
+        state.blind_spot_right = fresh(false, t0);
+        state.left_vehicle_present = fresh(false, t0);
+        state.right_vehicle_present = fresh(false, t0);
+        assert(controller.update(state,t0).awareness.state == BlindZoneState::Left);
+        assert(hasLayer(controller.frame(), "horizon.blind.left"));
+        assert(!hasLayer(controller.frame(), "horizon.blind.right"));
+        state.turn_signal_left = fresh(true,t0);
+        assert(controller.update(state,t0).awareness.left.indicator_attention);
+        state.blind_spot_right = fresh(true,t0);
+        assert(controller.update(state,t0).awareness.state == BlindZoneState::Both);
+        assert(hasLayer(controller.frame(), "horizon.blind.left"));
+        assert(hasLayer(controller.frame(), "horizon.blind.right"));
+        state.blind_spot_left = fresh(false,t0);
+        assert(controller.update(state,t0).awareness.state == BlindZoneState::Right);
+        state.blind_spot_right = fresh(false,t0);
+        assert(controller.update(state,t0).awareness.state == BlindZoneState::None);
+        state.blind_spot_left = fresh(true,t0);
+        state.blind_spot_left.quality = SignalQuality::Inferred;
+        assert(controller.update(state,t0).awareness.state == BlindZoneState::Unknown);
+        assert(!controller.frame().awareness.left.present);
+        state.blind_spot_left.quality = SignalQuality::Confirmed;
+        state.blind_spot_left.source = SignalSource::Simulation;
+        assert(!controller.update(state,t0).awareness.left.present);
+        controller.setDeveloperMode(true);
+        assert(controller.update(state,t0).awareness.left.present);
+        state.blind_spot_left.stale = true;
+        assert(!controller.update(state,t0).awareness.left.present);
+        state.blind_spot_left.stale = false;
+        assert(!controller.update(state,t0+2001).awareness.left.present);
+        state.blind_spot_left.timestamp_ms = t0+10;
+        assert(!controller.update(state,t0).awareness.left.present);
+    }
+
 
     // A known-off lamp and an unknown lamp must not be the same thing.
     {

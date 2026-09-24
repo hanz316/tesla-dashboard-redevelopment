@@ -675,10 +675,10 @@ PHASE_SPECS = {
             [1.00, (0.220, 0.260, 0.310, 1.0)],
         ],
         "sky_strength": 1.0,
-        "road_roughness_override": [0.10, 0.62],
+        "road_roughness_override": [0.30, 0.43],
         "road_wet_ramp_override": [0.15, 0.52],
-        "road_colour_override": (0.026, 0.030, 0.036, 1.0),
-        "road_albedo_variation": 0.45,
+        "road_colour_override": (0.085, 0.095, 0.105, 1.0),
+        "road_albedo_variation": 0.18,
         "wet_scale_override": 0.05,
         "city_strength": 0.0,
         "ridge_emit_scale": 0.0,
@@ -786,9 +786,20 @@ def main():
               "composition": COMPOSITION, "stages": args.stages.split(","),
               "renders": {}, "timings_s": {}}
     report["studio_hidden"] = hide_studio(scene)
-    night_world(scene, spec)
+    if args.phase == "day":
+        import horizon_daylight
+        horizon_daylight.world(scene)
+        report["daylight_materials"] = horizon_daylight.materials()
+    else:
+        night_world(scene, spec)
     road_obj = road(scene, spec)
-    ridges = ridgeline(scene, spec)
+    if args.phase == "day":
+        horizon_daylight.asphalt(road_obj)
+        ridges = horizon_daylight.terrain(scene, spec, place, FRAME)
+    else:
+        ridges = ridgeline(scene, spec)
+    if args.phase == "day":
+        spec["street_lamps"] = []
     city = city_lights(scene, spec)
     rig = light_rig(scene, spec)
     environment = [road_obj] + ridges + city
@@ -954,6 +965,14 @@ def main():
                                   round(max(xs), 1), round(max(ys), 1)])
                 report.setdefault("wheel_boxes_px", []).append(
                     {"level": name, "boxes": boxes})
+
+    if "mask" in stages:
+        import horizon_daylight
+        scene.camera = car_camera
+        configure_render(scene, 1, True, (width, height))
+        set_rays(environment, camera=False)
+        report["material_mask"] = horizon_daylight.material_mask(
+            scene, car, os.path.join(args.out, "material_mask.png"))
 
     report["elapsed_s"] = round(time.time() - start, 1)
     os.makedirs(os.path.dirname(args.report), exist_ok=True)

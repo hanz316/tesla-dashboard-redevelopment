@@ -1,0 +1,499 @@
+{
+  "schema": "horizon-v5.4-evidence v1",
+  "measurement_platform": "MAC MEASURED",
+  "device": "UNKNOWN_UNTIL_DEVICE_TEST",
+  "state_source": "DEVELOPER_FIXTURE",
+  "phases": {
+    "day": {
+      "body_box": [
+        758,
+        128,
+        1150,
+        345
+      ],
+      "alpha_pixels": 57590,
+      "combined_layer_box": [
+        677,
+        127,
+        1185,
+        453
+      ],
+      "material_classes": {
+        "paint": {
+          "pixels": 27069,
+          "mean": 143.3,
+          "p10_p50_p90": [
+            105.66,
+            147.8,
+            179.02
+          ]
+        },
+        "glass": {
+          "pixels": 16746,
+          "mean": 70.51,
+          "p10_p50_p90": [
+            52.03,
+            61.4,
+            99.96
+          ]
+        },
+        "tyre": {
+          "pixels": 950,
+          "mean": 19.03,
+          "p10_p50_p90": [
+            10.72,
+            20.65,
+            24.44
+          ]
+        },
+        "rim": {
+          "pixels": 1425,
+          "mean": 54.02,
+          "p10_p50_p90": [
+            14.68,
+            51.09,
+            101.03
+          ]
+        },
+        "glass_minus_paint": -72.79,
+        "rim_minus_tyre": 34.99
+      },
+      "contrast": {
+        "speed.value": {
+          "full": {
+            "ink_pixels": 2950,
+            "median_ratio": 3.23,
+            "p10_ratio": 3.13
+          },
+          "half": {
+            "ink_pixels": 759,
+            "median_ratio": 3.26,
+            "p10_ratio": 2.35
+          }
+        },
+        "energy.range": {
+          "full": {
+            "ink_pixels": 2118,
+            "median_ratio": 2.95,
+            "p10_ratio": 2.31
+          },
+          "half": {
+            "ink_pixels": 558,
+            "median_ratio": 2.52,
+            "p10_ratio": 1.91
+          }
+        },
+        "energy.soc": {
+          "full": {
+            "ink_pixels": 367,
+            "median_ratio": 3.04,
+            "p10_ratio": 2.65
+          },
+          "half": {
+            "ink_pixels": 113,
+            "median_ratio": 2.63,
+            "p10_ratio": 2.03
+          }
+        },
+        "energy.power": {
+          "full": {
+            "ink_pixels": 530,
+            "median_ratio": 3.18,
+            "p10_ratio": 2.71
+          },
+          "half": {
+            "ink_pixels": 158,
+            "median_ratio": 2.75,
+            "p10_ratio": 2.03
+          }
+        },
+        "speed.unit": {
+          "full": {
+            "ink_pixels": 341,
+            "median_ratio": 2.88,
+            "p10_ratio": 2.51
+          },
+          "half": {
+            "ink_pixels": 108,
+            "median_ratio": 2.49,
+            "p10_ratio": 1.91
+          }
+        },
+        "energy.range.label": {
+          "full": {
+            "ink_pixels": 177,
+            "median_ratio": 2.48,
+            "p10_ratio": 2.06
+          },
+          "half": {
+            "ink_pixels": 50,
+            "median_ratio": 1.88,
+            "p10_ratio": 1.63
+          }
+        },
+        "energy.soc.label": {
+          "full": {
+            "ink_pixels": 92,
+            "median_ratio": 3.01,
+            "p10_ratio": 2.43
+          },
+          "half": {
+            "ink_pixels": 27,
+            "median_ratio": 2.17,
+            "p10_ratio": 1.9
+          }
+        },
+        "energy.power.label": {
+          "full": {
+            "ink_pixels": 174,
+            "median_ratio": 2.98,
+            "p10_ratio": 2.53
+          },
+          "half": {
+            "ink_pixels": 48,
+            "median_ratio": 2.09,
+            "p10_ratio": 1.9
+          }
+        },
+        "climate.status": {
+          "full": {
+            "ink_pixels": 269,
+            "median_ratio": 3.24,
+            "p10_ratio": 2.7
+          },
+          "half": {
+            "ink_pixels": 87,
+            "median_ratio": 2.41,
+            "p10_ratio": 2.06
+          }
+        }
+      },
+      "plate_sha256": "46a99da7274de07e76189aaf2bdee397afa7429e35d0ddc3e122b24bcf8a7e54",
+      "base_layer_decoded_bytes": 831776
+    },
+    "night": {
+      "body_box": [
+        758,
+        128,
+        1150,
+        345
+      ],
+      "alpha_pixels": 57540,
+      "combined_layer_box": [
+        757,
+        127,
+        1151,
+        480
+      ],
+      "material_classes": {
+        "paint": {
+          "pixels": 27069,
+          "mean": 131.04,
+          "p10_p50_p90": [
+            93.65,
+            120.23,
+            183.3
+          ]
+        },
+        "glass": {
+          "pixels": 16746,
+          "mean": 34.71,
+          "p10_p50_p90": [
+            7.58,
+            13.51,
+            109.09
+          ]
+        },
+        "tyre": {
+          "pixels": 950,
+          "mean": 46.31,
+          "p10_p50_p90": [
+            33.14,
+            48.22,
+            55.22
+          ]
+        },
+        "rim": {
+          "pixels": 1425,
+          "mean": 56.32,
+          "p10_p50_p90": [
+            15.96,
+            43.79,
+            126.63
+          ]
+        },
+        "glass_minus_paint": -96.33,
+        "rim_minus_tyre": 10.01
+      },
+      "contrast": {
+        "speed.value": {
+          "full": {
+            "ink_pixels": 2950,
+            "median_ratio": 15.9,
+            "p10_ratio": 12.82
+          },
+          "half": {
+            "ink_pixels": 759,
+            "median_ratio": 15.66,
+            "p10_ratio": 7.96
+          }
+        },
+        "energy.range": {
+          "full": {
+            "ink_pixels": 2118,
+            "median_ratio": 17.39,
+            "p10_ratio": 14.88
+          },
+          "half": {
+            "ink_pixels": 558,
+            "median_ratio": 16.47,
+            "p10_ratio": 6.25
+          }
+        },
+        "energy.soc": {
+          "full": {
+            "ink_pixels": 367,
+            "median_ratio": 16.58,
+            "p10_ratio": 11.88
+          },
+          "half": {
+            "ink_pixels": 113,
+            "median_ratio": 11.65,
+            "p10_ratio": 5.96
+          }
+        },
+        "energy.power": {
+          "full": {
+            "ink_pixels": 530,
+            "median_ratio": 16.69,
+            "p10_ratio": 11.52
+          },
+          "half": {
+            "ink_pixels": 158,
+            "median_ratio": 11.89,
+            "p10_ratio": 5.65
+          }
+        },
+        "speed.unit": {
+          "full": {
+            "ink_pixels": 341,
+            "median_ratio": 11.78,
+            "p10_ratio": 8.82
+          },
+          "half": {
+            "ink_pixels": 108,
+            "median_ratio": 8.41,
+            "p10_ratio": 4.48
+          }
+        },
+        "energy.range.label": {
+          "full": {
+            "ink_pixels": 177,
+            "median_ratio": 5.82,
+            "p10_ratio": 4.17
+          },
+          "half": {
+            "ink_pixels": 50,
+            "median_ratio": 3.38,
+            "p10_ratio": 2.55
+          }
+        },
+        "energy.soc.label": {
+          "full": {
+            "ink_pixels": 92,
+            "median_ratio": 11.56,
+            "p10_ratio": 7.3
+          },
+          "half": {
+            "ink_pixels": 27,
+            "median_ratio": 5.35,
+            "p10_ratio": 4.04
+          }
+        },
+        "energy.power.label": {
+          "full": {
+            "ink_pixels": 174,
+            "median_ratio": 11.62,
+            "p10_ratio": 8.09
+          },
+          "half": {
+            "ink_pixels": 48,
+            "median_ratio": 5.15,
+            "p10_ratio": 4.07
+          }
+        },
+        "climate.status": {
+          "full": {
+            "ink_pixels": 269,
+            "median_ratio": 12.09,
+            "p10_ratio": 8.18
+          },
+          "half": {
+            "ink_pixels": 87,
+            "median_ratio": 6.44,
+            "p10_ratio": 4.46
+          }
+        }
+      },
+      "plate_sha256": "f8a0ebda881fa7fc550f29586f787c438bc6b01d1b32dbc50299233965c4f2b7",
+      "base_layer_decoded_bytes": 666536
+    }
+  },
+  "scale_trials": {
+    "1.06": {
+      "day": {
+        "body_box": [
+          746,
+          115,
+          1162,
+          345
+        ],
+        "body_width": 416,
+        "safe_zone_clearance": [
+          74,
+          86
+        ]
+      },
+      "night": {
+        "body_box": [
+          746,
+          115,
+          1162,
+          345
+        ],
+        "body_width": 416,
+        "safe_zone_clearance": [
+          74,
+          86
+        ]
+      }
+    },
+    "1.09": {
+      "day": {
+        "body_box": [
+          740,
+          108,
+          1167,
+          345
+        ],
+        "body_width": 427,
+        "safe_zone_clearance": [
+          68,
+          81
+        ]
+      },
+      "night": {
+        "body_box": [
+          740,
+          108,
+          1167,
+          345
+        ],
+        "body_width": 427,
+        "safe_zone_clearance": [
+          68,
+          81
+        ]
+      }
+    },
+    "1.12": {
+      "day": {
+        "body_box": [
+          734,
+          102,
+          1173,
+          345
+        ],
+        "body_width": 439,
+        "safe_zone_clearance": [
+          62,
+          75
+        ]
+      },
+      "night": {
+        "body_box": [
+          734,
+          102,
+          1173,
+          345
+        ],
+        "body_width": 439,
+        "safe_zone_clearance": [
+          62,
+          75
+        ]
+      }
+    }
+  },
+  "blind_zone": {
+    "none": {
+      "changed_pixels": 0,
+      "combined_box": null,
+      "left_safe_zone_overlap_pixels": 0,
+      "right_safe_zone_overlap_pixels": 0,
+      "indicator_attention": false
+    },
+    "left": {
+      "changed_pixels": 6934,
+      "combined_box": [
+        604,
+        231,
+        736,
+        308
+      ],
+      "left_safe_zone_overlap_pixels": 0,
+      "right_safe_zone_overlap_pixels": 0,
+      "indicator_attention": false
+    },
+    "right": {
+      "changed_pixels": 6935,
+      "combined_box": [
+        1184,
+        232,
+        1316,
+        308
+      ],
+      "left_safe_zone_overlap_pixels": 0,
+      "right_safe_zone_overlap_pixels": 0,
+      "indicator_attention": false
+    },
+    "both": {
+      "changed_pixels": 13869,
+      "combined_box": [
+        604,
+        231,
+        1316,
+        308
+      ],
+      "left_safe_zone_overlap_pixels": 0,
+      "right_safe_zone_overlap_pixels": 0,
+      "indicator_attention": false
+    },
+    "left_indicator": {
+      "changed_pixels": 9169,
+      "combined_box": [
+        604,
+        139,
+        1000,
+        376
+      ],
+      "left_safe_zone_overlap_pixels": 0,
+      "right_safe_zone_overlap_pixels": 0,
+      "indicator_attention": true
+    },
+    "right_indicator": {
+      "changed_pixels": 9204,
+      "combined_box": [
+        781,
+        139,
+        1316,
+        376
+      ],
+      "left_safe_zone_overlap_pixels": 0,
+      "right_safe_zone_overlap_pixels": 0,
+      "indicator_attention": true
+    }
+  },
+  "body_boxes_equal": true,
+  "selected_scale": 1.0
+}

@@ -26,6 +26,7 @@ add_library(dashboard_core
     src/core/v6_asset_catalog.cpp
     src/core/motion_quality.cpp
     src/core/delta_animation.cpp
+    src/core/vehicle_awareness.cpp
     src/core/vehicle_visual_controller.cpp
 )
 set_target_properties(dashboard_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
@@ -205,6 +206,9 @@ if(BUILD_HOST_TOOLS)
         add_test(NAME dashboard_horizon_phase_compositing_tests
                  COMMAND "${PYTHON3_EXECUTABLE}"
                          "${CMAKE_CURRENT_SOURCE_DIR}/tests/horizon_phase_compositing_tests.py")
+        add_test(NAME dashboard_horizon_v54_blind_tests
+                 COMMAND "${PYTHON3_EXECUTABLE}"
+                         "${CMAKE_CURRENT_SOURCE_DIR}/tests/horizon_v54_blind_tests.py")
         add_test(NAME dashboard_horizon_v5_2_tests
                  COMMAND "${PYTHON3_EXECUTABLE}"
                          "${CMAKE_CURRENT_SOURCE_DIR}/tests/horizon_v5_2_tests.py")

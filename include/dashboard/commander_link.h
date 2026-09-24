@@ -281,8 +281,10 @@ struct CommanderGaugeV6 {
     float range_km{0.0F};                       // bits 12-21, *1.61
     float battery_temp_c{0.0F};                 // bits 22-30, *0.5, -40
     float speed_limit_kph{0.0F};                // payload[31..32] bits 7-11, *5
-    std::uint8_t blind_spot_rear_left{0};       // bits 12-13
-    std::uint8_t blind_spot_rear_right{0};      // bits 14-15
+    // Candidate fields retained for diagnostics only. 0x38 mapping is not
+    // live validated, so these must not be promoted to VehicleState semantics.
+    std::uint8_t blind_spot_rear_left{0};       // candidate bits 12-13
+    std::uint8_t blind_spot_rear_right{0};      // candidate bits 14-15
     std::uint64_t timestamp_ms{0};
 };
 

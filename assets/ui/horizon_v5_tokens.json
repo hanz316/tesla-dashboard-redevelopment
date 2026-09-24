@@ -51,12 +51,12 @@
   "tiers": {
    "DISPLAY": {
     "size": 98,
-    "role": "bold",
+    "role": "medium",
     "tracking": -3.0
    },
    "TITLE": {
     "size": 58,
-    "role": "bold",
+    "role": "medium",
     "tracking": -1.0
    },
    "BODY": {
@@ -70,9 +70,9 @@
     "tracking": 1.0
    },
    "LABEL": {
-    "size": 16,
+    "size": 17,
     "role": "medium",
-    "tracking": 3.0
+    "tracking": 2.0
    }
   }
  },

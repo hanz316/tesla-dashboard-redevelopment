@@ -1,6 +1,7 @@
 #pragma once
 
 #include "dashboard/vehicle_state.h"
+#include "dashboard/vehicle_awareness.h"
 
 #include <cstdint>
 #include <string>
@@ -58,6 +59,7 @@ struct VisualLayer {
 };
 
 struct VehicleVisualFrame {
+    VehicleAwarenessFrame awareness;
     LampVisual brake;
     LampVisual left_indicator;
     LampVisual right_indicator;

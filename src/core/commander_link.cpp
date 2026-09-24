@@ -19,6 +19,12 @@ constexpr std::uint64_t CommanderFrameV6::kInterFrameGapMs;
 
 namespace {
 
+// 0x38 contains AP/ADAS/surrounding-like fields, but the rear-left/rear-right
+// bit meanings have not been validated against a live vehicle. Keep the raw
+// candidate in CommanderGaugeV6 for diagnostics; never publish it as a
+// production VehicleState semantic signal until this is true.
+constexpr bool kBlindSpotMappingValidated = false;
+
 std::uint32_t readU16(const std::uint8_t* p) {
     return static_cast<std::uint32_t>(p[0]) |
            (static_cast<std::uint32_t>(p[1]) << 8);
@@ -612,10 +618,12 @@ void applyCommanderReadingsV6(const CommanderGaugeV6& gauge,
                     SignalQuality::Inferred, Unit::Percent);
             }
         }
-        set(out.blind_spot_left, gauge.blind_spot_rear_left != 0, now_ms,
-            SignalQuality::Confirmed, Unit::None);
-        set(out.blind_spot_right, gauge.blind_spot_rear_right != 0, now_ms,
-            SignalQuality::Confirmed, Unit::None);
+        if (kBlindSpotMappingValidated) {
+            set(out.blind_spot_left, gauge.blind_spot_rear_left != 0, now_ms,
+                SignalQuality::Confirmed, Unit::None);
+            set(out.blind_spot_right, gauge.blind_spot_rear_right != 0, now_ms,
+                SignalQuality::Confirmed, Unit::None);
+        }
         set(out.overspeed, gauge.speed_kph > 0 &&
                                gauge.speed_limit_kph > 0.0F &&
                                static_cast<float>(gauge.speed_kph) >

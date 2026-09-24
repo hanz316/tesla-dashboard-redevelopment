@@ -37,11 +37,7 @@
  },
  "reference_state": "MEASURED_FROM_REFERENCE",
  "support_candidate": "scrim",
- "support_candidate_alternatives": [
-  "none",
-  "frost",
-  "smoked"
- ],
+ "support_candidate_alternatives": [],
  "support_candidate_why": "A soft optical scrim: colourless low-opacity luminance control with a two-level-per-pixel alpha slope and no shape, so it cannot be identified as a panel",
  "reference_mapping": {
   "why": "the panel is 4:1, the reference is 3:1: the reference is placed 1:1 by height in a centred 1440x480 content box and the extra 480 px is environment",
@@ -138,12 +134,12 @@
   {
    "id": "support.surface",
    "kind": "image",
-   "src": "assets/ui/horizon_v53_surface_scrim.png",
+   "src": "assets/ui/horizon_v54_surface_scrim.png",
    "bounds": {
-    "x": 200,
-    "y": 39,
-    "w": 1529,
-    "h": 391
+    "x": 132,
+    "y": 31,
+    "w": 1657,
+    "h": 426
    },
    "z": 6,
    "layer": "dynamic",
@@ -151,8 +147,8 @@
    "opacity": 1.0,
    "environment_opacity": {
     "day": 1.0,
-    "dawn": 0.38,
-    "dusk": 0.38,
+    "dawn": 0.25,
+    "dusk": 0.25,
     "night": 0.03
    },
    "exempt_from_safe_area": true,
@@ -173,6 +169,94 @@
    "exempt_from_safe_area": true,
    "role": "environment",
    "exempt_reason": "the environment plate is the whole canvas and is itself clear of the panel mask by construction"
+  },
+  {
+   "id": "blind.left.peripheral",
+   "kind": "image",
+   "src": "assets/ui/horizon_v54_blind_glow.png",
+   "bounds": {
+    "x": 586,
+    "y": 164,
+    "w": 180,
+    "h": 220
+   },
+   "z": 17,
+   "layer": "dynamic",
+   "role": "awareness",
+   "opacity": 0.82,
+   "visibility": {
+    "binding": "blind_left",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.82,
+   "exempt_from_safe_area": true,
+   "exempt_reason": "bounded amber semantic awareness field"
+  },
+  {
+   "id": "blind.left.ghost",
+   "kind": "image",
+   "src": "assets/ui/horizon_v54_blind_ghost_left.png",
+   "bounds": {
+    "x": 604,
+    "y": 226,
+    "w": 132,
+    "h": 88
+   },
+   "z": 18,
+   "layer": "dynamic",
+   "role": "awareness",
+   "opacity": 0.92,
+   "visibility": {
+    "binding": "blind_left",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.92,
+   "exempt_from_safe_area": true,
+   "exempt_reason": "baked low-opacity adjacent vehicle silhouette"
+  },
+  {
+   "id": "blind.right.peripheral",
+   "kind": "image",
+   "src": "assets/ui/horizon_v54_blind_glow.png",
+   "bounds": {
+    "x": 1166,
+    "y": 164,
+    "w": 180,
+    "h": 220
+   },
+   "z": 17,
+   "layer": "dynamic",
+   "role": "awareness",
+   "opacity": 0.82,
+   "visibility": {
+    "binding": "blind_right",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.82,
+   "exempt_from_safe_area": true,
+   "exempt_reason": "bounded amber semantic awareness field"
+  },
+  {
+   "id": "blind.right.ghost",
+   "kind": "image",
+   "src": "assets/ui/horizon_v54_blind_ghost_right.png",
+   "bounds": {
+    "x": 1184,
+    "y": 226,
+    "w": 132,
+    "h": 88
+   },
+   "z": 18,
+   "layer": "dynamic",
+   "role": "awareness",
+   "opacity": 0.92,
+   "visibility": {
+    "binding": "blind_right",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.92,
+   "exempt_from_safe_area": true,
+   "exempt_reason": "baked low-opacity adjacent vehicle silhouette"
   },
   {
    "id": "speed.arc.glow",
@@ -289,6 +373,23 @@
     ],
     "amplitude_px": 2.0,
     "hz": 0.55
+   },
+   "presentation": {
+    "schema": "horizon-presentation v1",
+    "scale": 1.0,
+    "anchor": [
+     954,
+     345
+    ],
+    "safe_x": [
+     672,
+     1248
+    ],
+    "scale_trials": [
+     1.06,
+     1.09,
+     1.12
+    ]
    }
   },
   {
@@ -310,7 +411,24 @@
     "binding": "position_light",
     "show_when_true": true
    },
-   "visible_opacity": 1.0
+   "visible_opacity": 1.0,
+   "presentation": {
+    "schema": "horizon-presentation v1",
+    "scale": 1.0,
+    "anchor": [
+     954,
+     345
+    ],
+    "safe_x": [
+     672,
+     1248
+    ],
+    "scale_trials": [
+     1.06,
+     1.09,
+     1.12
+    ]
+   }
   },
   {
    "id": "vehicle.brake",
@@ -331,7 +449,24 @@
     "binding": "brake",
     "show_when_true": true
    },
-   "visible_opacity": 1.0
+   "visible_opacity": 1.0,
+   "presentation": {
+    "schema": "horizon-presentation v1",
+    "scale": 1.0,
+    "anchor": [
+     954,
+     345
+    ],
+    "safe_x": [
+     672,
+     1248
+    ],
+    "scale_trials": [
+     1.06,
+     1.09,
+     1.12
+    ]
+   }
   },
   {
    "id": "vehicle.indicator_left",
@@ -352,7 +487,24 @@
     "binding": "indicator_left",
     "show_when_true": true
    },
-   "visible_opacity": 1.0
+   "visible_opacity": 1.0,
+   "presentation": {
+    "schema": "horizon-presentation v1",
+    "scale": 1.0,
+    "anchor": [
+     954,
+     345
+    ],
+    "safe_x": [
+     672,
+     1248
+    ],
+    "scale_trials": [
+     1.06,
+     1.09,
+     1.12
+    ]
+   }
   },
   {
    "id": "vehicle.indicator_right",
@@ -373,7 +525,24 @@
     "binding": "indicator_right",
     "show_when_true": true
    },
-   "visible_opacity": 1.0
+   "visible_opacity": 1.0,
+   "presentation": {
+    "schema": "horizon-presentation v1",
+    "scale": 1.0,
+    "anchor": [
+     954,
+     345
+    ],
+    "safe_x": [
+     672,
+     1248
+    ],
+    "scale_trials": [
+     1.06,
+     1.09,
+     1.12
+    ]
+   }
   },
   {
    "id": "vehicle.headlight",
@@ -394,7 +563,24 @@
     "binding": "headlight",
     "show_when_true": true
    },
-   "visible_opacity": 1.0
+   "visible_opacity": 1.0,
+   "presentation": {
+    "schema": "horizon-presentation v1",
+    "scale": 1.0,
+    "anchor": [
+     954,
+     345
+    ],
+    "safe_x": [
+     672,
+     1248
+    ],
+    "scale_trials": [
+     1.06,
+     1.09,
+     1.12
+    ]
+   }
   },
   {
    "id": "motion.roadflow",
@@ -493,7 +679,24 @@
     ]
    },
    "exempt_from_safe_area": true,
-   "exempt_reason": "the wake is a soft baked trail behind the car and is fully transparent at 0 km/h"
+   "exempt_reason": "the wake is a soft baked trail behind the car and is fully transparent at 0 km/h",
+   "presentation": {
+    "schema": "horizon-presentation v1",
+    "scale": 1.0,
+    "anchor": [
+     954,
+     345
+    ],
+    "safe_x": [
+     672,
+     1248
+    ],
+    "scale_trials": [
+     1.06,
+     1.09,
+     1.12
+    ]
+   }
   },
   {
    "id": "motion.streak.brake",
@@ -537,7 +740,24 @@
    },
    "visible_opacity": 0.85,
    "exempt_from_safe_area": true,
-   "exempt_reason": "the lamp's own reflection on the wet road, drawn from the measured lamp pixels and only while that lamp is on"
+   "exempt_reason": "the lamp's own reflection on the wet road, drawn from the measured lamp pixels and only while that lamp is on",
+   "presentation": {
+    "schema": "horizon-presentation v1",
+    "scale": 1.0,
+    "anchor": [
+     954,
+     345
+    ],
+    "safe_x": [
+     672,
+     1248
+    ],
+    "scale_trials": [
+     1.06,
+     1.09,
+     1.12
+    ]
+   }
   },
   {
    "id": "motion.streak.indicator_left",
@@ -581,7 +801,24 @@
    },
    "visible_opacity": 0.85,
    "exempt_from_safe_area": true,
-   "exempt_reason": "the lamp's own reflection on the wet road, drawn from the measured lamp pixels and only while that lamp is on"
+   "exempt_reason": "the lamp's own reflection on the wet road, drawn from the measured lamp pixels and only while that lamp is on",
+   "presentation": {
+    "schema": "horizon-presentation v1",
+    "scale": 1.0,
+    "anchor": [
+     954,
+     345
+    ],
+    "safe_x": [
+     672,
+     1248
+    ],
+    "scale_trials": [
+     1.06,
+     1.09,
+     1.12
+    ]
+   }
   },
   {
    "id": "motion.streak.indicator_right",
@@ -625,7 +862,24 @@
    },
    "visible_opacity": 0.85,
    "exempt_from_safe_area": true,
-   "exempt_reason": "the lamp's own reflection on the wet road, drawn from the measured lamp pixels and only while that lamp is on"
+   "exempt_reason": "the lamp's own reflection on the wet road, drawn from the measured lamp pixels and only while that lamp is on",
+   "presentation": {
+    "schema": "horizon-presentation v1",
+    "scale": 1.0,
+    "anchor": [
+     954,
+     345
+    ],
+    "safe_x": [
+     672,
+     1248
+    ],
+    "scale_trials": [
+     1.06,
+     1.09,
+     1.12
+    ]
+   }
   },
   {
    "id": "motion.wheel.low",
@@ -659,7 +913,24 @@
     ]
    },
    "exempt_from_safe_area": true,
-   "exempt_reason": "the baked rotational blur of the wheels; transparent at 0 km/h"
+   "exempt_reason": "the baked rotational blur of the wheels; transparent at 0 km/h",
+   "presentation": {
+    "schema": "horizon-presentation v1",
+    "scale": 1.0,
+    "anchor": [
+     954,
+     345
+    ],
+    "safe_x": [
+     672,
+     1248
+    ],
+    "scale_trials": [
+     1.06,
+     1.09,
+     1.12
+    ]
+   }
   },
   {
    "id": "motion.wheel.medium",
@@ -693,7 +964,24 @@
     ]
    },
    "exempt_from_safe_area": true,
-   "exempt_reason": "the baked rotational blur of the wheels; transparent at 0 km/h"
+   "exempt_reason": "the baked rotational blur of the wheels; transparent at 0 km/h",
+   "presentation": {
+    "schema": "horizon-presentation v1",
+    "scale": 1.0,
+    "anchor": [
+     954,
+     345
+    ],
+    "safe_x": [
+     672,
+     1248
+    ],
+    "scale_trials": [
+     1.06,
+     1.09,
+     1.12
+    ]
+   }
   },
   {
    "id": "motion.wheel.high",
@@ -727,7 +1015,24 @@
     ]
    },
    "exempt_from_safe_area": true,
-   "exempt_reason": "the baked rotational blur of the wheels; transparent at 0 km/h"
+   "exempt_reason": "the baked rotational blur of the wheels; transparent at 0 km/h",
+   "presentation": {
+    "schema": "horizon-presentation v1",
+    "scale": 1.0,
+    "anchor": [
+     954,
+     345
+    ],
+    "safe_x": [
+     672,
+     1248
+    ],
+    "scale_trials": [
+     1.06,
+     1.09,
+     1.12
+    ]
+   }
   },
   {
    "id": "speed.arc.track",
@@ -822,7 +1127,8 @@
    "font_token": "LABEL",
    "color_token": "muted_text",
    "text": "0",
-   "role": "speed"
+   "role": "speed",
+   "shadow": false
   },
   {
    "id": "speed.arc.label.240",
@@ -839,13 +1145,14 @@
    "font_token": "LABEL",
    "color_token": "muted_text",
    "text": "240",
-   "role": "speed"
+   "role": "speed",
+   "shadow": false
   },
   {
    "id": "speed.value",
    "kind": "text",
    "bounds": {
-    "x": 355.8,
+    "x": 355.4,
     "y": 161.8,
     "w": 107.4,
     "h": 75.6
@@ -858,13 +1165,14 @@
    "binding": "speed",
    "format": "{}",
    "invalid_text": "—",
-   "role": "speed"
+   "role": "speed",
+   "shadow": false
   },
   {
    "id": "speed.unit",
    "kind": "text",
    "bounds": {
-    "x": 373.7,
+    "x": 373.3,
     "y": 244.0,
     "w": 76.2,
     "h": 21.2
@@ -875,7 +1183,8 @@
    "font_token": "BODY",
    "color_token": "on_road_label",
    "text": "km/h",
-   "role": "speed"
+   "role": "speed",
+   "shadow": false
   },
   {
    "id": "gear.p",
@@ -977,7 +1286,8 @@
     "show_when_invalid": true
    },
    "visible_opacity": 1.0,
-   "role": "speed"
+   "role": "speed",
+   "shadow": false
   },
   {
    "id": "driver.temperature",
@@ -996,7 +1306,8 @@
    "role": "driver",
    "binding": "temperature_primary",
    "format": "{} °C",
-   "invalid_text": "—"
+   "invalid_text": "—",
+   "shadow": false
   },
   {
    "id": "driver.status",
@@ -1015,7 +1326,8 @@
    "role": "driver",
    "binding": "driver_status_text",
    "format": "{}",
-   "invalid_text": ""
+   "invalid_text": "",
+   "shadow": false
   },
   {
    "id": "climate.status",
@@ -1032,7 +1344,8 @@
    "font_token": "CAPTION",
    "color_token": "on_road_label",
    "text": "CHILL",
-   "role": "driver"
+   "role": "driver",
+   "shadow": false
   },
   {
    "id": "speedlimit.ring",
@@ -1078,7 +1391,8 @@
     "binding": "speed_limit",
     "show_when_valid": true
    },
-   "visible_opacity": 1.0
+   "visible_opacity": 1.0,
+   "shadow": false
   },
   {
    "id": "energy.range",
@@ -1097,7 +1411,8 @@
    "role": "energy",
    "binding": "range",
    "format": "{} km",
-   "invalid_text": "— km"
+   "invalid_text": "— km",
+   "shadow": false
   },
   {
    "id": "energy.range.label",
@@ -1114,7 +1429,8 @@
    "font_token": "LABEL",
    "color_token": "muted_text",
    "text": "RANGE",
-   "role": "energy"
+   "role": "energy",
+   "shadow": false
   },
   {
    "id": "energy.rule",
@@ -1190,7 +1506,8 @@
    "role": "energy",
    "binding": "battery_power",
    "format": "{} kW",
-   "invalid_text": "— kW"
+   "invalid_text": "— kW",
+   "shadow": false
   },
   {
    "id": "energy.power.label",
@@ -1207,7 +1524,8 @@
    "font_token": "LABEL",
    "color_token": "on_road_label",
    "text": "POWER",
-   "role": "energy"
+   "role": "energy",
+   "shadow": false
   },
   {
    "id": "energy.rail",
@@ -1285,7 +1603,8 @@
    "role": "energy",
    "binding": "actual_soc",
    "format": "{}%",
-   "invalid_text": "— %"
+   "invalid_text": "— %",
+   "shadow": false
   },
   {
    "id": "energy.soc.label",
@@ -1302,7 +1621,8 @@
    "font_token": "LABEL",
    "color_token": "on_road_label",
    "text": "SOC",
-   "role": "energy"
+   "role": "energy",
+   "shadow": false
   },
   {
    "id": "top.clock",
@@ -1320,7 +1640,8 @@
    "color_token": "muted_text",
    "source": "clock",
    "format": "%H:%M",
-   "role": "driver"
+   "role": "driver",
+   "shadow": false
   },
   {
    "id": "nav.capsule",
@@ -1368,6 +1689,7 @@
    },
    "visible_opacity": 1.0,
    "text": "↱",
+   "shadow": false,
    "exempt_from_safe_area": true,
    "exempt_reason": "the navigation capsule floats above the top margin; its content sits inside"
   },
@@ -1394,6 +1716,7 @@
    "binding": "nav_distance",
    "format": "{} m",
    "invalid_text": "",
+   "shadow": false,
    "exempt_from_safe_area": true,
    "exempt_reason": "the navigation capsule floats above the top margin; its content sits inside"
   },
@@ -1420,6 +1743,7 @@
    "binding": "nav_instruction",
    "format": "{}",
    "invalid_text": "",
+   "shadow": false,
    "exempt_from_safe_area": true,
    "exempt_reason": "the navigation capsule floats above the top margin; its content sits inside"
   },
@@ -1470,7 +1794,8 @@
     "binding": "warning_active",
     "show_when_true": true
    },
-   "visible_opacity": 1.0
+   "visible_opacity": 1.0,
+   "shadow": false
   }
  ],
  "screenshot_states": [
