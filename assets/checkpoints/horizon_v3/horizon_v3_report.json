@@ -1,0 +1,81 @@
+{
+ "schema": "horizon-v3-candidates v1",
+ "status": "HORIZON_V3_STYLE = AWAITING HUMAN VISUAL SELECTION",
+ "canvas": [
+  1920,
+  480
+ ],
+ "states": [
+  "neutral",
+  "left_indicator",
+  "hazard",
+  "brake",
+  "door_fl",
+  "trunk",
+  "low_soc",
+  "navigation"
+ ],
+ "candidates": {
+  "a_cyber_hud": {
+   "name": "Candidate A - Cyber HUD",
+   "layout": "assets/ui/horizon_v3_a_cyber_hud_layout.json",
+   "scene": "scenes/horizon_v3_a_cyber_hud.scene",
+   "neutral": "assets/checkpoints/horizon_v3/a_cyber_hud/neutral.png",
+   "contact_sheet": "assets/checkpoints/horizon_v3/horizon_v3_a_cyber_hud_contact_sheet.png",
+   "cost": {
+    "static_background_layers": 2,
+    "persistent_decoded_assets": 5,
+    "estimated_rgba_resident_kb": 4584.6,
+    "static_overlay_paths": 18,
+    "state_overlays": 14,
+    "maximum_simultaneous_state_overlays": 4,
+    "dynamic_text_nodes": 19,
+    "cheap_animations": 3,
+    "maximum_simultaneous_animation_sequences": 2,
+    "vehicle_layers": 1,
+    "note": "decoration is static or opacity-only; no per-frame bitmaps beyond the vehicle, no full-screen layers per state"
+   }
+  },
+  "b_concept_ev": {
+   "name": "Candidate B - Concept EV (primary)",
+   "layout": "assets/ui/horizon_v3_b_concept_ev_layout.json",
+   "scene": "scenes/horizon_v3_b_concept_ev.scene",
+   "neutral": "assets/checkpoints/horizon_v3/b_concept_ev/neutral.png",
+   "contact_sheet": "assets/checkpoints/horizon_v3/horizon_v3_b_concept_ev_contact_sheet.png",
+   "cost": {
+    "static_background_layers": 3,
+    "persistent_decoded_assets": 5,
+    "estimated_rgba_resident_kb": 4584.6,
+    "static_overlay_paths": 26,
+    "state_overlays": 15,
+    "maximum_simultaneous_state_overlays": 4,
+    "dynamic_text_nodes": 19,
+    "cheap_animations": 3,
+    "maximum_simultaneous_animation_sequences": 2,
+    "vehicle_layers": 1,
+    "note": "decoration is static or opacity-only; no per-frame bitmaps beyond the vehicle, no full-screen layers per state"
+   }
+  },
+  "c_performance": {
+   "name": "Candidate C - Futuristic Performance",
+   "layout": "assets/ui/horizon_v3_c_performance_layout.json",
+   "scene": "scenes/horizon_v3_c_performance.scene",
+   "neutral": "assets/checkpoints/horizon_v3/c_performance/neutral.png",
+   "contact_sheet": "assets/checkpoints/horizon_v3/horizon_v3_c_performance_contact_sheet.png",
+   "cost": {
+    "static_background_layers": 3,
+    "persistent_decoded_assets": 5,
+    "estimated_rgba_resident_kb": 4584.6,
+    "static_overlay_paths": 30,
+    "state_overlays": 16,
+    "maximum_simultaneous_state_overlays": 4,
+    "dynamic_text_nodes": 19,
+    "cheap_animations": 3,
+    "maximum_simultaneous_animation_sequences": 2,
+    "vehicle_layers": 1,
+    "note": "decoration is static or opacity-only; no per-frame bitmaps beyond the vehicle, no full-screen layers per state"
+   }
+  }
+ },
+ "master_comparison": "assets/checkpoints/horizon_v3/horizon_v3_master_comparison.png"
+}

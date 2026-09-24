@@ -115,6 +115,11 @@ def parse_args():
     ap.add_argument("--samples", type=int, default=32)
     ap.add_argument("--world-scale", type=float, default=1.0,
                     help="scale the HDRI strength; 1.0 keeps the frozen studio")
+    ap.add_argument("--environment", choices=("frozen", "structured"),
+                    default="frozen",
+                    help="structured adds a broad sky panel, a dark lower half "
+                         "and one side panel: broad low-frequency reflection "
+                         "structure, no studio redesign")
     ap.add_argument("--variant", default="A",
                     help="A = candidate as measured; B = same but the paint base "
                          "colour untouched, for a human A/B choice")
@@ -155,6 +160,56 @@ def configure(scene, samples):
     scene.cycles.use_denoising = True
     scene.cycles.seed = 0
     scene.cycles.use_animated_seed = False
+
+
+def add_environment(scene, report):
+    """Broad, low-frequency reflection structure - the one authorised change.
+    Large emissive planes, not a new studio: a soft sky above, one side panel,
+    and the world gradient pulled down so the lower half of a car's reflection
+    is dark. Curved surfaces then read as gradients instead of one flat field.
+    """
+    import bmesh
+
+    def panel(name, location, size, rotation, strength, colour=(1.0, 1.0, 1.0)):
+        mesh = bpy.data.meshes.new(name)
+        bm = bmesh.new()
+        bmesh.ops.create_grid(bm, x_segments=1, y_segments=1, size=0.5)
+        bm.to_mesh(mesh)
+        bm.free()
+        obj = bpy.data.objects.new(name, mesh)
+        obj.location = location
+        obj.scale = (size[0], size[1], 1.0)
+        obj.rotation_euler = rotation
+        scene.collection.objects.link(obj)
+        material = bpy.data.materials.new(name + "_M")
+        material.use_nodes = True
+        nodes = material.node_tree.nodes
+        for node in list(nodes):
+            nodes.remove(node)
+        output = nodes.new("ShaderNodeOutputMaterial")
+        emission = nodes.new("ShaderNodeEmission")
+        emission.inputs["Color"].default_value = colour + (1.0,)
+        emission.inputs["Strength"].default_value = strength
+        material.node_tree.links.new(emission.outputs["Emission"],
+                                     output.inputs["Surface"])
+        obj.data.materials.append(material)
+        return {"name": name, "location": list(location),
+                "size": list(size), "strength": strength}
+
+    added = []
+    # A broad soft source well above the car: the roof and hood see one wide
+    # gradient, not a small hotspot.
+    added.append(panel("ENV_Sky", (0.0, 0.0, 4.4), (7.0, 4.5),
+                       (0.0, 0.0, 0.0), 3.0))
+    # A dark floor: the lower half of every reflection is dark, which is what
+    # separates glass (mirrors the dark ground) from paint (keeps the sky).
+    added.append(panel("ENV_Floor", (0.0, 0.0, -1.2), (8.0, 6.0), (0.0, 0.0, 0.0),
+                       0.05, (0.02, 0.025, 0.035)))
+    # One controlled side highlight for the body side.
+    added.append(panel("ENV_Side", (-5.4, -1.6, 1.6), (4.0, 2.6),
+                       (0.0, 1.5708, 0.0), 1.5))
+    report["environment_panels"] = added
+    return added
 
 
 def render(scene, path):
@@ -333,6 +388,13 @@ def main():
             if node.type == "BACKGROUND":
                 background = node
                 break
+    if args.environment == "structured":
+        report["environment"] = "structured"
+        add_environment(scene, report)
+        if args.world_scale == 1.0:
+            args.world_scale = 0.35   # the panels carry the structure now
+    else:
+        report["environment"] = "frozen"
     if background is not None:
         before_strength = round(float(background.inputs["Strength"].default_value), 4)
         scale = args.world_scale

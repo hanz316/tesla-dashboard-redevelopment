@@ -1,0 +1,1357 @@
+{
+ "schema": "horizon-v2-layout v1",
+ "status": "AWAITING HUMAN VISUAL SELECTION",
+ "why": "This file is the design source of truth. The scene generator builds scenes/horizon_v2.scene from it and the layout QA reads it back; documentation and code cannot drift because neither holds its own copy of these numbers.",
+ "canvas": {
+  "width": 1920,
+  "height": 480,
+  "coordinate_space": "x 0..1919, y 0..479"
+ },
+ "panel": {
+  "why": "The panel is a trapezoid, measured on the device. These are the calibration numbers the committed scenes already carry, and no component may sit behind the mask.",
+  "top_corner_cut": 116,
+  "bottom_corner_cut": 51,
+  "mask_color": "background",
+  "left_bound_at": "x >= cut(y) where cut(y) = top_corner_cut + (bottom_corner_cut - top_corner_cut) * y / height",
+  "right_bound_at": "x <= width - cut(y)"
+ },
+ "safe_area": {
+  "left": 48,
+  "right": 48,
+  "top": 22,
+  "bottom": 24
+ },
+ "zones": {
+  "driver": {
+   "x": 60,
+   "right": 430,
+   "note": "layout constraint, not a drawn frame"
+  },
+  "vehicle": {
+   "x": 430,
+   "right": 1490,
+   "note": "layout constraint, not a drawn frame"
+  },
+  "energy": {
+   "x": 1490,
+   "right": 1860,
+   "note": "layout constraint, not a drawn frame"
+  }
+ },
+ "deviations_from_prompt": [
+  {
+   "id": "speed_x",
+   "prompt": "speed x = 90",
+   "actual": 120,
+   "reason": "The panel mask reaches x = 101.8 at the top of the speed box. At x = 90 the leading digit would be cut on the real panel.",
+   "evidence": "panel.top_corner_cut calibrated on the device"
+  },
+  {
+   "id": "time_anchor",
+   "prompt": "time x = 1640",
+   "actual": 1806,
+   "reason": "Right-anchored in the energy column so the clock aligns with the range and SOC rows.",
+   "evidence": "range and SOC are right-aligned at 1806"
+  },
+  {
+   "id": "vehicle_scale",
+   "prompt": "+25% to +35% visible width, 460-520 px",
+   "actual": "+22.7% (515 px)",
+   "reason": "The two figures disagree: 420 px plus 25% is 525 px, above the stated 460-520 band. The explicit pixel band was honoured, taking the largest width that keeps every panel state inside the permitted region and the frame on-canvas.",
+   "evidence": "visible_bounds_closed / visible_bounds_open_union in this file"
+  },
+  {
+   "id": "speed_limit_move",
+   "prompt": "sign floats near the speed cluster",
+   "actual": "x 316-370, y 248-302",
+   "reason": "Placed on the same band as the gear row instead of floating in the upper left centre, so it reads as part of the speed cluster.",
+   "evidence": "speed.limit.sign bounds"
+  }
+ ],
+ "tokens": {
+  "colors": "assets/ui/design_tokens.json#colors",
+  "typography": "assets/ui/design_tokens.json#typography",
+  "spacing": "assets/ui/design_tokens.json#spacing",
+  "radii": "assets/ui/design_tokens.json#radii",
+  "opacity": "assets/ui/design_tokens.json#opacity"
+ },
+ "components": [
+  {
+   "id": "background",
+   "kind": "vector",
+   "shape": "vgradient",
+   "bounds": {
+    "x": 0,
+    "y": 0,
+    "w": 1920,
+    "h": 480
+   },
+   "z": 0,
+   "layer": "static",
+   "color_token": "atmosphere_top",
+   "color_to_token": "background",
+   "exempt_from_safe_area": true,
+   "role": "atmosphere"
+  },
+  {
+   "id": "atmosphere.ambient",
+   "kind": "vector",
+   "shape": "radial",
+   "bounds": {
+    "x": 300,
+    "y": -40,
+    "w": 1320,
+    "h": 520
+   },
+   "z": 1,
+   "layer": "static",
+   "color_token": "surface",
+   "color_to_token": "background",
+   "opacity_token": "atmosphere",
+   "exempt_from_safe_area": true,
+   "role": "atmosphere",
+   "shape_note": "Broad and weak: it is there to give depth, not to read as an oval behind the car."
+  },
+  {
+   "id": "road.horizon",
+   "kind": "vector",
+   "shape": "line",
+   "x2_rule": "zone_width",
+   "bounds": {
+    "x": 300,
+    "y": 296,
+    "w": 1320,
+    "h": 1
+   },
+   "z": 2,
+   "layer": "static",
+   "color_token": "hairline",
+   "role": "road",
+   "x2": 1620,
+   "y2": 296
+  },
+  {
+   "id": "road.plane",
+   "kind": "vector",
+   "shape": "polygon",
+   "points_rule": "road_trapezoid",
+   "bounds": {
+    "x": 360,
+    "y": 296,
+    "w": 1200,
+    "h": 160
+   },
+   "z": 3,
+   "layer": "static",
+   "color_token": "road_plane",
+   "opacity_token": "road_plane",
+   "role": "road",
+   "points": [
+    [
+     760,
+     296
+    ],
+    [
+     1160,
+     296
+    ],
+    [
+     1560,
+     456
+    ],
+    [
+     360,
+     456
+    ]
+   ]
+  },
+  {
+   "id": "road.lane.left",
+   "kind": "vector",
+   "shape": "line",
+   "points_rule": "lane_left",
+   "bounds": {
+    "x": 500,
+    "y": 296,
+    "w": 380,
+    "h": 160
+   },
+   "z": 4,
+   "layer": "static",
+   "color_token": "road_lane",
+   "width_px": 2,
+   "role": "road",
+   "x2": 880,
+   "y2": 296
+  },
+  {
+   "id": "road.lane.right",
+   "kind": "vector",
+   "shape": "line",
+   "points_rule": "lane_right",
+   "bounds": {
+    "x": 1040,
+    "y": 296,
+    "w": 380,
+    "h": 160
+   },
+   "z": 4,
+   "layer": "static",
+   "color_token": "road_lane",
+   "width_px": 2,
+   "role": "road",
+   "x2": 1420,
+   "y2": 456
+  },
+  {
+   "id": "nav.pill",
+   "kind": "vector",
+   "shape": "roundrect",
+   "bounds": {
+    "x": 650,
+    "y": 18,
+    "w": 620,
+    "h": 62
+   },
+   "radius_token": "pill",
+   "z": 20,
+   "layer": "static",
+   "color_token": "surface",
+   "stroke_token": "hairline",
+   "opacity_token": "nav_pill_fill",
+   "opacity": 0.0,
+   "visibility": {
+    "binding": "nav_manoeuvre",
+    "show_when_valid": true,
+    "fade_ms_token": "nav_fade_ms"
+   },
+   "exempt_from_safe_area": true,
+   "exempt_reason": "The navigation pill is placed at y = 18 exactly as the prompt specifies, which is 4 px above the stated top safe margin; its content sits at y = 48 and is inside the margin.",
+   "role": "navigation"
+  },
+  {
+   "id": "nav.icon",
+   "kind": "text",
+   "text": "↱",
+   "bounds": {
+    "x": 690,
+    "y": 48,
+    "w": 40,
+    "h": 36
+   },
+   "align": "left",
+   "font_token": "BODY",
+   "color_token": "accent",
+   "z": 21,
+   "layer": "dynamic",
+   "text_token": "nav_icon",
+   "visibility": {
+    "binding": "nav_manoeuvre",
+    "show_when_valid": true,
+    "fade_ms_token": "nav_fade_ms"
+   },
+   "role": "navigation"
+  },
+  {
+   "id": "nav.distance",
+   "kind": "text",
+   "bounds": {
+    "x": 736,
+    "y": 48,
+    "w": 110,
+    "h": 36
+   },
+   "align": "left",
+   "font_token": "BODY",
+   "color_token": "primary_text",
+   "z": 21,
+   "layer": "dynamic",
+   "binding": "nav_distance",
+   "format": "{} m",
+   "invalid_text": "",
+   "visibility": {
+    "binding": "nav_manoeuvre",
+    "show_when_valid": true,
+    "fade_ms_token": "nav_fade_ms"
+   },
+   "role": "navigation"
+  },
+  {
+   "id": "nav.instruction",
+   "kind": "text",
+   "bounds": {
+    "x": 856,
+    "y": 48,
+    "w": 384,
+    "h": 36
+   },
+   "align": "left",
+   "font_token": "BODY",
+   "color_token": "secondary_text",
+   "z": 21,
+   "layer": "dynamic",
+   "binding": "nav_instruction",
+   "format": "{}",
+   "invalid_text": "",
+   "visibility": {
+    "binding": "nav_manoeuvre",
+    "show_when_valid": true,
+    "fade_ms_token": "nav_fade_ms"
+   },
+   "role": "navigation"
+  },
+  {
+   "id": "top.temperature",
+   "kind": "text",
+   "bounds": {
+    "x": 500,
+    "y": 57,
+    "w": 120,
+    "h": 34
+   },
+   "align": "left",
+   "font_token": "CAPTION",
+   "color_token": "muted_text",
+   "z": 22,
+   "layer": "dynamic",
+   "binding": "temperature_primary",
+   "format": "{}°C",
+   "invalid_text": "—°C",
+   "unknown_behavior": "placeholder",
+   "role": "status"
+  },
+  {
+   "id": "top.clock",
+   "kind": "text",
+   "bounds": {
+    "x": 1606,
+    "y": 57,
+    "w": 200,
+    "h": 34
+   },
+   "anchor_note": "Right-aligned: the renderer anchors the text at x + w = 1806, which is the same column as the range and SOC. This is the deviation recorded for time_anchor.",
+   "align": "right",
+   "font_token": "CAPTION",
+   "color_token": "muted_text",
+   "z": 22,
+   "layer": "dynamic",
+   "source": "clock",
+   "format": "%H:%M",
+   "role": "status"
+  },
+  {
+   "id": "speed.value",
+   "kind": "text",
+   "bounds": {
+    "x": 120,
+    "y": 105,
+    "w": 300,
+    "h": 140
+   },
+   "align": "left",
+   "font_token": "DISPLAY",
+   "color_token": "primary_text",
+   "z": 40,
+   "layer": "dynamic",
+   "binding": "speed",
+   "format": "{}",
+   "invalid_text": "—",
+   "invalid_opacity_token": "muted",
+   "unknown_behavior": "placeholder",
+   "role": "driver"
+  },
+  {
+   "id": "speed.unit",
+   "kind": "text",
+   "text": "km/h",
+   "bounds": {
+    "x": 124,
+    "y": 250,
+    "w": 120,
+    "h": 26
+   },
+   "why_below": "Below the number rather than beside it: a three-digit speed would otherwise grow into the unit.",
+   "align": "left",
+   "font_token": "CAPTION",
+   "color_token": "muted_text",
+   "z": 40,
+   "layer": "static",
+   "role": "driver"
+  },
+  {
+   "id": "speed.limit.sign",
+   "kind": "vector",
+   "shape": "roundrect",
+   "bounds": {
+    "x": 316,
+    "y": 248,
+    "w": 54,
+    "h": 54
+   },
+   "radius_token": "sign",
+   "z": 38,
+   "layer": "static",
+   "color_token": "speed_limit_face",
+   "stroke_token": "speed_limit_ring",
+   "opacity": 0.0,
+   "visibility": {
+    "binding": "speed_limit",
+    "show_when_valid": true,
+    "fade_ms_token": "state_fade_ms"
+   },
+   "role": "driver"
+  },
+  {
+   "id": "speed.limit.value",
+   "kind": "text",
+   "bounds": {
+    "x": 316,
+    "y": 275,
+    "w": 54,
+    "h": 30
+   },
+   "align": "center",
+   "font_token": "CAPTION",
+   "color_token": "primary_text",
+   "z": 39,
+   "layer": "dynamic",
+   "binding": "speed_limit",
+   "format": "{}",
+   "invalid_text": "",
+   "visibility": {
+    "binding": "speed_limit",
+    "show_when_valid": true,
+    "fade_ms_token": "state_fade_ms"
+   },
+   "unknown_behavior": "hidden",
+   "role": "driver"
+  },
+  {
+   "id": "gear.p",
+   "kind": "text",
+   "text": "P",
+   "bounds": {
+    "x": 120,
+    "y": 283,
+    "w": 30,
+    "h": 34
+   },
+   "align": "left",
+   "font_token": "BODY",
+   "color_token": "primary_text",
+   "opacity_token": "inactive_gear",
+   "z": 40,
+   "layer": "dynamic",
+   "highlight_when_gear": "P",
+   "highlight_color_token": "active_gear",
+   "highlight_opacity_token": "active_gear",
+   "role": "driver"
+  },
+  {
+   "id": "gear.r",
+   "kind": "text",
+   "text": "R",
+   "bounds": {
+    "x": 164,
+    "y": 283,
+    "w": 30,
+    "h": 34
+   },
+   "align": "left",
+   "font_token": "BODY",
+   "color_token": "primary_text",
+   "opacity_token": "inactive_gear",
+   "z": 40,
+   "layer": "dynamic",
+   "highlight_when_gear": "R",
+   "highlight_color_token": "active_gear",
+   "highlight_opacity_token": "active_gear",
+   "role": "driver"
+  },
+  {
+   "id": "gear.n",
+   "kind": "text",
+   "text": "N",
+   "bounds": {
+    "x": 208,
+    "y": 283,
+    "w": 30,
+    "h": 34
+   },
+   "align": "left",
+   "font_token": "BODY",
+   "color_token": "primary_text",
+   "opacity_token": "inactive_gear",
+   "z": 40,
+   "layer": "dynamic",
+   "highlight_when_gear": "N",
+   "highlight_color_token": "active_gear",
+   "highlight_opacity_token": "active_gear",
+   "role": "driver"
+  },
+  {
+   "id": "gear.d",
+   "kind": "text",
+   "text": "D",
+   "bounds": {
+    "x": 252,
+    "y": 283,
+    "w": 30,
+    "h": 34
+   },
+   "align": "left",
+   "font_token": "BODY",
+   "color_token": "primary_text",
+   "opacity_token": "inactive_gear",
+   "z": 40,
+   "layer": "dynamic",
+   "highlight_when_gear": "D",
+   "highlight_color_token": "active_gear",
+   "highlight_opacity_token": "active_gear",
+   "role": "driver"
+  },
+  {
+   "id": "gear.unknown",
+   "kind": "text",
+   "text": "—",
+   "bounds": {
+    "x": 120,
+    "y": 283,
+    "w": 30,
+    "h": 34
+   },
+   "align": "left",
+   "font_token": "BODY",
+   "color_token": "muted_text",
+   "z": 41,
+   "layer": "dynamic",
+   "visibility": {
+    "binding": "gear",
+    "show_when_invalid": true
+   },
+   "unknown_behavior": "placeholder",
+   "role": "driver"
+  },
+  {
+   "id": "driver.status",
+   "kind": "text",
+   "bounds": {
+    "x": 120,
+    "y": 337,
+    "w": 220,
+    "h": 30
+   },
+   "align": "left",
+   "font_token": "CAPTION",
+   "color_token": "muted_text",
+   "z": 40,
+   "layer": "dynamic",
+   "binding": "driver_status_text",
+   "format": "{}",
+   "invalid_text": "",
+   "role": "driver"
+  },
+  {
+   "id": "vehicle",
+   "kind": "vehicle",
+   "bounds": {
+    "x": 600,
+    "y": 0,
+    "w": 716,
+    "h": 474
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.5
+   },
+   "z": 30,
+   "layer": "dynamic",
+   "asset": "vehicle.base",
+   "parts": [
+    {
+     "id": "door_fl",
+     "sequence": "vehicle.door.fl",
+     "binding": "door_fl"
+    },
+    {
+     "id": "door_fr",
+     "sequence": "vehicle.door.fr",
+     "binding": "door_fr"
+    },
+    {
+     "id": "door_rl",
+     "sequence": "vehicle.door.rl",
+     "binding": "door_rl"
+    },
+    {
+     "id": "door_rr",
+     "sequence": "vehicle.door.rr",
+     "binding": "door_rr"
+    },
+    {
+     "id": "frunk",
+     "sequence": "vehicle.frunk",
+     "binding": "frunk"
+    },
+    {
+     "id": "trunk",
+     "sequence": "vehicle.trunk",
+     "binding": "trunk"
+    }
+   ],
+   "overlays": [
+    {
+     "asset": "vehicle.brake",
+     "binding": "brake"
+    },
+    {
+     "asset": "vehicle.headlight",
+     "binding": "headlight"
+    },
+    {
+     "asset": "vehicle.running",
+     "binding": "position_light"
+    }
+   ],
+   "indicators": {
+    "left": {
+     "sequence": "vehicle.indicator.left",
+     "binding": "indicator_left"
+    },
+    "right": {
+     "sequence": "vehicle.indicator.right",
+     "binding": "indicator_right"
+    }
+   },
+   "hazard_note": "Hazard is not a fourth lamp: the runtime's safety layer already ORs hazards into indicator_left and indicator_right, so the fixture sets both and the asset lighting variants follow.",
+   "visible_bounds_closed": {
+    "x": 703,
+    "y": 115,
+    "w": 515,
+    "h": 286
+   },
+   "visible_bounds_open_union": {
+    "x": 697,
+    "y": 42,
+    "w": 521,
+    "h": 358
+   },
+   "permitted_region": {
+    "x": 560,
+    "y": 36,
+    "w": 800,
+    "h": 420
+   },
+   "exempt_from_safe_area": true,
+   "exempt_reason": "The node box is the render frame, which is transparent outside the car. The check that matters is on the visible bounds, which are inside the safe area.",
+   "role": "vehicle",
+   "ground_contact_y": 400,
+   "scale_note": "Frame 716x474 (scale 2.011 from the 356x236 render). Visible car 515x286, centre x 960, ground contact y 400. The request asked for 460-520 px visible width; 520 would need scale 2.031 and put the frame bottom at 479 with the ground at 404, which is inside the canvas but leaves no margin under the tyres, so 515 was chosen."
+  },
+  {
+   "id": "indicator.left",
+   "kind": "text",
+   "text": "◀",
+   "bounds": {
+    "x": 700,
+    "y": 300,
+    "w": 30,
+    "h": 30
+   },
+   "align": "center",
+   "font_token": "CAPTION",
+   "color_token": "indicator",
+   "z": 32,
+   "layer": "dynamic",
+   "text_when": [
+    {
+     "signal": "indicator_left",
+     "is_true": true,
+     "text": "◀",
+     "valid": true
+    },
+    {
+     "signal": "indicator_left",
+     "valid": true,
+     "text": ""
+    }
+   ],
+   "role": "vehicle_feedback"
+  },
+  {
+   "id": "indicator.right",
+   "kind": "text",
+   "text": "▶",
+   "bounds": {
+    "x": 1190,
+    "y": 300,
+    "w": 30,
+    "h": 30
+   },
+   "align": "center",
+   "font_token": "CAPTION",
+   "color_token": "indicator",
+   "z": 32,
+   "layer": "dynamic",
+   "text_when": [
+    {
+     "signal": "indicator_right",
+     "is_true": true,
+     "text": "▶",
+     "valid": true
+    },
+    {
+     "signal": "indicator_right",
+     "valid": true,
+     "text": ""
+    }
+   ],
+   "role": "vehicle_feedback"
+  },
+  {
+   "id": "range.value",
+   "kind": "text",
+   "bounds": {
+    "x": 1606,
+    "y": 138,
+    "w": 200,
+    "h": 74
+   },
+   "align": "right",
+   "font_token": "TITLE",
+   "color_token": "primary_text",
+   "z": 40,
+   "layer": "dynamic",
+   "binding": "range",
+   "format": "{} km",
+   "invalid_text": "— km",
+   "invalid_opacity_token": "muted",
+   "unknown_behavior": "placeholder",
+   "role": "energy"
+  },
+  {
+   "id": "range.label",
+   "kind": "text",
+   "text": "RANGE",
+   "bounds": {
+    "x": 1606,
+    "y": 216,
+    "w": 200,
+    "h": 28
+   },
+   "align": "right",
+   "font_token": "CAPTION",
+   "color_token": "muted_text",
+   "opacity_token": "muted",
+   "z": 40,
+   "layer": "static",
+   "role": "energy"
+  },
+  {
+   "id": "soc.bar.track",
+   "kind": "vector",
+   "shape": "roundrect",
+   "bounds": {
+    "x": 1606,
+    "y": 294,
+    "w": 120,
+    "h": 12
+   },
+   "radius_token": "bar",
+   "z": 39,
+   "layer": "static",
+   "color_token": "hairline",
+   "role": "energy"
+  },
+  {
+   "id": "soc.bar.fill",
+   "kind": "vector",
+   "shape": "roundrect",
+   "shape_note": "Horizontal value bar: a roundrect with a `progress` block draws only the value fill, because the layout draws its own track as soc.bar.track.",
+   "bounds": {
+    "x": 1606,
+    "y": 294,
+    "w": 120,
+    "h": 12
+   },
+   "radius_token": "bar",
+   "z": 40,
+   "layer": "dynamic",
+   "progress": {
+    "binding": "actual_soc",
+    "max": 100
+   },
+   "color_token": "soc_normal",
+   "color_low_token": "soc_low",
+   "color_critical_token": "soc_critical",
+   "low_threshold": 20,
+   "critical_threshold": 10,
+   "opacity_token": "soc_fill",
+   "unknown_behavior": "hidden",
+   "role": "energy"
+  },
+  {
+   "id": "soc.value",
+   "kind": "text",
+   "bounds": {
+    "x": 1606,
+    "y": 282,
+    "w": 200,
+    "h": 36
+   },
+   "align": "right",
+   "font_token": "BODY",
+   "color_token": "secondary_text",
+   "z": 40,
+   "layer": "dynamic",
+   "binding": "actual_soc",
+   "format": "{}%",
+   "invalid_text": "— %",
+   "invalid_opacity_token": "muted",
+   "unknown_behavior": "placeholder",
+   "role": "energy",
+   "color_when": [
+    {
+     "when": {
+      "signal": "actual_soc",
+      "lte": 20
+     },
+     "color_token": "soc_low"
+    },
+    {
+     "when": {
+      "signal": "actual_soc",
+      "lte": 10
+     },
+     "color_token": "soc_critical"
+    }
+   ]
+  },
+  {
+   "id": "energy.secondary",
+   "kind": "text",
+   "bounds": {
+    "x": 1606,
+    "y": 336,
+    "w": 200,
+    "h": 32
+   },
+   "align": "right",
+   "font_token": "CAPTION",
+   "color_token": "muted_text",
+   "z": 40,
+   "layer": "dynamic",
+   "binding": "battery_power",
+   "format": "{} kW",
+   "invalid_text": "— kW",
+   "unknown_behavior": "placeholder",
+   "role": "energy"
+  },
+  {
+   "id": "warn.text",
+   "kind": "text",
+   "bounds": {
+    "x": 660,
+    "y": 420,
+    "w": 600,
+    "h": 30
+   },
+   "align": "center",
+   "font_token": "CAPTION",
+   "color_token": "warning",
+   "z": 45,
+   "layer": "dynamic",
+   "binding": "warning_text",
+   "format": "{}",
+   "invalid_text": "",
+   "role": "warning"
+  },
+  {
+   "id": "hud.speed.ticks",
+   "kind": "vector",
+   "shape": "tickrow",
+   "bounds": {
+    "x": 124,
+    "y": 90,
+    "w": 296,
+    "h": 7
+   },
+   "count": 25,
+   "height_px": 7,
+   "color_token": "accent",
+   "opacity": 0.35,
+   "z": 7,
+   "layer": "static",
+   "role": "hud"
+  },
+  {
+   "id": "hud.speed.scale",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 124,
+    "y": 96,
+    "w": 296,
+    "h": 0
+   },
+   "x2": 420,
+   "y2": 96,
+   "color_token": "accent",
+   "width_px": 1,
+   "opacity": 0.35,
+   "z": 6,
+   "layer": "static",
+   "role": "hud"
+  },
+  {
+   "id": "hud.horizon.light",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 360,
+    "y": 296,
+    "w": 1200,
+    "h": 0
+   },
+   "x2": 1560,
+   "y2": 296,
+   "color_token": "accent",
+   "width_px": 1,
+   "opacity": 0.35,
+   "z": 5,
+   "layer": "static",
+   "role": "hud"
+  },
+  {
+   "id": "hud.road.l0",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 882.0,
+    "y": 300,
+    "w": 48.0,
+    "h": 156
+   },
+   "x2": 930.0,
+   "y2": 300,
+   "color_token": "accent",
+   "width_px": 1,
+   "opacity": 0.175,
+   "z": 4,
+   "layer": "static",
+   "role": "road"
+  },
+  {
+   "id": "hud.road.r0",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 990.0,
+    "y": 300,
+    "w": 48.0,
+    "h": 156
+   },
+   "x2": 990.0,
+   "y2": 300,
+   "color_token": "accent",
+   "width_px": 1,
+   "opacity": 0.175,
+   "z": 4,
+   "layer": "static",
+   "role": "road"
+  },
+  {
+   "id": "hud.road.l1",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 822.2,
+    "y": 300,
+    "w": 84.79999999999995,
+    "h": 156
+   },
+   "x2": 907.0,
+   "y2": 300,
+   "color_token": "accent",
+   "width_px": 1,
+   "opacity": 0.175,
+   "z": 4,
+   "layer": "static",
+   "role": "road"
+  },
+  {
+   "id": "hud.road.r1",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 1013.0,
+    "y": 300,
+    "w": 84.79999999999995,
+    "h": 156
+   },
+   "x2": 1013.0,
+   "y2": 300,
+   "color_token": "accent",
+   "width_px": 1,
+   "opacity": 0.175,
+   "z": 4,
+   "layer": "static",
+   "role": "road"
+  },
+  {
+   "id": "hud.vehicle.glow",
+   "kind": "vector",
+   "shape": "radial",
+   "bounds": {
+    "x": 720,
+    "y": 352,
+    "w": 480,
+    "h": 92
+   },
+   "color_token": "accent",
+   "color_to_token": "background",
+   "opacity_token": null,
+   "opacity": 0.1,
+   "z": 3,
+   "layer": "static",
+   "exempt_from_safe_area": true,
+   "role": "stage"
+  },
+  {
+   "id": "hud.energy.rail",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 1814,
+    "y": 150,
+    "w": 0,
+    "h": 200
+   },
+   "x2": 1814,
+   "y2": 350,
+   "color_token": "accent",
+   "width_px": 1,
+   "opacity": 0.35,
+   "z": 6,
+   "layer": "static",
+   "role": "hud"
+  },
+  {
+   "id": "hud.indicator.left",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 612,
+    "y": 190,
+    "w": 2,
+    "h": 170
+   },
+   "color_token": "warning",
+   "width_px": 3,
+   "opacity": 0.0,
+   "z": 12,
+   "layer": "dynamic",
+   "role": "state",
+   "visibility": {
+    "binding": "indicator_left",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.45
+  },
+  {
+   "id": "hud.indicator.right",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 1248,
+    "y": 190,
+    "w": 2,
+    "h": 170
+   },
+   "color_token": "warning",
+   "width_px": 3,
+   "opacity": 0.0,
+   "z": 12,
+   "layer": "dynamic",
+   "role": "state",
+   "visibility": {
+    "binding": "indicator_right",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.45
+  },
+  {
+   "id": "hud.brake.glow",
+   "kind": "vector",
+   "shape": "radial",
+   "bounds": {
+    "x": 800,
+    "y": 330,
+    "w": 320,
+    "h": 110
+   },
+   "color_token": "critical",
+   "color_to_token": "background",
+   "opacity": 0.0,
+   "z": 9,
+   "layer": "dynamic",
+   "role": "state",
+   "exempt_from_safe_area": true,
+   "visibility": {
+    "binding": "brake",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.2
+  },
+  {
+   "id": "hud.door.fl",
+   "kind": "vector",
+   "shape": "roundrect",
+   "bounds": {
+    "x": 668,
+    "y": 150,
+    "w": 48,
+    "h": 48
+   },
+   "radius_token": "pill",
+   "color_token": "warning",
+   "stroke_token": "warning",
+   "opacity": 0.0,
+   "z": 11,
+   "layer": "dynamic",
+   "role": "state",
+   "visibility": {
+    "binding": "door_fl",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.55
+  },
+  {
+   "id": "hud.door.fr",
+   "kind": "vector",
+   "shape": "roundrect",
+   "bounds": {
+    "x": 1204,
+    "y": 150,
+    "w": 48,
+    "h": 48
+   },
+   "radius_token": "pill",
+   "color_token": "warning",
+   "stroke_token": "warning",
+   "opacity": 0.0,
+   "z": 11,
+   "layer": "dynamic",
+   "role": "state",
+   "visibility": {
+    "binding": "door_fr",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.55
+  },
+  {
+   "id": "hud.door.rl",
+   "kind": "vector",
+   "shape": "roundrect",
+   "bounds": {
+    "x": 668,
+    "y": 320,
+    "w": 48,
+    "h": 48
+   },
+   "radius_token": "pill",
+   "color_token": "warning",
+   "stroke_token": "warning",
+   "opacity": 0.0,
+   "z": 11,
+   "layer": "dynamic",
+   "role": "state",
+   "visibility": {
+    "binding": "door_rl",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.55
+  },
+  {
+   "id": "hud.door.rr",
+   "kind": "vector",
+   "shape": "roundrect",
+   "bounds": {
+    "x": 1204,
+    "y": 320,
+    "w": 48,
+    "h": 48
+   },
+   "radius_token": "pill",
+   "color_token": "warning",
+   "stroke_token": "warning",
+   "opacity": 0.0,
+   "z": 11,
+   "layer": "dynamic",
+   "role": "state",
+   "visibility": {
+    "binding": "door_rr",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.55
+  },
+  {
+   "id": "hud.frunk.marker",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 880,
+    "y": 120,
+    "w": 160,
+    "h": 2
+   },
+   "color_token": "warning",
+   "width_px": 3,
+   "opacity": 0.0,
+   "z": 11,
+   "layer": "dynamic",
+   "role": "state",
+   "visibility": {
+    "binding": "frunk",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.55
+  },
+  {
+   "id": "hud.trunk.marker",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 880,
+    "y": 392,
+    "w": 160,
+    "h": 2
+   },
+   "color_token": "warning",
+   "width_px": 3,
+   "opacity": 0.0,
+   "z": 11,
+   "layer": "dynamic",
+   "role": "state",
+   "visibility": {
+    "binding": "trunk",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.55
+  }
+ ],
+ "forbidden_in_production": [
+  "CMDR",
+  "NativeBle",
+  "PhoneBridge",
+  "UART",
+  "FPS",
+  "RSS",
+  "frame time",
+  "packet",
+  "checksum",
+  "protocol",
+  "mapping confidence",
+  "source:",
+  "quality",
+  "stale",
+  "valid",
+  "priority",
+  "debug",
+  "DEV"
+ ],
+ "screenshot_states": [
+  "h2_neutral",
+  "h2_door_fl",
+  "h2_door_fr",
+  "h2_door_rl",
+  "h2_door_rr",
+  "h2_all_doors",
+  "h2_frunk",
+  "h2_trunk",
+  "h2_trunk_left",
+  "h2_trunk_hazard",
+  "h2_brake",
+  "h2_left",
+  "h2_right",
+  "h2_hazard",
+  "h2_mixed",
+  "h2_low_soc",
+  "h2_unknown",
+  "h2_navigation"
+ ],
+ "screenshot_names": [
+  "horizon_v2_neutral.png",
+  "horizon_v2_door_fl.png",
+  "horizon_v2_door_fr.png",
+  "horizon_v2_door_rl.png",
+  "horizon_v2_door_rr.png",
+  "horizon_v2_all_doors.png",
+  "horizon_v2_frunk.png",
+  "horizon_v2_trunk.png",
+  "horizon_v2_trunk_left.png",
+  "horizon_v2_trunk_hazard.png",
+  "horizon_v2_brake.png",
+  "horizon_v2_left.png",
+  "horizon_v2_right.png",
+  "horizon_v2_hazard.png",
+  "horizon_v2_mixed.png",
+  "horizon_v2_low_soc.png",
+  "horizon_v2_unknown.png",
+  "horizon_v2_navigation.png"
+ ],
+ "contact_sheet_order": [
+  "h2_neutral",
+  "h2_door_fl",
+  "h2_door_fr",
+  "h2_door_rl",
+  "h2_door_rr",
+  "h2_all_doors",
+  "h2_frunk",
+  "h2_trunk",
+  "h2_trunk_left",
+  "h2_trunk_hazard",
+  "h2_mixed"
+ ],
+ "revision": "v3",
+ "revision_note": "Composition revision after human review: the vehicle is the visual anchor, the road connects the three zones, the atmosphere pool is broad and weak instead of a spotlight, the speed limit sits with the speed cluster, and the SOC line shares the gear band.",
+ "scene": "horizon_v3_a_cyber_hud",
+ "style_candidate": "Candidate A - Cyber HUD",
+ "derived_from": "assets/ui/horizon_v2_layout.json",
+ "style_layers": {
+  "STATIC_BACKGROUND": [
+   "background",
+   "atmosphere.ambient",
+   "road.plane",
+   "hud.atmosphere",
+   "hud.vehicle.stage"
+  ],
+  "STATIC_OVERLAY": [
+   "hud.speed.ticks",
+   "hud.speed.scale",
+   "hud.horizon.light",
+   "hud.road.l0",
+   "hud.road.r0",
+   "hud.road.l1",
+   "hud.road.r1",
+   "hud.vehicle.glow",
+   "hud.energy.rail"
+  ],
+  "STATE_OVERLAY": [
+   "hud.indicator.left",
+   "hud.indicator.right",
+   "hud.brake.glow",
+   "hud.door.fl",
+   "hud.door.fr",
+   "hud.door.rl",
+   "hud.door.rr",
+   "hud.frunk.marker",
+   "hud.trunk.marker"
+  ],
+  "CHEAP_ANIMATION": [
+   "hud.indicator.left",
+   "hud.indicator.right",
+   "hud.energy.flow"
+  ]
+ }
+}

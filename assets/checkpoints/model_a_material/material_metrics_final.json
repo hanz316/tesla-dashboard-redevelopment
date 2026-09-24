@@ -1,0 +1,155 @@
+{
+ "schema": "model-a-material-metrics v1",
+ "status": "MODEL_A_MATERIAL_REVISION = AWAITING HUMAN VISUAL APPROVAL",
+ "why": "proxy metrics only; the decision is human visual review",
+ "classes": {
+  "paint": {
+   "pixels": 12552,
+   "before": {
+    "mean": 165.6,
+    "p10": 136.67,
+    "p50": 161.67,
+    "p90": 203.0,
+    "spread": 66.33,
+    "pixels": 12552
+   },
+   "after": {
+    "mean": 145.69,
+    "p10": 75.0,
+    "p50": 148.33,
+    "p90": 209.33,
+    "spread": 134.33,
+    "pixels": 12552
+   }
+  },
+  "glass": {
+   "pixels": 7587,
+   "before": {
+    "mean": 138.59,
+    "p10": 118.33,
+    "p50": 128.67,
+    "p90": 169.33,
+    "spread": 51.0,
+    "pixels": 7587
+   },
+   "after": {
+    "mean": 112.74,
+    "p10": 63.33,
+    "p50": 96.67,
+    "p90": 200.67,
+    "spread": 137.33,
+    "pixels": 7587
+   }
+  },
+  "tire": {
+   "pixels": 708,
+   "before": {
+    "mean": 47.16,
+    "p10": 29.33,
+    "p50": 45.33,
+    "p90": 62.33,
+    "spread": 33.0,
+    "pixels": 708
+   },
+   "after": {
+    "mean": 25.22,
+    "p10": 12.0,
+    "p50": 25.33,
+    "p90": 36.0,
+    "spread": 24.0,
+    "pixels": 708
+   }
+  },
+  "rim": {
+   "pixels": 902,
+   "before": {
+    "mean": 63.24,
+    "p10": 22.67,
+    "p50": 62.67,
+    "p90": 100.6,
+    "spread": 77.93,
+    "pixels": 902
+   },
+   "after": {
+    "mean": 36.86,
+    "p10": 9.33,
+    "p50": 33.0,
+    "p90": 67.97,
+    "spread": 58.63,
+    "pixels": 902
+   }
+  },
+  "trim": {
+   "pixels": 877,
+   "before": {
+    "mean": 88.71,
+    "p10": 28.0,
+    "p50": 91.33,
+    "p90": 156.67,
+    "spread": 128.67,
+    "pixels": 877
+   },
+   "after": {
+    "mean": 79.0,
+    "p10": 15.2,
+    "p50": 75.33,
+    "p90": 153.6,
+    "spread": 138.4,
+    "pixels": 877
+   }
+  }
+ },
+ "separation": {
+  "paint-tire": {
+   "median_gap_before": 116.34,
+   "median_gap_after": 123.0
+  },
+  "paint-rim": {
+   "median_gap_before": 99.0,
+   "median_gap_after": 115.33
+  },
+  "paint-trim": {
+   "median_gap_before": 70.34,
+   "median_gap_after": 73.0
+  },
+  "glass-paint": {
+   "median_gap_before": 33.0,
+   "median_gap_after": 51.66
+  },
+  "glass-tire": {
+   "median_gap_before": 83.34,
+   "median_gap_after": 71.34
+  },
+  "glass-rim": {
+   "median_gap_before": 66.0,
+   "median_gap_after": 63.67
+  },
+  "glass-trim": {
+   "median_gap_before": 37.34,
+   "median_gap_after": 21.34
+  },
+  "tire-trim": {
+   "median_gap_before": 46.0,
+   "median_gap_after": 50.0
+  },
+  "rim-tire": {
+   "median_gap_before": 17.34,
+   "median_gap_after": 7.67
+  },
+  "rim-trim": {
+   "median_gap_before": 28.66,
+   "median_gap_after": 42.33
+  }
+ },
+ "paint_highlight_structure": {
+  "before_spread": 66.33,
+  "after_spread": 134.33,
+  "note": "p90-p10 over the painted surface: broad transitions across roof, hood and shoulders show up here"
+ },
+ "comparison_sheet": "assets/checkpoints/model_a_material/material_before_after_final.png",
+ "horizon_native": {
+  "before": "assets/checkpoints/model_a_material/horizon_material_before_final.png",
+  "after": "assets/checkpoints/model_a_material/horizon_material_after_final.png"
+ },
+ "after_render": "material_after_variantB.png"
+}

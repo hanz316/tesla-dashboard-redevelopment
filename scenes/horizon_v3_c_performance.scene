@@ -1,8 +1,8 @@
 {
- "scene": "horizon_v2",
+ "scene": "horizon_v3_c_performance",
  "version": 1,
- "status": "AWAITING_HUMAN_VISUAL_APPROVAL",
- "style_candidate": null,
+ "status": "AWAITING HUMAN VISUAL SELECTION",
+ "style_candidate": "Candidate C - Futuristic Performance",
  "title": "Horizon V2",
  "role": "production-candidate",
  "canvas": {
@@ -16,7 +16,7 @@
  },
  "manifest": "assets/manifest.json",
  "provenance": {
-  "layout": "assets/ui/horizon_v2_layout.json",
+  "layout": "assets/ui/horizon_v3_c_performance_layout.json",
   "tokens": "assets/ui/design_tokens.json",
   "generator": "tools/preview/build_horizon_v2.py"
  },
@@ -895,6 +895,657 @@
    "bind": "warning_text",
    "format": "{}",
    "invalid_text": ""
+  },
+  {
+   "id": "hud.speed.ticks",
+   "type": "vector",
+   "shape": "tickrow",
+   "z": 7,
+   "layer": "static",
+   "x": 124,
+   "y": 90,
+   "width": 296,
+   "count": 41,
+   "height_px": 7,
+   "major_every": 0,
+   "color": "#58C8D8",
+   "major_color": "#58C8D8",
+   "lit_color": "#58C8D8",
+   "opacity": 0.72
+  },
+  {
+   "id": "hud.speed.ticks",
+   "type": "vector",
+   "shape": "tickrow",
+   "z": 7,
+   "layer": "static",
+   "x": 124,
+   "y": 90,
+   "width": 296,
+   "count": 41,
+   "height_px": 7,
+   "major_every": 0,
+   "color": "#58C8D8",
+   "major_color": "#58C8D8",
+   "lit_color": "#58C8D8",
+   "opacity": 0.72,
+   "progress": {
+    "signal": "speed",
+    "max": 200
+   }
+  },
+  {
+   "id": "hud.horizon.light",
+   "type": "vector",
+   "shape": "line",
+   "z": 5,
+   "layer": "static",
+   "x": 360,
+   "y": 296,
+   "x2": 1560,
+   "y2": 296,
+   "color": "#58C8D8",
+   "width_px": 1
+  },
+  {
+   "id": "hud.atmosphere",
+   "type": "vector",
+   "shape": "vgradient",
+   "z": 2,
+   "layer": "static",
+   "x": 300,
+   "y": 236,
+   "width": 1320,
+   "height": 60,
+   "from": "#0C1218",
+   "to": "#04070A"
+  },
+  {
+   "id": "hud.road.l0",
+   "type": "vector",
+   "shape": "line",
+   "z": 4,
+   "layer": "static",
+   "x": 882.0,
+   "y": 300,
+   "x2": 930.0,
+   "y2": 300,
+   "color": "#58C8D8",
+   "width_px": 1
+  },
+  {
+   "id": "hud.road.r0",
+   "type": "vector",
+   "shape": "line",
+   "z": 4,
+   "layer": "static",
+   "x": 990.0,
+   "y": 300,
+   "x2": 990.0,
+   "y2": 300,
+   "color": "#58C8D8",
+   "width_px": 1
+  },
+  {
+   "id": "hud.road.l1",
+   "type": "vector",
+   "shape": "line",
+   "z": 4,
+   "layer": "static",
+   "x": 822.2,
+   "y": 300,
+   "x2": 907.0,
+   "y2": 300,
+   "color": "#58C8D8",
+   "width_px": 1
+  },
+  {
+   "id": "hud.road.r1",
+   "type": "vector",
+   "shape": "line",
+   "z": 4,
+   "layer": "static",
+   "x": 1013.0,
+   "y": 300,
+   "x2": 1013.0,
+   "y2": 300,
+   "color": "#58C8D8",
+   "width_px": 1
+  },
+  {
+   "id": "hud.road.l2",
+   "type": "vector",
+   "shape": "line",
+   "z": 4,
+   "layer": "static",
+   "x": 762.4,
+   "y": 300,
+   "x2": 884.0,
+   "y2": 300,
+   "color": "#58C8D8",
+   "width_px": 1
+  },
+  {
+   "id": "hud.road.r2",
+   "type": "vector",
+   "shape": "line",
+   "z": 4,
+   "layer": "static",
+   "x": 1036.0,
+   "y": 300,
+   "x2": 1036.0,
+   "y2": 300,
+   "color": "#58C8D8",
+   "width_px": 1
+  },
+  {
+   "id": "hud.road.l3",
+   "type": "vector",
+   "shape": "line",
+   "z": 4,
+   "layer": "static",
+   "x": 702.5999999999999,
+   "y": 300,
+   "x2": 861.0,
+   "y2": 300,
+   "color": "#58C8D8",
+   "width_px": 1
+  },
+  {
+   "id": "hud.road.r3",
+   "type": "vector",
+   "shape": "line",
+   "z": 4,
+   "layer": "static",
+   "x": 1059.0,
+   "y": 300,
+   "x2": 1059.0,
+   "y2": 300,
+   "color": "#58C8D8",
+   "width_px": 1
+  },
+  {
+   "id": "hud.road.l4",
+   "type": "vector",
+   "shape": "line",
+   "z": 4,
+   "layer": "static",
+   "x": 642.8,
+   "y": 300,
+   "x2": 838.0,
+   "y2": 300,
+   "color": "#58C8D8",
+   "width_px": 1
+  },
+  {
+   "id": "hud.road.r4",
+   "type": "vector",
+   "shape": "line",
+   "z": 4,
+   "layer": "static",
+   "x": 1082.0,
+   "y": 300,
+   "x2": 1082.0,
+   "y2": 300,
+   "color": "#58C8D8",
+   "width_px": 1
+  },
+  {
+   "id": "hud.road.l5",
+   "type": "vector",
+   "shape": "line",
+   "z": 4,
+   "layer": "static",
+   "x": 583.0,
+   "y": 300,
+   "x2": 815.0,
+   "y2": 300,
+   "color": "#58C8D8",
+   "width_px": 1
+  },
+  {
+   "id": "hud.road.r5",
+   "type": "vector",
+   "shape": "line",
+   "z": 4,
+   "layer": "static",
+   "x": 1105.0,
+   "y": 300,
+   "x2": 1105.0,
+   "y2": 300,
+   "color": "#58C8D8",
+   "width_px": 1
+  },
+  {
+   "id": "hud.vehicle.glow",
+   "type": "vector",
+   "shape": "radial",
+   "z": 3,
+   "layer": "static",
+   "x": 720,
+   "y": 352,
+   "width": 480,
+   "height": 92,
+   "from": "#58C8D8",
+   "to": "#04070A",
+   "opacity": 0.18
+  },
+  {
+   "id": "hud.vehicle.stage",
+   "type": "vector",
+   "shape": "radial",
+   "z": 2,
+   "layer": "static",
+   "x": 640,
+   "y": 120,
+   "width": 640,
+   "height": 320,
+   "from": "#58C8D8",
+   "to": "#04070A",
+   "opacity": 0.1
+  },
+  {
+   "id": "hud.stage.edge.l",
+   "type": "vector",
+   "shape": "line",
+   "z": 5,
+   "layer": "static",
+   "x": 560,
+   "y": 118,
+   "x2": 560,
+   "y2": 430,
+   "color": "#58C8D8",
+   "width_px": 1
+  },
+  {
+   "id": "hud.stage.edge.r",
+   "type": "vector",
+   "shape": "line",
+   "z": 5,
+   "layer": "static",
+   "x": 1360,
+   "y": 118,
+   "x2": 1360,
+   "y2": 430,
+   "color": "#58C8D8",
+   "width_px": 1
+  },
+  {
+   "id": "hud.energy.rail",
+   "type": "vector",
+   "shape": "line",
+   "z": 6,
+   "layer": "static",
+   "x": 1000,
+   "y": 300,
+   "x2": 1606,
+   "y2": 300,
+   "color": "#58C8D8",
+   "width_px": 1
+  },
+  {
+   "id": "hud.energy.ticks",
+   "type": "vector",
+   "shape": "tickrow",
+   "z": 6,
+   "layer": "static",
+   "x": 1400,
+   "y": 300,
+   "width": 206,
+   "count": 12,
+   "height_px": 7,
+   "major_every": 0,
+   "color": "#58C8D8",
+   "major_color": "#58C8D8",
+   "lit_color": "#58C8D8",
+   "opacity": 0.72
+  },
+  {
+   "id": "hud.energy.flow",
+   "type": "vector",
+   "shape": "line",
+   "z": 7,
+   "layer": "dynamic",
+   "x": 1000,
+   "y": 300,
+   "x2": 1180,
+   "y2": 303,
+   "color": "#58C8D8",
+   "width_px": 3,
+   "opacity": 1.0,
+   "alpha_when": [
+    {
+     "when": {
+      "signal": "battery_power",
+      "valid": true
+     },
+     "alpha": 1.0
+    },
+    {
+     "when": {
+      "signal": "battery_power",
+      "valid": false
+     },
+     "alpha": 0.0
+    }
+   ]
+  },
+  {
+   "id": "hud.indicator.left",
+   "type": "vector",
+   "shape": "line",
+   "z": 12,
+   "layer": "dynamic",
+   "x": 612,
+   "y": 190,
+   "x2": 614,
+   "y2": 360,
+   "color": "#D8A657",
+   "width_px": 3,
+   "opacity": 1.0,
+   "alpha_when": [
+    {
+     "when": {
+      "signal": "indicator_left",
+      "is_true": true
+     },
+     "alpha": 0.81
+    },
+    {
+     "when": {
+      "signal": "indicator_left",
+      "is_true": false
+     },
+     "alpha": 0.0
+    }
+   ]
+  },
+  {
+   "id": "hud.indicator.right",
+   "type": "vector",
+   "shape": "line",
+   "z": 12,
+   "layer": "dynamic",
+   "x": 1248,
+   "y": 190,
+   "x2": 1250,
+   "y2": 360,
+   "color": "#D8A657",
+   "width_px": 3,
+   "opacity": 1.0,
+   "alpha_when": [
+    {
+     "when": {
+      "signal": "indicator_right",
+      "is_true": true
+     },
+     "alpha": 0.81
+    },
+    {
+     "when": {
+      "signal": "indicator_right",
+      "is_true": false
+     },
+     "alpha": 0.0
+    }
+   ]
+  },
+  {
+   "id": "hud.brake.glow",
+   "type": "vector",
+   "shape": "radial",
+   "z": 9,
+   "layer": "dynamic",
+   "x": 800,
+   "y": 330,
+   "width": 320,
+   "height": 110,
+   "from": "#D8674F",
+   "to": "#04070A",
+   "opacity": 1.0,
+   "alpha_when": [
+    {
+     "when": {
+      "signal": "brake",
+      "is_true": true
+     },
+     "alpha": 0.36
+    },
+    {
+     "when": {
+      "signal": "brake",
+      "is_true": false
+     },
+     "alpha": 0.0
+    }
+   ]
+  },
+  {
+   "id": "hud.headlight.road",
+   "type": "vector",
+   "shape": "polygon",
+   "z": 4,
+   "layer": "dynamic",
+   "points": [
+    [
+     960,
+     300
+    ],
+    [
+     1500,
+     456
+    ],
+    [
+     1420,
+     456
+    ],
+    [
+     960,
+     330
+    ]
+   ],
+   "fill": "#58C8D8",
+   "opacity": 1.0,
+   "alpha_when": [
+    {
+     "when": {
+      "signal": "headlight",
+      "is_true": true
+     },
+     "alpha": 0.216
+    },
+    {
+     "when": {
+      "signal": "headlight",
+      "is_true": false
+     },
+     "alpha": 0.0
+    }
+   ]
+  },
+  {
+   "id": "hud.door.fl",
+   "type": "vector",
+   "shape": "roundrect",
+   "z": 11,
+   "layer": "dynamic",
+   "x": 668,
+   "y": 150,
+   "width": 48,
+   "height": 48,
+   "radius": 10,
+   "fill": "#D8A657",
+   "stroke": "#D8A657",
+   "opacity": 1.0,
+   "alpha_when": [
+    {
+     "when": {
+      "signal": "door_fl",
+      "is_true": true
+     },
+     "alpha": 0.55
+    },
+    {
+     "when": {
+      "signal": "door_fl",
+      "is_true": false
+     },
+     "alpha": 0.0
+    }
+   ]
+  },
+  {
+   "id": "hud.door.fr",
+   "type": "vector",
+   "shape": "roundrect",
+   "z": 11,
+   "layer": "dynamic",
+   "x": 1204,
+   "y": 150,
+   "width": 48,
+   "height": 48,
+   "radius": 10,
+   "fill": "#D8A657",
+   "stroke": "#D8A657",
+   "opacity": 1.0,
+   "alpha_when": [
+    {
+     "when": {
+      "signal": "door_fr",
+      "is_true": true
+     },
+     "alpha": 0.55
+    },
+    {
+     "when": {
+      "signal": "door_fr",
+      "is_true": false
+     },
+     "alpha": 0.0
+    }
+   ]
+  },
+  {
+   "id": "hud.door.rl",
+   "type": "vector",
+   "shape": "roundrect",
+   "z": 11,
+   "layer": "dynamic",
+   "x": 668,
+   "y": 320,
+   "width": 48,
+   "height": 48,
+   "radius": 10,
+   "fill": "#D8A657",
+   "stroke": "#D8A657",
+   "opacity": 1.0,
+   "alpha_when": [
+    {
+     "when": {
+      "signal": "door_rl",
+      "is_true": true
+     },
+     "alpha": 0.55
+    },
+    {
+     "when": {
+      "signal": "door_rl",
+      "is_true": false
+     },
+     "alpha": 0.0
+    }
+   ]
+  },
+  {
+   "id": "hud.door.rr",
+   "type": "vector",
+   "shape": "roundrect",
+   "z": 11,
+   "layer": "dynamic",
+   "x": 1204,
+   "y": 320,
+   "width": 48,
+   "height": 48,
+   "radius": 10,
+   "fill": "#D8A657",
+   "stroke": "#D8A657",
+   "opacity": 1.0,
+   "alpha_when": [
+    {
+     "when": {
+      "signal": "door_rr",
+      "is_true": true
+     },
+     "alpha": 0.55
+    },
+    {
+     "when": {
+      "signal": "door_rr",
+      "is_true": false
+     },
+     "alpha": 0.0
+    }
+   ]
+  },
+  {
+   "id": "hud.frunk.marker",
+   "type": "vector",
+   "shape": "line",
+   "z": 11,
+   "layer": "dynamic",
+   "x": 880,
+   "y": 120,
+   "x2": 1040,
+   "y2": 122,
+   "color": "#D8A657",
+   "width_px": 3,
+   "opacity": 1.0,
+   "alpha_when": [
+    {
+     "when": {
+      "signal": "frunk",
+      "is_true": true
+     },
+     "alpha": 0.55
+    },
+    {
+     "when": {
+      "signal": "frunk",
+      "is_true": false
+     },
+     "alpha": 0.0
+    }
+   ]
+  },
+  {
+   "id": "hud.trunk.marker",
+   "type": "vector",
+   "shape": "line",
+   "z": 11,
+   "layer": "dynamic",
+   "x": 880,
+   "y": 392,
+   "x2": 1040,
+   "y2": 394,
+   "color": "#D8A657",
+   "width_px": 3,
+   "opacity": 1.0,
+   "alpha_when": [
+    {
+     "when": {
+      "signal": "trunk",
+      "is_true": true
+     },
+     "alpha": 0.55
+    },
+    {
+     "when": {
+      "signal": "trunk",
+      "is_true": false
+     },
+     "alpha": 0.0
+    }
+   ]
   }
  ]
 }

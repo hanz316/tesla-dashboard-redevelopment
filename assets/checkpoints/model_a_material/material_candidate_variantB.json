@@ -9,12 +9,12 @@
   236
  ],
  "samples": 32,
- "lighting_or_hdri_changed": false,
+ "lighting_or_hdri_changed": true,
  "world_strength": {
   "node": "Background",
   "before": 1.0,
-  "after": 1.0,
-  "scale": 1.0
+  "after": 0.35,
+  "scale": 0.35
  },
  "geometry_changed": false,
  "camera_changed": false,
@@ -151,5 +151,47 @@
    }
   }
  },
+ "environment": "structured",
+ "environment_panels": [
+  {
+   "name": "ENV_Sky",
+   "location": [
+    0.0,
+    0.0,
+    4.4
+   ],
+   "size": [
+    7.0,
+    4.5
+   ],
+   "strength": 3.0
+  },
+  {
+   "name": "ENV_Floor",
+   "location": [
+    0.0,
+    0.0,
+    -1.2
+   ],
+   "size": [
+    8.0,
+    6.0
+   ],
+   "strength": 0.05
+  },
+  {
+   "name": "ENV_Side",
+   "location": [
+    -5.4,
+    -1.6,
+    1.6
+   ],
+   "size": [
+    4.0,
+    2.6
+   ],
+   "strength": 1.5
+  }
+ ],
  "candidate_master": "assets/source/blender/model_a_material_candidate.blend"
 }

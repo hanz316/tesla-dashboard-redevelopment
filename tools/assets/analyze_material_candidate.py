@@ -20,6 +20,7 @@ import os
 import subprocess
 import sys
 
+AFTER_OVERRIDE = None
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 DIR = os.path.join(REPO, "assets", "checkpoints", "model_a_material")
 # The mask pass goes through Blender's view transform, so an emission of pure
@@ -69,6 +70,16 @@ def stats(values):
 
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--after", default="material_after.png",
+                        help="which candidate render to compare against the "
+                             "production one (material_after.png, "
+                             "material_after_variantB.png, ...)")
+    parser.add_argument("--tag", default="", help="suffix for the outputs")
+    extra = parser.parse_args()
+    global AFTER_OVERRIDE
+    AFTER_OVERRIDE = extra.after
     try:
         import numpy as np
         from PIL import Image, ImageDraw, ImageFont
@@ -80,7 +91,7 @@ def main():
     masks = class_masks(mask_rgba)
     before = np.asarray(Image.open(os.path.join(DIR, "material_before.png"))
                         .convert("RGB")).astype(float)
-    after = np.asarray(Image.open(os.path.join(DIR, "material_after.png"))
+    after = np.asarray(Image.open(os.path.join(DIR, AFTER_OVERRIDE))
                        .convert("RGB")).astype(float)
     luminance_before = before.mean(axis=2)
     luminance_after = after.mean(axis=2)
@@ -142,15 +153,15 @@ def main():
         sheet.paste(cell, (index * (width + 24), 46))
         draw.text((index * (width + 24) + 8, 10), label,
                   fill=(232, 238, 243), font=font)
-    sheet_path = os.path.join(DIR, "material_before_after.png")
+    sheet_path = os.path.join(DIR, f"material_before_after{extra.tag}.png")
     sheet.save(sheet_path)
     report["comparison_sheet"] = os.path.relpath(sheet_path, REPO)
 
     # And the same two cars inside the real Horizon frame at 1920x480.
     horizon = {}
     for label, source in (("before", "material_before.png"),
-                          ("after", "material_after.png")):
-        name = f"horizon_material_{label}"
+                          ("after", AFTER_OVERRIDE)):
+        name = f"horizon_material_{label}{extra.tag}"
         subprocess.run([sys.executable, PREVIEW, "--scene", SCENE,
                         "--state", "h2_neutral",
                         "--vehicle-image", os.path.join(DIR, source),
@@ -159,7 +170,8 @@ def main():
         horizon[label] = os.path.relpath(os.path.join(DIR, name + ".png"), REPO)
     report["horizon_native"] = horizon
 
-    with open(os.path.join(DIR, "material_metrics.json"), "w") as fh:
+    report["after_render"] = AFTER_OVERRIDE
+    with open(os.path.join(DIR, f"material_metrics{extra.tag}.json"), "w") as fh:
         json.dump(report, fh, indent=1)
         fh.write("\n")
 

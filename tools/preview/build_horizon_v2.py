@@ -156,7 +156,15 @@ def text_node(component, tokens):
     if "visibility" in component:
         vis = component["visibility"]
         visible_opacity = tokens.opt(component.get("opacity_token"))
-        if vis.get("show_when_valid"):
+        if vis.get("show_when_true"):
+            node["opacity"] = 1.0
+            node["alpha_when"] = [
+                {"when": {"signal": vis["binding"], "is_true": True},
+                 "alpha": component.get("visible_opacity", 0.5)},
+                {"when": {"signal": vis["binding"], "is_true": False},
+                 "alpha": 0.0},
+            ]
+        elif vis.get("show_when_valid"):
             node["alpha_when"] = [
                 {"when": {"signal": vis["binding"], "valid": True},
                  "alpha": visible_opacity},
@@ -210,7 +218,8 @@ def vector_node(component, tokens, layout):
         node.update({"x": b["x"], "y": b["y"], "width": b["w"], "height": b["h"],
                      "from": tokens.color(component["color_token"]),
                      "to": tokens.color(component["color_to_token"]),
-                     "opacity": tokens.opt(component.get("opacity_token"))})
+                     "opacity": component.get(
+                         "opacity", tokens.opt(component.get("opacity_token")))})
     elif shape == "line":
         node.update({"x": b["x"], "y": b["y"],
                      # A line may state its own end point; the bounds are then
@@ -223,6 +232,18 @@ def vector_node(component, tokens, layout):
         node.update({"points": component.get("points") or road_points(layout),
                      "fill": tokens.color(component["color_token"]),
                      "opacity": tokens.opt(component.get("opacity_token"))})
+    elif shape == "tickrow":
+        node.update({"x": b["x"], "y": b["y"], "width": b["w"],
+                     "count": component.get("count", 24),
+                     "height_px": component.get("height_px", b["h"]),
+                     "major_every": component.get("major_every", 0),
+                     "color": tokens.color(component["color_token"]),
+                     "major_color": tokens.color(component["color_token"]),
+                     "lit_color": tokens.color(component.get("lit_token", "accent")),
+                     "opacity": component.get("opacity", 1.0)})
+        if "progress" in component:
+            node["progress"] = {"signal": component["progress"]["binding"],
+                                "max": component["progress"].get("max", 100)}
     elif shape == "roundrect":
         node.update({"x": b["x"], "y": b["y"], "width": b["w"], "height": b["h"],
                      "radius": tokens.radius(component["radius_token"]),
@@ -256,7 +277,15 @@ def vector_node(component, tokens, layout):
         # base stays 1.0 and the rule carries the value the design wants when the
         # element is showing.
         visible_opacity = tokens.opt(component.get("opacity_token"))
-        if vis.get("show_when_valid"):
+        if vis.get("show_when_true"):
+            node["opacity"] = 1.0
+            node["alpha_when"] = [
+                {"when": {"signal": vis["binding"], "is_true": True},
+                 "alpha": component.get("visible_opacity", 0.5)},
+                {"when": {"signal": vis["binding"], "is_true": False},
+                 "alpha": 0.0},
+            ]
+        elif vis.get("show_when_valid"):
             node["opacity"] = 1.0
             node["alpha_when"] = [
                 {"when": {"signal": vis["binding"], "valid": True},
@@ -298,7 +327,14 @@ def vehicle_node(component, tokens):
 
 
 def main():
-    layout = load(LAYOUT)
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--layout", default=LAYOUT,
+                        help="design source to generate from")
+    parser.add_argument("--out", default=None, help="scene file to write")
+    args = parser.parse_args()
+
+    layout = load(args.layout)
     tokens = Tokens(load(TOKENS))
     canvas = layout["canvas"]
 
@@ -316,9 +352,10 @@ def main():
             raise SystemExit(f"[v2] unsupported component kind: {kind}")
 
     scene = {
-        "scene": "horizon_v2",
+        "scene": layout.get("scene", "horizon_v2"),
         "version": 1,
         "status": layout["status"],
+        "style_candidate": layout.get("style_candidate"),
         "title": "Horizon V2",
         "role": "production-candidate",
         "canvas": {
@@ -334,7 +371,7 @@ def main():
         # provenance lives beside it rather than inside it.
         "manifest": "assets/manifest.json",
         "provenance": {
-            "layout": "assets/ui/horizon_v2_layout.json",
+            "layout": os.path.relpath(args.layout, REPO),
             "tokens": "assets/ui/design_tokens.json",
             "generator": "tools/preview/build_horizon_v2.py",
         },
@@ -348,8 +385,10 @@ def main():
         "nodes": nodes,
     }
 
-    os.makedirs(os.path.dirname(OUT), exist_ok=True)
-    with open(OUT, "w") as fh:
+    out_path = args.out or os.path.join(
+        REPO, "scenes", (layout.get("scene") or "horizon_v2") + ".scene")
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    with open(out_path, "w") as fh:
         json.dump(scene, fh, indent=1, ensure_ascii=False)
         fh.write("\n")
 
@@ -357,7 +396,7 @@ def main():
     vectors = sum(1 for n in nodes if n["type"] == "vector")
     vehicles = sum(1 for n in nodes if n["type"] == "vehicle_visual")
     print(f"[v2] {len(nodes)} nodes ({texts} text, {vectors} vector, "
-          f"{vehicles} vehicle) -> {os.path.relpath(OUT, REPO)}")
+          f"{vehicles} vehicle) -> {os.path.relpath(out_path, REPO)}")
     return 0
 
 

@@ -101,9 +101,10 @@ def text_boxes(scene, state, previewer):
     return boxes
 
 
-def check_golden(scene, layout, components, check):
+def check_golden(scene, layout, components, check, layout_path=None):
     print("golden source")
-    check(scene["provenance"]["layout"] == "assets/ui/horizon_v2_layout.json",
+    check(os.path.basename(scene["provenance"]["layout"]) ==
+          os.path.basename(layout_path or "horizon_v2_layout.json"),
           "the scene names this layout as its source")
     check([n["id"] for n in scene["nodes"]] == [c["id"] for c in layout["components"]],
           "the scene has exactly the layout's components, in order")
@@ -343,6 +344,54 @@ def check_unknown(scene, previewer, check):
              "(the placeholder rule above is still enforced)")
 
 
+def check_decoration_clearance(scene, previewer, check):
+    """A HUD line must not run through a number.
+
+    The text-vs-text check cannot see this: a decorative rule drawn across the
+    energy column intersects the range and SOC text without any two texts
+    touching.
+    """
+    print("decoration clearance")
+    if previewer is None or not HAVE_PIL:
+        note("Pillow is absent: decoration clearance is skipped")
+        return
+    from PIL import Image, ImageDraw
+    nodes = {node["id"]: node for node in scene["nodes"]}
+    scratch = Image.new("RGB", (scene["canvas"]["width"], scene["canvas"]["height"]))
+    draw = ImageDraw.Draw(scratch)
+    texts = []
+    for node in scene["nodes"]:
+        if node["type"] != "text" or not node.get("text"):
+            continue
+        font = previewer.load_font(node.get("font", 32), node.get("bold", False),
+                                   node.get("font_role"))
+        anchor = {"center": "mm", "left": "lm", "right": "rm"}.get(
+            node.get("align", "center"), "mm")
+        box = draw.textbbox((node["x"], node["y"]), node["text"], font=font,
+                            anchor=anchor)
+        texts.append((node["id"], box))
+    offenders = []
+    for node in scene["nodes"]:
+        if node["type"] != "vector" or node["shape"] != "line":
+            continue
+        role = node.get("role")
+        if role in ("road", "atmosphere"):
+            continue
+        x0, y0 = node["x"], node["y"]
+        x1, y1 = node.get("x2", x0), node.get("y2", y0)
+        # Sample the line rather than testing its bounding box: a diagonal's
+        # box covers a lot of screen it does not touch.
+        samples = [(x0 + (x1 - x0) * step / 32.0, y0 + (y1 - y0) * step / 32.0)
+                   for step in range(33)]
+        for name, text_box in texts:
+            for sx, sy in samples:
+                if (text_box[0] - 2 <= sx <= text_box[2] + 2 and
+                        text_box[1] - 2 <= sy <= text_box[3] + 2):
+                    offenders.append(f"{node['id']}~{name}")
+                    break
+    check(not offenders, f"no HUD rule crosses a text ({offenders})")
+
+
 def check_speed_typography(scene, previewer, check):
     """The unit must never sit inside the numeral, at any speed.
 
@@ -408,9 +457,14 @@ def check_speed_typography(scene, previewer, check):
 
 
 def main():
-    layout = load(LAYOUT)
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--layout", default=LAYOUT)
+    parser.add_argument("--scene", default=SCENE)
+    arguments = parser.parse_args()
+    layout = load(arguments.layout)
     tokens = load(TOKENS)
-    scene = load(SCENE)
+    scene = load(arguments.scene)
 
     try:
         import scene_preview as previewer
@@ -422,7 +476,7 @@ def main():
              f"skipped, the geometry checks still run")
 
     components = {c["id"]: c for c in layout["components"]}
-    check_golden(scene, layout, components, check)
+    check_golden(scene, layout, components, check, arguments.layout)
     check_tokens(scene, tokens, check)
     check_bounds(layout, components, check)
     car_closed, car_open, permitted = check_zones(layout, components, check)
@@ -431,6 +485,7 @@ def main():
     check_text(scene, previewer, check)
     check_unknown(scene, previewer, check)
     check_speed_typography(scene, previewer, check)
+    check_decoration_clearance(scene, previewer, check)
 
     print("")
     if FAILURES:
