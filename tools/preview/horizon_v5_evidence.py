@@ -25,6 +25,7 @@ import tempfile
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 PREVIEW = os.path.join(REPO, "tools", "preview", "scene_preview.py")
+ALIGNMENT_TOOL = os.path.join(REPO, "tools", "preview", "v5_speed_alignment.py")
 LAYOUT = os.path.join(REPO, "assets", "ui", "horizon_v5_layout.json")
 TOKENS = os.path.join(REPO, "assets", "ui", "horizon_v5_tokens.json")
 SCENE = os.path.join(REPO, "scenes", "horizon_v5.scene")
@@ -182,6 +183,16 @@ def main():
 
     vehicle, changed, car_pixels, contact = vehicle_bbox_from_render(
         neutral, layout)
+    alignment_metrics = os.path.join(OUT, "horizon_v5_speed_alignment.json")
+    alignment_png = os.path.join(OUT, "horizon_v5_1_speed_alignment.png")
+    subprocess.run([sys.executable, ALIGNMENT_TOOL, "--json",
+                    alignment_metrics, "--evidence", alignment_png],
+                   check=True, capture_output=True)
+    alignment = json.load(open(alignment_metrics))
+    # The same evidence under the name the review asked for in the layout
+    # section, so both names resolve to one measurement.
+    alignment_copy = os.path.join(OUT, "speed_cluster_alignment_evidence.png")
+    Image.open(alignment_png).save(alignment_copy)
     report = {
         "schema": "horizon-v5-evidence v2",
         "status": "HORIZON_V5_NEUTRAL = AWAITING HUMAN VISUAL APPROVAL",
@@ -201,6 +212,19 @@ def main():
         },
         "other_screenshots": {os.path.basename(path): os.path.relpath(path, REPO)
                               for path in states},
+        "speed_alignment": {
+            "arc_center": alignment["arc_center"],
+            "arc_radius": alignment["arc_radius"],
+            "speed_ink_bbox": alignment["speed_ink_bbox"],
+            "speed_visual_centroid": alignment["speed_visual_centroid"],
+            "dx_ink_center_px": alignment["dx_ink_center"],
+            "dx_ink_bbox_center_px": alignment["dx_ink_bbox_center"],
+            "dy_visual_centroid_px": alignment["dy_visual_centroid"],
+            "tolerance_px": alignment["tolerance_px"],
+            "within_tolerance": alignment["within_tolerance"],
+            "evidence": os.path.relpath(alignment_png, REPO),
+            "evidence_alias": os.path.relpath(alignment_copy, REPO),
+        },
         "vehicle_bbox_from_final_render": vehicle,
         "vehicle_pixels_changed": changed,
         "vehicle_pixels_solid": car_pixels,

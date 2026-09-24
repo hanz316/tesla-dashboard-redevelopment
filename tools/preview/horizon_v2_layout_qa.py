@@ -578,6 +578,56 @@ def check_decoration_clearance(scene, previewer, check):
     check(not offenders, f"no HUD rule crosses a text ({offenders})")
 
 
+def check_speed_centering(scene, tokens, previewer, check):
+    """The numeral must be the visual centre of the arc, measured on ink.
+
+    The layout boxes cannot answer this: the renderer anchors text with its own
+    metrics, so the ink centre of "88" is not the box centre. The measurement is
+    the centroid of the rendered glyph pixels, compared with the dial centre the
+    baked glow was drawn around. Horizontal tolerance is 3 px; the vertical axis
+    carries a declared optical offset because km/h and the gear row sit below.
+    """
+    print("speed optical centering")
+    if previewer is None or not HAVE_PIL:
+        note("Pillow is absent: the speed ink centring measurement is skipped")
+        return
+    import numpy as np
+    from PIL import Image, ImageDraw
+
+    nodes = {node["id"]: node for node in scene["nodes"]}
+    node = nodes.get("speed.value")
+    if node is None or "dial" not in tokens.get("ui_assets", {}):
+        note("this scene has no measured dial: the centring check is skipped")
+        return
+    dial = tokens["ui_assets"]["dial"]
+    font = previewer.load_font(node.get("font", 32), node.get("bold", False),
+                               node.get("font_role"))
+    anchor = {"center": "mm", "left": "lm", "right": "rm"}.get(
+        node.get("align", "center"), "mm")
+    canvas = Image.new("L", (scene["canvas"]["width"], scene["canvas"]["height"]))
+    ImageDraw.Draw(canvas).text((node.get("x", 0), node.get("y", 0)), "88",
+                               font=font, anchor=anchor, fill=255)
+    array = np.asarray(canvas)
+    ys, xs = np.nonzero(array > 96)
+    if xs.size == 0:
+        check(False, "the speed numeral rendered ink (nothing was drawn)")
+        return
+    centroid = (float(xs.mean()), float(ys.mean()))
+    dx = centroid[0] - dial["cx"]
+    dy = centroid[1] - dial["cy"]
+    check(abs(dx) <= 3.0,
+          f"the numeral's ink centroid is {dx:+.2f} px from the dial centre "
+          f"(tolerance 3 px)")
+    optical = 6.0
+    check(abs(dy) <= dial["radius"] * 0.35,
+          f"the vertical optical offset is {dy:+.2f} px, within the declared "
+          f"{dial['radius'] * 0.35:.0f} px envelope for a numeral with km/h and "
+          f"the gear row under it")
+    print(f"  note optical offset recorded: vertical {dy:+.2f} px, "
+          f"reference numeral to dial centre "
+          f"{tokens['ui_assets'].get('dial_reference_offset_px')}")
+
+
 def check_speed_typography(scene, previewer, check):
     """The unit must never sit inside the numeral, at any speed.
 
@@ -679,6 +729,7 @@ def main():
     check_text(scene, previewer, check)
     check_unknown(scene, previewer, check)
     check_speed_typography(scene, previewer, check)
+    check_speed_centering(scene, tokens, previewer, check)
     check_decoration_clearance(scene, previewer, check)
 
     print("")

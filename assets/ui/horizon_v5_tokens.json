@@ -38,6 +38,7 @@
   "warning": "#D8A657",
   "critical": "#D8674F",
   "ready": "#5FC98A",
+  "ready_dim": "#3E8F62",
   "throw": "#DCD8CC"
  },
  "horizon_row": 252,
@@ -109,7 +110,7 @@
   "max_kph": 240.0,
   "minor_ticks": 24,
   "centre_px": [
-   400.04419889502765,
+   408.87419889502763,
    224.48618784530387
   ],
   "radius_px": 115.42541436464087
@@ -131,13 +132,14 @@
  "ui_assets": {
   "schema": "horizon-v5-ui-assets v1",
   "dial": {
-   "cx": 400.04419889502765,
+   "cx": 408.87419889502763,
    "cy": 224.48618784530387,
    "radius": 115.42541436464087,
    "width": 5.194143646408839,
    "ref_cx": 241.4,
    "ref_cy": 338.6,
-   "ref_radius": 174.1
+   "ref_radius": 174.1,
+   "dial_dx": 8.83
   },
   "arc_degrees": [
    135.0,
@@ -151,16 +153,16 @@
   },
   "asset_boxes": {
    "horizon_v5_arc_glow.png": [
-    282,
-    107,
-    518,
-    308
+    297,
+    113,
+    521,
+    304
    ],
    "horizon_v5_numeral_glow.png": [
-    210,
-    135,
-    463,
-    302
+    242,
+    150,
+    449,
+    287
    ],
    "horizon_v5_rail_track.png": [
     1561,

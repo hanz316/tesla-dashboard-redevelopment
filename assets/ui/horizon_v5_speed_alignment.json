@@ -1,0 +1,66 @@
+{
+ "schema": "horizon-v5-speed-alignment v1",
+ "why": "the numeral's rendered ink centre and the dial centre must coincide within 3 px. The correction is split between the dial (moves right) and the numeral (moves left) so neither element drifts far from the reference's own positions.",
+ "dial_dx": 8.83,
+ "text_dx": -8.83,
+ "dy": 0.0,
+ "vertical_optical_offset_px": -6.0,
+ "measured_before": {
+  "schema": "horizon-v5-speed-alignment v1",
+  "arc_center": [
+   400.04419889502765,
+   224.48618784530387
+  ],
+  "arc_radius": 115.42541436464087,
+  "speed_ink_bbox": [
+   364.3,
+   166.6,
+   472.3,
+   237.6
+  ],
+  "speed_ink_center": [
+   418.3,
+   202.1
+  ],
+  "speed_visual_centroid": [
+   417.7075170842825,
+   202.79544419134396
+  ],
+  "unit_ink_bbox": [
+   382.5,
+   243.6,
+   451.5,
+   265.6
+  ],
+  "gear_ink_bbox": [
+   444.9,
+   283.7,
+   465.9,
+   304.7
+  ],
+  "ready_ink_bbox": [
+   305.0,
+   327.5,
+   377.0,
+   343.5
+  ],
+  "chill_ink_bbox": [
+   396.5,
+   327.5,
+   459.5,
+   343.5
+  ],
+  "limit_ink_bbox": [
+   555.1,
+   131.2,
+   606.1,
+   152.2
+  ],
+  "tolerance_px": 3.0,
+  "vertical_optical_offset_px": -6.0,
+  "dx_ink_center": 17.66,
+  "dx_ink_bbox_center": 18.26,
+  "dy_visual_centroid": -15.69,
+  "within_tolerance": false
+ }
+}

@@ -1,0 +1,58 @@
+{
+ "schema": "horizon-v5-speed-alignment v1",
+ "arc_center": [
+  408.87419889502763,
+  224.48618784530387
+ ],
+ "arc_radius": 115.42541436464087,
+ "speed_ink_bbox": [
+  355.5,
+  166.6,
+  463.5,
+  237.6
+ ],
+ "speed_ink_center": [
+  409.5,
+  202.1
+ ],
+ "speed_visual_centroid": [
+  409.7075170842825,
+  202.79544419134396
+ ],
+ "unit_ink_bbox": [
+  373.7,
+  243.6,
+  442.7,
+  265.6
+ ],
+ "gear_ink_bbox": [
+  444.9,
+  283.7,
+  465.9,
+  304.7
+ ],
+ "ready_ink_bbox": [
+  305.0,
+  327.5,
+  377.0,
+  343.5
+ ],
+ "chill_ink_bbox": [
+  396.5,
+  327.5,
+  459.5,
+  343.5
+ ],
+ "limit_ink_bbox": [
+  555.1,
+  131.2,
+  606.1,
+  152.2
+ ],
+ "tolerance_px": 3.0,
+ "vertical_optical_offset_px": -6.0,
+ "dx_ink_center": 0.83,
+ "dx_ink_bbox_center": 0.63,
+ "dy_visual_centroid": -15.69,
+ "within_tolerance": true
+}

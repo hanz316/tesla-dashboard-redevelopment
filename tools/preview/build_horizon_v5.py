@@ -47,6 +47,7 @@ MEASUREMENTS = os.path.join(UI, "horizon_v5_reference_measurements.json")
 UI_ASSETS = os.path.join(UI, "horizon_v5_ui_assets.json")
 VEHICLE_LAYERS = os.path.join(REPO, "assets", "rendered", "vehicle",
                               "horizon_v5", "horizon_v5_vehicle.json")
+ALIGNMENT = os.path.join(UI, "horizon_v5_speed_alignment.json")
 V2_LAYOUT = os.path.join(UI, "horizon_v2_layout.json")
 
 CONTENT_SCALE = 480 / 724.0
@@ -169,7 +170,8 @@ def build_tokens(measurements, ui_assets):
             "muted_text": "#8792A0", "dim_text": "#5E6875",
             "accent": accent, "accent_bright": "#7FE3F2", "accent_dim": "#1B3A4A",
             "rail_lit": "#8FD8EE", "warning": "#D8A657", "critical": "#D8674F",
-            "ready": "#5FC98A", "throw": "#DCD8CC",
+            "ready": "#5FC98A", "ready_dim": "#3E8F62",
+            "throw": "#DCD8CC",
         },
         "horizon_row": measurements["horizon"]["horizon_row"],
         "typography": {"tiers": {
@@ -207,8 +209,10 @@ def build_tokens(measurements, ui_assets):
     }
 
 
-def build_components(measurements, ui_assets, vehicle):
+def build_components(measurements, ui_assets, vehicle, alignment):
     dial = ui_assets["dial"]
+    text_dx = float(alignment.get("text_dx", 0.0))
+    text_dy = float(alignment.get("dy", 0.0))
     cx, cy, radius = dial["cx"], dial["cy"], dial["radius"]
     stroke = dial["width"]
     asset_boxes = ui_assets.get("asset_boxes", {})
@@ -223,6 +227,14 @@ def build_components(measurements, ui_assets, vehicle):
             bounds = {"x": box_px[0], "y": box_px[1],
                       "w": box_px[2] - box_px[0], "h": box_px[3] - box_px[1]}
         return image(node_id, key, bounds, z=z, **kw)
+
+    def aligned(bounds):
+        """The speed numeral and its unit travel together with the centring
+        correction the alignment measurement solved for."""
+        moved = dict(bounds)
+        moved["x"] = round(bounds["x"] + text_dx, 1)
+        moved["y"] = round(bounds["y"] + text_dy, 1)
+        return moved
 
     components = []
 
@@ -304,11 +316,13 @@ def build_components(measurements, ui_assets, vehicle):
                                                             "w": 48, "h": 20},
                                "center", "LABEL", "muted_text", text=label,
                                z=13, layer="static", role="speed"))
-    components.append(text("speed.value", "speed_numeral", "center", "DISPLAY",
+    components.append(text("speed.value", aligned(box("speed_numeral")),
+                           "center", "DISPLAY",
                            "primary_text", z=40,
                            **{"binding": "speed", "format": "{}",
                               "invalid_text": "\u2014", "role": "speed"}))
-    components.append(text("speed.unit", "speed_unit", "left", "BODY",
+    components.append(text("speed.unit", aligned(box("speed_unit")), "left",
+                           "BODY",
                            "secondary_text", text="km/h", z=40, role="speed"))
     for index, letter in enumerate(("P", "R", "N", "D")):
         bounds = box("gear_row")
@@ -334,11 +348,11 @@ def build_components(measurements, ui_assets, vehicle):
                            **{"binding": "temperature_primary",
                               "format": "{} \u00b0C", "invalid_text": "\u2014"}))
     components.append(text("driver.status", "driver_status", "left", "CAPTION",
-                           "ready", z=40, role="driver",
+                           "ready_dim", z=40, role="driver",
                            **{"binding": "driver_status_text", "format": "{}",
                               "invalid_text": ""}))
     components.append(text("climate.status", "climate_status", "left",
-                           "CAPTION", "muted_text", text="CHILL", z=40,
+                           "CAPTION", "dim_text", text="CHILL", z=40,
                            role="driver"))
     sign = box("speed_sign")
     components.append(vector("speedlimit.ring", "roundrect",
@@ -514,7 +528,10 @@ def main():
     # the QA can re-measure the assets against the numbers it was built from.
     tokens["vehicle"] = json.load(
         open(os.path.join(UI, "design_tokens.json")))["vehicle"]
-    components = build_components(measurements, ui_assets, vehicle)
+    alignment = {}
+    if os.path.isfile(ALIGNMENT):
+        alignment = json.load(open(ALIGNMENT))
+    components = build_components(measurements, ui_assets, vehicle, alignment)
 
     panel = dict(json.load(open(V2_LAYOUT))["panel"])
     panel["mask_color"] = "bg_deep"

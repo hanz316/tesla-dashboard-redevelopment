@@ -26,6 +26,7 @@ import sys
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 UI = os.path.join(REPO, "assets", "ui")
 MEASUREMENTS = os.path.join(UI, "horizon_v5_reference_measurements.json")
+ALIGNMENT = os.path.join(UI, "horizon_v5_speed_alignment.json")
 
 # The mapping the layout uses: 2172x724 mapped 1:1 by height into a centred
 # 1440x480 content box.
@@ -53,12 +54,19 @@ def panel_size(value):
 
 def dial_geometry(measurements):
     arc = measurements["arc"]
+    dial_dx = 0.0
+    if os.path.isfile(ALIGNMENT):
+        try:
+            dial_dx = float(json.load(open(ALIGNMENT)).get("dial_dx", 0.0))
+        except (OSError, ValueError):
+            dial_dx = 0.0
     return {
-        "cx": panel_x(arc["cx"]),
+        "cx": panel_x(arc["cx"]) + dial_dx,
         "cy": panel_y(arc["cy"]),
         "radius": panel_size(arc["radius"]),
         "width": max(3.0, panel_size(arc["radius"] * 0.045)),
         "ref_cx": arc["cx"], "ref_cy": arc["cy"], "ref_radius": arc["radius"],
+        "dial_dx": dial_dx,
     }
 
 

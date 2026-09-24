@@ -38,6 +38,30 @@
   "horizon_v5_07_unknown.png": "assets/checkpoints/horizon_v5/horizon_v5_07_unknown.png",
   "horizon_v5_08_navigation.png": "assets/checkpoints/horizon_v5/horizon_v5_08_navigation.png"
  },
+ "speed_alignment": {
+  "arc_center": [
+   408.87419889502763,
+   224.48618784530387
+  ],
+  "arc_radius": 115.42541436464087,
+  "speed_ink_bbox": [
+   355.5,
+   166.6,
+   463.5,
+   237.6
+  ],
+  "speed_visual_centroid": [
+   409.7075170842825,
+   202.79544419134396
+  ],
+  "dx_ink_center_px": 0.83,
+  "dx_ink_bbox_center_px": 0.63,
+  "dy_visual_centroid_px": -15.69,
+  "tolerance_px": 3.0,
+  "within_tolerance": true,
+  "evidence": "assets/checkpoints/horizon_v5/horizon_v5_1_speed_alignment.png",
+  "evidence_alias": "assets/checkpoints/horizon_v5/speed_cluster_alignment_evidence.png"
+ },
  "vehicle_bbox_from_final_render": {
   "visible_silhouette": [
    757,
@@ -56,7 +80,7 @@
  "vehicle_pixels_solid": 37582,
  "ground_contact_row": 346,
  "speed_cluster_bbox": [
-  281.9,
+  290.8,
   109.1,
   275.2,
   230.9
@@ -122,18 +146,18 @@
    {
     "id": "speed.arc.glow",
     "size": [
-     236,
-     201
+     224,
+     191
     ],
-    "decoded_rgba_bytes": 189744
+    "decoded_rgba_bytes": 171136
    },
    {
     "id": "speed.numeral.glow",
     "size": [
-     253,
-     167
+     207,
+     137
     ],
-    "decoded_rgba_bytes": 169004
+    "decoded_rgba_bytes": 113436
    },
    {
     "id": "energy.rail.track",
@@ -192,8 +216,8 @@
     "decoded_rgba_bytes": 772096
    }
   ],
-  "total_decoded_rgba_bytes": 8717632,
-  "total_decoded_mb": 8.31,
+  "total_decoded_rgba_bytes": 8643456,
+  "total_decoded_mb": 8.24,
   "note": "ESTIMATED on the Mac; UNKNOWN UNTIL DEVICE TEST on T113"
  },
  "background_asset": "assets/ui/horizon_v5_background.png",

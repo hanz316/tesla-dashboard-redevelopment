@@ -148,10 +148,10 @@
    "kind": "image",
    "src": "assets/ui/horizon_v5_arc_glow.png",
    "bounds": {
-    "x": 282,
-    "y": 107,
-    "w": 236,
-    "h": 201
+    "x": 297,
+    "y": 113,
+    "w": 224,
+    "h": 191
    },
    "z": 2,
    "layer": "static",
@@ -163,10 +163,10 @@
    "kind": "image",
    "src": "assets/ui/horizon_v5_numeral_glow.png",
    "bounds": {
-    "x": 210,
-    "y": 135,
-    "w": 253,
-    "h": 167
+    "x": 242,
+    "y": 150,
+    "w": 207,
+    "h": 137
    },
    "z": 3,
    "layer": "static",
@@ -313,7 +313,7 @@
    "kind": "vector",
    "shape": "arc",
    "bounds": {
-    "x": 284.6187845303868,
+    "x": 293.4487845303868,
     "y": 109.060773480663,
     "w": 230.85082872928174,
     "h": 230.85082872928174
@@ -323,7 +323,7 @@
    "layer": "static",
    "opacity": 0.42,
    "role": "speed",
-   "cx": 400.0,
+   "cx": 408.9,
    "cy": 224.5,
    "radius": 115.4,
    "start_deg": 135.0,
@@ -335,7 +335,7 @@
    "kind": "vector",
    "shape": "arc_ticks",
    "bounds": {
-    "x": 284.6187845303868,
+    "x": 293.4487845303868,
     "y": 109.060773480663,
     "w": 230.85082872928174,
     "h": 230.85082872928174
@@ -345,7 +345,7 @@
    "layer": "static",
    "opacity": 0.5,
    "role": "speed",
-   "cx": 400.0,
+   "cx": 408.9,
    "cy": 224.5,
    "radius": 109.7,
    "start_deg": 135.0,
@@ -362,7 +362,7 @@
    "kind": "vector",
    "shape": "arc",
    "bounds": {
-    "x": 284.6187845303868,
+    "x": 293.4487845303868,
     "y": 109.060773480663,
     "w": 230.85082872928174,
     "h": 230.85082872928174
@@ -372,7 +372,7 @@
    "layer": "static",
    "opacity": 0.98,
    "role": "speed",
-   "cx": 400.0,
+   "cx": 408.9,
    "cy": 224.5,
    "radius": 115.4,
    "start_deg": 135.0,
@@ -390,7 +390,7 @@
    "id": "speed.arc.label.0",
    "kind": "text",
    "bounds": {
-    "x": 281.93853741409174,
+    "x": 290.7685374140917,
     "y": 308.5918493262398,
     "w": 48,
     "h": 20
@@ -407,7 +407,7 @@
    "id": "speed.arc.label.240",
    "kind": "text",
    "bounds": {
-    "x": 509.12970165745855,
+    "x": 517.9597016574586,
     "y": 214.48618784530385,
     "w": 48,
     "h": 20
@@ -424,7 +424,7 @@
    "id": "speed.value",
    "kind": "text",
    "bounds": {
-    "x": 364.6,
+    "x": 355.8,
     "y": 161.8,
     "w": 107.4,
     "h": 75.6
@@ -443,7 +443,7 @@
    "id": "speed.unit",
    "kind": "text",
    "bounds": {
-    "x": 382.5,
+    "x": 373.7,
     "y": 244.0,
     "w": 76.2,
     "h": 21.2
@@ -590,7 +590,7 @@
    "z": 40,
    "layer": "dynamic",
    "font_token": "CAPTION",
-   "color_token": "ready",
+   "color_token": "ready_dim",
    "role": "driver",
    "binding": "driver_status_text",
    "format": "{}",
@@ -609,7 +609,7 @@
    "z": 40,
    "layer": "dynamic",
    "font_token": "CAPTION",
-   "color_token": "muted_text",
+   "color_token": "dim_text",
    "text": "CHILL",
    "role": "driver"
   },
