@@ -214,8 +214,11 @@ def main():
             check(entry["max_palette_step"] <= 10.0,
                   f"the {label} palette step stays at "
                   f"{entry['max_palette_step']} of 255 per 2 minutes")
+        # WCAG: 3:1 for large text and for graphics, 4.5:1 for small text. The
+        # primary readouts are 58-98 px, the labels are 16-22 px, the arc and
+        # the rail are graphics.
         for name, entry in metrics["daylight_contrast"].items():
-            floor = 4.5 if name in ("primary_text", "secondary_text") else 3.0
+            floor = 4.5 if name in ("muted_text", "dim_text") else 3.0
             check(entry["min_ratio"] >= floor,
                   f"daylight contrast for {name} is {entry['min_ratio']}:1 "
                   f"(floor {floor})")

@@ -231,6 +231,26 @@ def road(scene, spec):
     ramp.color_ramp.elements[1].color = (spec["road_dry_roughness"],) * 3 + (1,)
     tree.links.new(noise.outputs["Fac"], ramp.inputs["Fac"])
     tree.links.new(ramp.outputs["Color"], shader.inputs["Roughness"])
+    variation = spec.get("road_albedo_variation", 0.0)
+    if variation:
+        # Broad dry/wet patches in the albedo as well as the roughness: a
+        # daylight road that is a single flat tone reads as a lake.
+        patches = tree.nodes.new("ShaderNodeTexNoise")
+        patches.inputs["Scale"].default_value = spec["wet_scale"] * 3.2
+        patches.inputs["Detail"].default_value = 4.0
+        mix = tree.nodes.new("ShaderNodeMixRGB")
+        mix.blend_type = "MIX"
+        base = spec["road_colour"]
+        mix.inputs["Color1"].default_value = base
+        mix.inputs["Color2"].default_value = (
+            base[0] * (1.0 - variation), base[1] * (1.0 - variation),
+            base[2] * (1.0 - variation), 1.0)
+        ramp2 = tree.nodes.new("ShaderNodeValToRGB")
+        ramp2.color_ramp.elements[0].position = 0.35
+        ramp2.color_ramp.elements[1].position = 0.70
+        tree.links.new(patches.outputs["Fac"], ramp2.inputs["Fac"])
+        tree.links.new(ramp2.outputs["Color"], mix.inputs["Fac"])
+        tree.links.new(mix.outputs["Color"], shader.inputs["Base Color"])
     fine = tree.nodes.new("ShaderNodeTexNoise")
     fine.inputs["Scale"].default_value = spec["wet_scale"] * 42.0
     bump = tree.nodes.new("ShaderNodeBump")
@@ -290,10 +310,16 @@ def ridgeline(scene, spec):
             material.node_tree.links.new(coord.outputs["Generated"],
                                          separate.inputs["Vector"])
             ramp = material.node_tree.nodes.new("ShaderNodeValToRGB")
+            # Aerial perspective: a distant range is brightest at its base,
+            # where the most atmosphere sits between it and the camera, and
+            # fades to its own dark silhouette at the crest. The previous
+            # gradient ran the other way, which is why every band rendered as
+            # the same flat grey.
             ramp.color_ramp.elements[0].position = 0.0
-            ramp.color_ramp.elements[0].color = (0.0, 0.0, 0.0, 1.0)
-            ramp.color_ramp.elements[1].position = 0.55
-            ramp.color_ramp.elements[1].color = tuple(layer["emit"])
+            ramp.color_ramp.elements[0].color = tuple(
+                layer.get("haze", layer["emit"]))
+            ramp.color_ramp.elements[1].position = 0.75
+            ramp.color_ramp.elements[1].color = (0.0, 0.0, 0.0, 1.0)
             material.node_tree.links.new(separate.outputs["Z"],
                                          ramp.inputs["Fac"])
             material.node_tree.links.new(ramp.outputs["Color"],
@@ -649,14 +675,19 @@ PHASE_SPECS = {
             [1.00, (0.220, 0.260, 0.310, 1.0)],
         ],
         "sky_strength": 1.0,
-        "road_roughness_override": [0.22, 0.62],
-        "wet_scale_override": 0.06,
+        "road_roughness_override": [0.10, 0.62],
+        "road_wet_ramp_override": [0.15, 0.52],
+        "road_colour_override": (0.026, 0.030, 0.036, 1.0),
+        "road_albedo_variation": 0.45,
+        "wet_scale_override": 0.05,
         "city_strength": 0.0,
         "ridge_emit_scale": 0.0,
         # Daylight needs a real albedo on the ridges, or a dark night material
         # renders as a black cut-out against a bright sky.
-        "ridge_colours": [(0.290, 0.320, 0.350, 1.0), (0.235, 0.260, 0.290, 1.0),
-                          (0.175, 0.200, 0.230, 1.0)],
+        "ridge_colours": [(0.340, 0.390, 0.445, 1.0), (0.170, 0.195, 0.230, 1.0),
+                          (0.070, 0.085, 0.105, 1.0)],
+        "ridge_haze_strength": [0.72, 0.42, 0.18],
+        "ridge_haze_colour": (0.560, 0.620, 0.680, 1.0),
         "sun": {"location": (700.0, 900.0, 620.0), "target": (0.0, 0.0, 0.9),
                 "power": 5200.0, "size": [260.0, 160.0],
                 "colour": (1.0, 0.96, 0.90)},
@@ -691,7 +722,14 @@ def apply_phase(spec, phase):
     merged = dict(spec)
     merged.update(overlay)
     merged["ridges"] = [dict(layer) for layer in spec["ridges"]]
+    haze_strengths = overlay.get("ridge_haze_strength") or []
+    haze_colour = overlay.get("ridge_haze_colour")
     for index, layer in enumerate(merged["ridges"]):
+        if haze_colour and index < len(haze_strengths):
+            layer["haze"] = tuple(
+                component * haze_strengths[index]
+                for component in haze_colour[:3]) + (1.0,)
+            layer["emit_strength"] = haze_strengths[index]
         if layer.get("emit_strength"):
             layer["emit_strength"] = (layer["emit_strength"]
                                       * overlay["ridge_emit_scale"])
@@ -704,9 +742,14 @@ def apply_phase(spec, phase):
     if overlay.get("wet_scale_override"):
         merged["wet_scale"] = overlay["wet_scale_override"]
     if overlay.get("road_roughness_override"):
-        merged["wet_ramp"] = list(spec["wet_ramp"])
+        merged["wet_ramp"] = list(overlay.get("road_wet_ramp_override")
+                                  or spec["wet_ramp"])
         merged["road_wet_roughness"], merged["road_dry_roughness"] = \
             overlay["road_roughness_override"]
+    if overlay.get("road_colour_override"):
+        merged["road_colour"] = overlay["road_colour_override"]
+    if overlay.get("road_albedo_variation"):
+        merged["road_albedo_variation"] = overlay["road_albedo_variation"]
     merged["street_lamps"] = [dict(lamp) for lamp in spec["street_lamps"]]
     lamp_scale = 1.0 if overlay.get("city_strength", 1.0) > 0.0 else 0.0
     for lamp in merged["street_lamps"]:

@@ -5,11 +5,11 @@
   14.0
  ],
  "reflection": {
-  "squash": 0.62,
-  "blur": 7.0,
-  "alpha": 0.3,
-  "falloff": 1.9,
-  "ripple": 0.18,
+  "squash": 0.54,
+  "blur": 7.5,
+  "alpha": 0.34,
+  "falloff": 2.0,
+  "ripple": 0.22,
   "ripple_cycles": 7.0,
   "tint": [
    0.42,
@@ -17,7 +17,8 @@
    0.68
   ],
   "tint_mix": 0.28,
-  "why": "the wet road already returns the car's mirror image; this baked layer is the soft, rippled part of that reflection - the light that scatters on the water rather than the sharp mirror line"
+  "why": "the wet road already returns the car's mirror image; this baked layer is the soft, rippled part of that reflection - the light that scatters on the water rather than the sharp mirror line",
+  "phase": "dawn"
  },
  "records": [
   {
@@ -33,12 +34,12 @@
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 34971,
+   "response_pixels": 34973,
    "reflection_box": [
     757,
     346,
     1151,
-    482
+    464
    ],
    "car_box": [
     757,
@@ -62,12 +63,12 @@
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 34976,
+   "response_pixels": 34977,
    "reflection_box": [
     757,
     346,
     1151,
-    482
+    464
    ],
    "car_box": [
     757,
@@ -96,7 +97,7 @@
     757,
     346,
     1151,
-    482
+    464
    ],
    "car_box": [
     757,
@@ -125,7 +126,7 @@
     757,
     346,
     1151,
-    482
+    464
    ],
    "car_box": [
     757,
@@ -149,12 +150,12 @@
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 35218,
+   "response_pixels": 35216,
    "reflection_box": [
     757,
     346,
     1151,
-    482
+    464
    ],
    "car_box": [
     757,
@@ -183,7 +184,7 @@
     757,
     346,
     1151,
-    482
+    464
    ],
    "car_box": [
     757,
@@ -212,7 +213,7 @@
     757,
     346,
     1151,
-    482
+    464
    ],
    "car_box": [
     757,

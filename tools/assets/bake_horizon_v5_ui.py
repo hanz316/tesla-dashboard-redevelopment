@@ -123,6 +123,27 @@ def rail_track(size, box, segments, colours):
     return track
 
 
+def cluster_backing(size, centre, radii, colour, alpha):
+    """A soft dark pool behind a cluster. Daylight puts bright environment
+    behind white-on-dark information; this keeps the information on a
+    controlled surface without turning the screen into glass panels."""
+    from PIL import Image, ImageDraw
+    layer = Image.new("RGBA", size, (0, 0, 0, 0))
+    draw = ImageDraw.Draw(layer, "RGBA")
+    steps = 46
+    for step in range(steps):
+        t = step / float(steps - 1)
+        scale = 1.0 - 0.55 * t
+        # A shallow falloff: the arc sits at 0.64 of the backing's radius, and
+        # an exponential falloff had already faded to 12 % there, which is why
+        # the daylight arc still measured 2:1 against the environment.
+        a = int(round(alpha * (1.0 - 0.55 * t)))
+        box = [centre[0] - radii[0] * scale, centre[1] - radii[1] * scale,
+               centre[0] + radii[0] * scale, centre[1] + radii[1] * scale]
+        draw.ellipse(box, fill=(*colour, a))
+    return layer
+
+
 def main():
     from PIL import Image
     parser = argparse.ArgumentParser()
@@ -155,6 +176,17 @@ def main():
                            dial["radius"] * 1.05, (120, 205, 225), 16)
     save(numeral, "horizon_v5_numeral_glow.png")
 
+    dial_backing = cluster_backing(
+        (width, height), (dial["cx"], dial["cy"] + dial["radius"] * 0.05),
+        (dial["radius"] * 1.55, dial["radius"] * 1.35), (5, 8, 13), 214)
+    save(dial_backing, "horizon_v5_dial_backing.png", margin=4)
+
+    # The right-hand module: one surface for RANGE / SOC / rail / POWER instead
+    # of four widgets competing with a bright sky.
+    energy_backing = cluster_backing(
+        (width, height), (1500.0, 240.0), (250.0, 210.0), (5, 8, 13), 176)
+    save(energy_backing, "horizon_v5_energy_backing.png", margin=4)
+
     rail = json.load(open(args.measurements))["energy_rail"]["bbox"]
     rail_box = (panel_x(rail[0]), panel_y(rail[1]),
                 panel_x(rail[2]), panel_y(rail[3]))
@@ -179,6 +211,8 @@ def main():
         "arc_degrees": [ARC_START_DEG, ARC_END_DEG],
         "content_scale": CONTENT_SCALE,
         "assets": {
+            "dial_backing": "assets/ui/horizon_v5_dial_backing.png",
+            "energy_backing": "assets/ui/horizon_v5_energy_backing.png",
             "arc_glow": "assets/ui/horizon_v5_arc_glow.png",
             "numeral_glow": "assets/ui/horizon_v5_numeral_glow.png",
             "rail_track": "assets/ui/horizon_v5_rail_track.png",

@@ -1,0 +1,214 @@
+{
+ "schema": "horizon-v5.2-perceptual-motion v1",
+ "phase": "day",
+ "regions": {
+  "wheels": [
+   785,
+   203,
+   1134,
+   348
+  ],
+  "road": [
+   0,
+   300,
+   1920,
+   470
+  ],
+  "wake": [
+   618,
+   322,
+   1293,
+   380
+  ],
+  "trail": [
+   763,
+   319,
+   881,
+   440
+  ]
+ },
+ "pairs": {
+  "0_to_30": {
+   "full_size": {
+    "wheels": {
+     "mean": 7.638,
+     "p99": 64.0,
+     "changed_fraction": 0.2799
+    },
+    "road": {
+     "mean": 0.553,
+     "p99": 24.0,
+     "changed_fraction": 0.0161
+    },
+    "wake": {
+     "mean": 2.024,
+     "p99": 56.0,
+     "changed_fraction": 0.058
+    },
+    "trail": {
+     "mean": 4.18,
+     "p99": 69.0,
+     "changed_fraction": 0.093
+    }
+   },
+   "half_size": {
+    "wheels": {
+     "mean": 7.671,
+     "p99": 64.0
+    },
+    "road": {
+     "mean": 0.659,
+     "p99": 28.0
+    },
+    "wake": {
+     "mean": 2.027,
+     "p99": 56.0
+    },
+    "trail": {
+     "mean": 3.963,
+     "p99": 67.21
+    }
+   }
+  },
+  "30_to_80": {
+   "full_size": {
+    "wheels": {
+     "mean": 4.509,
+     "p99": 38.0,
+     "changed_fraction": 0.2029
+    },
+    "road": {
+     "mean": 0.336,
+     "p99": 15.0,
+     "changed_fraction": 0.0142
+    },
+    "wake": {
+     "mean": 1.119,
+     "p99": 28.0,
+     "changed_fraction": 0.0542
+    },
+    "trail": {
+     "mean": 1.827,
+     "p99": 36.0,
+     "changed_fraction": 0.0817
+    }
+   },
+   "half_size": {
+    "wheels": {
+     "mean": 4.553,
+     "p99": 39.0
+    },
+    "road": {
+     "mean": 0.415,
+     "p99": 18.0
+    },
+    "wake": {
+     "mean": 1.135,
+     "p99": 27.0
+    },
+    "trail": {
+     "mean": 1.761,
+     "p99": 37.0
+    }
+   }
+  },
+  "80_to_120": {
+   "full_size": {
+    "wheels": {
+     "mean": 9.737,
+     "p99": 86.0,
+     "changed_fraction": 0.2462
+    },
+    "road": {
+     "mean": 0.72,
+     "p99": 23.0,
+     "changed_fraction": 0.0144
+    },
+    "wake": {
+     "mean": 1.957,
+     "p99": 58.0,
+     "changed_fraction": 0.0515
+    },
+    "trail": {
+     "mean": 3.53,
+     "p99": 80.0,
+     "changed_fraction": 0.0784
+    }
+   },
+   "half_size": {
+    "wheels": {
+     "mean": 9.808,
+     "p99": 85.0
+    },
+    "road": {
+     "mean": 0.838,
+     "p99": 30.0
+    },
+    "wake": {
+     "mean": 1.993,
+     "p99": 58.0
+    },
+    "trail": {
+     "mean": 3.283,
+     "p99": 79.0
+    }
+   }
+  }
+ },
+ "wheel_structure": {
+  "0": {
+   "edge_energy": 3.989,
+   "spread": 43.846
+  },
+  "30": {
+   "edge_energy": 3.525,
+   "spread": 42.487
+  },
+  "80": {
+   "edge_energy": 3.421,
+   "spread": 40.909
+  },
+  "120": {
+   "edge_energy": 3.355,
+   "spread": 40.984
+  }
+ },
+ "wheel_structure_falls": true,
+ "region_masking": {
+  "ui_boxes": 37,
+  "why": "the gate must not be satisfiable by the speed digits changing"
+ },
+ "cumulative_vs_standstill": {
+  "0": {
+   "wheels": 0.0,
+   "road": 0.0,
+   "wake": 0.0,
+   "trail": 0.0,
+   "total": 0.0
+  },
+  "30": {
+   "wheels": 7.638,
+   "road": 0.553,
+   "wake": 2.024,
+   "trail": 4.18,
+   "total": 14.396
+  },
+  "80": {
+   "wheels": 7.444,
+   "road": 0.467,
+   "wake": 1.648,
+   "trail": 3.202,
+   "total": 12.761
+  },
+  "120": {
+   "wheels": 13.67,
+   "road": 0.861,
+   "wake": 2.23,
+   "trail": 3.108,
+   "total": 19.869
+  }
+ },
+ "monotone_total": false,
+ "zero_at_standstill": true,
+ "evidence": "assets/checkpoints/horizon_v5/horizon_v52_motion_gate.png"
+}

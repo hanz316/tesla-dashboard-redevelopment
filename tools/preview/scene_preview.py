@@ -1487,15 +1487,29 @@ def render(scene, provider, raw_state, out_path, t_norm=1.0,
                                        node.get("y", 0), node.get("width", 0),
                                        node.get("height", 0), blend)
                 continue
-            if node.get("id", "").startswith("vehicle.") and vehicle_override.get(
-                    node["id"][len("vehicle."):]):
-                phase_layer = vehicle_override[node["id"][len("vehicle."):]]
-                entry_x, entry_y = node.get("x", 0), node.get("y", 0)
-                if phase_layer != node.get("src"):
-                    with Image.open(os.path.join(REPO_ROOT, phase_layer)) as source:
-                        layer = source.convert("RGBA")
-                    img.alpha_composite(layer, (int(entry_x), int(entry_y)))
-                    continue
+            if node.get("id", "").startswith("vehicle."):
+                state_name = node["id"][len("vehicle."):]
+                phase_layer = vehicle_override.get(state_name)
+                if phase_layer:
+                    entry_x, entry_y = node.get("x", 0), node.get("y", 0)
+                    if phase_layer != node.get("src"):
+                        paste_scaled_alpha(img, os.path.join(REPO_ROOT,
+                                                             phase_layer),
+                                           entry_x, entry_y,
+                                           node.get("width", 0),
+                                           node.get("height", 0), 1.0)
+                        # The car is lit by the environment, so it crossfades
+                        # with it: the same car under changing light, never a
+                        # material preset swap.
+                        next_layer = (environment.get("next_vehicle")
+                                      or {}).get(state_name)
+                        blend = float(environment.get("blend", 0.0))
+                        if next_layer and blend > 0.0:
+                            paste_scaled_alpha(
+                                img, os.path.join(REPO_ROOT, next_layer),
+                                entry_x, entry_y, node.get("width", 0),
+                                node.get("height", 0), blend)
+                        continue
             path = None
             if node.get("src"):
                 candidate = os.path.join(REPO_ROOT, node["src"])
@@ -1506,6 +1520,17 @@ def render(scene, provider, raw_state, out_path, t_norm=1.0,
                 x, y = node.get("x", 0), node.get("y", 0)
                 width, height = node.get("width", 0), node.get("height", 0)
                 alpha = node.get("opacity", 1.0) * alpha_when(node, state)
+                if "environment_opacity" in node:
+                    table = node["environment_opacity"]
+                    phase = environment.get("phase")
+                    next_phase = environment.get("next_phase") or phase
+                    if phase:
+                        weight = float(environment.get("blend", 0.0))
+                        value = (table.get(phase, 0.0) * (1.0 - weight)
+                                 + table.get(next_phase, 0.0) * weight)
+                    else:
+                        value = table.get("night", 0.0)
+                    alpha *= value
                 # Value-driven motion: opacity, translation, a bottom-anchored
                 # crop, and bounded body micro motion. All of them read a
                 # binding and are inert when that binding is unknown or stale.
@@ -1638,14 +1663,19 @@ def environment_context(tokens, when=None, phase=None, blend=0.0,
         token = tokens.get("colors", {}).get(name)
         if isinstance(token, str):
             colour_map[token.upper()] = value
-    vehicle = {}
-    for state_name in ("base", "running", "brake", "headlight",
-                       "indicator_left", "indicator_right", "hazard"):
-        candidate = os.path.join(
-            "assets", "rendered", "vehicle", "horizon_v5", first, "layer",
-            f"{state_name}.png")
-        if os.path.isfile(os.path.join(root, candidate)):
-            vehicle[state_name] = candidate
+    def layers_for(phase):
+        found = {}
+        for state_name in ("base", "running", "brake", "headlight",
+                           "indicator_left", "indicator_right", "hazard"):
+            candidate = os.path.join(
+                "assets", "rendered", "vehicle", "horizon_v5", phase, "layer",
+                f"{state_name}.png")
+            if os.path.isfile(os.path.join(root, candidate)):
+                found[state_name] = candidate
+        return found
+
+    vehicle = layers_for(first)
+    next_vehicle = layers_for(second) if second != first else {}
     return {
         "plate": plates[first],
         "next_plate": plates.get(second) if second != first else None,
@@ -1654,6 +1684,7 @@ def environment_context(tokens, when=None, phase=None, blend=0.0,
         "darkness": darkness,
         "colour_map": colour_map,
         "vehicle": vehicle,
+        "next_vehicle": next_vehicle,
     }
 
 

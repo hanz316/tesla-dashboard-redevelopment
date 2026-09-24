@@ -8,11 +8,11 @@
     887,
     293
    ],
-   "pixels": 201,
+   "pixels": 193,
    "colour": [
     207,
-    82,
-    73
+    81,
+    72
    ]
   },
   "lamp_indicator_left": {
@@ -22,9 +22,9 @@
     887,
     293
    ],
-   "pixels": 283,
+   "pixels": 271,
    "colour": [
-    201,
+    203,
     80,
     69
    ]
@@ -36,11 +36,11 @@
     887,
     293
    ],
-   "pixels": 295,
+   "pixels": 276,
    "colour": [
     204,
-    82,
-    71
+    80,
+    70
    ]
   },
   "streak_brake": {
@@ -53,8 +53,8 @@
    ],
    "colour": [
     207,
-    82,
-    73
+    81,
+    72
    ],
    "length_px": 150
   },
@@ -62,12 +62,12 @@
    "file": "assets/ui/horizon_v5_streak_indicator_left.png",
    "box": [
     774,
-    320,
+    319,
     870,
     386
    ],
    "colour": [
-    201,
+    203,
     80,
     69
    ],
@@ -77,24 +77,24 @@
    "file": "assets/ui/horizon_v5_streak_indicator_right.png",
    "box": [
     776,
-    320,
+    319,
     870,
     386
    ],
    "colour": [
     204,
-    82,
-    71
+    80,
+    70
    ],
    "length_px": 96
   },
   "wake": {
    "file": "assets/ui/horizon_v5_wake.png",
    "box": [
-    624,
-    340,
-    1295,
-    393
+    618,
+    322,
+    1293,
+    380
    ],
    "colour": [
     96,
@@ -120,9 +120,9 @@
    "low": {
     "file": "assets/ui/horizon_v5_wheel_low.png",
     "box": [
-     790,
-     211,
-     1135,
+     785,
+     203,
+     1134,
      348
     ],
     "spin_deg": 22.0
@@ -130,9 +130,9 @@
    "medium": {
     "file": "assets/ui/horizon_v5_wheel_medium.png",
     "box": [
-     790,
-     211,
-     1135,
+     785,
+     203,
+     1134,
      348
     ],
     "spin_deg": 70.0
@@ -140,9 +140,9 @@
    "high": {
     "file": "assets/ui/horizon_v5_wheel_high.png",
     "box": [
-     790,
-     211,
-     1135,
+     785,
+     203,
+     1134,
      348
     ],
     "spin_deg": 190.0
@@ -151,16 +151,16 @@
  },
  "wheel_boxes_px": [
   [
-   967.0,
-   149.1,
-   1152.0,
-   480
+   961.8,
+   147.9,
+   1142.2,
+   460
   ],
   [
-   778.1,
-   289.9,
-   967.0,
-   480
+   777.6,
+   280.7,
+   961.8,
+   460
   ]
  ],
  "motion": [

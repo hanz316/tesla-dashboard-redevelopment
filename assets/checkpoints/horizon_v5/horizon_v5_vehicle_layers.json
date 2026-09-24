@@ -17,7 +17,8 @@
    0.68
   ],
   "tint_mix": 0.28,
-  "why": "the wet road already returns the car's mirror image; this baked layer is the soft, rippled part of that reflection - the light that scatters on the water rather than the sharp mirror line"
+  "why": "the wet road already returns the car's mirror image; this baked layer is the soft, rippled part of that reflection - the light that scatters on the water rather than the sharp mirror line",
+  "phase": "night"
  },
  "records": [
   {
@@ -33,7 +34,7 @@
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 33006,
+   "response_pixels": 33009,
    "reflection_box": [
     757,
     346,
@@ -62,7 +63,7 @@
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 33028,
+   "response_pixels": 33034,
    "reflection_box": [
     757,
     346,
@@ -91,7 +92,7 @@
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 33219,
+   "response_pixels": 33218,
    "reflection_box": [
     757,
     346,
@@ -120,7 +121,7 @@
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 33219,
+   "response_pixels": 33218,
    "reflection_box": [
     757,
     346,
@@ -149,7 +150,7 @@
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 33388,
+   "response_pixels": 33385,
    "reflection_box": [
     757,
     346,
@@ -178,7 +179,7 @@
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 33345,
+   "response_pixels": 33346,
    "reflection_box": [
     757,
     346,
@@ -207,7 +208,7 @@
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 33381,
+   "response_pixels": 33382,
    "reflection_box": [
     757,
     346,

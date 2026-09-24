@@ -1,0 +1,166 @@
+{
+ "schema": "horizon-v5.2-material-metrics v1",
+ "why": "the review's complaint was that scalars passed while DAY collapsed into one grey mass; these are the relationships it actually named",
+ "phases": {
+  "dawn": {
+   "status": "MEASURED",
+   "plate": "assets/ui/horizon_v5_background_dawn.png",
+   "environment": {
+    "horizon_row": 164,
+    "sky": 71.4,
+    "sky_top": 69.0,
+    "haze": 67.4,
+    "ground_far": 51.6,
+    "ground_near": 51.3,
+    "ground_to_sky_ratio": 0.718,
+    "terrain_depth": {
+     "strongest_edge_steps": [
+      -50.7,
+      -47.0,
+      -45.7
+     ],
+     "max_abs_edge_step": 50.7
+    }
+   },
+   "vehicle": {
+    "body_pixels": 56308,
+    "paint_mean": 148.3,
+    "paint_spread": 34.0,
+    "glass_mean": 32.9,
+    "tyre_mean": 67.0,
+    "rim_mean": 144.4,
+    "highlight_coverage": 0.034,
+    "glass_minus_paint": -115.3,
+    "tyre_minus_paint": -81.2,
+    "rim_minus_tyre": 77.4
+   },
+   "reflection": {
+    "contact_row": 346,
+    "length_px": 112,
+    "mean_magnitude": 3.14,
+    "peak_magnitude": 69.0,
+    "lit_row_fraction": 0.836
+   }
+  },
+  "day": {
+   "status": "MEASURED",
+   "plate": "assets/ui/horizon_v5_background_day.png",
+   "environment": {
+    "horizon_row": 169,
+    "sky": 165.5,
+    "sky_top": 164.5,
+    "haze": 163.9,
+    "ground_far": 94.8,
+    "ground_near": 84.9,
+    "ground_to_sky_ratio": 0.513,
+    "terrain_depth": {
+     "strongest_edge_steps": [
+      -81.7,
+      -56.0,
+      -54.7
+     ],
+     "max_abs_edge_step": 81.7
+    }
+   },
+   "vehicle": {
+    "body_pixels": 56308,
+    "paint_mean": 163.6,
+    "paint_spread": 23.1,
+    "glass_mean": 36.0,
+    "tyre_mean": 83.8,
+    "rim_mean": 160.6,
+    "highlight_coverage": 0.0375,
+    "glass_minus_paint": -127.6,
+    "tyre_minus_paint": -79.8,
+    "rim_minus_tyre": 76.8
+   },
+   "reflection": {
+    "contact_row": 346,
+    "length_px": 103,
+    "mean_magnitude": 2.6,
+    "peak_magnitude": 65.0,
+    "lit_row_fraction": 0.769
+   }
+  },
+  "dusk": {
+   "status": "MEASURED",
+   "plate": "assets/ui/horizon_v5_background_dusk.png",
+   "environment": {
+    "horizon_row": 162,
+    "sky": 57.9,
+    "sky_top": 55.0,
+    "haze": 53.2,
+    "ground_far": 44.2,
+    "ground_near": 43.0,
+    "ground_to_sky_ratio": 0.742,
+    "terrain_depth": {
+     "strongest_edge_steps": [
+      -40.3,
+      -38.0,
+      -37.7
+     ],
+     "max_abs_edge_step": 40.3
+    }
+   },
+   "vehicle": {
+    "body_pixels": 56308,
+    "paint_mean": 148.0,
+    "paint_spread": 34.6,
+    "glass_mean": 29.8,
+    "tyre_mean": 65.3,
+    "rim_mean": 143.8,
+    "highlight_coverage": 0.0346,
+    "glass_minus_paint": -118.3,
+    "tyre_minus_paint": -82.8,
+    "rim_minus_tyre": 78.5
+   },
+   "reflection": {
+    "contact_row": 346,
+    "length_px": 113,
+    "mean_magnitude": 3.13,
+    "peak_magnitude": 73.0,
+    "lit_row_fraction": 0.843
+   }
+  },
+  "night": {
+   "status": "MEASURED",
+   "plate": "assets/ui/horizon_v5_background.png",
+   "environment": {
+    "horizon_row": 162,
+    "sky": 19.1,
+    "sky_top": 18.4,
+    "haze": 18.0,
+    "ground_far": 19.2,
+    "ground_near": 14.6,
+    "ground_to_sky_ratio": 0.767,
+    "terrain_depth": {
+     "strongest_edge_steps": [
+      -19.0,
+      -13.3,
+      -13.3
+     ],
+     "max_abs_edge_step": 19.0
+    }
+   },
+   "vehicle": {
+    "body_pixels": 56308,
+    "paint_mean": 156.0,
+    "paint_spread": 34.0,
+    "glass_mean": 9.3,
+    "tyre_mean": 65.2,
+    "rim_mean": 150.6,
+    "highlight_coverage": 0.0409,
+    "glass_minus_paint": -146.7,
+    "tyre_minus_paint": -90.7,
+    "rim_minus_tyre": 85.4
+   },
+   "reflection": {
+    "contact_row": 346,
+    "length_px": 120,
+    "mean_magnitude": 3.38,
+    "peak_magnitude": 90.0,
+    "lit_row_fraction": 0.896
+   }
+  }
+ }
+}

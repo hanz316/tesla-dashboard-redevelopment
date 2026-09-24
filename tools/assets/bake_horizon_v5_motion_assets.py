@@ -110,12 +110,12 @@ def wake_image(size, car_box, colour, seed):
         for index in range(len(points) - 1):
             t = index / float(len(points) - 1)
             draw.line([points[index], points[index + 1]],
-                      fill=(*colour, int(round(30 * (1.0 - t) ** 1.2))),
+                      fill=(*colour, int(round(58 * (1.0 - t) ** 1.2))),
                       width=max(1, int(round(1 + 3 * t))))
     return layer.filter(ImageFilter.GaussianBlur(5.0))
 
 
-def roadflow_tile(size, seed, streaks=26):
+def roadflow_tile(size, seed, streaks=38):
     """A small, faint wet-road streak texture. The device translates it and
     wraps it; it is a tile, so repeating it costs no extra memory."""
     import numpy as np
@@ -128,12 +128,12 @@ def roadflow_tile(size, seed, streaks=26):
     for _ in range(streaks):
         x = rng.uniform(0, width)
         length = rng.uniform(height * 0.35, height * 0.95)
-        alpha = rng.uniform(9, 26)
+        alpha = rng.uniform(22, 58)
         thickness = rng.uniform(1.0, 3.0)
         draw.line([(x, height - length), (x + rng.uniform(-3, 3), height)],
                   fill=(150, 178, 205, int(alpha)),
                   width=max(1, int(round(thickness))))
-    return layer.filter(ImageFilter.GaussianBlur(1.6))
+    return layer.filter(ImageFilter.GaussianBlur(1.9))
 
 
 def wheel_overlays(car_path, boxes, spin_deg):

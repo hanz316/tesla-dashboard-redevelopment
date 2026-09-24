@@ -199,6 +199,9 @@ def main():
     parser.add_argument("--phase", default=None,
                         help="compose another environment's vehicle layers, "
                              "e.g. day (the passes live under <dir>/<phase>)")
+    parser.add_argument("--reflection-phase", default=None,
+                        help="use the wet-road response of this environment "
+                             "phase instead of the default night one")
     args = parser.parse_args()
     try:
         import numpy  # noqa: F401
@@ -221,6 +224,18 @@ def main():
             f"horizon_v5_vehicle_layers_{args.phase}.json")
 
     edges = [float(value) for value in args.alpha_edges.split(",")]
+    # The wet road answers daylight differently from night: a shorter, weaker,
+    # more broken response. This is measured per phase in
+    # horizon_v52_material_metrics.json, not asserted.
+    PHASE_REFLECTION = {
+        "night": {},
+        "dawn": {"squash": 0.54, "blur": 7.5, "alpha": 0.34,
+                 "falloff": 2.0, "ripple": 0.22},
+        "dusk": {"squash": 0.52, "blur": 8.0, "alpha": 0.32,
+                 "falloff": 2.1, "ripple": 0.26},
+        "day": {"squash": 0.36, "blur": 10.0, "alpha": 0.20,
+                "falloff": 2.6, "ripple": 0.34},
+    }
     reflection_spec = {
         "squash": args.reflection_squash,
         "blur": args.reflection_blur,
@@ -234,6 +249,9 @@ def main():
                "layer is the soft, rippled part of that reflection - the light "
                "that scatters on the water rather than the sharp mirror line",
     }
+    reflection_spec.update(PHASE_REFLECTION.get(
+        args.reflection_phase or args.phase or "night", {}))
+    reflection_spec["phase"] = args.reflection_phase or args.phase or "night"
     states = args.states.split(",")
     layers = {}
     records = []

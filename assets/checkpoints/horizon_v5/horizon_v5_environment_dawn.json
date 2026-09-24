@@ -73,18 +73,18 @@
   "wheel_high": "assets/rendered/vehicle/horizon_v5/dawn/car/wheel_high/000.png"
  },
  "timings_s": {
-  "plate": 10.5,
-  "road_no_car": 12.5,
-  "state_base": 28.3,
-  "state_running": 18.2,
-  "state_brake": 18.2,
-  "state_headlight": 18.3,
-  "state_indicator_left": 18.5,
-  "state_indicator_right": 18.5,
-  "state_hazard": 18.3,
-  "wheel_low": 4.1,
-  "wheel_medium": 4.0,
-  "wheel_high": 4.0
+  "plate": 8.7,
+  "road_no_car": 10.1,
+  "state_base": 23.2,
+  "state_running": 14.9,
+  "state_brake": 15.1,
+  "state_headlight": 15.2,
+  "state_indicator_left": 16.2,
+  "state_indicator_right": 17.8,
+  "state_hazard": 18.7,
+  "wheel_low": 4.2,
+  "wheel_medium": 4.3,
+  "wheel_high": 4.2
  },
  "studio_hidden": [
   "ENV_Floor",
@@ -181,5 +181,5 @@
    ]
   }
  ],
- "elapsed_s": 210.0
+ "elapsed_s": 187.1
 }

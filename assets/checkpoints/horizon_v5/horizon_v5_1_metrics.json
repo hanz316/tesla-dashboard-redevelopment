@@ -34,7 +34,7 @@
    },
    "darkness": 1.0,
    "frame": "assets/checkpoints/horizon_v5/_cycle_05.png",
-   "mean_luminance": 26.19
+   "mean_luminance": 22.46
   },
   {
    "hour": 6,
@@ -46,7 +46,7 @@
    },
    "darkness": 0.9379,
    "frame": "assets/checkpoints/horizon_v5/_cycle_06.png",
-   "mean_luminance": 29.63
+   "mean_luminance": 25.5
   },
   {
    "hour": 7,
@@ -58,7 +58,7 @@
    },
    "darkness": 0.5626,
    "frame": "assets/checkpoints/horizon_v5/_cycle_07.png",
-   "mean_luminance": 50.42
+   "mean_luminance": 44.02
   },
   {
    "hour": 9,
@@ -70,7 +70,7 @@
    },
    "darkness": 0.35,
    "frame": "assets/checkpoints/horizon_v5/_cycle_09.png",
-   "mean_luminance": 103.29
+   "mean_luminance": 76.93
   },
   {
    "hour": 12,
@@ -82,7 +82,7 @@
    },
    "darkness": 0.35,
    "frame": "assets/checkpoints/horizon_v5/_cycle_12.png",
-   "mean_luminance": 103.29
+   "mean_luminance": 76.93
   },
   {
    "hour": 15,
@@ -94,7 +94,7 @@
    },
    "darkness": 0.35,
    "frame": "assets/checkpoints/horizon_v5/_cycle_15.png",
-   "mean_luminance": 103.29
+   "mean_luminance": 76.93
   },
   {
    "hour": 17,
@@ -106,7 +106,7 @@
    },
    "darkness": 0.35,
    "frame": "assets/checkpoints/horizon_v5/_cycle_17.png",
-   "mean_luminance": 103.29
+   "mean_luminance": 76.93
   },
   {
    "hour": 18,
@@ -118,7 +118,7 @@
    },
    "darkness": 0.35,
    "frame": "assets/checkpoints/horizon_v5/_cycle_18.png",
-   "mean_luminance": 102.91
+   "mean_luminance": 76.39
   },
   {
    "hour": 19,
@@ -130,7 +130,7 @@
    },
    "darkness": 0.4655,
    "frame": "assets/checkpoints/horizon_v5/_cycle_19.png",
-   "mean_luminance": 57.57
+   "mean_luminance": 45.87
   },
   {
    "hour": 21,
@@ -142,7 +142,7 @@
    },
    "darkness": 1.0,
    "frame": "assets/checkpoints/horizon_v5/_cycle_21.png",
-   "mean_luminance": 26.19
+   "mean_luminance": 22.46
   },
   {
    "hour": 0,
@@ -154,7 +154,7 @@
    },
    "darkness": 1.0,
    "frame": "assets/checkpoints/horizon_v5/_cycle_00.png",
-   "mean_luminance": 26.19
+   "mean_luminance": 22.46
   },
   {
    "hour": 3,
@@ -166,7 +166,7 @@
    },
    "darkness": 1.0,
    "frame": "assets/checkpoints/horizon_v5/_cycle_03.png",
-   "mean_luminance": 26.19
+   "mean_luminance": 22.46
   }
  ],
  "daily_cycle_sheet": "assets/checkpoints/horizon_v5/horizon_v5_1_daily_cycle_contact_sheet.png",
@@ -205,10 +205,10 @@
   "sunrise": {
    "samples": 91,
    "step_minutes": 2,
-   "max_frame_mean_difference": 5.523,
-   "mean_frame_mean_difference": 0.9723,
-   "total_transition_difference": 85.5519,
-   "max_step_fraction_of_transition": 0.0646,
+   "max_frame_mean_difference": 1.9437,
+   "mean_frame_mean_difference": 0.7028,
+   "total_transition_difference": 62.3802,
+   "max_step_fraction_of_transition": 0.0312,
    "max_palette_step": 7,
    "windows": {
     "dawn": [
@@ -224,10 +224,10 @@
   "sunset": {
    "samples": 91,
    "step_minutes": 2,
-   "max_frame_mean_difference": 7.0579,
-   "mean_frame_mean_difference": 0.9906,
-   "total_transition_difference": 87.0351,
-   "max_step_fraction_of_transition": 0.0811,
+   "max_frame_mean_difference": 1.7335,
+   "mean_frame_mean_difference": 0.7079,
+   "total_transition_difference": 62.6607,
+   "max_step_fraction_of_transition": 0.0277,
    "max_palette_step": 7,
    "windows": {
     "dawn": [
@@ -243,29 +243,29 @@
  },
  "daylight_contrast": {
   "primary_text": {
-   "min_ratio": 6.0,
-   "max_ratio": 10.12,
-   "samples": 4
+   "min_ratio": 4.86,
+   "max_ratio": 4.86,
+   "samples": 9553
   },
   "secondary_text": {
-   "min_ratio": 8.25,
-   "max_ratio": 11.06,
-   "samples": 8
+   "min_ratio": 5.75,
+   "max_ratio": 5.75,
+   "samples": 3838
   },
   "muted_text": {
-   "min_ratio": 5.87,
-   "max_ratio": 7.97,
-   "samples": 7
+   "min_ratio": 4.69,
+   "max_ratio": 4.69,
+   "samples": 3476
   },
   "accent": {
-   "min_ratio": 3.37,
-   "max_ratio": 3.67,
-   "samples": 2
+   "min_ratio": 3.14,
+   "max_ratio": 3.14,
+   "samples": 11576
   },
   "rail_lit": {
-   "min_ratio": 3.27,
-   "max_ratio": 3.27,
-   "samples": 1
+   "min_ratio": 5.01,
+   "max_ratio": 5.01,
+   "samples": 4754
   }
  },
  "monthly_profile": {
@@ -347,8 +347,8 @@
   "two_plate_transition_bytes": 7372800,
   "vehicle_layers_all_states_bytes": 0,
   "vehicle_layers_resident_now": 666536,
-  "motion_overlays_bytes": 1995344,
-  "resident_estimate_mb": 9.57,
+  "motion_overlays_bytes": 2049772,
+  "resident_estimate_mb": 9.62,
   "note": "ESTIMATED on the Mac; UNKNOWN UNTIL DEVICE TEST on T113"
  },
  "semantic_colours_fixed": {

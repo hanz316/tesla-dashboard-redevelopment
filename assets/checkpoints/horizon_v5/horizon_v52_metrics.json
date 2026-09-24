@@ -1,0 +1,391 @@
+{
+ "schema": "horizon-v5.2-metrics v1",
+ "old_reference": "aeeb770",
+ "evidence": {
+  "old_vs_new_day": "assets/checkpoints/horizon_v5/horizon_v52_old_vs_new_day.png",
+  "old_vs_new_night": "assets/checkpoints/horizon_v5/horizon_v52_old_vs_new_night.png",
+  "phases": "assets/checkpoints/horizon_v5/horizon_v52_phases.png",
+  "physical_scale": "assets/checkpoints/horizon_v5/horizon_v52_physical_scale.png",
+  "reflection_phases": "assets/checkpoints/horizon_v5/horizon_v52_reflection_phases.png"
+ },
+ "material_metrics": {
+  "schema": "horizon-v5.2-material-metrics v1",
+  "why": "the review's complaint was that scalars passed while DAY collapsed into one grey mass; these are the relationships it actually named",
+  "phases": {
+   "dawn": {
+    "status": "MEASURED",
+    "plate": "assets/ui/horizon_v5_background_dawn.png",
+    "environment": {
+     "horizon_row": 164,
+     "sky": 71.4,
+     "sky_top": 69.0,
+     "haze": 67.4,
+     "ground_far": 51.6,
+     "ground_near": 51.3,
+     "ground_to_sky_ratio": 0.718,
+     "terrain_depth": {
+      "strongest_edge_steps": [
+       -50.7,
+       -47.0,
+       -45.7
+      ],
+      "max_abs_edge_step": 50.7
+     }
+    },
+    "vehicle": {
+     "body_pixels": 56308,
+     "paint_mean": 148.3,
+     "paint_spread": 34.0,
+     "glass_mean": 32.9,
+     "tyre_mean": 67.0,
+     "rim_mean": 144.4,
+     "highlight_coverage": 0.034,
+     "glass_minus_paint": -115.3,
+     "tyre_minus_paint": -81.2,
+     "rim_minus_tyre": 77.4
+    },
+    "reflection": {
+     "contact_row": 346,
+     "length_px": 112,
+     "mean_magnitude": 3.14,
+     "peak_magnitude": 69.0,
+     "lit_row_fraction": 0.836
+    }
+   },
+   "day": {
+    "status": "MEASURED",
+    "plate": "assets/ui/horizon_v5_background_day.png",
+    "environment": {
+     "horizon_row": 169,
+     "sky": 165.5,
+     "sky_top": 164.5,
+     "haze": 163.9,
+     "ground_far": 94.8,
+     "ground_near": 84.9,
+     "ground_to_sky_ratio": 0.513,
+     "terrain_depth": {
+      "strongest_edge_steps": [
+       -81.7,
+       -56.0,
+       -54.7
+      ],
+      "max_abs_edge_step": 81.7
+     }
+    },
+    "vehicle": {
+     "body_pixels": 56308,
+     "paint_mean": 163.6,
+     "paint_spread": 23.1,
+     "glass_mean": 36.0,
+     "tyre_mean": 83.8,
+     "rim_mean": 160.6,
+     "highlight_coverage": 0.0375,
+     "glass_minus_paint": -127.6,
+     "tyre_minus_paint": -79.8,
+     "rim_minus_tyre": 76.8
+    },
+    "reflection": {
+     "contact_row": 346,
+     "length_px": 103,
+     "mean_magnitude": 2.6,
+     "peak_magnitude": 65.0,
+     "lit_row_fraction": 0.769
+    }
+   },
+   "dusk": {
+    "status": "MEASURED",
+    "plate": "assets/ui/horizon_v5_background_dusk.png",
+    "environment": {
+     "horizon_row": 162,
+     "sky": 57.9,
+     "sky_top": 55.0,
+     "haze": 53.2,
+     "ground_far": 44.2,
+     "ground_near": 43.0,
+     "ground_to_sky_ratio": 0.742,
+     "terrain_depth": {
+      "strongest_edge_steps": [
+       -40.3,
+       -38.0,
+       -37.7
+      ],
+      "max_abs_edge_step": 40.3
+     }
+    },
+    "vehicle": {
+     "body_pixels": 56308,
+     "paint_mean": 148.0,
+     "paint_spread": 34.6,
+     "glass_mean": 29.8,
+     "tyre_mean": 65.3,
+     "rim_mean": 143.8,
+     "highlight_coverage": 0.0346,
+     "glass_minus_paint": -118.3,
+     "tyre_minus_paint": -82.8,
+     "rim_minus_tyre": 78.5
+    },
+    "reflection": {
+     "contact_row": 346,
+     "length_px": 113,
+     "mean_magnitude": 3.13,
+     "peak_magnitude": 73.0,
+     "lit_row_fraction": 0.843
+    }
+   },
+   "night": {
+    "status": "MEASURED",
+    "plate": "assets/ui/horizon_v5_background.png",
+    "environment": {
+     "horizon_row": 162,
+     "sky": 19.1,
+     "sky_top": 18.4,
+     "haze": 18.0,
+     "ground_far": 19.2,
+     "ground_near": 14.6,
+     "ground_to_sky_ratio": 0.767,
+     "terrain_depth": {
+      "strongest_edge_steps": [
+       -19.0,
+       -13.3,
+       -13.3
+      ],
+      "max_abs_edge_step": 19.0
+     }
+    },
+    "vehicle": {
+     "body_pixels": 56308,
+     "paint_mean": 156.0,
+     "paint_spread": 34.0,
+     "glass_mean": 9.3,
+     "tyre_mean": 65.2,
+     "rim_mean": 150.6,
+     "highlight_coverage": 0.0409,
+     "glass_minus_paint": -146.7,
+     "tyre_minus_paint": -90.7,
+     "rim_minus_tyre": 85.4
+    },
+    "reflection": {
+     "contact_row": 346,
+     "length_px": 120,
+     "mean_magnitude": 3.38,
+     "peak_magnitude": 90.0,
+     "lit_row_fraction": 0.896
+    }
+   }
+  }
+ },
+ "motion_gate": {
+  "schema": "horizon-v5.2-perceptual-motion v1",
+  "phase": "day",
+  "regions": {
+   "wheels": [
+    785,
+    203,
+    1134,
+    348
+   ],
+   "road": [
+    0,
+    300,
+    1920,
+    470
+   ],
+   "wake": [
+    618,
+    322,
+    1293,
+    380
+   ],
+   "trail": [
+    763,
+    319,
+    881,
+    440
+   ]
+  },
+  "pairs": {
+   "0_to_30": {
+    "full_size": {
+     "wheels": {
+      "mean": 7.638,
+      "p99": 64.0,
+      "changed_fraction": 0.2799
+     },
+     "road": {
+      "mean": 0.553,
+      "p99": 24.0,
+      "changed_fraction": 0.0161
+     },
+     "wake": {
+      "mean": 2.024,
+      "p99": 56.0,
+      "changed_fraction": 0.058
+     },
+     "trail": {
+      "mean": 4.18,
+      "p99": 69.0,
+      "changed_fraction": 0.093
+     }
+    },
+    "half_size": {
+     "wheels": {
+      "mean": 7.671,
+      "p99": 64.0
+     },
+     "road": {
+      "mean": 0.659,
+      "p99": 28.0
+     },
+     "wake": {
+      "mean": 2.027,
+      "p99": 56.0
+     },
+     "trail": {
+      "mean": 3.963,
+      "p99": 67.21
+     }
+    }
+   },
+   "30_to_80": {
+    "full_size": {
+     "wheels": {
+      "mean": 4.509,
+      "p99": 38.0,
+      "changed_fraction": 0.2029
+     },
+     "road": {
+      "mean": 0.336,
+      "p99": 15.0,
+      "changed_fraction": 0.0142
+     },
+     "wake": {
+      "mean": 1.119,
+      "p99": 28.0,
+      "changed_fraction": 0.0542
+     },
+     "trail": {
+      "mean": 1.827,
+      "p99": 36.0,
+      "changed_fraction": 0.0817
+     }
+    },
+    "half_size": {
+     "wheels": {
+      "mean": 4.553,
+      "p99": 39.0
+     },
+     "road": {
+      "mean": 0.415,
+      "p99": 18.0
+     },
+     "wake": {
+      "mean": 1.135,
+      "p99": 27.0
+     },
+     "trail": {
+      "mean": 1.761,
+      "p99": 37.0
+     }
+    }
+   },
+   "80_to_120": {
+    "full_size": {
+     "wheels": {
+      "mean": 9.737,
+      "p99": 86.0,
+      "changed_fraction": 0.2462
+     },
+     "road": {
+      "mean": 0.72,
+      "p99": 23.0,
+      "changed_fraction": 0.0144
+     },
+     "wake": {
+      "mean": 1.957,
+      "p99": 58.0,
+      "changed_fraction": 0.0515
+     },
+     "trail": {
+      "mean": 3.53,
+      "p99": 80.0,
+      "changed_fraction": 0.0784
+     }
+    },
+    "half_size": {
+     "wheels": {
+      "mean": 9.808,
+      "p99": 85.0
+     },
+     "road": {
+      "mean": 0.838,
+      "p99": 30.0
+     },
+     "wake": {
+      "mean": 1.993,
+      "p99": 58.0
+     },
+     "trail": {
+      "mean": 3.283,
+      "p99": 79.0
+     }
+    }
+   }
+  },
+  "wheel_structure": {
+   "0": {
+    "edge_energy": 3.989,
+    "spread": 43.846
+   },
+   "30": {
+    "edge_energy": 3.525,
+    "spread": 42.487
+   },
+   "80": {
+    "edge_energy": 3.421,
+    "spread": 40.909
+   },
+   "120": {
+    "edge_energy": 3.355,
+    "spread": 40.984
+   }
+  },
+  "wheel_structure_falls": true,
+  "region_masking": {
+   "ui_boxes": 37,
+   "why": "the gate must not be satisfiable by the speed digits changing"
+  },
+  "cumulative_vs_standstill": {
+   "0": {
+    "wheels": 0.0,
+    "road": 0.0,
+    "wake": 0.0,
+    "trail": 0.0,
+    "total": 0.0
+   },
+   "30": {
+    "wheels": 7.638,
+    "road": 0.553,
+    "wake": 2.024,
+    "trail": 4.18,
+    "total": 14.396
+   },
+   "80": {
+    "wheels": 7.444,
+    "road": 0.467,
+    "wake": 1.648,
+    "trail": 3.202,
+    "total": 12.761
+   },
+   "120": {
+    "wheels": 13.67,
+    "road": 0.861,
+    "wake": 2.23,
+    "trail": 3.108,
+    "total": 19.869
+   }
+  },
+  "monotone_total": false,
+  "zero_at_standstill": true,
+  "evidence": "assets/checkpoints/horizon_v5/horizon_v52_motion_gate.png"
+ }
+}

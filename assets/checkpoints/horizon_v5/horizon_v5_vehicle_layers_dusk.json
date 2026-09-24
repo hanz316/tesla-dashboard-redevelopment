@@ -5,11 +5,11 @@
   14.0
  ],
  "reflection": {
-  "squash": 0.62,
-  "blur": 7.0,
-  "alpha": 0.3,
-  "falloff": 1.9,
-  "ripple": 0.18,
+  "squash": 0.52,
+  "blur": 8.0,
+  "alpha": 0.32,
+  "falloff": 2.1,
+  "ripple": 0.26,
   "ripple_cycles": 7.0,
   "tint": [
    0.42,
@@ -17,7 +17,8 @@
    0.68
   ],
   "tint_mix": 0.28,
-  "why": "the wet road already returns the car's mirror image; this baked layer is the soft, rippled part of that reflection - the light that scatters on the water rather than the sharp mirror line"
+  "why": "the wet road already returns the car's mirror image; this baked layer is the soft, rippled part of that reflection - the light that scatters on the water rather than the sharp mirror line",
+  "phase": "dusk"
  },
  "records": [
   {
@@ -33,12 +34,12 @@
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 34280,
+   "response_pixels": 34279,
    "reflection_box": [
     757,
     346,
     1151,
-    482
+    460
    ],
    "car_box": [
     757,
@@ -62,12 +63,12 @@
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 34299,
+   "response_pixels": 34296,
    "reflection_box": [
     757,
     346,
     1151,
-    482
+    460
    ],
    "car_box": [
     757,
@@ -91,12 +92,12 @@
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 34529,
+   "response_pixels": 34526,
    "reflection_box": [
     757,
     346,
     1151,
-    482
+    460
    ],
    "car_box": [
     757,
@@ -120,12 +121,12 @@
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 34529,
+   "response_pixels": 34526,
    "reflection_box": [
     757,
     346,
     1151,
-    482
+    460
    ],
    "car_box": [
     757,
@@ -149,12 +150,12 @@
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 34562,
+   "response_pixels": 34559,
    "reflection_box": [
     757,
     346,
     1151,
-    482
+    460
    ],
    "car_box": [
     757,
@@ -178,12 +179,12 @@
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 34587,
+   "response_pixels": 34584,
    "reflection_box": [
     757,
     346,
     1151,
-    482
+    460
    ],
    "car_box": [
     757,
@@ -207,12 +208,12 @@
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 34577,
+   "response_pixels": 34574,
    "reflection_box": [
     757,
     346,
     1151,
-    482
+    460
    ],
    "car_box": [
     757,

@@ -73,18 +73,18 @@
   "wheel_high": "assets/rendered/vehicle/horizon_v5/car/wheel_high/000.png"
  },
  "timings_s": {
-  "plate": 8.8,
-  "road_no_car": 10.0,
-  "state_base": 22.5,
-  "state_running": 14.6,
-  "state_brake": 14.7,
-  "state_headlight": 14.8,
-  "state_indicator_left": 14.9,
-  "state_indicator_right": 15.2,
-  "state_hazard": 16.0,
-  "wheel_low": 3.5,
-  "wheel_medium": 3.6,
-  "wheel_high": 3.5
+  "plate": 11.7,
+  "road_no_car": 13.8,
+  "state_base": 971.4,
+  "state_running": 35.4,
+  "state_brake": 3950.6,
+  "state_headlight": 631.9,
+  "state_indicator_left": 14.1,
+  "state_indicator_right": 14.0,
+  "state_hazard": 13.8,
+  "wheel_low": 3.1,
+  "wheel_medium": 3.1,
+  "wheel_high": 3.1
  },
  "studio_hidden": [
   "ENV_Floor",
@@ -181,5 +181,5 @@
    ]
   }
  ],
- "elapsed_s": 174.5
+ "elapsed_s": 6665.9
 }

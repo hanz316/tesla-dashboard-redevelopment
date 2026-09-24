@@ -16,6 +16,8 @@
  ],
  "content_scale": 0.6629834254143646,
  "assets": {
+  "dial_backing": "assets/ui/horizon_v5_dial_backing.png",
+  "energy_backing": "assets/ui/horizon_v5_energy_backing.png",
   "arc_glow": "assets/ui/horizon_v5_arc_glow.png",
   "numeral_glow": "assets/ui/horizon_v5_numeral_glow.png",
   "rail_track": "assets/ui/horizon_v5_rail_track.png"
@@ -32,6 +34,18 @@
    150,
    449,
    287
+  ],
+  "horizon_v5_dial_backing.png": [
+   225,
+   70,
+   592,
+   391
+  ],
+  "horizon_v5_energy_backing.png": [
+   1246,
+   26,
+   1755,
+   455
   ],
   "horizon_v5_rail_track.png": [
    1561,

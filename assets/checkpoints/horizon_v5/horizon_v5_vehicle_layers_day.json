@@ -5,11 +5,11 @@
   14.0
  ],
  "reflection": {
-  "squash": 0.62,
-  "blur": 7.0,
-  "alpha": 0.3,
-  "falloff": 1.9,
-  "ripple": 0.18,
+  "squash": 0.36,
+  "blur": 10.0,
+  "alpha": 0.2,
+  "falloff": 2.6,
+  "ripple": 0.34,
   "ripple_cycles": 7.0,
   "tint": [
    0.42,
@@ -17,28 +17,29 @@
    0.68
   ],
   "tint_mix": 0.28,
-  "why": "the wet road already returns the car's mirror image; this baked layer is the soft, rippled part of that reflection - the light that scatters on the water rather than the sharp mirror line"
+  "why": "the wet road already returns the car's mirror image; this baked layer is the soft, rippled part of that reflection - the light that scatters on the water rather than the sharp mirror line",
+  "phase": "day"
  },
  "records": [
   {
    "state": "base",
    "crop_box": [
-    727,
+    697,
     103,
-    1180,
+    1195,
     480
    ],
    "layer_size": [
-    453,
+    498,
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 35775,
+   "response_pixels": 28632,
    "reflection_box": [
     757,
     346,
     1151,
-    482
+    425
    ],
    "car_box": [
     757,
@@ -46,28 +47,28 @@
     1151,
     346
    ],
-   "decoded_rgba_bytes": 683124,
+   "decoded_rgba_bytes": 750984,
    "background_decoded_rgba_bytes": 3686400
   },
   {
    "state": "running",
    "crop_box": [
-    728,
+    697,
     103,
-    1180,
+    1195,
     480
    ],
    "layer_size": [
-    452,
+    498,
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 35779,
+   "response_pixels": 28641,
    "reflection_box": [
     757,
     346,
     1151,
-    482
+    425
    ],
    "car_box": [
     757,
@@ -75,28 +76,28 @@
     1151,
     346
    ],
-   "decoded_rgba_bytes": 681616,
+   "decoded_rgba_bytes": 750984,
    "background_decoded_rgba_bytes": 3686400
   },
   {
    "state": "brake",
    "crop_box": [
-    727,
+    697,
     103,
-    1180,
+    1195,
     480
    ],
    "layer_size": [
-    453,
+    498,
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 35763,
+   "response_pixels": 28652,
    "reflection_box": [
     757,
     346,
     1151,
-    482
+    425
    ],
    "car_box": [
     757,
@@ -104,28 +105,28 @@
     1151,
     346
    ],
-   "decoded_rgba_bytes": 683124,
+   "decoded_rgba_bytes": 750984,
    "background_decoded_rgba_bytes": 3686400
   },
   {
    "state": "headlight",
    "crop_box": [
-    727,
+    697,
     103,
-    1180,
+    1195,
     480
    ],
    "layer_size": [
-    453,
+    498,
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 35763,
+   "response_pixels": 28652,
    "reflection_box": [
     757,
     346,
     1151,
-    482
+    425
    ],
    "car_box": [
     757,
@@ -133,28 +134,28 @@
     1151,
     346
    ],
-   "decoded_rgba_bytes": 683124,
+   "decoded_rgba_bytes": 750984,
    "background_decoded_rgba_bytes": 3686400
   },
   {
    "state": "indicator_left",
    "crop_box": [
-    727,
+    697,
     103,
-    1180,
+    1195,
     480
    ],
    "layer_size": [
-    453,
+    498,
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 35772,
+   "response_pixels": 28655,
    "reflection_box": [
     757,
     346,
     1151,
-    482
+    425
    ],
    "car_box": [
     757,
@@ -162,28 +163,28 @@
     1151,
     346
    ],
-   "decoded_rgba_bytes": 683124,
+   "decoded_rgba_bytes": 750984,
    "background_decoded_rgba_bytes": 3686400
   },
   {
    "state": "indicator_right",
    "crop_box": [
-    727,
+    697,
     103,
-    1180,
+    1195,
     480
    ],
    "layer_size": [
-    453,
+    498,
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 35768,
+   "response_pixels": 28656,
    "reflection_box": [
     757,
     346,
     1151,
-    482
+    425
    ],
    "car_box": [
     757,
@@ -191,28 +192,28 @@
     1151,
     346
    ],
-   "decoded_rgba_bytes": 683124,
+   "decoded_rgba_bytes": 750984,
    "background_decoded_rgba_bytes": 3686400
   },
   {
    "state": "hazard",
    "crop_box": [
-    727,
+    697,
     103,
-    1180,
+    1195,
     480
    ],
    "layer_size": [
-    453,
+    498,
     377
    ],
    "solid_car_pixels": 56669,
-   "response_pixels": 35773,
+   "response_pixels": 28654,
    "reflection_box": [
     757,
     346,
     1151,
-    482
+    425
    ],
    "car_box": [
     757,
@@ -220,7 +221,7 @@
     1151,
     346
    ],
-   "decoded_rgba_bytes": 683124,
+   "decoded_rgba_bytes": 750984,
    "background_decoded_rgba_bytes": 3686400
   }
  ]

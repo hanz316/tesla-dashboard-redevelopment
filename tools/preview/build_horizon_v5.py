@@ -79,7 +79,7 @@ def motion_components(assets, vehicle_layers):
         nodes.append(image("motion.roadflow", flow["file"],
                            {"x": 0, "y": 480 - tile[1], "w": tile[0],
                             "h": tile[1]}, z=8, layer="dynamic",
-                           role="motion", opacity=0.55,
+                           role="motion", opacity=0.8,
                            offset_from={"binding": "speed",
                                         "points": [[0, 0], [30, 34], [80, 110],
                                                    [120, 190]],
@@ -269,7 +269,7 @@ def build_tokens(measurements, ui_assets):
             "accent": accent, "accent_bright": "#7FE3F2", "accent_dim": "#1B3A4A",
             "rail_lit": "#8FD8EE", "warning": "#D8A657", "critical": "#D8674F",
             "ready": "#5FC98A", "ready_dim": "#3E8F62",
-            "throw": "#DCD8CC",
+            "throw": "#DCD8CC", "rule": "#E9EEF3",
         },
         "horizon_row": measurements["horizon"]["horizon_row"],
         "typography": {"tiers": {
@@ -344,13 +344,28 @@ def build_components(measurements, ui_assets, vehicle, alignment):
                             exempt_reason="the environment plate is the whole "
                                           "canvas and is itself clear of the "
                                           "panel mask by construction"))
+    # A glow is the element's own emission: it is strong at night and held back
+    # in daylight, where the arc has to read as a shape rather than as light.
+    glow_backing = {"day": 0.35, "dawn": 0.7, "dusk": 0.7, "night": 1.0}
     components.append(baked("speed.arc.glow", "horizon_v5_arc_glow.png", z=2,
-                            role="glow", opacity=0.85))
+                            role="glow", opacity=0.85,
+                            environment_opacity=dict(glow_backing)))
     components.append(baked("speed.numeral.glow",
                             "horizon_v5_numeral_glow.png", z=3, role="glow",
-                            opacity=0.7))
+                            opacity=0.7,
+                            environment_opacity=dict(glow_backing)))
     components.append(baked("energy.rail.track", "horizon_v5_rail_track.png",
                             z=4, role="glow"))
+    # Daylight puts a bright environment behind the information, so each
+    # cluster gets a soft baked surface that fades in with the daylight. Zero at
+    # night: the accepted night look is unchanged.
+    backing = {"day": 1.0, "dawn": 0.40, "dusk": 0.40, "night": 0.0}
+    components.append(baked("cluster.dial.backing",
+                            "horizon_v5_dial_backing.png", z=9, role="glow",
+                            environment_opacity=dict(backing)))
+    components.append(baked("cluster.energy.backing",
+                            "horizon_v5_energy_backing.png", z=9, role="glow",
+                            environment_opacity=dict(backing)))
 
     # ---- LAYER 1: the vehicle ------------------------------------------
     layers = vehicle["layers"]
@@ -492,7 +507,7 @@ def build_components(measurements, ui_assets, vehicle, alignment):
     rule = box("range_rule")
     components.append(vector("energy.rule", "line",
                              {"x": rule["x"], "y": rule["y"], "w": rule["w"],
-                              "h": 1}, "primary_text", z=20, opacity=0.3,
+                              "h": 1}, "rule", z=20, opacity=0.45,
                              role="energy", x2=rule["x"] + rule["w"],
                              y2=rule["y"]))
     trace = box("power_trace")

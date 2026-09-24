@@ -66,6 +66,7 @@ PALETTES = {
         "accent_dim": "#1B3A4A", "rail_lit": "#8FD8EE",
         "glass_fill": "#071017", "glass_border": "#12202A",
         "glass_top_edge": "#9FB6C4", "glass_bottom_shade": "#02060A",
+        "rule": "#E9EEF3",
     },
     "dawn": {
         "primary_text": "#F2EDE6", "secondary_text": "#D6CBC0",
@@ -74,18 +75,22 @@ PALETTES = {
         "accent_dim": "#3A4A55", "rail_lit": "#9FD2E4",
         "glass_fill": "#141119", "glass_border": "#2A2530",
         "glass_top_edge": "#C9B6A6", "glass_bottom_shade": "#0A0809",
+        "rule": "#F2EDE6",
     },
     "day": {
         # Measured, not chosen: the first daylight palette scored 2.4:1 for the
         # primary text and 1.8:1 for the rail against the rendered plate, so it
         # was darkened until the contrast measurement passed (see
         # horizon_v5_1_metrics.json -> daylight_contrast).
-        "primary_text": "#05090D", "secondary_text": "#141E27",
-        "muted_text": "#2B3742", "dim_text": "#46525D",
-        "accent": "#0A5C7D", "accent_bright": "#0B6E92",
-        "accent_dim": "#93A6B1", "rail_lit": "#125F84",
+        "primary_text": "#05090D", "secondary_text": "#0D151D",
+        "muted_text": "#18222A", "dim_text": "#333E48",
+        "accent": "#B7E6F5", "accent_bright": "#E4F6FD",
+        "accent_dim": "#7E93A0", "rail_lit": "#B7E6F5",
         "glass_fill": "#E8EEF2", "glass_border": "#A9B6C0",
         "glass_top_edge": "#FFFFFF", "glass_bottom_shade": "#7C8A95",
+        # In daylight the separator sits on the dark road, so it has to be the
+        # light value; the rule is a graphic, not small text.
+        "rule": "#B9C8D2",
     },
     "dusk": {
         "primary_text": "#F4E9DC", "secondary_text": "#D9C9B6",
@@ -94,6 +99,7 @@ PALETTES = {
         "accent_dim": "#4A4038", "rail_lit": "#A6CFE0",
         "glass_fill": "#17131A", "glass_border": "#2E2732",
         "glass_top_edge": "#D6B795", "glass_bottom_shade": "#0B0809",
+        "rule": "#F4E9DC",
     },
 }
 
@@ -219,7 +225,7 @@ def palette(weights):
     for name in ("primary_text", "secondary_text", "muted_text", "dim_text",
                  "accent", "accent_bright", "accent_dim", "rail_lit",
                  "glass_fill", "glass_border", "glass_top_edge",
-                 "glass_bottom_shade"):
+                 "glass_bottom_shade", "rule"):
         red = green = blue = 0.0
         for phase, weight in weights.items():
             if weight <= 0.0:

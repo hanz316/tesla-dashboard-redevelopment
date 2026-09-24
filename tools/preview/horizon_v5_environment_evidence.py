@@ -200,42 +200,78 @@ def main():
 
     # ---- daylight legibility --------------------------------------------
     contrast = {}
-    # Against the *plate*, not the finished frame: sampling the frame would
-    # sample the glyphs too and flatter every ratio.
-    day_frame = np.asarray(Image.open(os.path.join(
-        REPO, document["plates"]["day"])).convert("RGB")).astype(float)
     layout = json.load(open(os.path.join(REPO, "assets", "ui",
                                          "horizon_v5_layout.json")))
+    # Sampled where the element actually is: the frame that has the HUD is
+    # compared with the frame that does not, so the mask is exactly the ink the
+    # element drew. A box average would be meaningless for a 7 px arc or a 1 px
+    # rule, which is what the previous measurement got wrong.
+    background_scene = json.load(open(SCENE))
+    # The glow assets are excluded: a glow is the element's own emission, so
+    # measuring the element against its own light counts it twice. The rail's
+    # baked track and the cluster backings stay, because they really are behind
+    # the ink.
+    background_scene["nodes"] = [
+        node for node in background_scene["nodes"]
+        if node.get("type") not in ("text", "vector")
+        and node.get("id") not in ("speed.arc.glow", "speed.numeral.glow")]
+    scratch_scene = os.path.join(OUT, "_contrast_background.scene")
+    with open(scratch_scene, "w") as handle:
+        json.dump(background_scene, handle)
+    background_frame_path = os.path.join(OUT, "_contrast_background.png")
+    subprocess.run([sys.executable, PREVIEW, "--scene", scratch_scene,
+                    "--state", "v5_neutral", "--out", OUT, "--out-name",
+                    "_contrast_background", "--environment-phase", "day"],
+                   check=True, capture_output=True)
+    day_frame = np.asarray(Image.open(phase_paths["day"]).convert("RGB")).astype(
+        float)
+    background_frame = np.asarray(Image.open(background_frame_path).convert(
+        "RGB")).astype(float)
+    ink = np.abs(day_frame - background_frame).max(axis=2) > 10
     palette_day = environment_time.PALETTES["day"]
     for name in ("primary_text", "secondary_text", "muted_text", "accent",
                  "rail_lit"):
         token = tokens["colors"].get(name)
         if not isinstance(token, str):
             continue
-        # The layout carries the design boxes for every element, including the
-        # text nodes the scene anchors at a point.
-        boxes = [component["bounds"] for component in layout["components"]
-                 if str(component.get("color_token", "")).lower() == name
-                 or str(component.get("lit_token", "")).lower() == name
-                 or str(component.get("stroke_token", "")).lower() == name]
-        if not boxes:
-            continue
-        ratios = []
-        for bounds in boxes:
-            x0 = max(0, int(bounds["x"]))
-            y0 = max(0, int(bounds["y"]))
-            x1 = min(day_frame.shape[1], int(bounds["x"] + bounds["w"]))
-            y1 = min(day_frame.shape[0], int(bounds["y"] + bounds["h"]))
-            if x1 <= x0 or y1 <= y0:
+        rgb = tuple(int(palette_day[name][index:index + 2], 16)
+                    for index in (1, 3, 5))
+        # The element's own box decides where to look, and the ink decides which
+        # pixels are the element: colour matching alone fails once alpha
+        # compositing has moved the rendered value away from the token.
+        region = np.zeros(ink.shape, dtype=bool)
+        if name == "accent":
+            # The arc is a thin stroke on a large box: the only honest region is
+            # its own annulus, or the numeral and the ticks inside the same box
+            # would be measured as if they were the arc.
+            dial = tokens["ui_assets"]["dial"]
+            yy, xx = np.mgrid[0:ink.shape[0], 0:ink.shape[1]]
+            distance = np.hypot(xx - dial["cx"], yy - dial["cy"])
+            region |= np.abs(distance - dial["radius"]) <= dial["width"] * 2.0
+        for component in layout["components"]:
+            if name != "accent" and (str(component.get("color_token", "")) != name
+                                     and str(component.get("lit_token", "")) != name
+                                     and str(component.get("stroke_token", ""))
+                                     != name):
                 continue
-            background = float(np.mean(luminance(day_frame[y0:y1, x0:x1])))/255.0
-            rgb = tuple(int(palette_day[name][index:index + 2], 16)
-                        for index in (1, 3, 5))
-            ratios.append(contrast_ratio(rgb, background))
-        if ratios:
-            contrast[name] = {"min_ratio": round(min(ratios), 2),
-                              "max_ratio": round(max(ratios), 2),
-                              "samples": len(ratios)}
+            if name == "accent" and "arc" not in component.get("id", ""):
+                continue
+            bounds = component.get("bounds")
+            if not bounds:
+                continue
+            x0 = max(0, int(bounds["x"]) - 8)
+            y0 = max(0, int(bounds["y"]) - 8)
+            x1 = min(ink.shape[1], int(bounds["x"] + bounds["w"]) + 8)
+            y1 = min(ink.shape[0], int(bounds["y"] + bounds["h"]) + 8)
+            region[y0:y1, x0:x1] = True
+        sample = ink & region
+        if sample.sum() < 40:
+            continue
+        background = float(luminance(background_frame)[sample].mean()) / 255.0
+        contrast[name] = {
+            "min_ratio": round(contrast_ratio(rgb, background), 2),
+            "max_ratio": round(contrast_ratio(rgb, background), 2),
+            "samples": int(sample.sum())}
     print(f"[v5-env] daylight contrast {json.dumps(contrast)}")
 
     # ---- memory ----------------------------------------------------------

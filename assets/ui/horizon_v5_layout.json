@@ -156,7 +156,13 @@
    "z": 2,
    "layer": "static",
    "role": "glow",
-   "opacity": 0.85
+   "opacity": 0.85,
+   "environment_opacity": {
+    "day": 0.35,
+    "dawn": 0.7,
+    "dusk": 0.7,
+    "night": 1.0
+   }
   },
   {
    "id": "speed.numeral.glow",
@@ -171,7 +177,13 @@
    "z": 3,
    "layer": "static",
    "role": "glow",
-   "opacity": 0.7
+   "opacity": 0.7,
+   "environment_opacity": {
+    "day": 0.35,
+    "dawn": 0.7,
+    "dusk": 0.7,
+    "night": 1.0
+   }
   },
   {
    "id": "energy.rail.track",
@@ -188,14 +200,54 @@
    "role": "glow"
   },
   {
+   "id": "cluster.dial.backing",
+   "kind": "image",
+   "src": "assets/ui/horizon_v5_dial_backing.png",
+   "bounds": {
+    "x": 225,
+    "y": 70,
+    "w": 367,
+    "h": 321
+   },
+   "z": 9,
+   "layer": "static",
+   "role": "glow",
+   "environment_opacity": {
+    "day": 1.0,
+    "dawn": 0.4,
+    "dusk": 0.4,
+    "night": 0.0
+   }
+  },
+  {
+   "id": "cluster.energy.backing",
+   "kind": "image",
+   "src": "assets/ui/horizon_v5_energy_backing.png",
+   "bounds": {
+    "x": 1246,
+    "y": 26,
+    "w": 509,
+    "h": 429
+   },
+   "z": 9,
+   "layer": "static",
+   "role": "glow",
+   "environment_opacity": {
+    "day": 1.0,
+    "dawn": 0.4,
+    "dusk": 0.4,
+    "night": 0.0
+   }
+  },
+  {
    "id": "vehicle.base",
    "kind": "image",
    "src": "assets/rendered/vehicle/horizon_v5/layer/base.png",
    "bounds": {
-    "x": 732,
-    "y": 101,
-    "w": 510,
-    "h": 379
+    "x": 733,
+    "y": 103,
+    "w": 442,
+    "h": 377
    },
    "z": 20,
    "layer": "dynamic",
@@ -231,9 +283,9 @@
    "kind": "image",
    "src": "assets/rendered/vehicle/horizon_v5/layer/running.png",
    "bounds": {
-    "x": 732,
+    "x": 733,
     "y": 103,
-    "w": 512,
+    "w": 442,
     "h": 377
    },
    "z": 21,
@@ -252,9 +304,9 @@
    "kind": "image",
    "src": "assets/rendered/vehicle/horizon_v5/layer/brake.png",
    "bounds": {
-    "x": 732,
+    "x": 733,
     "y": 103,
-    "w": 512,
+    "w": 442,
     "h": 377
    },
    "z": 22,
@@ -273,9 +325,9 @@
    "kind": "image",
    "src": "assets/rendered/vehicle/horizon_v5/layer/indicator_left.png",
    "bounds": {
-    "x": 732,
+    "x": 733,
     "y": 103,
-    "w": 512,
+    "w": 442,
     "h": 377
    },
    "z": 23,
@@ -294,9 +346,9 @@
    "kind": "image",
    "src": "assets/rendered/vehicle/horizon_v5/layer/indicator_right.png",
    "bounds": {
-    "x": 732,
+    "x": 733,
     "y": 103,
-    "w": 512,
+    "w": 442,
     "h": 377
    },
    "z": 24,
@@ -315,9 +367,9 @@
    "kind": "image",
    "src": "assets/rendered/vehicle/horizon_v5/layer/headlight.png",
    "bounds": {
-    "x": 732,
+    "x": 733,
     "y": 103,
-    "w": 512,
+    "w": 442,
     "h": 377
    },
    "z": 25,
@@ -344,7 +396,7 @@
    "z": 8,
    "layer": "dynamic",
    "role": "motion",
-   "opacity": 0.55,
+   "opacity": 0.8,
    "offset_from": {
     "binding": "speed",
     "points": [
@@ -397,10 +449,10 @@
    "kind": "image",
    "src": "assets/ui/horizon_v5_wake.png",
    "bounds": {
-    "x": 624,
-    "y": 340,
-    "w": 671,
-    "h": 53
+    "x": 618,
+    "y": 322,
+    "w": 675,
+    "h": 58
    },
    "z": 33,
    "layer": "dynamic",
@@ -480,9 +532,9 @@
    "src": "assets/ui/horizon_v5_streak_indicator_left.png",
    "bounds": {
     "x": 774,
-    "y": 320,
+    "y": 319,
     "w": 96,
-    "h": 66
+    "h": 67
    },
    "z": 32,
    "layer": "dynamic",
@@ -524,9 +576,9 @@
    "src": "assets/ui/horizon_v5_streak_indicator_right.png",
    "bounds": {
     "x": 776,
-    "y": 320,
+    "y": 319,
     "w": 94,
-    "h": 66
+    "h": 67
    },
    "z": 32,
    "layer": "dynamic",
@@ -567,10 +619,10 @@
    "kind": "image",
    "src": "assets/ui/horizon_v5_wheel_low.png",
    "bounds": {
-    "x": 790,
-    "y": 211,
-    "w": 345,
-    "h": 137
+    "x": 785,
+    "y": 203,
+    "w": 349,
+    "h": 145
    },
    "z": 26,
    "layer": "dynamic",
@@ -601,10 +653,10 @@
    "kind": "image",
    "src": "assets/ui/horizon_v5_wheel_medium.png",
    "bounds": {
-    "x": 790,
-    "y": 211,
-    "w": 345,
-    "h": 137
+    "x": 785,
+    "y": 203,
+    "w": 349,
+    "h": 145
    },
    "z": 27,
    "layer": "dynamic",
@@ -635,10 +687,10 @@
    "kind": "image",
    "src": "assets/ui/horizon_v5_wheel_high.png",
    "bounds": {
-    "x": 790,
-    "y": 211,
-    "w": 345,
-    "h": 137
+    "x": 785,
+    "y": 203,
+    "w": 349,
+    "h": 145
    },
    "z": 28,
    "layer": "dynamic",
@@ -1061,10 +1113,10 @@
     "w": 185.6,
     "h": 1
    },
-   "color_token": "primary_text",
+   "color_token": "rule",
    "z": 20,
    "layer": "static",
-   "opacity": 0.3,
+   "opacity": 0.45,
    "role": "energy",
    "x2": 1542.6999999999998,
    "y2": 232.0
