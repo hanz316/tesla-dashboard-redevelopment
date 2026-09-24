@@ -22,6 +22,9 @@ MOTION = os.path.join(REPO, "assets", "checkpoints", "horizon_v5",
                       "horizon_v5_1_motion_metrics.json")
 ASSETS = os.path.join(REPO, "assets", "checkpoints", "horizon_v5",
                       "horizon_v5_motion_assets.json")
+ENVIRONMENT = os.path.join(REPO, "assets", "ui", "horizon_v5_environment.json")
+METRICS = os.path.join(REPO, "assets", "checkpoints", "horizon_v5",
+                       "horizon_v5_1_metrics.json")
 
 FAILURES = []
 
@@ -119,6 +122,117 @@ def main():
 
     if not os.path.isfile(ASSETS):
         print("  note the motion asset report is not in this checkout")
+
+    print("environment time system")
+    import horizon_v5_environment_time as environment_time
+    profile = environment_time.monthly_profile()
+    check(len(profile) == 12, "the regional profile covers 12 months")
+    check(all(entry["sunrise_minutes"] < entry["sunset_minutes"]
+              for entry in profile.values()),
+          "every month has sunrise before sunset")
+    january = profile["01"]["sunrise_minutes"]
+    july = profile["07"]["sunrise_minutes"]
+    check(january > july,
+          f"January sunrise ({january / 60:.2f} h) is later than July "
+          f"({july / 60:.2f} h)")
+    check(profile["01"]["sunset_minutes"] < profile["07"]["sunset_minutes"],
+          "January sunset is earlier than July")
+    check(profile["04"]["sunrise_minutes"] < profile["01"]["sunrise_minutes"]
+          and profile["04"]["sunrise_minutes"] > july,
+          "April sits between winter and summer")
+    calculated = environment_time.schedule(
+        2026, 7, 15, latitude=43.70, longitude=-79.40)
+    check(abs(calculated["sunrise_minutes"]
+              - profile["07"]["sunrise_minutes"]) < 20,
+          "the calculated sunrise agrees with the regional profile inside 20 "
+          "minutes")
+    check(calculated["source"] == "calculated"
+          and environment_time.schedule(2026, 7, 15)["source"]
+          == "monthly_regional_profile",
+          "the schedule reports which fallback tier it used")
+
+    # One minute of samples through both windows: no step in the weights and no
+    # step in the interpolated palette. This is the 17:59/18:00 failure the
+    # review names, expressed as a number.
+    worst_weight = 0.0
+    worst_palette = 0.0
+    sunrise = environment_time.schedule(2026, 9, 24)["sunrise_minutes"]
+    sunset = environment_time.schedule(2026, 9, 24)["sunset_minutes"]
+    for centre in (sunrise, sunset):
+        previous_weights = None
+        previous_palette = None
+        for minute in range(int(centre) - 120, int(centre) + 121):
+            weights = environment_time.phase_weights(minute, sunrise, sunset)
+            palette = environment_time.palette(weights)
+            check_sum = abs(sum(weights.values()) - 1.0)
+            if check_sum > 1e-6:
+                check(False, f"the phase weights sum to one at minute {minute}")
+                break
+            if previous_weights is not None:
+                worst_weight = max(worst_weight,
+                                   max(abs(weights[name] - previous_weights[name])
+                                       for name in weights))
+                worst_palette = max(worst_palette,
+                                    _palette_step(previous_palette, palette))
+            previous_weights = weights
+            previous_palette = palette
+    # smoothstep's maximum slope is 1.5 per window, so the per-minute bound is
+    # 1.5/window_minutes; 105 minutes gives 0.0143.
+    check(worst_weight < 0.02,
+          f"the largest phase-weight change over one minute is "
+          f"{worst_weight:.4f} (bound 1.5/window = 0.0143)")
+    check(worst_palette <= 4.0,
+          f"the largest palette change over one minute is {worst_palette:.1f} "
+          f"of 255")
+    night_palette = environment_time.palette({"night": 1.0, "dawn": 0.0,
+                                              "day": 0.0, "dusk": 0.0})
+    day_palette = environment_time.palette({"night": 0.0, "dawn": 0.0,
+                                            "day": 1.0, "dusk": 0.0})
+    check(night_palette["primary_text"]
+          == environment_time.PALETTES["night"]["primary_text"]
+          and day_palette["primary_text"]
+          == environment_time.PALETTES["day"]["primary_text"],
+          "the palette endpoints are exactly the phase palettes")
+    semantic = environment_time.SEMANTIC_COLOURS
+    check(all(palette[name] == value for name, value in semantic.items()
+              for palette in (night_palette, day_palette)),
+          "brake red, indicator amber and ready green keep their meaning in "
+          "every phase")
+
+    print("environment evidence")
+    if os.path.isfile(METRICS):
+        metrics = json.load(open(METRICS))
+        for label, entry in metrics["transition_continuity"].items():
+            # A switch would be one step equal to the whole transition. The
+            # contract is that no single 2-minute sample covers more than a
+            # tenth of it, which the smoothstep windows satisfy by construction.
+            fraction = entry["max_step_fraction_of_transition"]
+            check(fraction <= 0.10,
+                  f"the {label} transition's largest 2-minute step is "
+                  f"{fraction:.3f} of the whole transition "
+                  f"({entry['max_frame_mean_difference']} of 255)")
+            check(entry["max_palette_step"] <= 10.0,
+                  f"the {label} palette step stays at "
+                  f"{entry['max_palette_step']} of 255 per 2 minutes")
+        for name, entry in metrics["daylight_contrast"].items():
+            floor = 4.5 if name in ("primary_text", "secondary_text") else 3.0
+            check(entry["min_ratio"] >= floor,
+                  f"daylight contrast for {name} is {entry['min_ratio']}:1 "
+                  f"(floor {floor})")
+        memory = metrics["memory"]
+        check(memory["two_plate_transition_bytes"]
+              == memory["plate_rgba_bytes"] * 2,
+              "a transition holds exactly two environment plates")
+        check(memory["resident_estimate_mb"] < 24.0,
+              f"the resident estimate is {memory['resident_estimate_mb']} MB, "
+              f"inside the budget for a 250 MB device")
+        months = [row["sunrise_h"] for row in metrics["seasons"]]
+        check(months[0] > months[2],
+              f"the seasonal frames keep winter sunrise ({months[0]} h) later "
+              f"than summer ({months[2]} h)")
+    else:
+        print("  note the environment evidence has not been generated in this "
+              "checkout (run tools/preview/horizon_v5_environment_evidence.py)")
     print("")
     if FAILURES:
         print(f"{len(FAILURES)} FAILED:")
@@ -127,6 +241,16 @@ def main():
         return 1
     print("all horizon v5.1 motion checks passed")
     return 0
+
+
+def _palette_step(left, right):
+    worst = 0.0
+    for name, value in left.items():
+        other = right.get(name, value)
+        for index in (1, 3, 5):
+            worst = max(worst, abs(int(value[index:index + 2], 16)
+                                   - int(other[index:index + 2], 16)))
+    return worst
 
 
 def _interp(points, value):

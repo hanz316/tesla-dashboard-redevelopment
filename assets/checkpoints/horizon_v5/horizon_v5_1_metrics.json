@@ -1,0 +1,360 @@
+{
+ "schema": "horizon-v5.1-metrics v1",
+ "key_state_sheets": {
+  "day": "assets/checkpoints/horizon_v5/horizon_v5_1_day_key_states.png",
+  "night": "assets/checkpoints/horizon_v5/horizon_v5_1_night_key_states.png"
+ },
+ "material_day_night": "assets/checkpoints/horizon_v5/horizon_v5_1_vehicle_material_day_night.png",
+ "final_contact_sheet": "assets/checkpoints/horizon_v5/horizon_v5_1_final_contact_sheet.png",
+ "phases": [
+  "dawn",
+  "day",
+  "dusk",
+  "night"
+ ],
+ "phase_frames": {
+  "dawn": "assets/checkpoints/horizon_v5/horizon_v5_1_dawn.png",
+  "day": "assets/checkpoints/horizon_v5/horizon_v5_1_day.png",
+  "dusk": "assets/checkpoints/horizon_v5/horizon_v5_1_dusk.png",
+  "night": "assets/checkpoints/horizon_v5/horizon_v5_1_night.png"
+ },
+ "schedule_today": {
+  "sunrise_minutes": 429.0,
+  "sunset_minutes": 1166.0,
+  "source": "monthly_regional_profile"
+ },
+ "daily_cycle": [
+  {
+   "hour": 5,
+   "phase_weights": {
+    "night": 1.0,
+    "dawn": 0.0,
+    "day": 0.0,
+    "dusk": 0.0
+   },
+   "darkness": 1.0,
+   "frame": "assets/checkpoints/horizon_v5/_cycle_05.png",
+   "mean_luminance": 26.19
+  },
+  {
+   "hour": 6,
+   "phase_weights": {
+    "night": 0.862074,
+    "dawn": 0.137926,
+    "day": 0.0,
+    "dusk": 0.0
+   },
+   "darkness": 0.9379,
+   "frame": "assets/checkpoints/horizon_v5/_cycle_06.png",
+   "mean_luminance": 29.63
+  },
+  {
+   "hour": 7,
+   "phase_weights": {
+    "night": 0.028,
+    "dawn": 0.972,
+    "day": 0.0,
+    "dusk": 0.0
+   },
+   "darkness": 0.5626,
+   "frame": "assets/checkpoints/horizon_v5/_cycle_07.png",
+   "mean_luminance": 50.42
+  },
+  {
+   "hour": 9,
+   "phase_weights": {
+    "night": 0.0,
+    "dawn": 0.0,
+    "day": 1.0,
+    "dusk": 0.0
+   },
+   "darkness": 0.35,
+   "frame": "assets/checkpoints/horizon_v5/_cycle_09.png",
+   "mean_luminance": 103.29
+  },
+  {
+   "hour": 12,
+   "phase_weights": {
+    "night": 0.0,
+    "dawn": 0.0,
+    "day": 1.0,
+    "dusk": 0.0
+   },
+   "darkness": 0.35,
+   "frame": "assets/checkpoints/horizon_v5/_cycle_12.png",
+   "mean_luminance": 103.29
+  },
+  {
+   "hour": 15,
+   "phase_weights": {
+    "night": 0.0,
+    "dawn": 0.0,
+    "day": 1.0,
+    "dusk": 0.0
+   },
+   "darkness": 0.35,
+   "frame": "assets/checkpoints/horizon_v5/_cycle_15.png",
+   "mean_luminance": 103.29
+  },
+  {
+   "hour": 17,
+   "phase_weights": {
+    "night": 0.0,
+    "dawn": 0.0,
+    "day": 1.0,
+    "dusk": 0.0
+   },
+   "darkness": 0.35,
+   "frame": "assets/checkpoints/horizon_v5/_cycle_17.png",
+   "mean_luminance": 103.29
+  },
+  {
+   "hour": 18,
+   "phase_weights": {
+    "night": 0.0,
+    "dawn": 0.0,
+    "day": 0.913619,
+    "dusk": 0.086381
+   },
+   "darkness": 0.35,
+   "frame": "assets/checkpoints/horizon_v5/_cycle_18.png",
+   "mean_luminance": 102.91
+  },
+  {
+   "hour": 19,
+   "phase_weights": {
+    "night": 0.0,
+    "dawn": 0.0,
+    "day": 0.15358,
+    "dusk": 0.84642
+   },
+   "darkness": 0.4655,
+   "frame": "assets/checkpoints/horizon_v5/_cycle_19.png",
+   "mean_luminance": 57.57
+  },
+  {
+   "hour": 21,
+   "phase_weights": {
+    "night": 1.0,
+    "dawn": 0.0,
+    "day": 0.0,
+    "dusk": 0.0
+   },
+   "darkness": 1.0,
+   "frame": "assets/checkpoints/horizon_v5/_cycle_21.png",
+   "mean_luminance": 26.19
+  },
+  {
+   "hour": 0,
+   "phase_weights": {
+    "night": 1.0,
+    "dawn": 0.0,
+    "day": 0.0,
+    "dusk": 0.0
+   },
+   "darkness": 1.0,
+   "frame": "assets/checkpoints/horizon_v5/_cycle_00.png",
+   "mean_luminance": 26.19
+  },
+  {
+   "hour": 3,
+   "phase_weights": {
+    "night": 1.0,
+    "dawn": 0.0,
+    "day": 0.0,
+    "dusk": 0.0
+   },
+   "darkness": 1.0,
+   "frame": "assets/checkpoints/horizon_v5/_cycle_03.png",
+   "mean_luminance": 26.19
+  }
+ ],
+ "daily_cycle_sheet": "assets/checkpoints/horizon_v5/horizon_v5_1_daily_cycle_contact_sheet.png",
+ "seasons": [
+  {
+   "month": "January",
+   "sunrise_h": 7.75,
+   "sunset_h": 16.833,
+   "frame": "assets/checkpoints/horizon_v5/_season_01.png",
+   "frame_at": "08:15"
+  },
+  {
+   "month": "April",
+   "sunrise_h": 6.7,
+   "sunset_h": 19.9,
+   "frame": "assets/checkpoints/horizon_v5/_season_04.png",
+   "frame_at": "07:12"
+  },
+  {
+   "month": "July",
+   "sunrise_h": 5.817,
+   "sunset_h": 20.767,
+   "frame": "assets/checkpoints/horizon_v5/_season_07.png",
+   "frame_at": "06:19"
+  },
+  {
+   "month": "October",
+   "sunrise_h": 7.9,
+   "sunset_h": 18.683,
+   "frame": "assets/checkpoints/horizon_v5/_season_10.png",
+   "frame_at": "08:24"
+  }
+ ],
+ "seasonal_sheet": "assets/checkpoints/horizon_v5/horizon_v5_1_seasonal_daylight_test.png",
+ "transition_continuity": {
+  "sunrise": {
+   "samples": 91,
+   "step_minutes": 2,
+   "max_frame_mean_difference": 5.523,
+   "mean_frame_mean_difference": 0.9723,
+   "total_transition_difference": 85.5519,
+   "max_step_fraction_of_transition": 0.0646,
+   "max_palette_step": 7,
+   "windows": {
+    "dawn": [
+     90,
+     105
+    ],
+    "dusk": [
+     105,
+     90
+    ]
+   }
+  },
+  "sunset": {
+   "samples": 91,
+   "step_minutes": 2,
+   "max_frame_mean_difference": 7.0579,
+   "mean_frame_mean_difference": 0.9906,
+   "total_transition_difference": 87.0351,
+   "max_step_fraction_of_transition": 0.0811,
+   "max_palette_step": 7,
+   "windows": {
+    "dawn": [
+     90,
+     105
+    ],
+    "dusk": [
+     105,
+     90
+    ]
+   }
+  }
+ },
+ "daylight_contrast": {
+  "primary_text": {
+   "min_ratio": 6.0,
+   "max_ratio": 10.12,
+   "samples": 4
+  },
+  "secondary_text": {
+   "min_ratio": 8.25,
+   "max_ratio": 11.06,
+   "samples": 8
+  },
+  "muted_text": {
+   "min_ratio": 5.87,
+   "max_ratio": 7.97,
+   "samples": 7
+  },
+  "accent": {
+   "min_ratio": 3.37,
+   "max_ratio": 3.67,
+   "samples": 2
+  },
+  "rail_lit": {
+   "min_ratio": 3.27,
+   "max_ratio": 3.27,
+   "samples": 1
+  }
+ },
+ "monthly_profile": {
+  "01": {
+   "sunrise_minutes": 465,
+   "sunset_minutes": 1010,
+   "sunrise": "07:45",
+   "sunset": "16:50"
+  },
+  "02": {
+   "sunrise_minutes": 430,
+   "sunset_minutes": 1045,
+   "sunrise": "07:10",
+   "sunset": "17:25"
+  },
+  "03": {
+   "sunrise_minutes": 449,
+   "sunset_minutes": 1146,
+   "sunrise": "07:28",
+   "sunset": "19:06"
+  },
+  "04": {
+   "sunrise_minutes": 402,
+   "sunset_minutes": 1194,
+   "sunrise": "06:41",
+   "sunset": "19:53"
+  },
+  "05": {
+   "sunrise_minutes": 362,
+   "sunset_minutes": 1233,
+   "sunrise": "06:02",
+   "sunset": "20:33"
+  },
+  "06": {
+   "sunrise_minutes": 340,
+   "sunset_minutes": 1255,
+   "sunrise": "05:40",
+   "sunset": "20:54"
+  },
+  "07": {
+   "sunrise_minutes": 349,
+   "sunset_minutes": 1246,
+   "sunrise": "05:48",
+   "sunset": "20:46"
+  },
+  "08": {
+   "sunrise_minutes": 383,
+   "sunset_minutes": 1212,
+   "sunrise": "06:23",
+   "sunset": "20:12"
+  },
+  "09": {
+   "sunrise_minutes": 429,
+   "sunset_minutes": 1166,
+   "sunrise": "07:08",
+   "sunset": "19:26"
+  },
+  "10": {
+   "sunrise_minutes": 474,
+   "sunset_minutes": 1121,
+   "sunrise": "07:54",
+   "sunset": "18:40"
+  },
+  "11": {
+   "sunrise_minutes": 455,
+   "sunset_minutes": 1020,
+   "sunrise": "07:34",
+   "sunset": "17:00"
+  },
+  "12": {
+   "sunrise_minutes": 475,
+   "sunset_minutes": 1000,
+   "sunrise": "07:54",
+   "sunset": "16:40"
+  }
+ },
+ "memory": {
+  "plate_rgba_bytes": 3686400,
+  "two_plate_transition_bytes": 7372800,
+  "vehicle_layers_all_states_bytes": 0,
+  "vehicle_layers_resident_now": 666536,
+  "motion_overlays_bytes": 1995344,
+  "resident_estimate_mb": 9.57,
+  "note": "ESTIMATED on the Mac; UNKNOWN UNTIL DEVICE TEST on T113"
+ },
+ "semantic_colours_fixed": {
+  "critical": "#D8674F",
+  "warning": "#D8A657",
+  "ready": "#5FC98A",
+  "ready_dim": "#3E8F62"
+ }
+}

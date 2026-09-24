@@ -1,0 +1,182 @@
+{
+ "schema": "horizon-v5-environment v1",
+ "why": "the screen must not be permanently night and must not switch: four phases, weights that are a continuous partition of one, and a schedule that never needs the network",
+ "phases": [
+  "night",
+  "dawn",
+  "day",
+  "dusk"
+ ],
+ "plates": {
+  "night": "assets/ui/horizon_v5_background.png",
+  "dawn": "assets/ui/horizon_v5_background_dawn.png",
+  "day": "assets/ui/horizon_v5_background_day.png",
+  "dusk": "assets/ui/horizon_v5_background_dusk.png"
+ },
+ "transition_windows_minutes": {
+  "dawn": [
+   90,
+   105
+  ],
+  "dusk": [
+   105,
+   90
+  ]
+ },
+ "blend": "smoothstep over each window; the weights sum to one at every minute of the day",
+ "schedule_priority": [
+  "calculated from date/latitude/longitude/timezone",
+  "monthly regional profile (Southern Ontario)",
+  "fixed safe fallback 07:00 / 19:00"
+ ],
+ "region": {
+  "name": "Southern Ontario (GTA centroid)",
+  "latitude": 43.7,
+  "longitude": -79.4,
+  "utc_offset_hours": -5.0,
+  "dst": true
+ },
+ "monthly_profile": {
+  "01": {
+   "sunrise_minutes": 465,
+   "sunset_minutes": 1010,
+   "sunrise": "07:45",
+   "sunset": "16:50"
+  },
+  "02": {
+   "sunrise_minutes": 430,
+   "sunset_minutes": 1045,
+   "sunrise": "07:10",
+   "sunset": "17:25"
+  },
+  "03": {
+   "sunrise_minutes": 449,
+   "sunset_minutes": 1146,
+   "sunrise": "07:28",
+   "sunset": "19:06"
+  },
+  "04": {
+   "sunrise_minutes": 402,
+   "sunset_minutes": 1194,
+   "sunrise": "06:41",
+   "sunset": "19:53"
+  },
+  "05": {
+   "sunrise_minutes": 362,
+   "sunset_minutes": 1233,
+   "sunrise": "06:02",
+   "sunset": "20:33"
+  },
+  "06": {
+   "sunrise_minutes": 340,
+   "sunset_minutes": 1255,
+   "sunrise": "05:40",
+   "sunset": "20:54"
+  },
+  "07": {
+   "sunrise_minutes": 349,
+   "sunset_minutes": 1246,
+   "sunrise": "05:48",
+   "sunset": "20:46"
+  },
+  "08": {
+   "sunrise_minutes": 383,
+   "sunset_minutes": 1212,
+   "sunrise": "06:23",
+   "sunset": "20:12"
+  },
+  "09": {
+   "sunrise_minutes": 429,
+   "sunset_minutes": 1166,
+   "sunrise": "07:08",
+   "sunset": "19:26"
+  },
+  "10": {
+   "sunrise_minutes": 474,
+   "sunset_minutes": 1121,
+   "sunrise": "07:54",
+   "sunset": "18:40"
+  },
+  "11": {
+   "sunrise_minutes": 455,
+   "sunset_minutes": 1020,
+   "sunrise": "07:34",
+   "sunset": "17:00"
+  },
+  "12": {
+   "sunrise_minutes": 475,
+   "sunset_minutes": 1000,
+   "sunrise": "07:54",
+   "sunset": "16:40"
+  }
+ },
+ "palettes": {
+  "night": {
+   "primary_text": "#E9EEF3",
+   "secondary_text": "#C3CDD7",
+   "muted_text": "#8792A0",
+   "dim_text": "#5E6875",
+   "accent": "#2496D8",
+   "accent_bright": "#7FE3F2",
+   "accent_dim": "#1B3A4A",
+   "rail_lit": "#8FD8EE",
+   "glass_fill": "#071017",
+   "glass_border": "#12202A",
+   "glass_top_edge": "#9FB6C4",
+   "glass_bottom_shade": "#02060A"
+  },
+  "dawn": {
+   "primary_text": "#F2EDE6",
+   "secondary_text": "#D6CBC0",
+   "muted_text": "#9C938C",
+   "dim_text": "#6E6862",
+   "accent": "#4E9FC4",
+   "accent_bright": "#8FD3E8",
+   "accent_dim": "#3A4A55",
+   "rail_lit": "#9FD2E4",
+   "glass_fill": "#141119",
+   "glass_border": "#2A2530",
+   "glass_top_edge": "#C9B6A6",
+   "glass_bottom_shade": "#0A0809"
+  },
+  "day": {
+   "primary_text": "#05090D",
+   "secondary_text": "#141E27",
+   "muted_text": "#2B3742",
+   "dim_text": "#46525D",
+   "accent": "#0A5C7D",
+   "accent_bright": "#0B6E92",
+   "accent_dim": "#93A6B1",
+   "rail_lit": "#125F84",
+   "glass_fill": "#E8EEF2",
+   "glass_border": "#A9B6C0",
+   "glass_top_edge": "#FFFFFF",
+   "glass_bottom_shade": "#7C8A95"
+  },
+  "dusk": {
+   "primary_text": "#F4E9DC",
+   "secondary_text": "#D9C9B6",
+   "muted_text": "#A2947F",
+   "dim_text": "#6F6555",
+   "accent": "#4C93B8",
+   "accent_bright": "#8CCBE2",
+   "accent_dim": "#4A4038",
+   "rail_lit": "#A6CFE0",
+   "glass_fill": "#17131A",
+   "glass_border": "#2E2732",
+   "glass_top_edge": "#D6B795",
+   "glass_bottom_shade": "#0B0809"
+  }
+ },
+ "semantic_colours_fixed": {
+  "critical": "#D8674F",
+  "warning": "#D8A657",
+  "ready": "#5FC98A",
+  "ready_dim": "#3E8F62"
+ },
+ "memory": {
+  "resident_plates": 2,
+  "why": "a transition keeps the current and the next environment decoded and releases the previous one",
+  "rgba_bytes_per_plate": 3686400
+ }
+}

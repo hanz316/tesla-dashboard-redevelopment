@@ -111,6 +111,11 @@ def parse_args():
                                             "hazard")
     parser.add_argument("--resolution", default="1920x480")
     parser.add_argument("--exposure", type=float, default=1.0)
+    parser.add_argument("--phase", default="night",
+                        choices=("night", "dawn", "day", "dusk"),
+                        help="which environment to build; the geometry, the "
+                             "camera and the vehicle are identical, only the "
+                             "light and the sky change")
     parser.add_argument("--dry-run", action="store_true",
                         help="build the scene and print measurements only")
     return parser.parse_args(argv)
@@ -340,6 +345,8 @@ def city_lights(scene, spec):
         shader.inputs["Emission Color"].default_value = (*colour, 1.0)
         shader.inputs["Emission Strength"].default_value = spec["city_strength"]
         obj.data.materials.append(material)
+    if spec.get("city_strength", 1.0) <= 0.0:
+        obj.hide_render = True
     made = [obj]
     for index, lamp in enumerate(spec["street_lamps"]):
         centre = place(lamp["u"], lamp["v"], lamp["z"])
@@ -534,7 +541,14 @@ def spin_frame(scene, paths, degrees, name, samples, resolution, out_dir):
 
 
 def default_spec():
-    return {
+    return PHASE_SPECS["night"]
+
+
+# The environment phases. Same geometry, same camera, same vehicle: only the
+# sky, the light and the city change, which is what makes a transition a
+# crossfade of two plates rather than two different places.
+PHASE_SPECS = {
+    "night": {
         "sky_stops": [
             [0.00, (0.007, 0.011, 0.019, 1.0)],
             [0.30, (0.011, 0.016, 0.027, 1.0)],
@@ -605,7 +619,108 @@ def default_spec():
             "lens_mm": 35.0, "height": 1.80, "u": 0.0, "v": 0.0,
             "look_u": 0.0, "look_v": 26.0, "look_z": 1.05,
         },
-    }
+    },
+    "dawn": {
+        "sky_stops": [
+            [0.00, (0.030, 0.042, 0.070, 1.0)],
+            [0.28, (0.060, 0.072, 0.105, 1.0)],
+            [0.42, (0.130, 0.120, 0.145, 1.0)],
+            [0.50, (0.230, 0.165, 0.150, 1.0)],
+            [0.56, (0.330, 0.205, 0.165, 1.0)],
+            [0.64, (0.120, 0.105, 0.110, 1.0)],
+            [1.00, (0.045, 0.050, 0.062, 1.0)],
+        ],
+        "sky_strength": 1.35,
+        "city_strength": 8.0,
+        "ridge_emit_scale": 0.55,
+        "sun": {"location": (900.0, 780.0, 120.0), "target": (0.0, 0.0, 0.9),
+                "power": 900.0, "size": [220.0, 120.0],
+                "colour": (1.0, 0.72, 0.52)},
+        "rig_scale": 0.55,
+    },
+    "day": {
+        "sky_stops": [
+            [0.00, (0.300, 0.420, 0.610, 1.0)],
+            [0.30, (0.430, 0.540, 0.680, 1.0)],
+            [0.44, (0.560, 0.650, 0.750, 1.0)],
+            [0.50, (0.660, 0.710, 0.760, 1.0)],
+            [0.56, (0.700, 0.740, 0.790, 1.0)],
+            [0.64, (0.420, 0.470, 0.520, 1.0)],
+            [1.00, (0.220, 0.260, 0.310, 1.0)],
+        ],
+        "sky_strength": 1.0,
+        "road_roughness_override": [0.22, 0.62],
+        "wet_scale_override": 0.06,
+        "city_strength": 0.0,
+        "ridge_emit_scale": 0.0,
+        # Daylight needs a real albedo on the ridges, or a dark night material
+        # renders as a black cut-out against a bright sky.
+        "ridge_colours": [(0.290, 0.320, 0.350, 1.0), (0.235, 0.260, 0.290, 1.0),
+                          (0.175, 0.200, 0.230, 1.0)],
+        "sun": {"location": (700.0, 900.0, 620.0), "target": (0.0, 0.0, 0.9),
+                "power": 5200.0, "size": [260.0, 160.0],
+                "colour": (1.0, 0.96, 0.90)},
+        "rig_scale": 0.22,
+    },
+    "dusk": {
+        "sky_stops": [
+            [0.00, (0.022, 0.030, 0.055, 1.0)],
+            [0.28, (0.050, 0.062, 0.095, 1.0)],
+            [0.42, (0.120, 0.105, 0.130, 1.0)],
+            [0.50, (0.250, 0.150, 0.115, 1.0)],
+            [0.56, (0.360, 0.190, 0.120, 1.0)],
+            [0.64, (0.110, 0.090, 0.095, 1.0)],
+            [1.00, (0.038, 0.040, 0.052, 1.0)],
+        ],
+        "sky_strength": 1.2,
+        "city_strength": 10.0,
+        "ridge_emit_scale": 0.45,
+        "sun": {"location": (-900.0, -780.0, 90.0), "target": (0.0, 0.0, 0.9),
+                "power": 700.0, "size": [220.0, 120.0],
+                "colour": (1.0, 0.60, 0.38)},
+        "rig_scale": 0.6,
+    },
+}
+
+
+def apply_phase(spec, phase):
+    """Overlay one phase onto the shared rig: same place, different light."""
+    if phase == "night":
+        return dict(spec)
+    overlay = PHASE_SPECS[phase]
+    merged = dict(spec)
+    merged.update(overlay)
+    merged["ridges"] = [dict(layer) for layer in spec["ridges"]]
+    for index, layer in enumerate(merged["ridges"]):
+        if layer.get("emit_strength"):
+            layer["emit_strength"] = (layer["emit_strength"]
+                                      * overlay["ridge_emit_scale"])
+        colours = overlay.get("ridge_colours")
+        if colours and index < len(colours):
+            layer["colour"] = colours[index]
+        if not overlay.get("ridge_emit_scale"):
+            layer.pop("emit", None)
+            layer["emit_strength"] = 0.0
+    if overlay.get("wet_scale_override"):
+        merged["wet_scale"] = overlay["wet_scale_override"]
+    if overlay.get("road_roughness_override"):
+        merged["wet_ramp"] = list(spec["wet_ramp"])
+        merged["road_wet_roughness"], merged["road_dry_roughness"] = \
+            overlay["road_roughness_override"]
+    merged["street_lamps"] = [dict(lamp) for lamp in spec["street_lamps"]]
+    lamp_scale = 1.0 if overlay.get("city_strength", 1.0) > 0.0 else 0.0
+    for lamp in merged["street_lamps"]:
+        lamp["strength"] = lamp["strength"] * max(0.12, lamp_scale)
+    merged["lights"] = [dict(entry) for entry in spec["lights"]]
+    for entry in merged["lights"]:
+        entry["power"] = entry["power"] * overlay["rig_scale"]
+    sun = overlay.get("sun")
+    if sun:
+        merged["lights"] = merged["lights"] + [{
+            "name": "V5_Sun", "location": sun["location"],
+            "target": sun["target"], "size": sun["size"],
+            "power": sun["power"], "colour": sun["colour"]}]
+    return merged
 
 
 def main():
@@ -614,10 +729,13 @@ def main():
     width, height = (int(value) for value in args.resolution.lower().split("x"))
     global CANVAS
     CANVAS = (width, height)
-    spec = default_spec()
+    spec = apply_phase(default_spec(), args.phase)
+    if args.phase != "night":
+        args.out = os.path.join(args.out, args.phase)
     scene = open_master(args.master)
     report = {"schema": "horizon-v5-environment v1",
               "master": os.path.relpath(args.master, REPO_ROOT),
+              "phase": args.phase,
               "resolution": [width, height], "samples": args.samples,
               "view_frame": {key: list(round(v, 5) for v in value)
                              if isinstance(value, Vector) else round(value, 4)
@@ -657,7 +775,9 @@ def main():
         for obj in rig:
             obj.hide_render = True
         started = time.time()
-        plate = os.path.join(args.ui, "horizon_v5_background.png")
+        plate = os.path.join(
+            args.ui, ("horizon_v5_background.png" if args.phase == "night"
+                      else f"horizon_v5_background_{args.phase}.png"))
         render_to(scene, plate)
         report["timings_s"]["plate"] = round(time.time() - started, 1)
         report["renders"]["plate"] = os.path.relpath(plate, REPO_ROOT)

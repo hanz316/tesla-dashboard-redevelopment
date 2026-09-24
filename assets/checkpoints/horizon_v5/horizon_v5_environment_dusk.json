@@ -1,0 +1,185 @@
+{
+ "schema": "horizon-v5-environment v1",
+ "master": "assets/source/blender/model_a_material_candidate.blend",
+ "phase": "dusk",
+ "resolution": [
+  1920,
+  480
+ ],
+ "samples": 32,
+ "view_frame": {
+  "forward": [
+   0.75875,
+   0.65138,
+   0.0
+  ],
+  "right": [
+   0.65138,
+   -0.75875,
+   0.0
+  ],
+  "ground": [
+   -5.3,
+   -4.55,
+   3.85
+  ],
+  "azimuth_deg": 49.3542
+ },
+ "composition": {
+  "content_box": [
+   240,
+   0,
+   1440,
+   480
+  ],
+  "content_scale": 0.6629834254143646,
+  "car_visible_width_px": 392.5,
+  "car_centre_x_px": 954.0,
+  "car_ground_contact_y_px": 345.0,
+  "horizon_row_px": 167.0
+ },
+ "stages": [
+  "plate",
+  "road",
+  "car",
+  "wheels"
+ ],
+ "renders": {
+  "plate": "assets/ui/horizon_v5_background_dusk.png",
+  "road_no_car": "assets/rendered/vehicle/horizon_v5/dusk/road/no_car.png",
+  "car_base": "assets/rendered/vehicle/horizon_v5/dusk/car/base/000.png",
+  "road_base": "assets/rendered/vehicle/horizon_v5/dusk/road/base.png",
+  "car_base_alpha": "assets/rendered/vehicle/horizon_v5/dusk/car/base/000.png",
+  "car_running": "assets/rendered/vehicle/horizon_v5/dusk/car/running/000.png",
+  "road_running": "assets/rendered/vehicle/horizon_v5/dusk/road/running.png",
+  "car_running_alpha": "assets/rendered/vehicle/horizon_v5/dusk/car/running/000.png",
+  "car_brake": "assets/rendered/vehicle/horizon_v5/dusk/car/brake/000.png",
+  "road_brake": "assets/rendered/vehicle/horizon_v5/dusk/road/brake.png",
+  "car_brake_alpha": "assets/rendered/vehicle/horizon_v5/dusk/car/brake/000.png",
+  "car_headlight": "assets/rendered/vehicle/horizon_v5/dusk/car/headlight_on/000.png",
+  "road_headlight": "assets/rendered/vehicle/horizon_v5/dusk/road/headlight.png",
+  "car_headlight_alpha": "assets/rendered/vehicle/horizon_v5/dusk/car/headlight/000.png",
+  "car_indicator_left": "assets/rendered/vehicle/horizon_v5/dusk/car/indicator_left/000.png",
+  "road_indicator_left": "assets/rendered/vehicle/horizon_v5/dusk/road/indicator_left.png",
+  "car_indicator_left_alpha": "assets/rendered/vehicle/horizon_v5/dusk/car/indicator_left/000.png",
+  "car_indicator_right": "assets/rendered/vehicle/horizon_v5/dusk/car/indicator_right/000.png",
+  "road_indicator_right": "assets/rendered/vehicle/horizon_v5/dusk/road/indicator_right.png",
+  "car_indicator_right_alpha": "assets/rendered/vehicle/horizon_v5/dusk/car/indicator_right/000.png",
+  "car_hazard": "assets/rendered/vehicle/horizon_v5/dusk/car/hazard/000.png",
+  "road_hazard": "assets/rendered/vehicle/horizon_v5/dusk/road/hazard.png",
+  "car_hazard_alpha": "assets/rendered/vehicle/horizon_v5/dusk/car/hazard/000.png",
+  "wheel_low": "assets/rendered/vehicle/horizon_v5/dusk/car/wheel_low/000.png",
+  "wheel_medium": "assets/rendered/vehicle/horizon_v5/dusk/car/wheel_medium/000.png",
+  "wheel_high": "assets/rendered/vehicle/horizon_v5/dusk/car/wheel_high/000.png"
+ },
+ "timings_s": {
+  "plate": 12.0,
+  "road_no_car": 13.6,
+  "state_base": 30.3,
+  "state_running": 18.8,
+  "state_brake": 18.9,
+  "state_headlight": 18.8,
+  "state_indicator_left": 18.9,
+  "state_indicator_right": 18.7,
+  "state_hazard": 18.7,
+  "wheel_low": 4.1,
+  "wheel_medium": 4.2,
+  "wheel_high": 4.2
+ },
+ "studio_hidden": [
+  "ENV_Floor",
+  "ENV_Side",
+  "ENV_Sky"
+ ],
+ "environment_framing": {
+  "horizon_row_px": 166.99999809265137,
+  "shift_y": -0.009976519271731377,
+  "row_per_shift": 1920.0001001358032,
+  "target_row_px": 167.0
+ },
+ "car_framing": {
+  "ortho_scale": 19.322633743286133,
+  "shift_x": 0.0038250854704529047,
+  "shift_y": -0.009614288806915283,
+  "projected_box_px": [
+   757.7,
+   128.5,
+   1150.3,
+   345.0
+  ],
+  "projected_width_px": 392.5,
+  "projected_centre_x_px": 954.0,
+  "projected_contact_y_px": 345.0,
+  "target": {
+   "content_box": [
+    240,
+    0,
+    1440,
+    480
+   ],
+   "content_scale": 0.6629834254143646,
+   "car_visible_width_px": 392.5,
+   "car_centre_x_px": 954.0,
+   "car_ground_contact_y_px": 345.0,
+   "horizon_row_px": 167.0
+  }
+ },
+ "wheel_objects": [
+  "wheels",
+  "wheels.001"
+ ],
+ "wheel_boxes_px": [
+  {
+   "level": "low",
+   "boxes": [
+    [
+     961.8,
+     141.1,
+     1145.4,
+     253.9
+    ],
+    [
+     776.1,
+     231.0,
+     960.8,
+     345.0
+    ]
+   ]
+  },
+  {
+   "level": "medium",
+   "boxes": [
+    [
+     961.8,
+     141.1,
+     1145.4,
+     253.9
+    ],
+    [
+     776.1,
+     231.0,
+     960.8,
+     345.0
+    ]
+   ]
+  },
+  {
+   "level": "high",
+   "boxes": [
+    [
+     961.8,
+     141.1,
+     1145.4,
+     253.9
+    ],
+    [
+     776.1,
+     231.0,
+     960.8,
+     345.0
+    ]
+   ]
+  }
+ ],
+ "elapsed_s": 218.8
+}

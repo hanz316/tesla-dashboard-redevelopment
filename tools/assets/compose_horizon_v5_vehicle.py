@@ -196,12 +196,29 @@ def main():
     parser.add_argument("--reflection-falloff", type=float, default=1.9)
     parser.add_argument("--plate", default=os.path.join(
         REPO, "assets", "ui", "horizon_v5_background.png"))
+    parser.add_argument("--phase", default=None,
+                        help="compose another environment's vehicle layers, "
+                             "e.g. day (the passes live under <dir>/<phase>)")
     args = parser.parse_args()
     try:
         import numpy  # noqa: F401
         from PIL import Image  # noqa: F401
     except ImportError as error:
         sys.exit(f"Pillow and numpy are required: {error}")
+
+    if args.phase:
+        # A phase has its own render passes and its own plate; the layer
+        # analysis is identical, which is the point of one compositor.
+        root = args.dir
+        args.dir = os.path.join(args.dir, args.phase)
+        if args.phase != "night":
+            args.plate = os.path.join(REPO, "assets", "ui",
+                                      f"horizon_v5_background_{args.phase}.png")
+        args.manifest = os.path.join(root,
+                                     f"horizon_v5_vehicle_{args.phase}.json")
+        args.report = os.path.join(
+            REPO, "assets", "checkpoints", "horizon_v5",
+            f"horizon_v5_vehicle_layers_{args.phase}.json")
 
     edges = [float(value) for value in args.alpha_edges.split(",")]
     reflection_spec = {
@@ -236,6 +253,7 @@ def main():
 
     manifest = {
         "schema": "horizon-v5-vehicle-layers v1",
+        "phase": args.phase or "night",
         "why": "One baked RGBA layer per lighting state: the car, plus every "
                "pixel the car changes about the wet road. Rendered with the "
                "frozen ortho Horizon camera, so the frozen 356x236 asset "

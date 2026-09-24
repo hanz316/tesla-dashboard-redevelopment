@@ -1,0 +1,227 @@
+{
+ "schema": "horizon-v5-vehicle-layers-report v1",
+ "alpha_edges": [
+  3.0,
+  14.0
+ ],
+ "reflection": {
+  "squash": 0.62,
+  "blur": 7.0,
+  "alpha": 0.3,
+  "falloff": 1.9,
+  "ripple": 0.18,
+  "ripple_cycles": 7.0,
+  "tint": [
+   0.42,
+   0.55,
+   0.68
+  ],
+  "tint_mix": 0.28,
+  "why": "the wet road already returns the car's mirror image; this baked layer is the soft, rippled part of that reflection - the light that scatters on the water rather than the sharp mirror line"
+ },
+ "records": [
+  {
+   "state": "base",
+   "crop_box": [
+    727,
+    103,
+    1180,
+    480
+   ],
+   "layer_size": [
+    453,
+    377
+   ],
+   "solid_car_pixels": 56669,
+   "response_pixels": 35775,
+   "reflection_box": [
+    757,
+    346,
+    1151,
+    482
+   ],
+   "car_box": [
+    757,
+    127,
+    1151,
+    346
+   ],
+   "decoded_rgba_bytes": 683124,
+   "background_decoded_rgba_bytes": 3686400
+  },
+  {
+   "state": "running",
+   "crop_box": [
+    728,
+    103,
+    1180,
+    480
+   ],
+   "layer_size": [
+    452,
+    377
+   ],
+   "solid_car_pixels": 56669,
+   "response_pixels": 35779,
+   "reflection_box": [
+    757,
+    346,
+    1151,
+    482
+   ],
+   "car_box": [
+    757,
+    127,
+    1151,
+    346
+   ],
+   "decoded_rgba_bytes": 681616,
+   "background_decoded_rgba_bytes": 3686400
+  },
+  {
+   "state": "brake",
+   "crop_box": [
+    727,
+    103,
+    1180,
+    480
+   ],
+   "layer_size": [
+    453,
+    377
+   ],
+   "solid_car_pixels": 56669,
+   "response_pixels": 35763,
+   "reflection_box": [
+    757,
+    346,
+    1151,
+    482
+   ],
+   "car_box": [
+    757,
+    127,
+    1151,
+    346
+   ],
+   "decoded_rgba_bytes": 683124,
+   "background_decoded_rgba_bytes": 3686400
+  },
+  {
+   "state": "headlight",
+   "crop_box": [
+    727,
+    103,
+    1180,
+    480
+   ],
+   "layer_size": [
+    453,
+    377
+   ],
+   "solid_car_pixels": 56669,
+   "response_pixels": 35763,
+   "reflection_box": [
+    757,
+    346,
+    1151,
+    482
+   ],
+   "car_box": [
+    757,
+    127,
+    1151,
+    346
+   ],
+   "decoded_rgba_bytes": 683124,
+   "background_decoded_rgba_bytes": 3686400
+  },
+  {
+   "state": "indicator_left",
+   "crop_box": [
+    727,
+    103,
+    1180,
+    480
+   ],
+   "layer_size": [
+    453,
+    377
+   ],
+   "solid_car_pixels": 56669,
+   "response_pixels": 35772,
+   "reflection_box": [
+    757,
+    346,
+    1151,
+    482
+   ],
+   "car_box": [
+    757,
+    127,
+    1151,
+    346
+   ],
+   "decoded_rgba_bytes": 683124,
+   "background_decoded_rgba_bytes": 3686400
+  },
+  {
+   "state": "indicator_right",
+   "crop_box": [
+    727,
+    103,
+    1180,
+    480
+   ],
+   "layer_size": [
+    453,
+    377
+   ],
+   "solid_car_pixels": 56669,
+   "response_pixels": 35768,
+   "reflection_box": [
+    757,
+    346,
+    1151,
+    482
+   ],
+   "car_box": [
+    757,
+    127,
+    1151,
+    346
+   ],
+   "decoded_rgba_bytes": 683124,
+   "background_decoded_rgba_bytes": 3686400
+  },
+  {
+   "state": "hazard",
+   "crop_box": [
+    727,
+    103,
+    1180,
+    480
+   ],
+   "layer_size": [
+    453,
+    377
+   ],
+   "solid_car_pixels": 56669,
+   "response_pixels": 35773,
+   "reflection_box": [
+    757,
+    346,
+    1151,
+    482
+   ],
+   "car_box": [
+    757,
+    127,
+    1151,
+    346
+   ],
+   "decoded_rgba_bytes": 683124,
+   "background_decoded_rgba_bytes": 3686400
+  }
+ ]
+}

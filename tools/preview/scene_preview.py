@@ -1419,13 +1419,49 @@ def draw_dev_banner(img, text):
            fill=(255, 220, 170, 255))
 
 
+def apply_colour_map(node, mapping):
+    """Rewrite a node's colour fields through an environment palette.
+
+    The daylight palette is not a different design, it is the same design with
+    different values, so the renderer maps the values rather than the nodes.
+    Semantic colours (brake red, indicator amber, ready green) are not in the
+    mapping and therefore cannot change meaning with the environment.
+    """
+    if not mapping:
+        return node
+    copy = None
+    for key in ("color", "fill", "stroke", "from", "to", "track_color",
+                "lit_color", "major_color"):
+        value = node.get(key)
+        if isinstance(value, str) and value.upper() in mapping:
+            copy = dict(node) if copy is None else copy
+            copy[key] = mapping[value.upper()]
+    for key in ("alpha_when", "color_when"):
+        for rule in node.get(key, []) or []:
+            colour = rule.get("color")
+            if isinstance(colour, str) and colour.upper() in mapping:
+                copy = dict(node) if copy is None else copy
+                rules = list(copy.get(key, node.get(key)))
+                for item in rules:
+                    if item.get("color", "").upper() == colour.upper():
+                        item = dict(item)
+                        item["color"] = mapping[colour.upper()]
+                copy[key] = rules
+    return copy or node
+
+
 def render(scene, provider, raw_state, out_path, t_norm=1.0,
-           banner=None, vehicle_image=None, vehicle_crop=False):
+           banner=None, vehicle_image=None, vehicle_crop=False,
+           environment=None):
     canvas = scene["canvas"]
     img = Image.new("RGBA", (canvas["width"], canvas["height"]), (0, 0, 0, 255))
     state = State(raw_state)
+    environment = environment or {}
+    colour_map = environment.get("colour_map") or {}
+    vehicle_override = environment.get("vehicle") or {}
     nodes = sorted(scene["nodes"], key=lambda n: n.get("z", 0))
     for node in nodes:
+        node = apply_colour_map(node, colour_map)
         ntype = node.get("type")
         if ntype == "vector":
             draw_vector(img, node, state)
@@ -1437,6 +1473,29 @@ def render(scene, provider, raw_state, out_path, t_norm=1.0,
         elif ntype == "image":
             # A baked bitmap addressed by repository path (environment plate,
             # cluster glow, vehicle layer) or through the vehicle manifest.
+            plate = environment.get("plate")
+            if node.get("id") == "env.plate" and plate:
+                # Environment crossfade: the current plate, then the next one
+                # over it at the blend factor. Two bitmaps, no re-render.
+                blend = float(environment.get("blend", 0.0))
+                next_plate = environment.get("next_plate")
+                paste_scaled_alpha(img, plate, node.get("x", 0), node.get("y", 0),
+                                   node.get("width", 0), node.get("height", 0),
+                                   1.0)
+                if next_plate and blend > 0.0:
+                    paste_scaled_alpha(img, next_plate, node.get("x", 0),
+                                       node.get("y", 0), node.get("width", 0),
+                                       node.get("height", 0), blend)
+                continue
+            if node.get("id", "").startswith("vehicle.") and vehicle_override.get(
+                    node["id"][len("vehicle."):]):
+                phase_layer = vehicle_override[node["id"][len("vehicle."):]]
+                entry_x, entry_y = node.get("x", 0), node.get("y", 0)
+                if phase_layer != node.get("src"):
+                    with Image.open(os.path.join(REPO_ROOT, phase_layer)) as source:
+                        layer = source.convert("RGBA")
+                    img.alpha_composite(layer, (int(entry_x), int(entry_y)))
+                    continue
             path = None
             if node.get("src"):
                 candidate = os.path.join(REPO_ROOT, node["src"])
@@ -1529,6 +1588,88 @@ def render(scene, provider, raw_state, out_path, t_norm=1.0,
     return out_path
 
 
+PHASE_ORDER = ("night", "dawn", "day", "dusk")
+
+
+def two_plate_weights(weights):
+    """Reduce four phase weights to the two adjacent plates a crossfade needs.
+
+    By construction at most two phases are ever non-zero at once, so this is a
+    faithful two-plate decomposition of the blend, not an approximation of a
+    four-way mix.
+    """
+    ordered = sorted(weights.items(), key=lambda item: -item[1])[:2]
+    total = sum(value for _name, value in ordered) or 1.0
+    (first, first_weight), (second, second_weight) = ordered
+    if PHASE_ORDER.index(second) < PHASE_ORDER.index(first):
+        first, second = second, first
+        first_weight, second_weight = second_weight, first_weight
+    return first, second, float(second_weight / total)
+
+
+def environment_context(tokens, when=None, phase=None, blend=0.0,
+                        repo_root=None):
+    """What the renderer needs to show a particular moment of the day."""
+    root = repo_root or REPO_ROOT
+    document_path = os.path.join(root, "assets", "ui",
+                                 "horizon_v5_environment.json")
+    if not os.path.isfile(document_path):
+        return {}
+    with open(document_path) as handle:
+        document = json.load(handle)
+    if when is not None:
+        sys.path.insert(0, os.path.join(root, "tools", "assets"))
+        import horizon_v5_environment_time as environment_time
+        state = environment_time.state_at(when)
+        weights = {name: float(value)
+                   for name, value in state["phase_weights"].items()}
+        palette = state["palette"]
+        darkness = state["darkness"]
+        first, second, fraction = two_plate_weights(weights)
+    else:
+        first = phase or "night"
+        second = first
+        fraction = 0.0
+        palette = document["palettes"][first]
+        darkness = 1.0 if first == "night" else 0.35
+    plates = document["plates"]
+    colour_map = {}
+    for name, value in palette.items():
+        token = tokens.get("colors", {}).get(name)
+        if isinstance(token, str):
+            colour_map[token.upper()] = value
+    vehicle = {}
+    for state_name in ("base", "running", "brake", "headlight",
+                       "indicator_left", "indicator_right", "hazard"):
+        candidate = os.path.join(
+            "assets", "rendered", "vehicle", "horizon_v5", first, "layer",
+            f"{state_name}.png")
+        if os.path.isfile(os.path.join(root, candidate)):
+            vehicle[state_name] = candidate
+    return {
+        "plate": plates[first],
+        "next_plate": plates.get(second) if second != first else None,
+        "blend": blend if blend else fraction,
+        "phase": first, "next_phase": second,
+        "darkness": darkness,
+        "colour_map": colour_map,
+        "vehicle": vehicle,
+    }
+
+
+def tokens_document(scene):
+    """The design tokens the scene was generated from, for the palette map."""
+    provenance = scene.get("provenance", {})
+    path = provenance.get("tokens")
+    if not path:
+        return {}
+    full = os.path.join(REPO_ROOT, path)
+    if not os.path.isfile(full):
+        return {}
+    with open(full) as handle:
+        return json.load(handle)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--scene", default=os.path.join(REPO_ROOT, "scenes",
@@ -1557,6 +1698,14 @@ def main():
                          "fitting it into the node box")
     ap.add_argument("--out-name", default=None,
                     help="override the output filename prefix")
+    ap.add_argument("--environment-phase", default=None,
+                    choices=("night", "dawn", "day", "dusk"),
+                    help="show a baked environment phase instead of the scene's")
+    ap.add_argument("--environment-blend", type=float, default=0.0,
+                    help="crossfade fraction towards the next phase")
+    ap.add_argument("--at", default=None,
+                    help="local time, YYYY-MM-DD HH:MM: the phase, the blend "
+                         "and the HUD palette all follow the solar schedule")
     ap.add_argument("--vehicle-box", default=None,
                     help="override the vehicle_visual box for this render, "
                          "format WxH@X,Y (checkpoint framing only; the scene "
@@ -1625,8 +1774,17 @@ def main():
         filename = (args.out_name or f"{scene['scene']}_{name}") + ".png"
         out = os.path.join(args.out, filename)
         vehicle_image = vehicle_images.get(name, default_vehicle_image)
+        environment = {}
+        if args.environment_phase or args.at:
+            when = None
+            if args.at:
+                when = datetime.strptime(args.at, "%Y-%m-%d %H:%M")
+            environment = environment_context(
+                tokens_document(scene), when=when,
+                phase=args.environment_phase,
+                blend=args.environment_blend)
         render(scene, provider, MOCK_STATES[name], out, args.t, banner,
-               vehicle_image, args.vehicle_crop)
+               vehicle_image, args.vehicle_crop, environment)
         print(f"[preview] {name:15} -> {out}")
 
 
