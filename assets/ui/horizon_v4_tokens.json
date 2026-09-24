@@ -1,0 +1,138 @@
+{
+ "schema": "horizon-v4-tokens v1",
+ "scope": "horizon-v4-spatial-glass",
+ "colors": {
+  "bg_top": "#05090D",
+  "bg_mid": "#071017",
+  "bg_bottom": "#0A141C",
+  "glass_fill": "#071017",
+  "glass_border": "#101C26",
+  "glass_top_edge": "#9FB6C4",
+  "glass_bottom_shade": "#02060A",
+  "primary_text": "#E9EEF3",
+  "secondary_text": "#C3CDD7",
+  "muted_text": "#7C8894",
+  "accent": "#58C8D8",
+  "accent_dim": "#1E3A44",
+  "road": "#071017",
+  "road_sheen": "#0A141C",
+  "lane_edge": "#1E3A44",
+  "shadow": "#02060A",
+  "warning": "#D8A657",
+  "critical": "#D8674F",
+  "ready": "#7BD2C4",
+  "wedge": "#E4E0D6"
+ },
+ "typography": {
+  "why": "hierarchy through weight, tracking and size; no new typeface",
+  "tiers": {
+   "DISPLAY": {
+    "size": 124,
+    "role": "bold",
+    "tracking": -2.0
+   },
+   "TITLE": {
+    "size": 62,
+    "role": "bold",
+    "tracking": 0.0
+   },
+   "BODY": {
+    "size": 28,
+    "role": "medium",
+    "tracking": 1.2
+   },
+   "CAPTION": {
+    "size": 22,
+    "role": "medium",
+    "tracking": 1.6
+   },
+   "LABEL": {
+    "size": 16,
+    "role": "medium",
+    "tracking": 2.4
+   }
+  }
+ },
+ "spacing": {
+  "zone_gap": 20,
+  "stack_tight": 8,
+  "stack_normal": 16,
+  "stack_loose": 34,
+  "label_gap": 10
+ },
+ "radii": {
+  "pill": 10,
+  "bar": 6,
+  "sign": 30,
+  "capsule": 12
+ },
+ "opacity": {
+  "muted": 0.55,
+  "dim": 0.38,
+  "inactive_gear": 0.28,
+  "active_gear": 1.0,
+  "road": 0.9,
+  "sheen": 0.55,
+  "lane": 0.25,
+  "rim_light": 0.18,
+  "shadow": 0.5,
+  "reflection": 0.35,
+  "horizon_glow": 0.35,
+  "atmosphere": 0.3,
+  "arc_inactive": 0.9,
+  "arc_active": 0.9,
+  "glass_fill": 0.72,
+  "glass_border": 0.8,
+  "glass_top": 0.25,
+  "glass_shade": 0.4,
+  "chevron": 0.5,
+  "brake_reflection": 0.22,
+  "headlight_wedge": 0.1,
+  "door_contour": 0.55,
+  "panel_underlight": 0.45,
+  "flow": 0.85
+ },
+ "animation": {
+  "why": "declared now, implemented after visual approval",
+  "chevron_stage_ms": 180,
+  "chevron_travel_px": 26,
+  "navigation_fade_ms": 200,
+  "navigation_slide_px": 12,
+  "state_fade_ms": 220,
+  "flow_travel_ms": 900,
+  "arc_ease_ms": 160
+ },
+ "cost_model": {
+  "why": "static effects are pre-rendered; runtime does text, opacity, crop, translation and small state overlays only",
+  "canvas": [
+   1920,
+   480
+  ],
+  "baked_background_asset": "assets/ui/horizon_v4_background.png",
+  "glass_asset": "9-slice bitmap, one per surface size class"
+ },
+ "vehicle": {
+  "why": "The brake, headlight and running lamps come from the Model A asset itself, not from a colour token; the asset carries its own light.",
+  "brake_source": "asset",
+  "headlight_source": "asset",
+  "indicator_color": "#3FBF6A",
+  "measurements": {
+   "why": "Measured from the committed Model A renders. Golden numbers so layout maths does not depend on reading PNGs; the QA re-measures when the assets are present and fails on drift.",
+   "frame_width": 356,
+   "frame_height": 236,
+   "closed_bbox": [
+    51,
+    57,
+    307,
+    199
+   ],
+   "open_union_bbox": [
+    48,
+    21,
+    307,
+    199
+   ],
+   "open_union_note": "Union over base, brake, headlight, running, all four doors, frunk, trunk and both indicator sequences. The frunk lid is what reaches y=21; the trunk indicator variant reaches x=50."
+  }
+ }
+}

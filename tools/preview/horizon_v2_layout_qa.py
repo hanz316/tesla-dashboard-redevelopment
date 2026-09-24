@@ -175,15 +175,21 @@ def check_zones(layout, components, check):
           "the speed does not overlap the car")
     check(not overlaps(rect(components["speed.value"]), car_open),
           "the speed does not overlap the car even with its panels open")
-    check(not overlaps(car_closed, rect(components["range.value"])),
-          "the car does not overlap the range")
-    check(not overlaps(car_closed, rect(components["soc.bar.track"])),
-          "the car does not overlap the SOC bar")
+    # The energy column is identified by role, so a redesign that renames its
+    # elements (V4 calls them energy.range / energy.surface) is still checked.
+    energy_column = [c for c in layout["components"]
+                     if c.get("role") == "energy"] or [
+        components["range.value"], components["soc.bar.track"]]
+    for component in energy_column:
+        check(not overlaps(car_closed, rect(component)),
+              f"the car does not overlap {component['id']}")
     check(not overlaps(car_open, energy_zone),
           "the car stays out of the energy column with its panels open")
     check(not overlaps(car_open, driver_zone),
           "the car stays out of the driver column with its panels open")
-    nav_pill = rect(components["nav.pill"])
+    nav_pill = rect(components.get("nav.pill")
+                    or next(c for c in layout["components"]
+                            if c.get("role") == "navigation"))
     for other in ("top.temperature", "top.clock"):
         check(not overlaps(nav_pill, rect(components[other])),
               f"the navigation pill does not overlap {other}")
@@ -439,8 +445,9 @@ def check_speed_typography(scene, previewer, check):
     # And the cluster as a whole stays clear of itself.
     unit_box = ink("speed.unit", "km/h")
     numeral = ink("speed.value", "288")
+    limit_id = "speed.limit.value" if "speed.limit.value" in nodes else "speedlimit.value"
     for node_id, text in (("gear.p", "P"), ("gear.d", "D"),
-                          ("driver.status", "READY"), ("speed.limit.value", "50")):
+                          ("driver.status", "READY"), (limit_id, "50")):
         box = ink(node_id, text)
         check(not (unit_box[2] > box[0] and box[2] > unit_box[0] and
                    unit_box[3] > box[1] and box[3] > unit_box[1]),
@@ -448,7 +455,7 @@ def check_speed_typography(scene, previewer, check):
         check(not (numeral[2] > box[0] and box[2] > numeral[0] and
                    numeral[3] > box[1] and box[3] > numeral[1]),
               f"the speed numeral is clear of {node_id}")
-    sign = nodes["speed.limit.sign"]
+    sign = nodes.get("speed.limit.sign") or nodes["speedlimit.glass.fill"]
     sign_box = (sign["x"], sign["y"], sign["x"] + sign["width"],
                 sign["y"] + sign["height"])
     check(not (numeral[2] > sign_box[0] and sign_box[2] > numeral[0] and
@@ -461,9 +468,10 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--layout", default=LAYOUT)
     parser.add_argument("--scene", default=SCENE)
+    parser.add_argument("--tokens", default=TOKENS)
     arguments = parser.parse_args()
     layout = load(arguments.layout)
-    tokens = load(TOKENS)
+    tokens = load(arguments.tokens)
     scene = load(arguments.scene)
 
     try:

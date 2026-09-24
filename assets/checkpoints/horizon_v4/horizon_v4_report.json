@@ -1,0 +1,36 @@
+{
+ "schema": "horizon-v4-evidence v1",
+ "status": "HORIZON_V4_SPATIAL_GLASS = AWAITING HUMAN VISUAL APPROVAL",
+ "states": {
+  "horizon_v4_01_neutral.png": "assets/checkpoints/horizon_v4/horizon_v4_01_neutral.png",
+  "horizon_v4_02_left_indicator.png": "assets/checkpoints/horizon_v4/horizon_v4_02_left_indicator.png",
+  "horizon_v4_03_right_indicator.png": "assets/checkpoints/horizon_v4/horizon_v4_03_right_indicator.png",
+  "horizon_v4_04_hazard.png": "assets/checkpoints/horizon_v4/horizon_v4_04_hazard.png",
+  "horizon_v4_05_brake.png": "assets/checkpoints/horizon_v4/horizon_v4_05_brake.png",
+  "horizon_v4_06_headlight.png": "assets/checkpoints/horizon_v4/horizon_v4_06_headlight.png",
+  "horizon_v4_07_brake_left.png": "assets/checkpoints/horizon_v4/horizon_v4_07_brake_left.png",
+  "horizon_v4_08_door_fl.png": "assets/checkpoints/horizon_v4/horizon_v4_08_door_fl.png",
+  "horizon_v4_09_all_doors.png": "assets/checkpoints/horizon_v4/horizon_v4_09_all_doors.png",
+  "horizon_v4_10_frunk.png": "assets/checkpoints/horizon_v4/horizon_v4_10_frunk.png",
+  "horizon_v4_11_trunk.png": "assets/checkpoints/horizon_v4/horizon_v4_11_trunk.png",
+  "horizon_v4_12_low_soc.png": "assets/checkpoints/horizon_v4/horizon_v4_12_low_soc.png",
+  "horizon_v4_13_navigation.png": "assets/checkpoints/horizon_v4/horizon_v4_13_navigation.png",
+  "horizon_v4_14_unknown.png": "assets/checkpoints/horizon_v4/horizon_v4_14_unknown.png"
+ },
+ "contact_sheet": "assets/checkpoints/horizon_v4/horizon_v4_contact_sheet.png",
+ "key_states": "assets/checkpoints/horizon_v4/horizon_v4_key_states.png",
+ "physical_scale": "assets/checkpoints/horizon_v4/horizon_v4_physical_scale.png",
+ "v3_vs_v4": "assets/checkpoints/horizon_v4/horizon_v3_vs_v4.png",
+ "v3_to_v4_difference": {
+  "vehicle_box_excluded": [
+   703,
+   115,
+   1218,
+   401
+  ],
+  "pixels_compared": 774310,
+  "changed_pixels": 258874,
+  "changed_percent": 33.43,
+  "mean_absolute_rgb_difference": 14.25
+ }
+}

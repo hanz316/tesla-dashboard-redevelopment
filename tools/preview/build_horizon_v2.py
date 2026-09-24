@@ -156,7 +156,19 @@ def text_node(component, tokens):
     if "visibility" in component:
         vis = component["visibility"]
         visible_opacity = tokens.opt(component.get("opacity_token"))
-        if vis.get("show_when_true"):
+        if any(key in vis for key in ("lte", "gte", "equals")):
+            condition = {"signal": vis["binding"]}
+            for key in ("lte", "gte", "equals"):
+                if key in vis:
+                    condition[key] = vis[key]
+            node["opacity"] = 1.0
+            node["alpha_when"] = [
+                {"when": condition,
+                 "alpha": component.get("visible_opacity", 0.5)},
+                {"when": {"signal": vis["binding"], "valid": False},
+                 "alpha": 0.0},
+            ]
+        elif vis.get("show_when_true"):
             node["opacity"] = 1.0
             node["alpha_when"] = [
                 {"when": {"signal": vis["binding"], "is_true": True},
@@ -232,6 +244,33 @@ def vector_node(component, tokens, layout):
         node.update({"points": component.get("points") or road_points(layout),
                      "fill": tokens.color(component["color_token"]),
                      "opacity": tokens.opt(component.get("opacity_token"))})
+    elif shape == "arc":
+        node.update({"cx": component["cx"], "cy": component["cy"],
+                     "radius": component["radius"],
+                     "start_deg": component.get("start_deg", 0),
+                     "end_deg": component.get("end_deg", 360),
+                     "width_px": component.get("width_px", 4),
+                     "color": tokens.color(component["color_token"]),
+                     "opacity": component.get("opacity", 1.0)})
+        if "progress" in component:
+            prog = component["progress"]
+            node["progress"] = {"signal": prog["binding"], "max": prog.get("max", 100),
+                                "from": prog.get("from", "start"),
+                                "color": tokens.color(prog.get("color_token", "accent")),
+                                "opacity": prog.get("opacity", 1.0)}
+    elif shape == "vticks":
+        node.update({"x": b["x"], "y": b["y"], "height": b["h"],
+                     "count": component.get("count", 20),
+                     "major_every": component.get("major_every", 0),
+                     "width_px": component.get("width_px", 6),
+                     "major_width_px": component.get("major_width_px", 10),
+                     "color": tokens.color(component["color_token"]),
+                     "major_color": tokens.color(component["color_token"]),
+                     "lit_color": tokens.color(component.get("lit_token", "accent")),
+                     "opacity": component.get("opacity", 1.0)})
+        if "progress" in component:
+            node["progress"] = {"signal": component["progress"]["binding"],
+                                "max": component["progress"].get("max", 100)}
     elif shape == "tickrow":
         node.update({"x": b["x"], "y": b["y"], "width": b["w"],
                      "count": component.get("count", 24),
@@ -277,7 +316,19 @@ def vector_node(component, tokens, layout):
         # base stays 1.0 and the rule carries the value the design wants when the
         # element is showing.
         visible_opacity = tokens.opt(component.get("opacity_token"))
-        if vis.get("show_when_true"):
+        if any(key in vis for key in ("lte", "gte", "equals")):
+            condition = {"signal": vis["binding"]}
+            for key in ("lte", "gte", "equals"):
+                if key in vis:
+                    condition[key] = vis[key]
+            node["opacity"] = 1.0
+            node["alpha_when"] = [
+                {"when": condition,
+                 "alpha": component.get("visible_opacity", 0.5)},
+                {"when": {"signal": vis["binding"], "valid": False},
+                 "alpha": 0.0},
+            ]
+        elif vis.get("show_when_true"):
             node["opacity"] = 1.0
             node["alpha_when"] = [
                 {"when": {"signal": vis["binding"], "is_true": True},
@@ -332,10 +383,12 @@ def main():
     parser.add_argument("--layout", default=LAYOUT,
                         help="design source to generate from")
     parser.add_argument("--out", default=None, help="scene file to write")
+    parser.add_argument("--tokens", default=TOKENS,
+                        help="design tokens to resolve colour and type names")
     args = parser.parse_args()
 
     layout = load(args.layout)
-    tokens = Tokens(load(TOKENS))
+    tokens = Tokens(load(args.tokens))
     canvas = layout["canvas"]
 
     nodes = []
