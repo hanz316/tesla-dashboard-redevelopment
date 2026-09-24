@@ -1,4 +1,4 @@
-# HORIZON V5 - the approved reference, implemented
+# HORIZON V5 / V5.1 - the approved reference, implemented, then made to drive
 
 状态：`HORIZON_V5_NEUTRAL = AWAITING HUMAN VISUAL APPROVAL`
 
@@ -189,3 +189,73 @@ python3 tools/preview/horizon_v2_layout_qa.py --layout assets/ui/horizon_v5_layo
 **没有做的**（人工明确要求停在这里）：不生成 20 个状态、不 LOCK、不做设备集成、
 不替换生产 Horizon、不动其它页面。视觉结论只有人工能给：
 `HORIZON_V5_NEUTRAL = AWAITING HUMAN VISUAL APPROVAL`。
+
+
+## 9. V5.1 — MOTION
+
+`tools/assets/horizon_v5_motion.py` 是运动通道的唯一定义：`wheel_motion_level`、
+`road_flow_level`、`wet_streak_level`、`aero_wake_level`、`micro_motion_level`，
+全部是 0/30/80/120 km/h 锚点之间的 smoothstep 曲线。**没有任何效果是开关式的**：
+测试每 0.5 km/h 采样一次，任何一步 >0.02、任何下降、任何越界都会失败。
+
+| 通道 | 0 | 30 | 80 | 120 | 实现 |
+|---|---|---|---|---|---|
+| wheel | 0.00 | 0.35 | 0.70 | 1.00 | 三张预烘焙旋转模糊层，三角窗权重混合（30 以上和为 1，静止时为 0） |
+| road flow | 0.00 | 0.30 | 0.75 | 1.00 | 一张 1920×160 平铺贴图，按速度平移 + 换行 |
+| wet streak | 0.00 | 0.30 | 0.70 | 1.00 | 尾灯/转向灯在湿路面的倒影，长度按速度裁切 |
+| aero wake | 0.00 | 0.05 | 0.45 | 1.00 | 车后方的青色气流拖尾，0 km/h 完全为 0 |
+| micro motion | 0.00 | 0.60 px | 1.20 px | 2.00 px | 车身 0.55 Hz 微动，上限 2 px |
+
+轮圈旋转**不是**在 Blender 里转 `wheels` 网格做的：实测那样只改变 1.8k 像素、轮辋
+对比度不变——那两个网格不是这台相机看到的轮子（可见轮子属于 body 网格，拆出来
+等于改几何，而几何是冻结的）。因此模糊是从相机真正看到的像素烘焙的：把轮子
+patch 绕自身中心在曝光范围内旋转采样并平均，写成一张**替换**轮盘区域的 RGBA 层。
+
+尾灯/转向灯倒影的颜色和位置来自**灯光像素本身**（`car/brake − car/base`），不是
+UI 常量；将来尾灯系统改了，倒影会跟着改。倒影画在路面响应之上、且被车体 alpha
+遮掉，绝不会画到车漆上。
+
+证据：`horizon_v5_1_motion_{000,030,080,120}.png` +
+`horizon_v5_1_motion_comparison.png` + `horizon_v5_1_motion_metrics.json`。
+实测（区域平均差）：wheel 0.00 → 3.53 → 6.66 → 14.67；wake 0.00 → 0.12 → 0.16 →
+0.23；flow 0.00 → 0.14 → 0.26 → 0.53；刹车倒影长度 0 → 12 → 55 → 76 px。
+
+## 10. V5.1 — 昼夜环境（全局）
+
+`tools/assets/horizon_v5_environment_time.py` 定义 DAWN / DAY / DUSK / NIGHT 四相、
+它们的时间权重、每相的 HUD 调色板，以及**离线**日出日落日程：
+
+1. 由 日期 + 经纬度 + 时区 计算（标准太阳赤纬近似，不联网）；
+2. Southern Ontario 月度区域 profile（同一模型生成，12 个月）；
+3. 固定兜底 07:00 / 19:00。
+
+四张环境底板（`assets/ui/horizon_v5_background{,_dawn,_day,_dusk}.png`）由同一个
+Blender 场景生成：几何、相机、车辆完全相同，只有天空、太阳、城市灯光、路面响应
+不同——这正是"过渡=两张底板交叉淡入"而不是"两个地方"的原因。
+
+过渡窗口 90/105 分钟，smoothstep：每分钟权重变化上限 0.0167。实测（每 2 分钟
+采样 91 帧）最大单步是整段过渡的 6.5%–8.1%，调色板最大单步 7/255。17:59/18:00
+式切换会表现为"一步等于整段"。
+
+**日间可读性是量出来的**：第一版日间调色板对着渲染底板只有 2.4:1（主文字）和
+1.8:1（能量轨），加深后通过：主文字 6.0:1、次级 8.3:1、弱化 5.9:1、accent 3.4:1、
+轨道 3.3:1。语义色（刹车红 / 转向琥珀 / READY 绿）**不随环境改变**，有测试保证。
+
+内存：过渡期间只保留**两张**底板（2 × 3.69 MB）+ 常驻车辆层 + 运动叠加层，估算
+9.57 MB（250 MB 设备余量充足）。
+
+证据：`horizon_v5_1_{dawn,day,dusk,night}.png`、
+`horizon_v5_1_daily_cycle_contact_sheet.png`（12 个时刻）、
+`horizon_v5_1_seasonal_daylight_test.png`（1/4/7/10 月）、
+`horizon_v5_1_{day,night}_key_states.png`、
+`horizon_v5_1_vehicle_material_day_night.png`、
+`horizon_v5_1_final_contact_sheet.png`、`horizon_v5_1_metrics.json`。
+
+## 11. V5.1 之后的真实状态（交接）
+
+- Horizon V5.1 的结构 / 运动 / 昼夜三块都已有自动 gate 与像素证据；
+- V6 页面清单见 `docs/V6_PAGE_SET.md`（7 套行车页 + 设置 + 开发者 = 9 屏），
+  当前 9 屏的 scene 都还是**矢量背景**，尚未接入烘焙环境底板；
+- 其余页面尚未逐个继续；下一页按清单顺序是 **Mono**（最省资源 / 夜间备用），
+  它应当是全局 `EnvironmentTimeSystem` 的第一个非 Horizon 使用方，而不是再写一套
+  时间算法。
