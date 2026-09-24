@@ -415,7 +415,9 @@ bool decodeCommanderGaugeV6(const std::vector<std::uint8_t>& payload,
     out.screen_on = bits(second, 0, 1) == 0;
     out.dark_theme = bits(second, 2, 1) != 0;
     out.sport_mode = bits(second, 3, 1) != 0;
-    out.range_km = static_cast<float>(bits(second, 6, 26)) / 10.0F;
+    // The field the client calls "remaining range" is the odometer: it
+    // matched the pack summary's odometer exactly in the live capture.
+    out.odometer_km = static_cast<float>(bits(second, 6, 26)) / 10.0F;
 
     for (int i = 0; i < 4; ++i) {
         const std::uint8_t raw = payload[8 + i];
@@ -463,7 +465,7 @@ bool decodeCommanderGaugeV6(const std::vector<std::uint8_t>& payload,
 
     const std::uint32_t pack = readU32(&payload[28]);
     out.cell_voltage_v = 0.002F * static_cast<float>(bits(pack, 0, 12));
-    out.rated_range_km = 1.61F * static_cast<float>(bits(pack, 12, 10));
+    out.range_km = 1.61F * static_cast<float>(bits(pack, 12, 10));
     out.battery_temp_c = 0.5F * static_cast<float>(bits(pack, 22, 9)) - 40.0F;
 
     const std::uint32_t tail =
@@ -568,8 +570,14 @@ void applyCommanderReadingsV6(const CommanderGaugeV6& gauge,
         if (gauge.gear != Gear::Unknown) {
             set(out.gear, gauge.gear, now_ms, SignalQuality::Confirmed, Unit::None);
         }
+        // Range comes from the 1.61-scaled field, never from the odometer
+        // field above it, and the odometer goes to the odometer.
         if (gauge.range_km > 0.0F) {
             set(out.range, static_cast<std::uint16_t>(gauge.range_km), now_ms,
+                SignalQuality::Confirmed, Unit::Kilometer);
+        }
+        if (gauge.odometer_km > 0.0F) {
+            set(out.odometer, static_cast<std::uint32_t>(gauge.odometer_km), now_ms,
                 SignalQuality::Confirmed, Unit::Kilometer);
         }
         set(out.door_fl, gauge.door_fl, now_ms, SignalQuality::Confirmed, Unit::None);

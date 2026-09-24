@@ -255,7 +255,11 @@ struct CommanderGaugeV6 {
     bool screen_on{false};        // bit 0
     bool dark_theme{false};       // bit 2
     bool sport_mode{false};       // bit 3
-    float range_km{0.0F};         // bits 6-31, /10 (the client labels this remaining range)
+    // Measured on the car (2026-09-24 capture): this field reads the same
+    // value as the pack summary's odometer (211040.4 km in the same second),
+    // so it is the ODOMETER, not the "remaining range" the client's label
+    // claims. Reading it as a range is how a 211 040 km range reaches a screen.
+    float odometer_km{0.0F};      // bits 6-31, /10
     bool tire_valid[4]{false, false, false, false};
     float tire_bar[4]{0.0F, 0.0F, 0.0F, 0.0F};  // payload[8..11] * 0.025
     float accelerator_percent{0.0F};            // payload[12], 0-255 of 250 counts
@@ -272,7 +276,9 @@ struct CommanderGaugeV6 {
     float cabin_temp_c{0.0F};                   // bits 21-31, *0.1, -40
     float ambient_temp_c{0.0F};                 // payload[27] *0.5, -40
     float cell_voltage_v{0.0F};                 // payload[28..31] bits 0-11, *0.002
-    float rated_range_km{0.0F};                 // bits 12-21, *1.61
+    // The real remaining range: matches the pack summary's range exactly
+    // (170.7 km from both sources in the same capture).
+    float range_km{0.0F};                       // bits 12-21, *1.61
     float battery_temp_c{0.0F};                 // bits 22-30, *0.5, -40
     float speed_limit_kph{0.0F};                // payload[31..32] bits 7-11, *5
     std::uint8_t blind_spot_rear_left{0};       // bits 12-13
@@ -304,7 +310,7 @@ struct CommanderPackV6 {
     float full_kwh{0.0F};              // bits 16-31, *0.02
     float reserve_kwh{0.0F};           // payload[16..17], *0.01
     float factory_capacity_kwh{0.0F};  // payload[21..24] bits 0-9, *0.1
-    float range_km{0.0F};              // bits 10-19, *1.61
+    float range_km{0.0F};              // bits 10-19, *1.61 (agrees with 176)
     std::uint8_t car_soc_percent{0};   // payload[24..25] bits 7-13
     bool actual_soc_known{false};
     float actual_soc_percent{0.0F};    // (remaining - reserve) / (full - reserve)

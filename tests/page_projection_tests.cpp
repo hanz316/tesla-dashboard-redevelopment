@@ -526,7 +526,8 @@ int main() {
             assert(gauge.soc_percent == 63);
             assert(gauge.trunk_open && !gauge.frunk_open);
             assert(gauge.sport_mode && !gauge.screen_on);
-            assert(std::fabs(gauge.range_km - 253.0F) < 0.05F);
+            // The 6-31 bit field is the odometer, not a range.
+            assert(std::fabs(gauge.odometer_km - 253.0F) < 0.05F);
             assert(gauge.tire_valid[0] && gauge.tire_valid[1]);
             assert(!gauge.tire_valid[2] && !gauge.tire_valid[3]);
             assert(std::fabs(gauge.tire_bar[0] - 2.825F) < 0.001F);
@@ -536,7 +537,7 @@ int main() {
             assert(std::fabs(gauge.front_motor_kw - 11.0F) < 0.01F);
             assert(std::fabs(gauge.ambient_temp_c - 22.0F) < 0.01F);
             assert(std::fabs(gauge.cell_voltage_v - 3.700F) < 0.001F);
-            assert(std::fabs(gauge.rated_range_km - 252.77F) < 0.05F);
+            assert(std::fabs(gauge.range_km - 252.77F) < 0.05F);
             assert(std::fabs(gauge.battery_temp_c - 20.0F) < 0.01F);
         }
 
@@ -676,6 +677,38 @@ int main() {
             const VehicleState overridden =
                 buildArbitratedStateV6(state, module_state, t, mcu_first);
             assert(overridden.speed.value == 55);
+        }
+
+        // Live-capture regression (2026-09-24, car parked): the field the
+        // module's own client labels "remaining range" is the ODOMETER. In the
+        // capture it read 211040.4 km while the real remaining range was
+        // 170.7 km in the 1.61-scaled field. Writing the odometer into range
+        // would have put 211040 km on the energy column.
+        {
+            std::vector<std::uint8_t> payload(33, 0);
+            const std::uint32_t second = (2110404U << 6);  // 211040.4 km
+            payload[4] = static_cast<std::uint8_t>(second & 0xFF);
+            payload[5] = static_cast<std::uint8_t>((second >> 8) & 0xFF);
+            payload[6] = static_cast<std::uint8_t>((second >> 16) & 0xFF);
+            payload[7] = static_cast<std::uint8_t>((second >> 24) & 0xFF);
+            const std::uint32_t pack = (106U << 12);  // 170.66 km at 1.61
+            payload[28] = static_cast<std::uint8_t>(pack & 0xFF);
+            payload[29] = static_cast<std::uint8_t>((pack >> 8) & 0xFF);
+            payload[30] = static_cast<std::uint8_t>((pack >> 16) & 0xFF);
+            payload[31] = static_cast<std::uint8_t>((pack >> 24) & 0xFF);
+
+            feedAll(frameFor(176, payload), t + 30);
+            CommanderGaugeV6 live;
+            assert(decodeCommanderGaugeV6(received.back().payload, t + 30, live));
+            assert(std::fabs(live.odometer_km - 211040.4F) < 0.1F);
+            assert(std::fabs(live.range_km - 170.66F) < 0.02F);
+
+            VehicleState out;
+            applyCommanderReadingsV6(live, CommanderPackV6{}, CommanderDcdcV6{},
+                                     out, t + 30);
+            assert(out.range.valid && out.range.value == 170);
+            assert(out.odometer.valid && out.odometer.value == 211040);
+            std::cout << "the odometer field is not a range\n";
         }
 
         // A corrupted frame is rejected and counted, and changes nothing.
