@@ -27,6 +27,18 @@
  ],
  "nodes": [
   {
+   "id": "support.surface",
+   "type": "image",
+   "z": 6,
+   "layer": "dynamic",
+   "x": 200,
+   "y": 39,
+   "width": 1529,
+   "height": 391,
+   "src": "assets/ui/horizon_v53_surface_scrim.png",
+   "opacity": 1.0
+  },
+  {
    "id": "env.plate",
    "type": "image",
    "z": 0,

@@ -42,9 +42,9 @@
     "lit_row_fraction": 0.836
    },
    "support_surface": {
-    "supported_area_fraction": 0.00027,
-    "peak_darkening_levels": 194.7,
-    "mean_darkening_levels": 102.29,
+    "supported_area_fraction": 0.00546,
+    "peak_darkening_levels": 207.0,
+    "mean_darkening_levels": 72.2,
     "pass_rule": "supporting pixels (darkening > 40 levels) must be at most 2 % of the cluster regions"
    }
   },
@@ -88,9 +88,9 @@
     "lit_row_fraction": 0.769
    },
    "support_surface": {
-    "supported_area_fraction": 0.01433,
-    "peak_darkening_levels": 73.3,
-    "mean_darkening_levels": 52.42,
+    "supported_area_fraction": 0.13222,
+    "peak_darkening_levels": 79.3,
+    "mean_darkening_levels": 48.17,
     "pass_rule": "supporting pixels (darkening > 40 levels) must be at most 2 % of the cluster regions"
    }
   },
@@ -134,9 +134,9 @@
     "lit_row_fraction": 0.843
    },
    "support_surface": {
-    "supported_area_fraction": 0.00026,
-    "peak_darkening_levels": 198.0,
-    "mean_darkening_levels": 109.49,
+    "supported_area_fraction": 0.00541,
+    "peak_darkening_levels": 211.0,
+    "mean_darkening_levels": 74.08,
     "pass_rule": "supporting pixels (darkening > 40 levels) must be at most 2 % of the cluster regions"
    }
   },
@@ -180,9 +180,9 @@
     "lit_row_fraction": 0.896
    },
    "support_surface": {
-    "supported_area_fraction": 0.00025,
-    "peak_darkening_levels": 199.7,
-    "mean_darkening_levels": 117.89,
+    "supported_area_fraction": 0.00532,
+    "peak_darkening_levels": 212.7,
+    "mean_darkening_levels": 76.37,
     "pass_rule": "supporting pixels (darkening > 40 levels) must be at most 2 % of the cluster regions"
    }
   }

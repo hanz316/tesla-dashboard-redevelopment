@@ -1,0 +1,252 @@
+{
+ "schema": "horizon-v5.3-surface-metrics v1",
+ "why": "three candidates measured on dominance, contrast and physical-scale survival",
+ "candidates": {
+  "none": {
+   "label": "CURRENT (no support surface)",
+   "phases": {
+    "day": {
+     "dominance": {
+      "surface_area_fraction": 0.0,
+      "peak_luminance_delta": 0.0,
+      "mean_luminance_delta": 0.0,
+      "note": "measured against the same frame with no support surface, so only the surface's own contribution counts",
+      "hardest_boundary_step": 0.0,
+      "passes": true
+     },
+     "contrast": {
+      "primary": {
+       "min_ratio_1to1": 6.84,
+       "min_ratio_half_size": 6.8,
+       "pixels": 7804
+      },
+      "secondary": {
+       "min_ratio_1to1": 2.18,
+       "min_ratio_half_size": 2.18,
+       "pixels": 1621
+      },
+      "tertiary": {
+       "min_ratio_1to1": 1.71,
+       "min_ratio_half_size": 1.71,
+       "pixels": 3439
+      }
+     }
+    },
+    "night": {
+     "dominance": {
+      "surface_area_fraction": 0.0,
+      "peak_luminance_delta": 0.0,
+      "mean_luminance_delta": 0.0,
+      "note": "measured against the same frame with no support surface, so only the surface's own contribution counts",
+      "hardest_boundary_step": 0.0,
+      "passes": true
+     },
+     "contrast": {
+      "primary": {
+       "min_ratio_1to1": 8.37,
+       "min_ratio_half_size": 8.14,
+       "pixels": 7572
+      },
+      "secondary": {
+       "min_ratio_1to1": 9.25,
+       "min_ratio_half_size": 9.25,
+       "pixels": 1504
+      },
+      "tertiary": {
+       "min_ratio_1to1": 3.32,
+       "min_ratio_half_size": 3.2,
+       "pixels": 3169
+      }
+     }
+    }
+   },
+   "decoded_rgba_bytes": 0,
+   "assets": 0
+  },
+  "scrim": {
+   "label": "A  soft optical scrim",
+   "phases": {
+    "day": {
+     "dominance": {
+      "surface_area_fraction": 0.77899,
+      "peak_luminance_delta": 52.3,
+      "mean_luminance_delta": 26.66,
+      "note": "measured against the same frame with no support surface, so only the surface's own contribution counts",
+      "hardest_boundary_step": 2.0,
+      "passes": true
+     },
+     "contrast": {
+      "primary": {
+       "min_ratio_1to1": 4.19,
+       "min_ratio_half_size": 4.19,
+       "pixels": 7695
+      },
+      "secondary": {
+       "min_ratio_1to1": 3.32,
+       "min_ratio_half_size": 3.32,
+       "pixels": 1568
+      },
+      "tertiary": {
+       "min_ratio_1to1": 2.5,
+       "min_ratio_half_size": 2.48,
+       "pixels": 3302
+      }
+     }
+    },
+    "night": {
+     "dominance": {
+      "surface_area_fraction": 0.10901,
+      "peak_luminance_delta": 139.0,
+      "mean_luminance_delta": 14.64,
+      "note": "measured against the same frame with no support surface, so only the surface's own contribution counts",
+      "hardest_boundary_step": 2.0,
+      "passes": false
+     },
+     "contrast": {
+      "primary": {
+       "min_ratio_1to1": 9.02,
+       "min_ratio_half_size": 8.94,
+       "pixels": 7576
+      },
+      "secondary": {
+       "min_ratio_1to1": 9.15,
+       "min_ratio_half_size": 9.15,
+       "pixels": 1493
+      },
+      "tertiary": {
+       "min_ratio_1to1": 3.34,
+       "min_ratio_half_size": 3.27,
+       "pixels": 3162
+      }
+     }
+    }
+   },
+   "decoded_rgba_bytes": 2391356,
+   "assets": 1
+  },
+  "frost": {
+   "label": "B  subtle frosted glass",
+   "phases": {
+    "day": {
+     "dominance": {
+      "surface_area_fraction": 0.80139,
+      "peak_luminance_delta": 85.0,
+      "mean_luminance_delta": 22.51,
+      "note": "measured against the same frame with no support surface, so only the surface's own contribution counts",
+      "hardest_boundary_step": 2.0,
+      "passes": true
+     },
+     "contrast": {
+      "primary": {
+       "min_ratio_1to1": 8.86,
+       "min_ratio_half_size": 8.83,
+       "pixels": 7912
+      },
+      "secondary": {
+       "min_ratio_1to1": 1.8,
+       "min_ratio_half_size": 1.8,
+       "pixels": 1634
+      },
+      "tertiary": {
+       "min_ratio_1to1": 1.42,
+       "min_ratio_half_size": 1.43,
+       "pixels": 3415
+      }
+     }
+    },
+    "night": {
+     "dominance": {
+      "surface_area_fraction": 0.85714,
+      "peak_luminance_delta": 115.0,
+      "mean_luminance_delta": 61.73,
+      "note": "measured against the same frame with no support surface, so only the surface's own contribution counts",
+      "hardest_boundary_step": 2.0,
+      "passes": false
+     },
+     "contrast": {
+      "primary": {
+       "min_ratio_1to1": 2.17,
+       "min_ratio_half_size": 2.19,
+       "pixels": 7878
+      },
+      "secondary": {
+       "min_ratio_1to1": 2.17,
+       "min_ratio_half_size": 2.17,
+       "pixels": 1621
+      },
+      "tertiary": {
+       "min_ratio_1to1": 1.2,
+       "min_ratio_half_size": 1.19,
+       "pixels": 3410
+      }
+     }
+    }
+   },
+   "decoded_rgba_bytes": 9467200,
+   "assets": 4
+  },
+  "smoked": {
+   "label": "C  smoked optical glass",
+   "phases": {
+    "day": {
+     "dominance": {
+      "surface_area_fraction": 0.76694,
+      "peak_luminance_delta": 84.3,
+      "mean_luminance_delta": 32.95,
+      "note": "measured against the same frame with no support surface, so only the surface's own contribution counts",
+      "hardest_boundary_step": 2.0,
+      "passes": true
+     },
+     "contrast": {
+      "primary": {
+       "min_ratio_1to1": 4.42,
+       "min_ratio_half_size": 4.41,
+       "pixels": 7701
+      },
+      "secondary": {
+       "min_ratio_1to1": 3.95,
+       "min_ratio_half_size": 3.95,
+       "pixels": 1538
+      },
+      "tertiary": {
+       "min_ratio_1to1": 2.96,
+       "min_ratio_half_size": 2.93,
+       "pixels": 3181
+      }
+     }
+    },
+    "night": {
+     "dominance": {
+      "surface_area_fraction": 0.84157,
+      "peak_luminance_delta": 195.0,
+      "mean_luminance_delta": 24.36,
+      "note": "measured against the same frame with no support surface, so only the surface's own contribution counts",
+      "hardest_boundary_step": 2.0,
+      "passes": false
+     },
+     "contrast": {
+      "primary": {
+       "min_ratio_1to1": 4.35,
+       "min_ratio_half_size": 4.38,
+       "pixels": 7761
+      },
+      "secondary": {
+       "min_ratio_1to1": 4.67,
+       "min_ratio_half_size": 4.67,
+       "pixels": 1597
+      },
+      "tertiary": {
+       "min_ratio_1to1": 1.71,
+       "min_ratio_half_size": 1.72,
+       "pixels": 3347
+      }
+     }
+    }
+   },
+   "decoded_rgba_bytes": 9602432,
+   "assets": 4
+  }
+ },
+ "master_sheet": "assets/checkpoints/horizon_v5/horizon_v53_surface_candidates.png",
+ "crop_sheet": "assets/checkpoints/horizon_v5/horizon_v53_surface_crops.png"
+}

@@ -1,0 +1,248 @@
+{
+ "schema": "horizon-v5.3-surfaces v1",
+ "why": "three controlled candidates, same rules, chosen on measured dominance rather than on contrast alone",
+ "boxes": {
+  "speed": [
+   250,
+   96,
+   600,
+   372
+  ],
+  "energy": [
+   1300,
+   100,
+   1700,
+   392
+  ]
+ },
+ "candidates": {
+  "scrim": {
+   "file": "assets/ui/horizon_v53_surface_scrim.png",
+   "label": "low-opacity luminance control, colourless, no sheen",
+   "box": [
+    200,
+    39,
+    1729,
+    430
+   ],
+   "size": [
+    1529,
+    391
+   ],
+   "peak_alpha": 152.0,
+   "decoded_rgba_bytes": 2391356
+  },
+  "diffusion": {
+   "dawn": "assets/ui/horizon_v53_diffusion_dawn.png",
+   "day": "assets/ui/horizon_v53_diffusion_day.png",
+   "dusk": "assets/ui/horizon_v53_diffusion_dusk.png",
+   "night": "assets/ui/horizon_v53_diffusion_night.png"
+  },
+  "frost_dawn": {
+   "file": "assets/ui/horizon_v53_frost_dawn.png",
+   "label": "subtle frosted glass (dawn)",
+   "box": [
+    202,
+    41,
+    1727,
+    429
+   ],
+   "size": [
+    1525,
+    388
+   ],
+   "peak_alpha": 104.0,
+   "decoded_rgba_bytes": 2366800
+  },
+  "frost_day": {
+   "file": "assets/ui/horizon_v53_frost_day.png",
+   "label": "subtle frosted glass (day)",
+   "box": [
+    202,
+    41,
+    1727,
+    429
+   ],
+   "size": [
+    1525,
+    388
+   ],
+   "peak_alpha": 104.0,
+   "decoded_rgba_bytes": 2366800
+  },
+  "frost_dusk": {
+   "file": "assets/ui/horizon_v53_frost_dusk.png",
+   "label": "subtle frosted glass (dusk)",
+   "box": [
+    202,
+    41,
+    1727,
+    429
+   ],
+   "size": [
+    1525,
+    388
+   ],
+   "peak_alpha": 104.0,
+   "decoded_rgba_bytes": 2366800
+  },
+  "frost_night": {
+   "file": "assets/ui/horizon_v53_frost_night.png",
+   "label": "subtle frosted glass (night)",
+   "box": [
+    202,
+    41,
+    1727,
+    429
+   ],
+   "size": [
+    1525,
+    388
+   ],
+   "peak_alpha": 104.0,
+   "decoded_rgba_bytes": 2366800
+  },
+  "per_phase": {
+   "frost": {
+    "dawn": {
+     "file": "assets/ui/horizon_v53_frost_dawn.png",
+     "box": [
+      202,
+      41,
+      1727,
+      429
+     ]
+    },
+    "day": {
+     "file": "assets/ui/horizon_v53_frost_day.png",
+     "box": [
+      202,
+      41,
+      1727,
+      429
+     ]
+    },
+    "dusk": {
+     "file": "assets/ui/horizon_v53_frost_dusk.png",
+     "box": [
+      202,
+      41,
+      1727,
+      429
+     ]
+    },
+    "night": {
+     "file": "assets/ui/horizon_v53_frost_night.png",
+     "box": [
+      202,
+      41,
+      1727,
+      429
+     ]
+    }
+   },
+   "smoked": {
+    "dawn": {
+     "file": "assets/ui/horizon_v53_smoked_dawn.png",
+     "box": [
+      199,
+      39,
+      1730,
+      431
+     ]
+    },
+    "day": {
+     "file": "assets/ui/horizon_v53_smoked_day.png",
+     "box": [
+      199,
+      39,
+      1730,
+      431
+     ]
+    },
+    "dusk": {
+     "file": "assets/ui/horizon_v53_smoked_dusk.png",
+     "box": [
+      199,
+      39,
+      1730,
+      431
+     ]
+    },
+    "night": {
+     "file": "assets/ui/horizon_v53_smoked_night.png",
+     "box": [
+      199,
+      39,
+      1730,
+      431
+     ]
+    }
+   }
+  },
+  "smoked_dawn": {
+   "file": "assets/ui/horizon_v53_smoked_dawn.png",
+   "label": "smoked optical glass (dawn)",
+   "box": [
+    199,
+    39,
+    1730,
+    431
+   ],
+   "size": [
+    1531,
+    392
+   ],
+   "peak_alpha": 132.0,
+   "decoded_rgba_bytes": 2400608
+  },
+  "smoked_day": {
+   "file": "assets/ui/horizon_v53_smoked_day.png",
+   "label": "smoked optical glass (day)",
+   "box": [
+    199,
+    39,
+    1730,
+    431
+   ],
+   "size": [
+    1531,
+    392
+   ],
+   "peak_alpha": 132.0,
+   "decoded_rgba_bytes": 2400608
+  },
+  "smoked_dusk": {
+   "file": "assets/ui/horizon_v53_smoked_dusk.png",
+   "label": "smoked optical glass (dusk)",
+   "box": [
+    199,
+    39,
+    1730,
+    431
+   ],
+   "size": [
+    1531,
+    392
+   ],
+   "peak_alpha": 132.0,
+   "decoded_rgba_bytes": 2400608
+  },
+  "smoked_night": {
+   "file": "assets/ui/horizon_v53_smoked_night.png",
+   "label": "smoked optical glass (night)",
+   "box": [
+    199,
+    39,
+    1730,
+    431
+   ],
+   "size": [
+    1531,
+    392
+   ],
+   "peak_alpha": 132.0,
+   "decoded_rgba_bytes": 2400608
+  }
+ }
+}

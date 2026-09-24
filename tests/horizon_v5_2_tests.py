@@ -130,6 +130,46 @@ def main():
                   f"({day_reflection['mean_magnitude']} vs "
                   f"{night_reflection['mean_magnitude']})")
 
+    print("information surface (V5.3 candidates)")
+    surfaces = os.path.join(REPO, "assets", "checkpoints", "horizon_v5",
+                            "horizon_v53_surface_metrics.json")
+    if not os.path.isfile(surfaces):
+        print("  note the surface comparison has not been run "
+              "(tools/preview/horizon_v53_surface_comparison.py)")
+    else:
+        metrics = json.load(open(surfaces))
+        for name, entry in metrics["candidates"].items():
+            day = entry["phases"]["day"]
+            night = entry["phases"]["night"]
+            check(day["dominance"]["hardest_boundary_step"] <= 2.0,
+                  f"{name}: the surface alpha changes by at most "
+                  f"{day['dominance']['hardest_boundary_step']} of 255 per pixel")
+            check(day["dominance"]["passes"],
+                  f"{name}: daylight dominance passes ({day['dominance']})")
+            # NIGHT must be very weak. Glass candidates are inherently more
+            # visible there, which is a measured reason not to choose them, not
+            # a rule they can be tuned past silently.
+            if name != "none":
+                print(f"  note {name}: night visibility "
+                      f"{night['dominance']['surface_area_fraction'] * 100:.1f}% "
+                      f"of the cluster region (chosen candidate must be <= 12%)")
+        chosen = json.load(open(LAYOUT)).get("support_candidate")
+        check(chosen in metrics["candidates"],
+              f"the layout names a candidate that was measured ({chosen})")
+        entry = metrics["candidates"].get(chosen) or {}
+        tiers = (entry.get("phases", {}).get("day", {}) or {}).get("contrast", {})
+        tertiary = (tiers.get("tertiary") or {}).get("min_ratio_half_size")
+        check(tertiary is not None and tertiary >= 2.4,
+              f"the chosen surface keeps the tertiary labels readable at half "
+              f"size ({tertiary}:1)")
+        check((metrics["candidates"].get(chosen, {}).get("phases", {})
+               .get("night", {}).get("dominance", {})
+               .get("surface_area_fraction", 1.0)) <= 0.12,
+              "the chosen surface is nearly invisible at night")
+        check(entry.get("decoded_rgba_bytes", 0) <= 3 * 1024 * 1024,
+              f"the chosen surface costs "
+              f"{entry.get('decoded_rgba_bytes', 0) // 1024} KB decoded")
+
     print("perceptual motion gate")
     if not os.path.isfile(MOTION):
         print("  note the perceptual motion gate has not been run "

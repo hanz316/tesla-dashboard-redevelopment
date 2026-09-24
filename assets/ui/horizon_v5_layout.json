@@ -36,6 +36,13 @@
   }
  },
  "reference_state": "MEASURED_FROM_REFERENCE",
+ "support_candidate": "scrim",
+ "support_candidate_alternatives": [
+  "none",
+  "frost",
+  "smoked"
+ ],
+ "support_candidate_why": "A soft optical scrim: colourless low-opacity luminance control with a two-level-per-pixel alpha slope and no shape, so it cannot be identified as a panel",
  "reference_mapping": {
   "why": "the panel is 4:1, the reference is 3:1: the reference is placed 1:1 by height in a centred 1440x480 content box and the extra 480 px is environment",
   "scale": 0.6629834254143646,
@@ -128,6 +135,29 @@
   ]
  },
  "components": [
+  {
+   "id": "support.surface",
+   "kind": "image",
+   "src": "assets/ui/horizon_v53_surface_scrim.png",
+   "bounds": {
+    "x": 200,
+    "y": 39,
+    "w": 1529,
+    "h": 391
+   },
+   "z": 6,
+   "layer": "dynamic",
+   "role": "support",
+   "opacity": 1.0,
+   "environment_opacity": {
+    "day": 1.0,
+    "dawn": 0.38,
+    "dusk": 0.38,
+    "night": 0.03
+   },
+   "exempt_from_safe_area": true,
+   "exempt_reason": "a soft, colourless luminance field: its alpha is zero at every border"
+  },
   {
    "id": "env.plate",
    "kind": "image",

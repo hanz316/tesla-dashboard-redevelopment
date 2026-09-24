@@ -55,6 +55,55 @@ MICRO_MOTION_AMPLITUDE_PX = 2.0
 MICRO_MOTION_HZ = 0.55
 
 
+# The chosen readability treatment. A is the soft optical scrim: measured best
+# combined result (colourless, 2.3 MB, nearly invisible at night, tertiary
+# labels survive half size at 2.48:1) while C's smoked glass scored higher
+# contrast but costs four times the memory and stays visible at night. The
+# alternative candidates remain switchable for a human comparison.
+SURFACE_CANDIDATE = os.environ.get("HORIZON_SUPPORT_CANDIDATE") or "scrim"
+SURFACES = os.path.join(REPO, "assets", "checkpoints", "horizon_v5",
+                        "horizon_v53_surfaces.json")
+# How strongly the readability support appears, by environment. DAY needs the
+# most help, night almost none - and it interpolates, never switches.
+SURFACE_STRENGTH = {"day": 1.0, "dawn": 0.38, "dusk": 0.38, "night": 0.03}
+
+
+def support_surface_components(candidate):
+    """The information-surface candidate: one node per environment phase so the
+    surface crossfades with the light instead of switching."""
+    if candidate in (None, "", "none") or not os.path.isfile(SURFACES):
+        return []
+    document = json.load(open(SURFACES))["candidates"]
+    nodes = []
+    if candidate == "scrim":
+        entry = document["scrim"]
+        box = entry["box"]
+        table = dict(SURFACE_STRENGTH)
+        nodes.append(image("support.surface", entry["file"],
+                           {"x": box[0], "y": box[1], "w": box[2] - box[0],
+                            "h": box[3] - box[1]}, z=6, layer="dynamic",
+                           role="support", opacity=1.0,
+                           environment_opacity=table,
+                           exempt_from_safe_area=True,
+                           exempt_reason="a soft, colourless luminance field: "
+                                         "its alpha is zero at every border"))
+        return nodes
+    for phase, entry in (document.get("per_phase", {}).get(candidate) or {}).items():
+        box = entry["box"]
+        table = {name: (SURFACE_STRENGTH[name] if name == phase else 0.0)
+                 for name in SURFACE_STRENGTH}
+        nodes.append(image(f"support.surface.{phase}", entry["file"],
+                           {"x": box[0], "y": box[1], "w": box[2] - box[0],
+                            "h": box[3] - box[1]}, z=6, layer="dynamic",
+                           role="support", opacity=1.0,
+                           environment_opacity=table,
+                           exempt_from_safe_area=True,
+                           exempt_reason="pre-baked glass with a long feathered "
+                                         "falloff; alpha is zero at every "
+                                         "border"))
+    return nodes
+
+
 def load_motion_assets():
     if not os.path.isfile(MOTION_ASSETS):
         return None
@@ -339,6 +388,7 @@ def build_components(measurements, ui_assets, vehicle, alignment):
 
     components = []
     motion_assets = load_motion_assets()
+    components.extend(support_surface_components(SURFACE_CANDIDATE))
 
     # ---- LAYER 0: the baked environment ---------------------------------
     components.append(image("env.plate", "assets/ui/horizon_v5_background.png",
@@ -678,6 +728,12 @@ def main():
                   "vehicle": {"x": 672, "right": 1248},
                   "energy": {"x": 1248, "right": 1680}},
         "reference_state": "MEASURED_FROM_REFERENCE",
+        "support_candidate": SURFACE_CANDIDATE,
+        "support_candidate_alternatives": ["none", "frost", "smoked"],
+        "support_candidate_why": "A soft optical scrim: colourless low-opacity "
+                                 "luminance control with a two-level-per-pixel "
+                                 "alpha slope and no shape, so it cannot be "
+                                 "identified as a panel",
         "reference_mapping": tokens["reference"]["mapping"],
         "forbidden_in_production":
             json.load(open(V2_LAYOUT))["forbidden_in_production"],
