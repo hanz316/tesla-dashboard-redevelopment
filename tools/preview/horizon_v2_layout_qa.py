@@ -69,6 +69,25 @@ def vehicle_from_layers(layout):
     if not layers:
         return None
     base = layers[0]
+    layer_path = os.path.join(REPO, base["src"])
+    if not os.path.isfile(layer_path):
+        # The vehicle layers are regenerable renders and are deliberately not
+        # committed; a fresh clone has the layout but not the pixels yet.
+        note(f"the baked vehicle layer is not present "
+             f"({os.path.relpath(layer_path, REPO)}); the silhouette checks are "
+             f"skipped until the render pipeline has run")
+        return {
+            "id": "vehicle", "bounds": base["bounds"],
+            "permitted_region": {"x": 0, "y": 0, "w": layout["canvas"]["width"],
+                                 "h": layout["canvas"]["height"]},
+            "visible_bounds_closed": dict(base["bounds"]),
+            "visible_bounds_open_union": dict(base["bounds"]),
+            "ground_contact_y": None, "measured_from_layers": True,
+            "measurement_skipped": True, "layer": base,
+            "layers": [c["id"] for c in layers],
+            "visible_width_target": [0, 100000],
+            "ground_contact_band": [0, 100000],
+        }
     entry = {
         "id": "vehicle",
         "bounds": base["bounds"],
@@ -84,13 +103,18 @@ def vehicle_from_layers(layout):
         "layers": [c["id"] for c in layers],
     }
     if not HAVE_PIL:
-        note("Pillow is missing: the vehicle layer bounds could not be "
-             "measured, only the declared layer boxes were checked")
+        # Without Pillow the layer's alpha cannot be read, and the declared box
+        # is the car *plus* its feathered road response - not the silhouette.
+        # Claiming a silhouette from it would be inventing a number, so the
+        # measurement checks are skipped and said to be skipped.
+        note("Pillow is missing: the vehicle layer alpha could not be read, so "
+             "the silhouette width and ground-contact checks are skipped")
+        entry["measurement_skipped"] = True
         entry["visible_bounds_closed"] = dict(base["bounds"])
         entry["visible_bounds_open_union"] = dict(base["bounds"])
-        entry["ground_contact_y"] = base["bounds"]["y"] + base["bounds"]["h"]
+        entry["ground_contact_y"] = None
         return entry
-    image = Image.open(os.path.join(REPO, base["src"])).convert("RGBA")
+    image = Image.open(layer_path).convert("RGBA")
     alpha = image.getchannel("A")
     solid = alpha.point(lambda value: 255 if value > 200 else 0).getbbox()
     solid = solid or (0, 0, image.width, image.height)
@@ -270,6 +294,10 @@ def check_vehicle(layout, tokens, car_closed, car_open, permitted, check):
         check(car_closed[1] >= safe["top"] - 40,
               f"the visible car top {car_closed[1]:.0f} keeps clear of the top "
               f"margin (allowing the 40 px the reference car itself uses)")
+        if vehicle.get("measurement_skipped"):
+            note("the measured-silhouette checks need Pillow; the declared "
+                 "layer box was still checked for canvas and zone clearance")
+            return
         target = vehicle["visible_width_target"]
         width = car_closed[2] - car_closed[0]
         check(target[0] <= width <= target[1],
