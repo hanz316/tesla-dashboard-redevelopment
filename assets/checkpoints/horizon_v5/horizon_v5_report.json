@@ -65,19 +65,19 @@
  "vehicle_bbox_from_final_render": {
   "visible_silhouette": [
    757,
-   129,
+   127,
    392,
-   217
+   219
   ],
   "with_ground_response": [
    756,
-   128,
-   421,
-   352
+   127,
+   430,
+   353
   ]
  },
- "vehicle_pixels_changed": 99189,
- "vehicle_pixels_solid": 37582,
+ "vehicle_pixels_changed": 99327,
+ "vehicle_pixels_solid": 28691,
  "ground_contact_row": 346,
  "speed_cluster_bbox": [
   290.8,
@@ -214,10 +214,74 @@
      377
     ],
     "decoded_rgba_bytes": 772096
+   },
+   {
+    "id": "motion.roadflow",
+    "size": [
+     1920,
+     160
+    ],
+    "decoded_rgba_bytes": 1228800
+   },
+   {
+    "id": "motion.wake",
+    "size": [
+     671,
+     53
+    ],
+    "decoded_rgba_bytes": 142252
+   },
+   {
+    "id": "motion.streak.brake",
+    "size": [
+     118,
+     121
+    ],
+    "decoded_rgba_bytes": 57112
+   },
+   {
+    "id": "motion.streak.indicator_left",
+    "size": [
+     96,
+     66
+    ],
+    "decoded_rgba_bytes": 25344
+   },
+   {
+    "id": "motion.streak.indicator_right",
+    "size": [
+     94,
+     66
+    ],
+    "decoded_rgba_bytes": 24816
+   },
+   {
+    "id": "motion.wheel.low",
+    "size": [
+     345,
+     137
+    ],
+    "decoded_rgba_bytes": 189060
+   },
+   {
+    "id": "motion.wheel.medium",
+    "size": [
+     345,
+     137
+    ],
+    "decoded_rgba_bytes": 189060
+   },
+   {
+    "id": "motion.wheel.high",
+    "size": [
+     345,
+     137
+    ],
+    "decoded_rgba_bytes": 189060
    }
   ],
-  "total_decoded_rgba_bytes": 8643456,
-  "total_decoded_mb": 8.24,
+  "total_decoded_rgba_bytes": 10688960,
+  "total_decoded_mb": 10.19,
   "note": "ESTIMATED on the Mac; UNKNOWN UNTIL DEVICE TEST on T113"
  },
  "background_asset": "assets/ui/horizon_v5_background.png",

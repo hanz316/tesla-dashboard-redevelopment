@@ -428,7 +428,8 @@ def image_node(component):
         "layer": component.get("layer", "static"),
         "x": b["x"], "y": b["y"], "width": b["w"], "height": b["h"],
     }
-    for key in ("src", "asset"):
+    for key in ("src", "asset", "opacity_from", "offset_from", "crop_from",
+                "micro_motion"):
         if key in component:
             node[key] = component[key]
     if "opacity" in component:

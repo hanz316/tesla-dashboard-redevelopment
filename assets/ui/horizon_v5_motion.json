@@ -1,0 +1,333 @@
+{
+ "schema": "horizon-v5-motion v1",
+ "why": "the car has to read as driving, and every motion channel has to be a continuous bounded function of speed rather than a threshold, so nothing ever flashes on",
+ "anchor_speeds_kmh": [
+  0.0,
+  30.0,
+  80.0,
+  120.0
+ ],
+ "channels": {
+  "wheel_motion_level": [
+   0.0,
+   0.35,
+   0.7,
+   1.0
+  ],
+  "road_flow_level": [
+   0.0,
+   0.3,
+   0.75,
+   1.0
+  ],
+  "wet_streak_level": [
+   0.0,
+   0.3,
+   0.7,
+   1.0
+  ],
+  "aero_wake_level": [
+   0.0,
+   0.05,
+   0.45,
+   1.0
+  ],
+  "micro_motion_level": [
+   0.0,
+   0.3,
+   0.6,
+   1.0
+  ]
+ },
+ "interpolation": "smoothstep inside each segment, evaluated at the anchors, so the value and its first derivative are continuous",
+ "wheel_levels": [
+  {
+   "name": "low",
+   "spin_deg": 22.0
+  },
+  {
+   "name": "medium",
+   "spin_deg": 70.0
+  },
+  {
+   "name": "high",
+   "spin_deg": 190.0
+  }
+ ],
+ "wheel_opacity_windows": {
+  "low": [
+   [
+    0.0,
+    0.0
+   ],
+   [
+    30.0,
+    1.0
+   ],
+   [
+    80.0,
+    0.0
+   ]
+  ],
+  "medium": [
+   [
+    30.0,
+    0.0
+   ],
+   [
+    80.0,
+    1.0
+   ],
+   [
+    120.0,
+    0.0
+   ]
+  ],
+  "high": [
+   [
+    80.0,
+    0.0
+   ],
+   [
+    120.0,
+    1.0
+   ],
+   [
+    240.0,
+    1.0
+   ]
+  ]
+ },
+ "micro_motion": {
+  "amplitude_px": 2.0,
+  "hz": 0.55,
+  "why": "1-2 px of vertical body motion at speed; no spring, no bounce, no floating"
+ },
+ "road_flow": {
+  "px_per_level": 190.0,
+  "why": "the streak texture only translates and wraps; the device never blurs or synthesises anything"
+ },
+ "levels_at_speeds": [
+  {
+   "speed": 0.0,
+   "wheel_motion_level": 0.0,
+   "wheel_blend": {
+    "lower": "low",
+    "upper": "medium",
+    "fraction": 0.0
+   },
+   "road_flow_level": 0.0,
+   "road_flow_offset_px": 0.0,
+   "wet_streak_level": 0.0,
+   "wet_streak_length_px": 0.0,
+   "aero_wake_level": 0.0,
+   "micro_motion_level": 0.0,
+   "micro_motion_amplitude_px": 0.0,
+   "motion_factor": 0.0
+  },
+  {
+   "speed": 5.0,
+   "wheel_motion_level": 0.0259,
+   "wheel_blend": {
+    "lower": "low",
+    "upper": "medium",
+    "fraction": 0.0519
+   },
+   "road_flow_level": 0.0222,
+   "road_flow_offset_px": 4.22,
+   "wet_streak_level": 0.0222,
+   "wet_streak_length_px": 0.0222,
+   "aero_wake_level": 0.0037,
+   "micro_motion_level": 0.0222,
+   "micro_motion_amplitude_px": 0.044,
+   "motion_factor": 0.0051
+  },
+  {
+   "speed": 10.0,
+   "wheel_motion_level": 0.0907,
+   "wheel_blend": {
+    "lower": "low",
+    "upper": "medium",
+    "fraction": 0.1815
+   },
+   "road_flow_level": 0.0778,
+   "road_flow_offset_px": 14.78,
+   "wet_streak_level": 0.0778,
+   "wet_streak_length_px": 0.0778,
+   "aero_wake_level": 0.013,
+   "micro_motion_level": 0.0778,
+   "micro_motion_amplitude_px": 0.156,
+   "motion_factor": 0.0197
+  },
+  {
+   "speed": 15.0,
+   "wheel_motion_level": 0.175,
+   "wheel_blend": {
+    "lower": "low",
+    "upper": "medium",
+    "fraction": 0.35
+   },
+   "road_flow_level": 0.15,
+   "road_flow_offset_px": 28.5,
+   "wet_streak_level": 0.15,
+   "wet_streak_length_px": 0.15,
+   "aero_wake_level": 0.025,
+   "micro_motion_level": 0.15,
+   "micro_motion_amplitude_px": 0.3,
+   "motion_factor": 0.043
+  },
+  {
+   "speed": 20.0,
+   "wheel_motion_level": 0.2593,
+   "wheel_blend": {
+    "lower": "low",
+    "upper": "medium",
+    "fraction": 0.5185
+   },
+   "road_flow_level": 0.2222,
+   "road_flow_offset_px": 42.22,
+   "wet_streak_level": 0.2222,
+   "wet_streak_length_px": 0.2222,
+   "aero_wake_level": 0.037,
+   "micro_motion_level": 0.2222,
+   "micro_motion_amplitude_px": 0.444,
+   "motion_factor": 0.0741
+  },
+  {
+   "speed": 30.0,
+   "wheel_motion_level": 0.35,
+   "wheel_blend": {
+    "lower": "low",
+    "upper": "medium",
+    "fraction": 0.7
+   },
+   "road_flow_level": 0.3,
+   "road_flow_offset_px": 57.0,
+   "wet_streak_level": 0.3,
+   "wet_streak_length_px": 0.3,
+   "aero_wake_level": 0.05,
+   "micro_motion_level": 0.3,
+   "micro_motion_amplitude_px": 0.6,
+   "motion_factor": 0.1562
+  },
+  {
+   "speed": 50.0,
+   "wheel_motion_level": 0.4732,
+   "wheel_blend": {
+    "lower": "low",
+    "upper": "medium",
+    "fraction": 0.9464
+   },
+   "road_flow_level": 0.4584,
+   "road_flow_offset_px": 87.1,
+   "wet_streak_level": 0.4408,
+   "wet_streak_length_px": 0.4408,
+   "aero_wake_level": 0.1908,
+   "micro_motion_level": 0.4056,
+   "micro_motion_amplitude_px": 0.811,
+   "motion_factor": 0.3762
+  },
+  {
+   "speed": 80.0,
+   "wheel_motion_level": 0.7,
+   "wheel_blend": {
+    "lower": "medium",
+    "upper": "high",
+    "fraction": 0.4
+   },
+   "road_flow_level": 0.75,
+   "road_flow_offset_px": 142.5,
+   "wet_streak_level": 0.7,
+   "wet_streak_length_px": 0.7,
+   "aero_wake_level": 0.45,
+   "micro_motion_level": 0.6,
+   "micro_motion_amplitude_px": 1.2,
+   "motion_factor": 0.7407
+  },
+  {
+   "speed": 100.0,
+   "wheel_motion_level": 0.85,
+   "wheel_blend": {
+    "lower": "medium",
+    "upper": "high",
+    "fraction": 0.7
+   },
+   "road_flow_level": 0.875,
+   "road_flow_offset_px": 166.25,
+   "wet_streak_level": 0.85,
+   "wet_streak_length_px": 0.85,
+   "aero_wake_level": 0.725,
+   "micro_motion_level": 0.8,
+   "micro_motion_amplitude_px": 1.6,
+   "motion_factor": 0.9259
+  },
+  {
+   "speed": 120.0,
+   "wheel_motion_level": 1.0,
+   "wheel_blend": {
+    "lower": "medium",
+    "upper": "high",
+    "fraction": 1.0
+   },
+   "road_flow_level": 1.0,
+   "road_flow_offset_px": 190.0,
+   "wet_streak_level": 1.0,
+   "wet_streak_length_px": 1.0,
+   "aero_wake_level": 1.0,
+   "micro_motion_level": 1.0,
+   "micro_motion_amplitude_px": 2.0,
+   "motion_factor": 1.0
+  },
+  {
+   "speed": 160.0,
+   "wheel_motion_level": 1.0,
+   "wheel_blend": {
+    "lower": "medium",
+    "upper": "high",
+    "fraction": 1.0
+   },
+   "road_flow_level": 1.0,
+   "road_flow_offset_px": 190.0,
+   "wet_streak_level": 1.0,
+   "wet_streak_length_px": 1.0,
+   "aero_wake_level": 1.0,
+   "micro_motion_level": 1.0,
+   "micro_motion_amplitude_px": 2.0,
+   "motion_factor": 1.0
+  },
+  {
+   "speed": 200.0,
+   "wheel_motion_level": 1.0,
+   "wheel_blend": {
+    "lower": "medium",
+    "upper": "high",
+    "fraction": 1.0
+   },
+   "road_flow_level": 1.0,
+   "road_flow_offset_px": 190.0,
+   "wet_streak_level": 1.0,
+   "wet_streak_length_px": 1.0,
+   "aero_wake_level": 1.0,
+   "micro_motion_level": 1.0,
+   "micro_motion_amplitude_px": 2.0,
+   "motion_factor": 1.0
+  },
+  {
+   "speed": 240.0,
+   "wheel_motion_level": 1.0,
+   "wheel_blend": {
+    "lower": "medium",
+    "upper": "high",
+    "fraction": 1.0
+   },
+   "road_flow_level": 1.0,
+   "road_flow_offset_px": 190.0,
+   "wet_streak_level": 1.0,
+   "wet_streak_length_px": 1.0,
+   "aero_wake_level": 1.0,
+   "micro_motion_level": 1.0,
+   "micro_motion_amplitude_px": 2.0,
+   "motion_factor": 1.0
+  }
+ ]
+}

@@ -1,0 +1,389 @@
+{
+ "schema": "horizon-v5-motion-assets v1",
+ "assets": {
+  "lamp_brake": {
+   "bbox": [
+    761,
+    238,
+    887,
+    293
+   ],
+   "pixels": 201,
+   "colour": [
+    207,
+    82,
+    73
+   ]
+  },
+  "lamp_indicator_left": {
+   "bbox": [
+    761,
+    238,
+    887,
+    293
+   ],
+   "pixels": 283,
+   "colour": [
+    201,
+    80,
+    69
+   ]
+  },
+  "lamp_indicator_right": {
+   "bbox": [
+    761,
+    238,
+    887,
+    293
+   ],
+   "pixels": 295,
+   "colour": [
+    204,
+    82,
+    71
+   ]
+  },
+  "streak_brake": {
+   "file": "assets/ui/horizon_v5_streak_brake.png",
+   "box": [
+    763,
+    319,
+    881,
+    440
+   ],
+   "colour": [
+    207,
+    82,
+    73
+   ],
+   "length_px": 150
+  },
+  "streak_indicator_left": {
+   "file": "assets/ui/horizon_v5_streak_indicator_left.png",
+   "box": [
+    774,
+    320,
+    870,
+    386
+   ],
+   "colour": [
+    201,
+    80,
+    69
+   ],
+   "length_px": 96
+  },
+  "streak_indicator_right": {
+   "file": "assets/ui/horizon_v5_streak_indicator_right.png",
+   "box": [
+    776,
+    320,
+    870,
+    386
+   ],
+   "colour": [
+    204,
+    82,
+    71
+   ],
+   "length_px": 96
+  },
+  "wake": {
+   "file": "assets/ui/horizon_v5_wake.png",
+   "box": [
+    624,
+    340,
+    1295,
+    393
+   ],
+   "colour": [
+    96,
+    196,
+    226
+   ]
+  },
+  "roadflow": {
+   "file": "assets/ui/horizon_v5_roadflow.png",
+   "tile": [
+    1920,
+    160
+   ],
+   "box": [
+    0,
+    320,
+    1920,
+    480
+   ],
+   "why": "translated and wrapped by the runtime; the level curve sets how fast and how visible"
+  },
+  "wheels": {
+   "low": {
+    "file": "assets/ui/horizon_v5_wheel_low.png",
+    "box": [
+     790,
+     211,
+     1135,
+     348
+    ],
+    "spin_deg": 22.0
+   },
+   "medium": {
+    "file": "assets/ui/horizon_v5_wheel_medium.png",
+    "box": [
+     790,
+     211,
+     1135,
+     348
+    ],
+    "spin_deg": 70.0
+   },
+   "high": {
+    "file": "assets/ui/horizon_v5_wheel_high.png",
+    "box": [
+     790,
+     211,
+     1135,
+     348
+    ],
+    "spin_deg": 190.0
+   }
+  }
+ },
+ "wheel_boxes_px": [
+  [
+   967.0,
+   149.1,
+   1152.0,
+   480
+  ],
+  [
+   778.1,
+   289.9,
+   967.0,
+   480
+  ]
+ ],
+ "motion": [
+  {
+   "speed": 0.0,
+   "wheel_motion_level": 0.0,
+   "wheel_blend": {
+    "lower": "low",
+    "upper": "medium",
+    "fraction": 0.0
+   },
+   "road_flow_level": 0.0,
+   "road_flow_offset_px": 0.0,
+   "wet_streak_level": 0.0,
+   "wet_streak_length_px": 0.0,
+   "aero_wake_level": 0.0,
+   "micro_motion_level": 0.0,
+   "micro_motion_amplitude_px": 0.0,
+   "motion_factor": 0.0
+  },
+  {
+   "speed": 5.0,
+   "wheel_motion_level": 0.0259,
+   "wheel_blend": {
+    "lower": "low",
+    "upper": "medium",
+    "fraction": 0.0519
+   },
+   "road_flow_level": 0.0222,
+   "road_flow_offset_px": 4.22,
+   "wet_streak_level": 0.0222,
+   "wet_streak_length_px": 0.0222,
+   "aero_wake_level": 0.0037,
+   "micro_motion_level": 0.0222,
+   "micro_motion_amplitude_px": 0.044,
+   "motion_factor": 0.0051
+  },
+  {
+   "speed": 10.0,
+   "wheel_motion_level": 0.0907,
+   "wheel_blend": {
+    "lower": "low",
+    "upper": "medium",
+    "fraction": 0.1815
+   },
+   "road_flow_level": 0.0778,
+   "road_flow_offset_px": 14.78,
+   "wet_streak_level": 0.0778,
+   "wet_streak_length_px": 0.0778,
+   "aero_wake_level": 0.013,
+   "micro_motion_level": 0.0778,
+   "micro_motion_amplitude_px": 0.156,
+   "motion_factor": 0.0197
+  },
+  {
+   "speed": 15.0,
+   "wheel_motion_level": 0.175,
+   "wheel_blend": {
+    "lower": "low",
+    "upper": "medium",
+    "fraction": 0.35
+   },
+   "road_flow_level": 0.15,
+   "road_flow_offset_px": 28.5,
+   "wet_streak_level": 0.15,
+   "wet_streak_length_px": 0.15,
+   "aero_wake_level": 0.025,
+   "micro_motion_level": 0.15,
+   "micro_motion_amplitude_px": 0.3,
+   "motion_factor": 0.043
+  },
+  {
+   "speed": 20.0,
+   "wheel_motion_level": 0.2593,
+   "wheel_blend": {
+    "lower": "low",
+    "upper": "medium",
+    "fraction": 0.5185
+   },
+   "road_flow_level": 0.2222,
+   "road_flow_offset_px": 42.22,
+   "wet_streak_level": 0.2222,
+   "wet_streak_length_px": 0.2222,
+   "aero_wake_level": 0.037,
+   "micro_motion_level": 0.2222,
+   "micro_motion_amplitude_px": 0.444,
+   "motion_factor": 0.0741
+  },
+  {
+   "speed": 30.0,
+   "wheel_motion_level": 0.35,
+   "wheel_blend": {
+    "lower": "low",
+    "upper": "medium",
+    "fraction": 0.7
+   },
+   "road_flow_level": 0.3,
+   "road_flow_offset_px": 57.0,
+   "wet_streak_level": 0.3,
+   "wet_streak_length_px": 0.3,
+   "aero_wake_level": 0.05,
+   "micro_motion_level": 0.3,
+   "micro_motion_amplitude_px": 0.6,
+   "motion_factor": 0.1562
+  },
+  {
+   "speed": 50.0,
+   "wheel_motion_level": 0.4732,
+   "wheel_blend": {
+    "lower": "low",
+    "upper": "medium",
+    "fraction": 0.9464
+   },
+   "road_flow_level": 0.4584,
+   "road_flow_offset_px": 87.1,
+   "wet_streak_level": 0.4408,
+   "wet_streak_length_px": 0.4408,
+   "aero_wake_level": 0.1908,
+   "micro_motion_level": 0.4056,
+   "micro_motion_amplitude_px": 0.811,
+   "motion_factor": 0.3762
+  },
+  {
+   "speed": 80.0,
+   "wheel_motion_level": 0.7,
+   "wheel_blend": {
+    "lower": "medium",
+    "upper": "high",
+    "fraction": 0.4
+   },
+   "road_flow_level": 0.75,
+   "road_flow_offset_px": 142.5,
+   "wet_streak_level": 0.7,
+   "wet_streak_length_px": 0.7,
+   "aero_wake_level": 0.45,
+   "micro_motion_level": 0.6,
+   "micro_motion_amplitude_px": 1.2,
+   "motion_factor": 0.7407
+  },
+  {
+   "speed": 100.0,
+   "wheel_motion_level": 0.85,
+   "wheel_blend": {
+    "lower": "medium",
+    "upper": "high",
+    "fraction": 0.7
+   },
+   "road_flow_level": 0.875,
+   "road_flow_offset_px": 166.25,
+   "wet_streak_level": 0.85,
+   "wet_streak_length_px": 0.85,
+   "aero_wake_level": 0.725,
+   "micro_motion_level": 0.8,
+   "micro_motion_amplitude_px": 1.6,
+   "motion_factor": 0.9259
+  },
+  {
+   "speed": 120.0,
+   "wheel_motion_level": 1.0,
+   "wheel_blend": {
+    "lower": "medium",
+    "upper": "high",
+    "fraction": 1.0
+   },
+   "road_flow_level": 1.0,
+   "road_flow_offset_px": 190.0,
+   "wet_streak_level": 1.0,
+   "wet_streak_length_px": 1.0,
+   "aero_wake_level": 1.0,
+   "micro_motion_level": 1.0,
+   "micro_motion_amplitude_px": 2.0,
+   "motion_factor": 1.0
+  },
+  {
+   "speed": 160.0,
+   "wheel_motion_level": 1.0,
+   "wheel_blend": {
+    "lower": "medium",
+    "upper": "high",
+    "fraction": 1.0
+   },
+   "road_flow_level": 1.0,
+   "road_flow_offset_px": 190.0,
+   "wet_streak_level": 1.0,
+   "wet_streak_length_px": 1.0,
+   "aero_wake_level": 1.0,
+   "micro_motion_level": 1.0,
+   "micro_motion_amplitude_px": 2.0,
+   "motion_factor": 1.0
+  },
+  {
+   "speed": 200.0,
+   "wheel_motion_level": 1.0,
+   "wheel_blend": {
+    "lower": "medium",
+    "upper": "high",
+    "fraction": 1.0
+   },
+   "road_flow_level": 1.0,
+   "road_flow_offset_px": 190.0,
+   "wet_streak_level": 1.0,
+   "wet_streak_length_px": 1.0,
+   "aero_wake_level": 1.0,
+   "micro_motion_level": 1.0,
+   "micro_motion_amplitude_px": 2.0,
+   "motion_factor": 1.0
+  },
+  {
+   "speed": 240.0,
+   "wheel_motion_level": 1.0,
+   "wheel_blend": {
+    "lower": "medium",
+    "upper": "high",
+    "fraction": 1.0
+   },
+   "road_flow_level": 1.0,
+   "road_flow_offset_px": 190.0,
+   "wet_streak_level": 1.0,
+   "wet_streak_length_px": 1.0,
+   "aero_wake_level": 1.0,
+   "micro_motion_level": 1.0,
+   "micro_motion_amplitude_px": 2.0,
+   "motion_factor": 1.0
+  }
+ ]
+}

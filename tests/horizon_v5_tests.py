@@ -91,8 +91,13 @@ def main():
     check(not [n for n in scene["nodes"] if n.get("type") == "vector"
                and n.get("shape") == "polygon"],
           "the generated scene carries no polygon either")
-    blur = [c["id"] for c in layout["components"]
-            if "blur" in json.dumps(c).lower()]
+    # Keys, not prose: an exempt_reason may legitimately say that the blur was
+    # baked offline, but no component may carry a blur *parameter*.
+    blur = []
+    for component in layout["components"]:
+        for key in component:
+            if "blur" in key.lower():
+                blur.append(f"{component['id']}.{key}")
     check(not blur, f"no component asks for runtime blur ({blur})")
     check(tokens["cost_model"]["runtime_blur"] == "none",
           "the cost model declares no runtime blur")

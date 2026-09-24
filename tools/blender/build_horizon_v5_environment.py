@@ -57,6 +57,9 @@ except ImportError:  # pragma: no cover - only runs inside Blender
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import build_vehicle_state_assets as state_assets  # noqa: E402
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                "..", "assets"))
+import horizon_v5_motion as motion  # noqa: E402
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
@@ -490,6 +493,46 @@ def render_to(scene, path):
     return path
 
 
+def wheel_objects():
+    return [obj for obj in bpy.data.objects
+            if obj.type == "MESH" and obj.name.startswith("wheels")]
+
+
+def spin_frame(scene, paths, degrees, name, samples, resolution, out_dir):
+    """One exposure of the wheels turning: the wheel sweeps `degrees` during
+    the shutter, which is what a rotating wheel actually looks like, and Cycles
+    integrates it over the exposure instead of blurring the whole car."""
+    for obj in paths:
+        obj.rotation_mode = "XYZ"
+        # Measured, not assumed: rotating these meshes about their local X is
+        # what spins them in place (X changes 1.8 k pixels inside the wheel
+        # boxes; Y and Z swing the wheel out of the arch and change 12 k over
+        # the whole car).
+        obj.rotation_euler = (0.0, 0.0, 0.0)
+        obj.keyframe_insert("rotation_euler", frame=1)
+        obj.rotation_euler = (math.radians(degrees), 0.0, 0.0)
+        obj.keyframe_insert("rotation_euler", frame=2)
+        obj.rotation_euler = (math.radians(degrees * 2.0), 0.0, 0.0)
+        obj.keyframe_insert("rotation_euler", frame=3)
+    scene.frame_set(2)
+    if hasattr(scene.render, "use_motion_blur"):
+        scene.render.use_motion_blur = True
+        scene.render.motion_blur_shutter = 1.0
+        if hasattr(scene.render, "motion_blur_position"):
+            scene.render.motion_blur_position = "CENTER"
+    configure_render(scene, samples, True, resolution)
+    path = os.path.join(out_dir, "car", f"wheel_{name}", "000.png")
+    render_to(scene, path)
+    if hasattr(scene.render, "use_motion_blur"):
+        scene.render.use_motion_blur = False
+    for obj in paths:
+        for frame in (1, 2, 3):
+            obj.animation_data_clear() if obj.animation_data else None
+        obj.rotation_euler = (0.0, 0.0, 0.0)
+    scene.frame_set(1)
+    return path
+
+
 def default_spec():
     return {
         "sky_stops": [
@@ -704,6 +747,50 @@ def main():
                 render_to(scene, car_path)
                 report["renders"][f"car_{name}_alpha"] = os.path.relpath(
                     car_path, REPO_ROOT)
+
+    if "wheels" in stages:
+        # Offline only: the device never rotates a wheel, it blends two baked
+        # frames. The spin angle per level comes from the motion system so the
+        # assets and the curve cannot disagree.
+        wheels = wheel_objects()
+        report["wheel_objects"] = [obj.name for obj in wheels]
+        if not wheels:
+            report["wheels_skipped"] = "no wheel meshes in the master"
+        else:
+            scene.camera = car_camera
+            # The wheel frames are car-only passes too: the road must stay out
+            # of the camera ray or the overlay would carry the whole frame.
+            for obj in environment:
+                set_rays([obj], camera=False)
+            set_rays(rig, camera=False)
+            for name, degrees in motion.WHEEL_LEVELS:
+                if degrees <= 0.0:
+                    report["renders"][f"wheel_{name}"] = report["renders"].get(
+                        "car_base")
+                    continue
+                for obj in wheels:
+                    obj.hide_render = False
+                started = time.time()
+                path = spin_frame(scene, wheels, degrees, name, args.samples,
+                                  (width, height), args.out)
+                report["timings_s"][f"wheel_{name}"] = round(
+                    time.time() - started, 1)
+                report["renders"][f"wheel_{name}"] = os.path.relpath(
+                    path, REPO_ROOT)
+                # Projected wheel boxes: the composer crops the overlays with
+                # them, so a wheel blur can never touch the rest of the car.
+                boxes = []
+                for obj in wheels:
+                    xs, ys = [], []
+                    matrix = obj.matrix_world
+                    for vertex in obj.data.vertices:
+                        x, y = proj(scene, car_camera, matrix @ vertex.co)
+                        xs.append(x)
+                        ys.append(y)
+                    boxes.append([round(min(xs), 1), round(min(ys), 1),
+                                  round(max(xs), 1), round(max(ys), 1)])
+                report.setdefault("wheel_boxes_px", []).append(
+                    {"level": name, "boxes": boxes})
 
     report["elapsed_s"] = round(time.time() - start, 1)
     os.makedirs(os.path.dirname(args.report), exist_ok=True)

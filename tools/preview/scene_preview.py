@@ -16,6 +16,7 @@ Usage:
 
 import argparse
 import json
+import math
 import os
 import sys
 from datetime import datetime
@@ -279,6 +280,16 @@ MOCK_STATES.update({
     # live in the previewer's mock table like every other fixture: the runtime
     # projection is the production path and has no mock data at all.
     "v5_neutral": {"speed": 88, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": False, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -12.4, "warning_active": False, "warning_text": '', "speed_limit": 120, "driver_status_text": "READY"},
+    # Motion evidence anchors (developer preview only): the same scene at the
+    # four reference speeds, so the motion channels can be measured.
+    "v5_motion_000": {"speed": 0, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": False, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -12.4, "warning_active": False, "warning_text": '', "speed_limit": 120, "driver_status_text": "READY"},
+    "v5_motion_030": {"speed": 30, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": False, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -14.2, "warning_active": False, "warning_text": '', "speed_limit": 120, "driver_status_text": "READY"},
+    "v5_motion_080": {"speed": 80, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": False, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -18.6, "warning_active": False, "warning_text": '', "speed_limit": 120, "driver_status_text": "READY"},
+    "v5_motion_120": {"speed": 120, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": False, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -24.0, "warning_active": False, "warning_text": '', "speed_limit": 120, "driver_status_text": "READY"},
+    "v5_motion_brake_000": {"speed": 0, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": True, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -2.0, "warning_active": False, "warning_text": '', "speed_limit": 120, "driver_status_text": "READY"},
+    "v5_motion_brake_030": {"speed": 30, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": True, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -12.0, "warning_active": False, "warning_text": '', "speed_limit": 120, "driver_status_text": "READY"},
+    "v5_motion_brake_080": {"speed": 80, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": True, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -28.0, "warning_active": False, "warning_text": '', "speed_limit": 120, "driver_status_text": "READY"},
+    "v5_motion_brake_120": {"speed": 120, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": True, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -46.0, "warning_active": False, "warning_text": '', "speed_limit": 120, "driver_status_text": "READY"},
     "v5_left": {"speed": 88, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": False, "indicator_left": True, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -12.4, "warning_active": False, "warning_text": ''},
     "v5_right": {"speed": 88, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": False, "indicator_left": False, "indicator_right": True, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -12.4, "warning_active": False, "warning_text": ''},
     "v5_hazard": {"speed": 88, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": True, "indicator_left": True, "indicator_right": True, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -12.4, "warning_active": False, "warning_text": ''},
@@ -733,6 +744,41 @@ def alpha_when(node, state, default_key="alpha"):
         if condition_holds(rule["when"], state):
             return rule["alpha"]
     return node.get(default_key, 1.0)
+
+
+def points_interp(points, value):
+    """Piecewise-linear lookup over [[x, y], ...], clamped at both ends."""
+    if not points:
+        return 0.0
+    if value <= points[0][0]:
+        return float(points[0][1])
+    if value >= points[-1][0]:
+        return float(points[-1][1])
+    for index in range(len(points) - 1):
+        low, high = points[index], points[index + 1]
+        if low[0] <= value <= high[0]:
+            span = float(high[0] - low[0]) or 1.0
+            t = (value - low[0]) / span
+            return float(low[1]) + (float(high[1]) - float(low[1])) * t
+    return float(points[-1][1])
+
+
+def binding_value(node, state, key="binding"):
+    """A numeric signal, or None when it is missing, unknown or stale.
+
+    Every motion effect is built on this: an UNKNOWN or stale speed produces no
+    invented motion, it produces no motion.
+    """
+    spec = node.get(key)
+    if not spec:
+        return None
+    signal = state.signal(spec if isinstance(spec, str) else spec.get("binding"))
+    if not signal.valid or signal.value is None:
+        return None
+    try:
+        return float(signal.value)
+    except (TypeError, ValueError):
+        return None
 
 
 def resolve_color(node, state, default_key="color"):
@@ -1398,10 +1444,69 @@ def render(scene, provider, raw_state, out_path, t_norm=1.0,
             if path is None:
                 path = resolve_asset_path(provider, node.get("asset", ""))
             if path and os.path.isfile(path):
-                paste_scaled_alpha(
-                    img, path, node.get("x", 0), node.get("y", 0),
-                    node.get("width", 0), node.get("height", 0),
-                    node.get("opacity", 1.0) * alpha_when(node, state))
+                x, y = node.get("x", 0), node.get("y", 0)
+                width, height = node.get("width", 0), node.get("height", 0)
+                alpha = node.get("opacity", 1.0) * alpha_when(node, state)
+                # Value-driven motion: opacity, translation, a bottom-anchored
+                # crop, and bounded body micro motion. All of them read a
+                # binding and are inert when that binding is unknown or stale.
+                if "opacity_from" in node:
+                    spec = node["opacity_from"]
+                    value = binding_value(spec, state)
+                    alpha *= (0.0 if value is None
+                              else points_interp(spec["points"], value))
+                if "offset_from" in node:
+                    spec = node["offset_from"]
+                    value = binding_value(spec, state)
+                    if value is not None:
+                        y += points_interp(spec["points"], value) \
+                            * spec.get("scale", 1.0)
+                    if spec.get("wrap"):
+                        span = float(spec["wrap"])
+                        y = node.get("y", 0) + ((y - node.get("y", 0)) % span)
+                if "micro_motion" in node:
+                    spec = node["micro_motion"]
+                    value = binding_value(spec, state)
+                    if value is not None:
+                        amplitude = points_interp(spec["points"], value) \
+                            * spec.get("amplitude_px", 1.0)
+                        phase = 2.0 * math.pi * spec.get("hz", 0.5) * t_norm
+                        y += amplitude * math.sin(phase)
+                if "crop_from" in node:
+                    spec = node["crop_from"]
+                    value = binding_value(spec, state)
+                    fraction = (0.0 if value is None
+                                else max(0.0, min(1.0, points_interp(
+                                    spec["points"], value))))
+                    if fraction <= 0.01:
+                        continue
+                    original = Image.open(path).convert("RGBA")
+                    # The visible part keeps the baked asset's own scale: the
+                    # crop shows a shorter streak at a lower speed, it does not
+                    # stretch the first few pixels across the whole node box.
+                    scale = height / float(original.height)
+                    keep = max(1, int(round(original.height * fraction)))
+                    if spec.get("anchor", "bottom") == "top":
+                        # A streak grows away from the lamp, so the visible part
+                        # is the top of the baked length.
+                        source = original.crop((0, 0, original.width, keep))
+                        paste_y = y
+                    else:
+                        source = original.crop((0, original.height - keep,
+                                                original.width,
+                                                original.height))
+                        paste_y = y + height - max(1, int(round(keep * scale)))
+                    target_height = max(1, int(round(keep * scale)))
+                    source = source.resize((width, target_height), Image.LANCZOS)
+                    y = paste_y
+                    if alpha < 0.999:
+                        import numpy as np
+                        array = np.asarray(source).astype(np.float32)
+                        array[:, :, 3] *= alpha
+                        source = Image.fromarray(array.astype("uint8"), "RGBA")
+                    img.alpha_composite(source, (int(x), int(y)))
+                    continue
+                paste_scaled_alpha(img, path, x, y, width, height, alpha)
         elif ntype == "image_anim":
             path = sequence_frame(provider, node["sequence"],
                                   node.get("bind"), state, t_norm)

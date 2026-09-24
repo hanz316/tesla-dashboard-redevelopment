@@ -1,0 +1,74 @@
+{
+ "schema": "horizon-v5.1-motion-evidence v1",
+ "why": "motion intensity has to be provable from pixels, not asserted",
+ "regions": {
+  "wheel": [
+   790,
+   211,
+   1135,
+   348
+  ],
+  "wake": [
+   624,
+   340,
+   1295,
+   393
+  ],
+  "roadflow": [
+   0,
+   320,
+   1920,
+   480
+  ],
+  "brake_streak": [
+   763,
+   319,
+   881,
+   440
+  ]
+ },
+ "per_speed": {
+  "0": {
+   "wheel_region_mean_diff": 0.0,
+   "wake_region_mean_diff": 0.0,
+   "roadflow_region_mean_diff": 0.0,
+   "whole_frame_mean_diff": 0.0
+  },
+  "30": {
+   "wheel_region_mean_diff": 3.5307,
+   "wake_region_mean_diff": 0.1161,
+   "roadflow_region_mean_diff": 0.1416,
+   "whole_frame_mean_diff": 1.2064
+  },
+  "80": {
+   "wheel_region_mean_diff": 6.6595,
+   "wake_region_mean_diff": 0.1612,
+   "roadflow_region_mean_diff": 0.2623,
+   "whole_frame_mean_diff": 1.4826
+  },
+  "120": {
+   "wheel_region_mean_diff": 14.6671,
+   "wake_region_mean_diff": 0.2275,
+   "roadflow_region_mean_diff": 0.525,
+   "whole_frame_mean_diff": 2.0193
+  }
+ },
+ "monotone_increasing": true,
+ "zero_at_0_kmh": true,
+ "streak_length_px": {
+  "brake": {
+   "0": 0,
+   "30": 12,
+   "80": 55,
+   "120": 76
+  }
+ },
+ "streak_monotone_increasing": true,
+ "screenshots": {
+  "0": "assets/checkpoints/horizon_v5/horizon_v5_1_motion_000.png",
+  "30": "assets/checkpoints/horizon_v5/horizon_v5_1_motion_030.png",
+  "80": "assets/checkpoints/horizon_v5/horizon_v5_1_motion_080.png",
+  "120": "assets/checkpoints/horizon_v5/horizon_v5_1_motion_120.png"
+ },
+ "comparison": "assets/checkpoints/horizon_v5/horizon_v5_1_motion_comparison.png"
+}

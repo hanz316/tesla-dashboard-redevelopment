@@ -201,7 +201,30 @@
    "layer": "dynamic",
    "role": "vehicle",
    "exempt_from_safe_area": true,
-   "exempt_reason": "the vehicle layer carries the car and the road response, measured from the render; the visible silhouette is checked against the clusters"
+   "exempt_reason": "the vehicle layer carries the car and the road response, measured from the render; the visible silhouette is checked against the clusters",
+   "micro_motion": {
+    "binding": "speed",
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      30,
+      0.3
+     ],
+     [
+      80,
+      0.6
+     ],
+     [
+      120,
+      1.0
+     ]
+    ],
+    "amplitude_px": 2.0,
+    "hz": 0.55
+   }
   },
   {
    "id": "vehicle.running",
@@ -307,6 +330,339 @@
     "show_when_true": true
    },
    "visible_opacity": 1.0
+  },
+  {
+   "id": "motion.roadflow",
+   "kind": "image",
+   "src": "assets/ui/horizon_v5_roadflow.png",
+   "bounds": {
+    "x": 0,
+    "y": 320,
+    "w": 1920,
+    "h": 160
+   },
+   "z": 8,
+   "layer": "dynamic",
+   "role": "motion",
+   "opacity": 0.55,
+   "offset_from": {
+    "binding": "speed",
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      30,
+      34
+     ],
+     [
+      80,
+      110
+     ],
+     [
+      120,
+      190
+     ]
+    ],
+    "scale": 1.0,
+    "wrap": 160
+   },
+   "opacity_from": {
+    "binding": "speed",
+    "points": [
+     [
+      0,
+      0.0
+     ],
+     [
+      30,
+      0.35
+     ],
+     [
+      80,
+      0.75
+     ],
+     [
+      120,
+      1.0
+     ]
+    ]
+   },
+   "exempt_from_safe_area": true,
+   "exempt_reason": "the road flow tile covers the road band only and its alpha is zero at rest"
+  },
+  {
+   "id": "motion.wake",
+   "kind": "image",
+   "src": "assets/ui/horizon_v5_wake.png",
+   "bounds": {
+    "x": 624,
+    "y": 340,
+    "w": 671,
+    "h": 53
+   },
+   "z": 33,
+   "layer": "dynamic",
+   "role": "motion",
+   "opacity": 0.9,
+   "opacity_from": {
+    "binding": "speed",
+    "points": [
+     [
+      0,
+      0.0
+     ],
+     [
+      30,
+      0.05
+     ],
+     [
+      80,
+      0.45
+     ],
+     [
+      120,
+      1.0
+     ]
+    ]
+   },
+   "exempt_from_safe_area": true,
+   "exempt_reason": "the wake is a soft baked trail behind the car and is fully transparent at 0 km/h"
+  },
+  {
+   "id": "motion.streak.brake",
+   "kind": "image",
+   "src": "assets/ui/horizon_v5_streak_brake.png",
+   "bounds": {
+    "x": 763,
+    "y": 319,
+    "w": 118,
+    "h": 121
+   },
+   "z": 32,
+   "layer": "dynamic",
+   "role": "motion",
+   "opacity": 0.85,
+   "crop_from": {
+    "binding": "speed",
+    "anchor": "top",
+    "points": [
+     [
+      0,
+      0.06
+     ],
+     [
+      30,
+      0.32
+     ],
+     [
+      80,
+      0.68
+     ],
+     [
+      120,
+      1.0
+     ]
+    ]
+   },
+   "visibility": {
+    "binding": "brake",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.85,
+   "exempt_from_safe_area": true,
+   "exempt_reason": "the lamp's own reflection on the wet road, drawn from the measured lamp pixels and only while that lamp is on"
+  },
+  {
+   "id": "motion.streak.indicator_left",
+   "kind": "image",
+   "src": "assets/ui/horizon_v5_streak_indicator_left.png",
+   "bounds": {
+    "x": 774,
+    "y": 320,
+    "w": 96,
+    "h": 66
+   },
+   "z": 32,
+   "layer": "dynamic",
+   "role": "motion",
+   "opacity": 0.85,
+   "crop_from": {
+    "binding": "speed",
+    "anchor": "top",
+    "points": [
+     [
+      0,
+      0.06
+     ],
+     [
+      30,
+      0.32
+     ],
+     [
+      80,
+      0.68
+     ],
+     [
+      120,
+      1.0
+     ]
+    ]
+   },
+   "visibility": {
+    "binding": "indicator_left",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.85,
+   "exempt_from_safe_area": true,
+   "exempt_reason": "the lamp's own reflection on the wet road, drawn from the measured lamp pixels and only while that lamp is on"
+  },
+  {
+   "id": "motion.streak.indicator_right",
+   "kind": "image",
+   "src": "assets/ui/horizon_v5_streak_indicator_right.png",
+   "bounds": {
+    "x": 776,
+    "y": 320,
+    "w": 94,
+    "h": 66
+   },
+   "z": 32,
+   "layer": "dynamic",
+   "role": "motion",
+   "opacity": 0.85,
+   "crop_from": {
+    "binding": "speed",
+    "anchor": "top",
+    "points": [
+     [
+      0,
+      0.06
+     ],
+     [
+      30,
+      0.32
+     ],
+     [
+      80,
+      0.68
+     ],
+     [
+      120,
+      1.0
+     ]
+    ]
+   },
+   "visibility": {
+    "binding": "indicator_right",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.85,
+   "exempt_from_safe_area": true,
+   "exempt_reason": "the lamp's own reflection on the wet road, drawn from the measured lamp pixels and only while that lamp is on"
+  },
+  {
+   "id": "motion.wheel.low",
+   "kind": "image",
+   "src": "assets/ui/horizon_v5_wheel_low.png",
+   "bounds": {
+    "x": 790,
+    "y": 211,
+    "w": 345,
+    "h": 137
+   },
+   "z": 26,
+   "layer": "dynamic",
+   "role": "motion",
+   "opacity": 1.0,
+   "opacity_from": {
+    "binding": "speed",
+    "points": [
+     [
+      0,
+      0.0
+     ],
+     [
+      30,
+      1.0
+     ],
+     [
+      80,
+      0.0
+     ]
+    ]
+   },
+   "exempt_from_safe_area": true,
+   "exempt_reason": "the baked rotational blur of the wheels; transparent at 0 km/h"
+  },
+  {
+   "id": "motion.wheel.medium",
+   "kind": "image",
+   "src": "assets/ui/horizon_v5_wheel_medium.png",
+   "bounds": {
+    "x": 790,
+    "y": 211,
+    "w": 345,
+    "h": 137
+   },
+   "z": 27,
+   "layer": "dynamic",
+   "role": "motion",
+   "opacity": 1.0,
+   "opacity_from": {
+    "binding": "speed",
+    "points": [
+     [
+      30,
+      0.0
+     ],
+     [
+      80,
+      1.0
+     ],
+     [
+      120,
+      0.0
+     ]
+    ]
+   },
+   "exempt_from_safe_area": true,
+   "exempt_reason": "the baked rotational blur of the wheels; transparent at 0 km/h"
+  },
+  {
+   "id": "motion.wheel.high",
+   "kind": "image",
+   "src": "assets/ui/horizon_v5_wheel_high.png",
+   "bounds": {
+    "x": 790,
+    "y": 211,
+    "w": 345,
+    "h": 137
+   },
+   "z": 28,
+   "layer": "dynamic",
+   "role": "motion",
+   "opacity": 1.0,
+   "opacity_from": {
+    "binding": "speed",
+    "points": [
+     [
+      80,
+      0.0
+     ],
+     [
+      120,
+      1.0
+     ],
+     [
+      240,
+      1.0
+     ]
+    ]
+   },
+   "exempt_from_safe_area": true,
+   "exempt_reason": "the baked rotational blur of the wheels; transparent at 0 km/h"
   },
   {
    "id": "speed.arc.track",

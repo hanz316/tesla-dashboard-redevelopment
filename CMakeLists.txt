@@ -195,6 +195,11 @@ if(BUILD_HOST_TOOLS)
         add_test(NAME dashboard_horizon_v5_tests
                  COMMAND "${PYTHON3_EXECUTABLE}"
                          "${CMAKE_CURRENT_SOURCE_DIR}/tests/horizon_v5_tests.py")
+        # V5.1 adds motion and the daylight system: continuous curves, baked
+        # assets, and evidence measured from pixels rather than asserted.
+        add_test(NAME dashboard_horizon_v5_1_tests
+                 COMMAND "${PYTHON3_EXECUTABLE}"
+                         "${CMAKE_CURRENT_SOURCE_DIR}/tests/horizon_v5_1_tests.py")
     else()
         message(WARNING "python3 not found: taillight guide regression tests disabled")
     endif()

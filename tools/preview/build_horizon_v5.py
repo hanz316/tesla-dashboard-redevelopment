@@ -48,6 +48,104 @@ UI_ASSETS = os.path.join(UI, "horizon_v5_ui_assets.json")
 VEHICLE_LAYERS = os.path.join(REPO, "assets", "rendered", "vehicle",
                               "horizon_v5", "horizon_v5_vehicle.json")
 ALIGNMENT = os.path.join(UI, "horizon_v5_speed_alignment.json")
+MOTION = os.path.join(UI, "horizon_v5_motion.json")
+MOTION_ASSETS = os.path.join(REPO, "assets", "checkpoints", "horizon_v5",
+                             "horizon_v5_motion_assets.json")
+MICRO_MOTION_AMPLITUDE_PX = 2.0
+MICRO_MOTION_HZ = 0.55
+
+
+def load_motion_assets():
+    if not os.path.isfile(MOTION_ASSETS):
+        return None
+    with open(MOTION_ASSETS) as handle:
+        return json.load(handle)["assets"]
+
+
+def motion_components(assets, vehicle_layers):
+    """The nodes that make the car read as driving.
+
+    Every one of them is a baked bitmap plus a value-driven opacity, offset or
+    crop: the runtime translates, crops and blends, and never blurs, never
+    particles and never 3D. Each is driven by the motion curves in
+    assets/ui/horizon_v5_motion.json, so the evidence and the screen agree.
+    """
+    if not assets:
+        return []
+    nodes = []
+    flow = assets.get("roadflow")
+    if flow:
+        tile = flow["tile"]
+        nodes.append(image("motion.roadflow", flow["file"],
+                           {"x": 0, "y": 480 - tile[1], "w": tile[0],
+                            "h": tile[1]}, z=8, layer="dynamic",
+                           role="motion", opacity=0.55,
+                           offset_from={"binding": "speed",
+                                        "points": [[0, 0], [30, 34], [80, 110],
+                                                   [120, 190]],
+                                        "scale": 1.0, "wrap": tile[1]},
+                           opacity_from={"binding": "speed",
+                                         "points": [[0, 0.0], [30, 0.35],
+                                                    [80, 0.75], [120, 1.0]]},
+                           exempt_from_safe_area=True,
+                           exempt_reason="the road flow tile covers the road "
+                                         "band only and its alpha is zero at "
+                                         "rest"))
+    wake = assets.get("wake")
+    if wake:
+        box = wake["box"]
+        nodes.append(image("motion.wake", wake["file"],
+                           {"x": box[0], "y": box[1], "w": box[2] - box[0],
+                            "h": box[3] - box[1]}, z=33, layer="dynamic",
+                           role="motion", opacity=0.9,
+                           opacity_from={"binding": "speed",
+                                         "points": [[0, 0.0], [30, 0.05],
+                                                    [80, 0.45], [120, 1.0]]},
+                           exempt_from_safe_area=True,
+                           exempt_reason="the wake is a soft baked trail behind "
+                                         "the car and is fully transparent at "
+                                         "0 km/h"))
+    streak_states = (("brake", "streak_brake", "brake"),
+                     ("indicator_left", "streak_indicator_left",
+                      "indicator_left"),
+                     ("indicator_right", "streak_indicator_right",
+                      "indicator_right"))
+    for state, key, binding in streak_states:
+        entry = assets.get(key)
+        if not entry:
+            continue
+        box = entry["box"]
+        nodes.append(image(f"motion.streak.{state}", entry["file"],
+                           {"x": box[0], "y": box[1], "w": box[2] - box[0],
+                            "h": box[3] - box[1]}, z=32, layer="dynamic",
+                           role="motion", opacity=0.85,
+                           crop_from={"binding": "speed", "anchor": "top",
+                                      "points": [[0, 0.06], [30, 0.32],
+                                                 [80, 0.68], [120, 1.0]]},
+                           visibility={"binding": binding,
+                                       "show_when_true": True},
+                           visible_opacity=0.85,
+                           exempt_from_safe_area=True,
+                           exempt_reason="the lamp's own reflection on the wet "
+                                         "road, drawn from the measured lamp "
+                                         "pixels and only while that lamp is on"))
+    wheels = assets.get("wheels") or {}
+    windows = {"low": [[0, 0.0], [30, 1.0], [80, 0.0]],
+               "medium": [[30, 0.0], [80, 1.0], [120, 0.0]],
+               "high": [[80, 0.0], [120, 1.0], [240, 1.0]]}
+    for index, (level, entry) in enumerate(
+            sorted(wheels.items(), key=lambda item: item[1]["spin_deg"])):
+        box = entry["box"]
+        nodes.append(image(f"motion.wheel.{level}", entry["file"],
+                           {"x": box[0], "y": box[1], "w": box[2] - box[0],
+                            "h": box[3] - box[1]}, z=26 + index,
+                           layer="dynamic", role="motion", opacity=1.0,
+                           opacity_from={"binding": "speed",
+                                         "points": windows[level]},
+                           exempt_from_safe_area=True,
+                           exempt_reason="the baked rotational blur of the "
+                                         "wheels; transparent at 0 km/h"))
+    return nodes
 V2_LAYOUT = os.path.join(UI, "horizon_v2_layout.json")
 
 CONTENT_SCALE = 480 / 724.0
@@ -237,6 +335,7 @@ def build_components(measurements, ui_assets, vehicle, alignment):
         return moved
 
     components = []
+    motion_assets = load_motion_assets()
 
     # ---- LAYER 0: the baked environment ---------------------------------
     components.append(image("env.plate", "assets/ui/horizon_v5_background.png",
@@ -273,7 +372,18 @@ def build_components(measurements, ui_assets, vehicle, alignment):
             component["visibility"] = {"binding": binding,
                                        "show_when_true": True}
             component["visible_opacity"] = 1.0
+        if state == "base":
+            # Body micro motion: bounded at 2 px, zero when stationary, and
+            # silent when the speed is unknown or stale.
+            component["micro_motion"] = {
+                "binding": "speed", "points": [[0, 0], [30, 0.3], [80, 0.6],
+                                               [120, 1.0]],
+                "amplitude_px": MICRO_MOTION_AMPLITUDE_PX,
+                "hz": MICRO_MOTION_HZ}
         components.append(component)
+
+    # ---- LAYER 1b: motion the car makes -------------------------------
+    components.extend(motion_components(motion_assets, layers))
 
     # ---- LAYER 2: speed cluster ----------------------------------------
     components.append(vector("speed.arc.track", "arc",
