@@ -204,6 +204,7 @@ CHK = (CMD + LEN_HI + LEN_LO + sum(DATA)) & 0xFF     长度大端，最大 4096
 | 投影规则（未知态、SOC、档位、门、指挥官徽标） | 已验证（host） | `tests/page_projection_tests.cpp` |
 | 指挥官解码 / 校验 / 链路状态机 | 已验证（host，按模块自带控制软件还原的真协议） | `tests/page_projection_tests.cpp` |
 | 合并规则不可反向覆盖 | 已验证（host） | 同上 |
+| SOC 来源（指挥官 `actual_soc`） | **实车核对**：模块能量比 42.56 % / 模块车机 SOC 43 % / 中控屏显示三者一致（2026-09-24） | `docs/COMMANDER_LIVE_CAPTURE_2026-09-24.md` §5 |
 | 设备侧环境映射（UART OK/STALE/LOST、计数器） | 已验证（host，编译同一份 device 源码） | `tests/device_environment_tests.cpp` |
 | 设置持久化与钳制 | 已验证（host） | `tests/settings_store_tests.cpp` |
 | T113 交叉编译 | 待本轮确认 | `scripts/build_t113.sh` |
