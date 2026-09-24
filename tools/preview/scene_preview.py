@@ -278,6 +278,26 @@ MOCK_STATES.update({
     # QA. These are the only place a Horizon V2 screen gets its values, and they
     # live in the previewer's mock table like every other fixture: the runtime
     # projection is the production path and has no mock data at all.
+    "v5_neutral": {"speed": 88, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": False, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -12.4, "warning_active": False, "warning_text": ''},
+    "v5_left": {"speed": 88, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": False, "indicator_left": True, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -12.4, "warning_active": False, "warning_text": ''},
+    "v5_right": {"speed": 88, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": False, "indicator_left": False, "indicator_right": True, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -12.4, "warning_active": False, "warning_text": ''},
+    "v5_hazard": {"speed": 88, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": True, "indicator_left": True, "indicator_right": True, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -12.4, "warning_active": False, "warning_text": ''},
+    "v5_brake": {"speed": 88, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": True, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -38.0, "warning_active": False, "warning_text": ''},
+    "v5_headlight": {"speed": 88, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": False, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -12.4, "warning_active": False, "warning_text": ''},
+    "v5_brake_left": {"speed": 88, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": True, "indicator_left": True, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -38.0, "warning_active": False, "warning_text": ''},
+    "v5_brake_right": {"speed": 88, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": True, "indicator_left": False, "indicator_right": True, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -38.0, "warning_active": False, "warning_text": ''},
+    "v5_brake_hazard": {"speed": 88, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": True, "indicator_left": True, "indicator_right": True, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -38.0, "warning_active": False, "warning_text": ''},
+    "v5_door_fl": {"speed": 0, "gear": 1, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": False, "brake": False, "indicator_left": False, "indicator_right": False, "door_fl": True, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": 0.0, "warning_active": False, "warning_text": ''},
+    "v5_door_fr": {"speed": 0, "gear": 1, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": False, "brake": False, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": True, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": 0.0, "warning_active": False, "warning_text": ''},
+    "v5_door_rl": {"speed": 0, "gear": 1, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": False, "brake": False, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": True, "door_rr": False, "frunk": False, "trunk": False, "battery_power": 0.0, "warning_active": False, "warning_text": ''},
+    "v5_door_rr": {"speed": 0, "gear": 1, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": False, "brake": False, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": True, "frunk": False, "trunk": False, "battery_power": 0.0, "warning_active": False, "warning_text": ''},
+    "v5_all_doors": {"speed": 0, "gear": 1, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": False, "brake": False, "indicator_left": False, "indicator_right": False, "door_fl": True, "door_fr": True, "door_rl": True, "door_rr": True, "frunk": False, "trunk": False, "battery_power": 0.0, "warning_active": False, "warning_text": ''},
+    "v5_frunk": {"speed": 0, "gear": 1, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": False, "brake": False, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": True, "trunk": False, "battery_power": 0.0, "warning_active": False, "warning_text": ''},
+    "v5_trunk": {"speed": 0, "gear": 1, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": False, "brake": False, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": True, "battery_power": 0.0, "warning_active": False, "warning_text": ''},
+    "v5_low_soc": {"speed": 74, "gear": 4, "range": 42, "actual_soc": 14, "temperature_primary": 19, "position_light": True, "headlight": True, "brake": False, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -18.5, "warning_active": False, "warning_text": ''},
+    "v5_unknown": {"warning_active": False, "warning_text": ''},
+    "v5_stale": {"speed": 88, "gear": 4, "position_light": True, "headlight": True, "brake": False, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "warning_active": False, "warning_text": ''},
+    "v5_navigation": {"speed": 88, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": False, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -12.4, "warning_active": False, "warning_text": '', "nav_manoeuvre": 'IN 300 M TURN RIGHT', "nav_distance": 300, "nav_instruction": 'TURN RIGHT ONTO QUEEN ST'},
     "h4_neutral": {
         "speed": 88, "gear": 4, "range": 253, "actual_soc": 63,
         "temperature_primary": 22, "position_light": True, "headlight": True,
@@ -1155,6 +1175,21 @@ def paste_scaled(base, path, x, y, w, h):
     base.alpha_composite(img, (int(x), int(y)))
 
 
+def paste_scaled_cropped(base, path, x, y, w, h, crop):
+    """Paste one layer of a shared-frame asset set, cropped to the same box.
+
+    Every vehicle layer is rendered in the same 356x236 frame, most of it
+    transparent margin. Cropping all of them to the union alpha box is a framing
+    change, not a geometry change, and it is what lets the car read at 620-760 px
+    inside a 480 px tall canvas. The crop must be identical for every layer or
+    the delta layers stop lining up.
+    """
+    img = Image.open(path).convert("RGBA").crop(tuple(crop))
+    if (img.width, img.height) != (w, h):
+        img = img.resize((w, h), Image.LANCZOS)
+    base.alpha_composite(img, (int(x), int(y)))
+
+
 _DELTA_INDEX = None
 _DELTA_WARNED = False
 
@@ -1236,9 +1271,12 @@ def draw_vehicle_visual(img, node, state, provider, t_norm,
         oy = int(y + (h - new_size[1]) / 2)
         img.alpha_composite(veh, (ox, oy))
         return
+    crop = node.get("crop")
+    paste = ((lambda path: paste_scaled_cropped(img, path, x, y, w, h, crop))
+             if crop else (lambda path: paste_scaled(img, path, x, y, w, h)))
     asset = resolve_asset_path(provider, node.get("asset", ""))
     if asset and os.path.isfile(asset):
-        paste_scaled(img, asset, x, y, w, h)
+        paste(asset)
     else:
         d = ImageDraw.Draw(img, "RGBA")
         d.rounded_rectangle([x, y, x + w, y + h], radius=14,
@@ -1253,14 +1291,14 @@ def draw_vehicle_visual(img, node, state, provider, t_norm,
         for path in paths:
             # Base + per-state deltas: a layer carries only what its state
             # changes, so it can never repaint another panel to closed.
-            paste_scaled(img, state_layer_path(path), x, y, w, h)
+            paste(state_layer_path(path))
     for ov in node.get("overlays", []):
         sig = state.signal(ov["bind"]) if ov.get("bind") else Signal(True, True)
         if not (sig.valid and sig.value):
             continue
         path = resolve_asset_path(provider, ov["asset"])
         if path and os.path.isfile(path):
-            paste_scaled(img, state_layer_path(path), x, y, w, h)
+            paste(state_layer_path(path))
     for side, part in node.get("indicators", {}).items():
         # A channel already delivered by a moving panel's own lighting variant
         # must not be drawn again at the closed-position location.
@@ -1270,7 +1308,7 @@ def draw_vehicle_visual(img, node, state, provider, t_norm,
         path = sequence_frame(provider, part["sequence"], part.get("bind"),
                               state, t_norm)
         if path:
-            paste_scaled(img, state_layer_path(path), x, y, w, h)
+            paste(state_layer_path(path))
 
 
 def apply_safe_area(img, canvas):

@@ -1,0 +1,25 @@
+{
+  "schema": "horizon-v5-reference v1",
+  "role": "HORIZON_V5_VISUAL_REFERENCE",
+  "why": "The human approved a reference image as the source of truth for the V5 visual language. This cluster has no visual capability, so the reference is consumed as measurements, not as an impression: assets/ui/horizon_v5_reference.png is analysed by tools/assets/analyze_v5_reference.py and the numbers it produces drive the layout. Until that file exists, every parameter that must come from the reference is marked TEMPORARY_PENDING_REFERENCE in the layout and the report says BACKGROUND_ART_REQUIRED.",
+  "expected_image": "assets/ui/horizon_v5_reference.png",
+  "measurements": "assets/ui/horizon_v5_reference_measurements.json",
+  "status": "MISSING",
+  "status_note": "No reference image is present in the repository or the working directory as of this run. Nothing about the V5 look has been invented to fill the gap: the structural layout is built from the frozen functional contract and the visual parameters are marked temporary.",
+  "what_will_be_measured": [
+    "canvas size and any letterboxing",
+    "dominant background colours and their vertical bands",
+    "horizon row (largest low-frequency vertical luminance change)",
+    "ground band extent below the horizon",
+    "vehicle bounding box and visible width",
+    "vehicle ground contact row",
+    "brightness of the left / centre / right thirds (region hierarchy)",
+    "text cluster boxes on the left and right thirds",
+    "accent hue (most saturated non-warning colour)",
+    "presence and box of a top-centre navigation element"
+  ],
+  "accepts": ["png", "jpg", "jpeg", "webp"],
+  "does_not_accept": [
+    "a description of the reference in words - the point of the reference is that the numbers come from the image"
+  ]
+}

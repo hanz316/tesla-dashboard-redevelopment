@@ -1,0 +1,133 @@
+{
+ "schema": "horizon-v5-tokens v1",
+ "status": "AWAITING HUMAN VISUAL APPROVAL",
+ "reference": {
+  "role": "HORIZON_V5_VISUAL_REFERENCE",
+  "image": "assets/ui/horizon_v5_reference.png",
+  "measurements": "assets/ui/horizon_v5_reference_measurements.json",
+  "state": "TEMPORARY_PENDING_REFERENCE",
+  "note": "background bands, horizon row and accent hue come from the reference when it is present; otherwise the values below are structural placeholders and the report says BACKGROUND_ART_REQUIRED"
+ },
+ "colors": {
+  "bg_deep": "#05090D",
+  "bg_mid": "#071017",
+  "bg_horizon": "#0A141C",
+  "bg_ground": "#0E1A22",
+  "ground_sheen": "#101A22",
+  "contact_shadow": "#02060A",
+  "reflection": "#0B141B",
+  "glass_fill": "#071017",
+  "glass_border": "#12202A",
+  "glass_top_edge": "#9FB6C4",
+  "glass_bottom_shade": "#02060A",
+  "primary_text": "#E9EEF3",
+  "secondary_text": "#C3CDD7",
+  "muted_text": "#7C8894",
+  "accent": "#58C8D8",
+  "accent_dim": "#1E3A44",
+  "warning": "#D8A657",
+  "critical": "#D8674F",
+  "ready": "#7BD2C4",
+  "throw": "#DCD8CC"
+ },
+ "horizon_row": 300,
+ "typography": {
+  "tiers": {
+   "DISPLAY": {
+    "size": 124,
+    "role": "bold",
+    "tracking": -2.0
+   },
+   "TITLE": {
+    "size": 62,
+    "role": "bold",
+    "tracking": 0.0
+   },
+   "BODY": {
+    "size": 28,
+    "role": "medium",
+    "tracking": 1.2
+   },
+   "CAPTION": {
+    "size": 22,
+    "role": "medium",
+    "tracking": 1.6
+   },
+   "LABEL": {
+    "size": 16,
+    "role": "medium",
+    "tracking": 2.4
+   }
+  }
+ },
+ "spacing": {
+  "zone_gap": 20,
+  "stack_tight": 8,
+  "stack_normal": 16,
+  "stack_loose": 34,
+  "label_gap": 10
+ },
+ "radii": {
+  "pill": 10,
+  "bar": 6,
+  "sign": 30,
+  "capsule": 12
+ },
+ "opacity": {
+  "muted": 0.55,
+  "dim": 0.38,
+  "inactive_gear": 0.28,
+  "active_gear": 1.0,
+  "arc_inactive": 0.85,
+  "arc_active": 0.95,
+  "shadow": 0.55,
+  "reflection": 0.3,
+  "sheen": 0.45,
+  "glass_fill": 0.7,
+  "glass_top": 0.22,
+  "glass_shade": 0.38
+ },
+ "animation": {
+  "why": "declared for the device pass, not implemented here",
+  "state_fade_ms": 220,
+  "navigation_fade_ms": 200,
+  "navigation_slide_px": 12,
+  "indicator_ground_pulse_ms": 420,
+  "road_travel_ms": 900,
+  "arc_ease_ms": 160
+ },
+ "cost_model": {
+  "canvas": [
+   1920,
+   480
+  ],
+  "baked_background": "assets/ui/horizon_v5_background.png",
+  "vehicle_layers": "base + panel delta layers, cropped to the union alpha box",
+  "energy_rail": "baked rail + crop",
+  "glass": "9-slice bitmap"
+ },
+ "vehicle": {
+  "why": "The brake, headlight and running lamps come from the Model A asset itself, not from a colour token; the asset carries its own light.",
+  "brake_source": "asset",
+  "headlight_source": "asset",
+  "indicator_color": "#3FBF6A",
+  "measurements": {
+   "why": "Measured from the committed Model A renders. Golden numbers so layout maths does not depend on reading PNGs; the QA re-measures when the assets are present and fails on drift.",
+   "frame_width": 356,
+   "frame_height": 236,
+   "closed_bbox": [
+    51,
+    57,
+    307,
+    199
+   ],
+   "open_union_bbox": [
+    48,
+    21,
+    307,
+    199
+   ],
+   "open_union_note": "Union over base, brake, headlight, running, all four doors, frunk, trunk and both indicator sequences. The frunk lid is what reaches y=21; the trunk indicator variant reaches x=50."
+  }
+ }
+}

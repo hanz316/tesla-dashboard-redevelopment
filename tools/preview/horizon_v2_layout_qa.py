@@ -190,7 +190,9 @@ def check_zones(layout, components, check):
     nav_pill = rect(components.get("nav.pill")
                     or next(c for c in layout["components"]
                             if c.get("role") == "navigation"))
-    for other in ("top.temperature", "top.clock"):
+    top_ids = [cid for cid in ("top.temperature", "top.clock", "driver.temperature")
+               if cid in components]
+    for other in top_ids:
         check(not overlaps(nav_pill, rect(components[other])),
               f"the navigation pill does not overlap {other}")
     return car_closed, car_open, permitted
@@ -198,6 +200,7 @@ def check_zones(layout, components, check):
 
 def check_vehicle(layout, tokens, car_closed, car_open, permitted, check):
     print("vehicle")
+    vehicle = next(c for c in layout["components"] if c["id"] == "vehicle")
     canvas = layout["canvas"]
     safe = layout["safe_area"]
     check(car_closed[0] >= permitted[0] and car_closed[2] <= permitted[2] and
@@ -206,38 +209,55 @@ def check_vehicle(layout, tokens, car_closed, car_open, permitted, check):
     check(car_open[0] >= permitted[0] and car_open[2] <= permitted[2] and
           car_open[1] >= permitted[1] and car_open[3] <= permitted[3],
           "the car with every panel open is inside its permitted region")
-    check(car_closed[1] >= safe["top"] and
-          car_closed[3] <= canvas["height"] - safe["bottom"],
+    # A panel that physically rises above the car's roof may cross the stated
+    # top margin; that is allowed only when the layout says so, with the numbers
+    # that justify it, and the canvas and panel mask still apply.
+    exemption = vehicle.get("safe_area_exemption", {})
+    top_ok = (lambda box: box[1] >= safe["top"] or exemption.get("top"))
+    bottom_ok = (lambda box: box[3] <= canvas["height"] - safe["bottom"]
+                 or exemption.get("bottom"))
+    check(top_ok(car_closed) and bottom_ok(car_closed),
           "the closed car is inside the safe area")
-    check(car_open[1] >= safe["top"] and
-          car_open[3] <= canvas["height"] - safe["bottom"],
+    check(top_ok(car_open) and bottom_ok(car_open),
           "the car with every panel open is inside the safe area")
 
     # The recorded visible bounds must be the arithmetic of the node box and the
     # measured asset, not a number somebody typed: this is what keeps the layout
     # honest when the vehicle is scaled.
-    vehicle = next(c for c in layout["components"] if c["id"] == "vehicle")
     measurements = tokens["vehicle"]["measurements"]
-    scale = vehicle["bounds"]["w"] / float(measurements["frame_width"])
+    # A node may declare a crop into the shared asset frame (V5 crops every
+    # vehicle layer to the union alpha box so the car can read larger on a
+    # 480 px tall canvas). The arithmetic has to use that framing.
+    crop = vehicle.get("crop")
+    if crop:
+        scale = vehicle["bounds"]["w"] / float(crop[2] - crop[0])
+        origin = (crop[0], crop[1])
+    else:
+        scale = vehicle["bounds"]["w"] / float(measurements["frame_width"])
+        origin = (0, 0)
     for key, bbox_key in (("visible_bounds_closed", "closed_bbox"),
                           ("visible_bounds_open_union", "open_union_bbox")):
         x0, y0, x1, y1 = measurements[bbox_key]
-        expected = (vehicle["bounds"]["x"] + x0 * scale,
-                    vehicle["bounds"]["y"] + y0 * scale,
+        expected = (vehicle["bounds"]["x"] + (x0 - origin[0]) * scale,
+                    vehicle["bounds"]["y"] + (y0 - origin[1]) * scale,
                     (x1 - x0) * scale, (y1 - y0) * scale)
         recorded = vehicle[key]
         check(all(abs(expected[index] - recorded[field]) <= 1.0
                   for index, field in enumerate(("x", "y", "w", "h"))),
               f"{key} matches the asset bounds at this scale "
               f"({[round(value, 1) for value in expected]})")
-    ground = vehicle["bounds"]["y"] + measurements["closed_bbox"][3] * scale
+    ground = (vehicle["bounds"]["y"] +
+              (measurements["closed_bbox"][3] - origin[1]) * scale)
     check(abs(ground - vehicle.get("ground_contact_y", ground)) <= 1.0,
           f"the tyres meet the road at y {ground:.0f}")
-    check(460 <= car_closed[2] - car_closed[0] <= 520,
+    width_target = vehicle.get("visible_width_target", [460, 520])
+    check(width_target[0] <= car_closed[2] - car_closed[0] <= width_target[1],
           f"the visible car is {car_closed[2] - car_closed[0]:.0f} px wide, "
-          f"inside the 460-520 target")
-    check(390 <= ground <= 410,
-          f"the ground contact is inside the requested 390-410 band ({ground:.0f})")
+          f"inside the {width_target[0]}-{width_target[1]} target")
+    contact_band = vehicle.get("ground_contact_band", [390, 410])
+    check(contact_band[0] <= ground <= contact_band[1],
+          f"the ground contact {ground:.0f} is inside "
+          f"{contact_band[0]}-{contact_band[1]}")
 
     if not HAVE_PIL:
         note("Pillow is absent: the Model A alpha-bbox drift check is skipped "

@@ -1,0 +1,65 @@
+{
+ "schema": "horizon-v5-evidence v1",
+ "status": "HORIZON_V5_VISUAL = AWAITING HUMAN VISUAL APPROVAL",
+ "reference": {
+  "expected_image": "assets/ui/horizon_v5_reference.png",
+  "state": "TEMPORARY_PENDING_REFERENCE",
+  "background_art": "BACKGROUND_ART_REQUIRED"
+ },
+ "vehicle_bounds": {
+  "x": 642,
+  "y": 4,
+  "w": 637,
+  "h": 439
+ },
+ "vehicle_visible_bounds_closed": {
+  "x": 649,
+  "y": 92,
+  "w": 627,
+  "h": 348
+ },
+ "navigation_hidden_pixels": 0,
+ "screenshots": {
+  "horizon_v5_01_neutral.png": "assets/checkpoints/horizon_v5/horizon_v5_01_neutral.png",
+  "horizon_v5_02_left_indicator.png": "assets/checkpoints/horizon_v5/horizon_v5_02_left_indicator.png",
+  "horizon_v5_03_right_indicator.png": "assets/checkpoints/horizon_v5/horizon_v5_03_right_indicator.png",
+  "horizon_v5_04_hazard.png": "assets/checkpoints/horizon_v5/horizon_v5_04_hazard.png",
+  "horizon_v5_05_brake.png": "assets/checkpoints/horizon_v5/horizon_v5_05_brake.png",
+  "horizon_v5_06_headlight.png": "assets/checkpoints/horizon_v5/horizon_v5_06_headlight.png",
+  "horizon_v5_07_brake_left.png": "assets/checkpoints/horizon_v5/horizon_v5_07_brake_left.png",
+  "horizon_v5_08_brake_right.png": "assets/checkpoints/horizon_v5/horizon_v5_08_brake_right.png",
+  "horizon_v5_09_brake_hazard.png": "assets/checkpoints/horizon_v5/horizon_v5_09_brake_hazard.png",
+  "horizon_v5_10_door_fl.png": "assets/checkpoints/horizon_v5/horizon_v5_10_door_fl.png",
+  "horizon_v5_11_door_fr.png": "assets/checkpoints/horizon_v5/horizon_v5_11_door_fr.png",
+  "horizon_v5_12_door_rl.png": "assets/checkpoints/horizon_v5/horizon_v5_12_door_rl.png",
+  "horizon_v5_13_door_rr.png": "assets/checkpoints/horizon_v5/horizon_v5_13_door_rr.png",
+  "horizon_v5_14_all_doors.png": "assets/checkpoints/horizon_v5/horizon_v5_14_all_doors.png",
+  "horizon_v5_15_frunk.png": "assets/checkpoints/horizon_v5/horizon_v5_15_frunk.png",
+  "horizon_v5_16_trunk.png": "assets/checkpoints/horizon_v5/horizon_v5_16_trunk.png",
+  "horizon_v5_17_low_soc.png": "assets/checkpoints/horizon_v5/horizon_v5_17_low_soc.png",
+  "horizon_v5_18_unknown.png": "assets/checkpoints/horizon_v5/horizon_v5_18_unknown.png",
+  "horizon_v5_19_stale.png": "assets/checkpoints/horizon_v5/horizon_v5_19_stale.png",
+  "horizon_v5_20_navigation.png": "assets/checkpoints/horizon_v5/horizon_v5_20_navigation.png"
+ },
+ "contact_sheet": "assets/checkpoints/horizon_v5/horizon_v5_contact_sheet.png",
+ "physical_scale": "assets/checkpoints/horizon_v5/horizon_v5_physical_scale.png",
+ "cost": {
+  "static_background_layers": 7,
+  "baked_background_assets": 1,
+  "persistent_decoded_assets": 5,
+  "estimated_rgba_resident_kb": 4327.2,
+  "cropped_vehicle_frame": [
+   260,
+   179
+  ],
+  "state_overlays": 26,
+  "maximum_simultaneous_state_overlays": 3,
+  "dynamic_text_nodes": 21,
+  "maximum_simultaneous_animation_sequences": 2,
+  "per_frame_bitmaps_beyond_vehicle": 0,
+  "notes": [
+   "ESTIMATED on the Mac; UNKNOWN UNTIL DEVICE TEST on T113",
+   "the background is one baked 1920x480 bitmap, the vehicle is the only per-frame bitmap, decoration is static or opacity-only"
+  ]
+ }
+}

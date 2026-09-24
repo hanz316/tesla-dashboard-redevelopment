@@ -190,6 +190,11 @@ if(BUILD_HOST_TOOLS)
         add_test(NAME dashboard_horizon_v2_tests
                  COMMAND "${PYTHON3_EXECUTABLE}"
                          "${CMAKE_CURRENT_SOURCE_DIR}/tests/horizon_v2_tests.py")
+        # The V5 prototype is a separate design source; it is checked with the
+        # same objective rules plus its own reference and state coverage.
+        add_test(NAME dashboard_horizon_v5_tests
+                 COMMAND "${PYTHON3_EXECUTABLE}"
+                         "${CMAKE_CURRENT_SOURCE_DIR}/tests/horizon_v5_tests.py")
     else()
         message(WARNING "python3 not found: taillight guide regression tests disabled")
     endif()

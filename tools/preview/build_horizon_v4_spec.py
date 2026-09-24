@@ -19,11 +19,26 @@ TOKENS = os.path.join(REPO, "assets", "ui", "horizon_v4_tokens.json")
 OUT = os.path.join(REPO, "docs", "HORIZON_V4_UI_SPEC.md")
 
 
+def paths_from_argv():
+    """--version v5 switches the generator to the V5 design sources."""
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--version", default="v4")
+    parser.add_argument("--title", default=None)
+    args = parser.parse_args()
+    if args.version == "v5":
+        return (os.path.join(REPO, "assets", "ui", "horizon_v5_layout.json"),
+                os.path.join(REPO, "assets", "ui", "horizon_v5_tokens.json"),
+                os.path.join(REPO, "docs", "HORIZON_V5_UI_SPEC.md"))
+    return LAYOUT, TOKENS, OUT
+
+
 def main():
-    layout = json.load(open(LAYOUT))
-    tokens = json.load(open(TOKENS))
+    layout_path, tokens_path, out_path = paths_from_argv()
+    layout = json.load(open(layout_path))
+    tokens = json.load(open(tokens_path))
     lines = [
-        "# HORIZON V4 — SPATIAL GLASS COCKPIT", "",
+        f"# {layout.get('style_candidate', 'HORIZON')}", "",
         "状态：**等待人工视觉验收** "
         "（`HORIZON_V4_SPATIAL_GLASS = AWAITING HUMAN VISUAL APPROVAL`）。", "",
         "V3 被否决的原因：三个候选是同一套构图换装饰线，那条粗青色斜线没有语义。",
@@ -85,9 +100,9 @@ def main():
               "`assets/checkpoints/horizon_v4/` 下：14 张状态图、`horizon_v4_contact_sheet.png`、",
               "`horizon_v4_key_states.png`、`horizon_v4_physical_scale.png`、",
               "`horizon_v3_vs_v4.png`、`horizon_v4_report.json`。", ""]
-    with open(OUT, "w") as fh:
+    with open(out_path, "w") as fh:
         fh.write("\n".join(lines))
-    print(f"[v4-spec] {len(lines)} lines -> {os.path.relpath(OUT, REPO)}")
+    print(f"[spec] {len(lines)} lines -> {os.path.relpath(out_path, REPO)}")
     return 0
 
 

@@ -1,0 +1,1548 @@
+{
+ "schema": "horizon-v5-layout v1",
+ "status": "AWAITING HUMAN VISUAL APPROVAL",
+ "scene": "horizon_v5",
+ "style_candidate": "HORIZON V5 - pending reference",
+ "canvas": {
+  "width": 1920,
+  "height": 480
+ },
+ "panel": {
+  "why": "The panel is a trapezoid, measured on the device. These are the calibration numbers the committed scenes already carry, and no component may sit behind the mask.",
+  "top_corner_cut": 116,
+  "bottom_corner_cut": 51,
+  "mask_color": "bg_deep",
+  "left_bound_at": "x >= cut(y) where cut(y) = top_corner_cut + (bottom_corner_cut - top_corner_cut) * y / height",
+  "right_bound_at": "x <= width - cut(y)"
+ },
+ "safe_area": {
+  "left": 48,
+  "right": 48,
+  "top": 22,
+  "bottom": 24
+ },
+ "zones": {
+  "driver": {
+   "x": 60,
+   "right": 430
+  },
+  "vehicle": {
+   "x": 430,
+   "right": 1490
+  },
+  "energy": {
+   "x": 1490,
+   "right": 1860
+  }
+ },
+ "layers": {
+  "LAYER_0_DEEP_ENVIRONMENT": [
+   "env.base",
+   "env.horizon.glow",
+   "env.horizon.line",
+   "env.distant.ridge"
+  ],
+  "LAYER_1_VEHICLE_STAGE": [
+   "stage.ground",
+   "stage.ground.sheen",
+   "stage.contact.shadow",
+   "stage.reflection",
+   "vehicle"
+  ],
+  "LAYER_2_INFORMATION": [
+   "speed.value",
+   "speed.unit",
+   "gear.p",
+   "gear.r",
+   "gear.n",
+   "gear.d",
+   "energy.range",
+   "energy.rail",
+   "energy.soc",
+   "energy.power",
+   "nav.capsule.fill",
+   "speedlimit.glass.fill",
+   "warn.glass.fill"
+  ],
+  "LAYER_3_STATE_FEEDBACK": [
+   "state.left.ground0",
+   "state.left.ground1",
+   "state.left.ground2",
+   "state.right.ground0",
+   "state.right.ground1",
+   "state.right.ground2",
+   "state.brake.reflection",
+   "state.headlight.left",
+   "state.headlight.right"
+  ]
+ },
+ "reference_state": "TEMPORARY_PENDING_REFERENCE",
+ "forbidden_in_production": [
+  "CMDR",
+  "NativeBle",
+  "PhoneBridge",
+  "UART",
+  "FPS",
+  "RSS",
+  "frame time",
+  "packet",
+  "checksum",
+  "protocol",
+  "mapping confidence",
+  "source:",
+  "quality",
+  "stale",
+  "valid",
+  "priority",
+  "debug",
+  "DEV"
+ ],
+ "components": [
+  {
+   "id": "env.base",
+   "kind": "vector",
+   "shape": "vgradient",
+   "bounds": {
+    "x": 0,
+    "y": 0,
+    "w": 1920,
+    "h": 480
+   },
+   "color_token": "bg_deep",
+   "z": 0,
+   "layer": "static",
+   "opacity": 1.0,
+   "exempt_from_safe_area": true,
+   "role": "environment",
+   "color_to_token": "bg_mid"
+  },
+  {
+   "id": "env.horizon.glow",
+   "kind": "vector",
+   "shape": "vgradient",
+   "bounds": {
+    "x": 380,
+    "y": 210,
+    "w": 1160,
+    "h": 96
+   },
+   "color_token": "bg_horizon",
+   "z": 1,
+   "layer": "static",
+   "opacity": 0.55,
+   "exempt_from_safe_area": true,
+   "role": "environment",
+   "color_to_token": "bg_deep"
+  },
+  {
+   "id": "env.horizon.line",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 520,
+    "y": 300,
+    "w": 880,
+    "h": 1
+   },
+   "color_token": "bg_horizon",
+   "z": 2,
+   "layer": "static",
+   "opacity": 0.35,
+   "role": "environment",
+   "x2": 1400,
+   "y2": 300
+  },
+  {
+   "id": "env.distant.ridge",
+   "kind": "vector",
+   "shape": "polygon",
+   "bounds": {
+    "x": 240,
+    "y": 274,
+    "w": 1440,
+    "h": 26
+   },
+   "color_token": "bg_mid",
+   "z": 2,
+   "layer": "static",
+   "opacity": 0.55,
+   "exempt_from_safe_area": true,
+   "role": "environment",
+   "points": [
+    [
+     240,
+     300
+    ],
+    [
+     520,
+     278
+    ],
+    [
+     780,
+     292
+    ],
+    [
+     1040,
+     274
+    ],
+    [
+     1300,
+     290
+    ],
+    [
+     1560,
+     280
+    ],
+    [
+     1680,
+     300
+    ]
+   ]
+  },
+  {
+   "id": "stage.ground",
+   "kind": "vector",
+   "shape": "vgradient",
+   "bounds": {
+    "x": 0,
+    "y": 300,
+    "w": 1920,
+    "h": 180
+   },
+   "color_token": "bg_ground",
+   "z": 3,
+   "layer": "static",
+   "opacity": 0.85,
+   "exempt_from_safe_area": true,
+   "role": "stage",
+   "color_to_token": "bg_deep"
+  },
+  {
+   "id": "stage.ground.sheen",
+   "kind": "vector",
+   "shape": "polygon",
+   "bounds": {
+    "x": 500,
+    "y": 300,
+    "w": 920,
+    "h": 180
+   },
+   "color_token": "ground_sheen",
+   "z": 4,
+   "layer": "static",
+   "opacity": 0.45,
+   "exempt_from_safe_area": true,
+   "role": "stage",
+   "points": [
+    [
+     760,
+     300
+    ],
+    [
+     1160,
+     300
+    ],
+    [
+     1420,
+     456
+    ],
+    [
+     500,
+     456
+    ]
+   ]
+  },
+  {
+   "id": "stage.contact.shadow",
+   "kind": "vector",
+   "shape": "polygon",
+   "bounds": {
+    "x": 622,
+    "y": 414,
+    "w": 677,
+    "h": 34
+   },
+   "color_token": "contact_shadow",
+   "z": 5,
+   "layer": "static",
+   "opacity": 0.55,
+   "exempt_from_safe_area": true,
+   "role": "stage",
+   "points": [
+    [
+     666,
+     418
+    ],
+    [
+     1255,
+     418
+    ],
+    [
+     1287,
+     448
+    ],
+    [
+     634,
+     448
+    ]
+   ]
+  },
+  {
+   "id": "stage.reflection",
+   "kind": "vector",
+   "shape": "vgradient",
+   "bounds": {
+    "x": 682,
+    "y": 436,
+    "w": 557,
+    "h": 32
+   },
+   "color_token": "reflection",
+   "z": 6,
+   "layer": "static",
+   "opacity": 0.3,
+   "exempt_from_safe_area": true,
+   "role": "stage",
+   "color_to_token": "bg_deep"
+  },
+  {
+   "id": "vehicle",
+   "kind": "vehicle",
+   "bounds": {
+    "x": 642,
+    "y": 4,
+    "w": 637,
+    "h": 439
+   },
+   "anchor": {
+    "x": 0.5,
+    "y": 0.5
+   },
+   "z": 30,
+   "layer": "dynamic",
+   "asset": "vehicle.base",
+   "crop": [
+    48,
+    21,
+    308,
+    200
+   ],
+   "parts": [
+    {
+     "id": "door_fl",
+     "sequence": "vehicle.door.fl",
+     "binding": "door_fl"
+    },
+    {
+     "id": "door_fr",
+     "sequence": "vehicle.door.fr",
+     "binding": "door_fr"
+    },
+    {
+     "id": "door_rl",
+     "sequence": "vehicle.door.rl",
+     "binding": "door_rl"
+    },
+    {
+     "id": "door_rr",
+     "sequence": "vehicle.door.rr",
+     "binding": "door_rr"
+    },
+    {
+     "id": "frunk",
+     "sequence": "vehicle.frunk",
+     "binding": "frunk"
+    },
+    {
+     "id": "trunk",
+     "sequence": "vehicle.trunk",
+     "binding": "trunk"
+    }
+   ],
+   "overlays": [
+    {
+     "asset": "vehicle.brake",
+     "binding": "brake"
+    },
+    {
+     "asset": "vehicle.headlight",
+     "binding": "headlight"
+    },
+    {
+     "asset": "vehicle.running",
+     "binding": "position_light"
+    }
+   ],
+   "indicators": {
+    "left": {
+     "sequence": "vehicle.indicator.left",
+     "binding": "indicator_left"
+    },
+    "right": {
+     "sequence": "vehicle.indicator.right",
+     "binding": "indicator_right"
+    }
+   },
+   "visible_bounds_closed": {
+    "x": 649,
+    "y": 92,
+    "w": 627,
+    "h": 348
+   },
+   "visible_bounds_open_union": {
+    "x": 642,
+    "y": 4,
+    "w": 635,
+    "h": 436
+   },
+   "permitted_region": {
+    "x": 520,
+    "y": 0,
+    "w": 900,
+    "h": 480
+   },
+   "safe_area_exemption": {
+    "top": true,
+    "reason": "the frunk lid opens to 4 px above the stated top margin (measured union top y=4 against a 22 px margin). It stays inside the canvas and clear of the calibrated panel mask, which cuts x<=115 and x>=1805 at that row; the car spans 646-1283 there."
+   },
+   "visible_width_target": [
+    620,
+    760
+   ],
+   "ground_contact_band": [
+    420,
+    460
+   ],
+   "ground_contact_y": 440,
+   "exempt_from_safe_area": true,
+   "exempt_reason": "the vehicle frame is transparent outside the car; the checks use its visible bounds",
+   "role": "vehicle"
+  },
+  {
+   "id": "speed.arc",
+   "kind": "vector",
+   "shape": "arc",
+   "bounds": {
+    "x": 130,
+    "y": 118,
+    "w": 300,
+    "h": 300
+   },
+   "color_token": "accent_dim",
+   "z": 6,
+   "layer": "static",
+   "opacity": 0.85,
+   "role": "speed",
+   "cx": 280,
+   "cy": 360,
+   "radius": 268,
+   "start_deg": 232.0,
+   "end_deg": 308.0,
+   "width_px": 8
+  },
+  {
+   "id": "speed.arc.active",
+   "kind": "vector",
+   "shape": "arc",
+   "bounds": {
+    "x": 130,
+    "y": 118,
+    "w": 300,
+    "h": 300
+   },
+   "color_token": "accent",
+   "z": 7,
+   "layer": "static",
+   "opacity": 0.95,
+   "role": "speed",
+   "cx": 280,
+   "cy": 360,
+   "radius": 268,
+   "start_deg": 232.0,
+   "end_deg": 308.0,
+   "width_px": 8,
+   "progress": {
+    "binding": "speed",
+    "max": 240.0,
+    "from": "start"
+   }
+  },
+  {
+   "id": "speed.mark.0",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 126,
+    "y": 118,
+    "w": 10,
+    "h": 1
+   },
+   "color_token": "accent",
+   "z": 8,
+   "layer": "static",
+   "opacity": 0.55,
+   "role": "speed",
+   "x2": 136,
+   "y2": 118,
+   "width_px": 2
+  },
+  {
+   "id": "speed.mark.120",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 126,
+    "y": 118,
+    "w": 10,
+    "h": 1
+   },
+   "color_token": "accent",
+   "z": 8,
+   "layer": "static",
+   "opacity": 0.55,
+   "role": "speed",
+   "x2": 136,
+   "y2": 118,
+   "width_px": 2
+  },
+  {
+   "id": "speed.mark.240",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 126,
+    "y": 118,
+    "w": 10,
+    "h": 1
+   },
+   "color_token": "accent",
+   "z": 8,
+   "layer": "static",
+   "opacity": 0.55,
+   "role": "speed",
+   "x2": 136,
+   "y2": 118,
+   "width_px": 2
+  },
+  {
+   "id": "speed.value",
+   "kind": "text",
+   "bounds": {
+    "x": 120,
+    "y": 105,
+    "w": 300,
+    "h": 140
+   },
+   "align": "left",
+   "z": 40,
+   "layer": "dynamic",
+   "binding": "speed",
+   "format": "{}",
+   "invalid_text": "—",
+   "font_token": "DISPLAY",
+   "color_token": "primary_text"
+  },
+  {
+   "id": "speed.unit",
+   "kind": "text",
+   "bounds": {
+    "x": 124,
+    "y": 250,
+    "w": 120,
+    "h": 26
+   },
+   "align": "left",
+   "z": 40,
+   "layer": "dynamic",
+   "text": "km/h",
+   "font_token": "CAPTION",
+   "color_token": "muted_text"
+  },
+  {
+   "id": "gear.p",
+   "kind": "text",
+   "bounds": {
+    "x": 120,
+    "y": 283,
+    "w": 30,
+    "h": 34
+   },
+   "align": "left",
+   "font_token": "BODY",
+   "color_token": "primary_text",
+   "z": 40,
+   "layer": "dynamic",
+   "text": "P",
+   "highlight_when_gear": "P",
+   "highlight_color_token": "accent",
+   "highlight_opacity_token": "active_gear"
+  },
+  {
+   "id": "gear.r",
+   "kind": "text",
+   "bounds": {
+    "x": 164,
+    "y": 283,
+    "w": 30,
+    "h": 34
+   },
+   "align": "left",
+   "font_token": "BODY",
+   "color_token": "primary_text",
+   "z": 40,
+   "layer": "dynamic",
+   "text": "R",
+   "highlight_when_gear": "R",
+   "highlight_color_token": "accent",
+   "highlight_opacity_token": "active_gear"
+  },
+  {
+   "id": "gear.n",
+   "kind": "text",
+   "bounds": {
+    "x": 208,
+    "y": 283,
+    "w": 30,
+    "h": 34
+   },
+   "align": "left",
+   "font_token": "BODY",
+   "color_token": "primary_text",
+   "z": 40,
+   "layer": "dynamic",
+   "text": "N",
+   "highlight_when_gear": "N",
+   "highlight_color_token": "accent",
+   "highlight_opacity_token": "active_gear"
+  },
+  {
+   "id": "gear.d",
+   "kind": "text",
+   "bounds": {
+    "x": 252,
+    "y": 283,
+    "w": 30,
+    "h": 34
+   },
+   "align": "left",
+   "font_token": "BODY",
+   "color_token": "primary_text",
+   "z": 40,
+   "layer": "dynamic",
+   "text": "D",
+   "highlight_when_gear": "D",
+   "highlight_color_token": "accent",
+   "highlight_opacity_token": "active_gear"
+  },
+  {
+   "id": "gear.unknown",
+   "kind": "text",
+   "bounds": {
+    "x": 120,
+    "y": 283,
+    "w": 30,
+    "h": 34
+   },
+   "align": "left",
+   "z": 40,
+   "layer": "dynamic",
+   "text": "—",
+   "font_token": "BODY",
+   "color_token": "muted_text",
+   "visibility": {
+    "binding": "gear",
+    "show_when_invalid": true
+   },
+   "visible_opacity": 1.0
+  },
+  {
+   "id": "driver.temperature",
+   "kind": "text",
+   "bounds": {
+    "x": 300,
+    "y": 40,
+    "w": 120,
+    "h": 32
+   },
+   "align": "left",
+   "z": 40,
+   "layer": "dynamic",
+   "binding": "temperature_primary",
+   "format": "{}°C",
+   "invalid_text": "— °C",
+   "font_token": "CAPTION",
+   "color_token": "muted_text"
+  },
+  {
+   "id": "driver.status",
+   "kind": "text",
+   "bounds": {
+    "x": 120,
+    "y": 337,
+    "w": 220,
+    "h": 30
+   },
+   "align": "left",
+   "z": 40,
+   "layer": "dynamic",
+   "binding": "driver_status_text",
+   "format": "{}",
+   "invalid_text": "",
+   "font_token": "CAPTION",
+   "color_token": "muted_text"
+  },
+  {
+   "id": "speedlimit.glass.fill",
+   "kind": "vector",
+   "shape": "roundrect",
+   "bounds": {
+    "x": 316,
+    "y": 240,
+    "w": 76,
+    "h": 76
+   },
+   "color_token": "glass_fill",
+   "z": 24,
+   "layer": "dynamic",
+   "opacity": 0.7,
+   "radius_token": "capsule",
+   "stroke_token": "glass_border",
+   "role": "sign",
+   "visibility": {
+    "binding": "speed_limit",
+    "show_when_valid": true
+   },
+   "visible_opacity": 0.7
+  },
+  {
+   "id": "speedlimit.glass.edge",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 318,
+    "y": 240,
+    "w": 72,
+    "h": 1
+   },
+   "color_token": "glass_top_edge",
+   "z": 25,
+   "layer": "dynamic",
+   "opacity": 0.22,
+   "role": "sign",
+   "x2": 390,
+   "y2": 240,
+   "visibility": {
+    "binding": "speed_limit",
+    "show_when_valid": true
+   },
+   "visible_opacity": 0.22
+  },
+  {
+   "id": "speedlimit.glass.shade",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 318,
+    "y": 315,
+    "w": 72,
+    "h": 1
+   },
+   "color_token": "glass_bottom_shade",
+   "z": 25,
+   "layer": "dynamic",
+   "opacity": 0.38,
+   "role": "sign",
+   "x2": 390,
+   "y2": 315,
+   "visibility": {
+    "binding": "speed_limit",
+    "show_when_valid": true
+   },
+   "visible_opacity": 0.38
+  },
+  {
+   "id": "speedlimit.ring",
+   "kind": "vector",
+   "shape": "roundrect",
+   "bounds": {
+    "x": 324,
+    "y": 248,
+    "w": 60,
+    "h": 60
+   },
+   "color_token": "critical",
+   "z": 25,
+   "layer": "dynamic",
+   "opacity": 0.0,
+   "radius_token": "sign",
+   "role": "sign",
+   "visibility": {
+    "binding": "speed_limit",
+    "show_when_valid": true
+   },
+   "visible_opacity": 0.85
+  },
+  {
+   "id": "speedlimit.value",
+   "kind": "text",
+   "bounds": {
+    "x": 316,
+    "y": 262,
+    "w": 76,
+    "h": 32
+   },
+   "align": "center",
+   "z": 40,
+   "layer": "dynamic",
+   "binding": "speed_limit",
+   "format": "{}",
+   "invalid_text": "",
+   "font_token": "BODY",
+   "color_token": "primary_text",
+   "visibility": {
+    "binding": "speed_limit",
+    "show_when_valid": true
+   },
+   "visible_opacity": 1.0,
+   "role": "sign"
+  },
+  {
+   "id": "energy.range",
+   "kind": "text",
+   "bounds": {
+    "x": 1606,
+    "y": 138,
+    "w": 200,
+    "h": 74
+   },
+   "align": "right",
+   "z": 40,
+   "layer": "dynamic",
+   "binding": "range",
+   "format": "{} km",
+   "invalid_text": "— km",
+   "font_token": "TITLE",
+   "color_token": "primary_text"
+  },
+  {
+   "id": "energy.range.label",
+   "kind": "text",
+   "bounds": {
+    "x": 1606,
+    "y": 216,
+    "w": 200,
+    "h": 24
+   },
+   "align": "right",
+   "z": 40,
+   "layer": "dynamic",
+   "text": "RANGE",
+   "font_token": "LABEL",
+   "color_token": "muted_text"
+  },
+  {
+   "id": "energy.rail",
+   "kind": "vector",
+   "shape": "vticks",
+   "bounds": {
+    "x": 1758,
+    "y": 264,
+    "w": 10,
+    "h": 132
+   },
+   "color_token": "accent_dim",
+   "z": 6,
+   "layer": "static",
+   "opacity": 0.85,
+   "role": "energy",
+   "count": 22,
+   "major_every": 4,
+   "width_px": 6,
+   "major_width_px": 10,
+   "lit_token": "accent",
+   "progress": {
+    "binding": "actual_soc",
+    "max": 100
+   }
+  },
+  {
+   "id": "energy.rail.warn",
+   "kind": "vector",
+   "shape": "vticks",
+   "bounds": {
+    "x": 1758,
+    "y": 264,
+    "w": 10,
+    "h": 132
+   },
+   "color_token": "warning",
+   "z": 7,
+   "layer": "static",
+   "opacity": 0.0,
+   "role": "energy",
+   "count": 22,
+   "major_every": 4,
+   "width_px": 6,
+   "major_width_px": 10,
+   "lit_token": "warning",
+   "progress": {
+    "binding": "actual_soc",
+    "max": 100
+   },
+   "visibility": {
+    "binding": "actual_soc",
+    "lte": 20
+   },
+   "visible_opacity": 1.0
+  },
+  {
+   "id": "energy.soc",
+   "kind": "text",
+   "bounds": {
+    "x": 1606,
+    "y": 268,
+    "w": 140,
+    "h": 36
+   },
+   "align": "right",
+   "z": 40,
+   "layer": "dynamic",
+   "binding": "actual_soc",
+   "format": "{}%",
+   "invalid_text": "— %",
+   "font_token": "BODY",
+   "color_token": "secondary_text"
+  },
+  {
+   "id": "energy.soc.label",
+   "kind": "text",
+   "bounds": {
+    "x": 1606,
+    "y": 310,
+    "w": 140,
+    "h": 24
+   },
+   "align": "right",
+   "z": 40,
+   "layer": "dynamic",
+   "text": "SOC",
+   "font_token": "LABEL",
+   "color_token": "muted_text"
+  },
+  {
+   "id": "energy.power",
+   "kind": "text",
+   "bounds": {
+    "x": 1606,
+    "y": 336,
+    "w": 200,
+    "h": 36
+   },
+   "align": "right",
+   "z": 40,
+   "layer": "dynamic",
+   "binding": "battery_power",
+   "format": "{} kW",
+   "invalid_text": "— kW",
+   "font_token": "BODY",
+   "color_token": "muted_text"
+  },
+  {
+   "id": "energy.power.label",
+   "kind": "text",
+   "bounds": {
+    "x": 1606,
+    "y": 376,
+    "w": 200,
+    "h": 24
+   },
+   "align": "right",
+   "z": 40,
+   "layer": "dynamic",
+   "text": "POWER",
+   "font_token": "LABEL",
+   "color_token": "muted_text"
+  },
+  {
+   "id": "energy.trend",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 1560,
+    "y": 414,
+    "w": 186,
+    "h": 1
+   },
+   "color_token": "accent",
+   "z": 8,
+   "layer": "dynamic",
+   "opacity": 0.0,
+   "role": "energy",
+   "x2": 1746,
+   "y2": 414,
+   "width_px": 2,
+   "visibility": {
+    "binding": "power_history_valid",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.6
+  },
+  {
+   "id": "top.clock",
+   "kind": "text",
+   "bounds": {
+    "x": 1606,
+    "y": 40,
+    "w": 200,
+    "h": 32
+   },
+   "align": "right",
+   "z": 40,
+   "layer": "dynamic",
+   "source": "clock",
+   "format": "%H:%M",
+   "font_token": "CAPTION",
+   "color_token": "muted_text"
+  },
+  {
+   "id": "nav.capsule.fill",
+   "kind": "vector",
+   "shape": "roundrect",
+   "bounds": {
+    "x": 650,
+    "y": 16,
+    "w": 620,
+    "h": 64
+   },
+   "color_token": "glass_fill",
+   "z": 20,
+   "layer": "dynamic",
+   "opacity": 0.7,
+   "radius_token": "capsule",
+   "stroke_token": "glass_border",
+   "role": "navigation",
+   "exempt_from_safe_area": true,
+   "exempt_reason": "the capsule floats above the stated safe margin; its content sits inside",
+   "visibility": {
+    "binding": "nav_manoeuvre",
+    "show_when_valid": true
+   },
+   "visible_opacity": 0.7
+  },
+  {
+   "id": "nav.capsule.edge",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 652,
+    "y": 16,
+    "w": 616,
+    "h": 1
+   },
+   "color_token": "glass_top_edge",
+   "z": 21,
+   "layer": "dynamic",
+   "opacity": 0.22,
+   "role": "navigation",
+   "x2": 1268,
+   "y2": 16,
+   "exempt_from_safe_area": true,
+   "exempt_reason": "the capsule floats above the stated safe margin; its content sits inside",
+   "visibility": {
+    "binding": "nav_manoeuvre",
+    "show_when_valid": true
+   },
+   "visible_opacity": 0.22
+  },
+  {
+   "id": "nav.capsule.shade",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 652,
+    "y": 79,
+    "w": 616,
+    "h": 1
+   },
+   "color_token": "glass_bottom_shade",
+   "z": 21,
+   "layer": "dynamic",
+   "opacity": 0.38,
+   "role": "navigation",
+   "x2": 1268,
+   "y2": 79,
+   "exempt_from_safe_area": true,
+   "exempt_reason": "the capsule floats above the stated safe margin; its content sits inside",
+   "visibility": {
+    "binding": "nav_manoeuvre",
+    "show_when_valid": true
+   },
+   "visible_opacity": 0.38
+  },
+  {
+   "id": "nav.icon",
+   "kind": "text",
+   "bounds": {
+    "x": 676,
+    "y": 30,
+    "w": 44,
+    "h": 36
+   },
+   "align": "left",
+   "z": 40,
+   "layer": "dynamic",
+   "font_token": "BODY",
+   "color_token": "accent",
+   "visibility": {
+    "binding": "nav_manoeuvre",
+    "show_when_valid": true
+   },
+   "visible_opacity": 1.0,
+   "text": "↱",
+   "role": "navigation"
+  },
+  {
+   "id": "nav.distance",
+   "kind": "text",
+   "bounds": {
+    "x": 724,
+    "y": 30,
+    "w": 120,
+    "h": 36
+   },
+   "align": "left",
+   "z": 40,
+   "layer": "dynamic",
+   "font_token": "BODY",
+   "color_token": "primary_text",
+   "visibility": {
+    "binding": "nav_manoeuvre",
+    "show_when_valid": true
+   },
+   "visible_opacity": 1.0,
+   "binding": "nav_distance",
+   "format": "{} m",
+   "invalid_text": "",
+   "role": "navigation"
+  },
+  {
+   "id": "nav.instruction",
+   "kind": "text",
+   "bounds": {
+    "x": 850,
+    "y": 30,
+    "w": 400,
+    "h": 36
+   },
+   "align": "left",
+   "z": 40,
+   "layer": "dynamic",
+   "font_token": "BODY",
+   "color_token": "muted_text",
+   "visibility": {
+    "binding": "nav_manoeuvre",
+    "show_when_valid": true
+   },
+   "visible_opacity": 1.0,
+   "binding": "nav_instruction",
+   "format": "{}",
+   "invalid_text": "",
+   "role": "navigation"
+  },
+  {
+   "id": "state.left.ground0",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 560,
+    "y": 424,
+    "w": 120,
+    "h": 1
+   },
+   "color_token": "warning",
+   "z": 12,
+   "layer": "dynamic",
+   "opacity": 0.0,
+   "role": "state",
+   "x2": 680,
+   "y2": 424,
+   "width_px": 2,
+   "visibility": {
+    "binding": "indicator_left",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.4
+  },
+  {
+   "id": "state.left.ground1",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 572,
+    "y": 434,
+    "w": 120,
+    "h": 1
+   },
+   "color_token": "warning",
+   "z": 12,
+   "layer": "dynamic",
+   "opacity": 0.0,
+   "role": "state",
+   "x2": 692,
+   "y2": 434,
+   "width_px": 2,
+   "visibility": {
+    "binding": "indicator_left",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.4
+  },
+  {
+   "id": "state.left.ground2",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 584,
+    "y": 444,
+    "w": 120,
+    "h": 1
+   },
+   "color_token": "warning",
+   "z": 12,
+   "layer": "dynamic",
+   "opacity": 0.0,
+   "role": "state",
+   "x2": 704,
+   "y2": 444,
+   "width_px": 2,
+   "visibility": {
+    "binding": "indicator_left",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.4
+  },
+  {
+   "id": "state.right.ground0",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 1250,
+    "y": 424,
+    "w": 120,
+    "h": 1
+   },
+   "color_token": "warning",
+   "z": 12,
+   "layer": "dynamic",
+   "opacity": 0.0,
+   "role": "state",
+   "x2": 1370,
+   "y2": 424,
+   "width_px": 2,
+   "visibility": {
+    "binding": "indicator_right",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.4
+  },
+  {
+   "id": "state.right.ground1",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 1262,
+    "y": 434,
+    "w": 120,
+    "h": 1
+   },
+   "color_token": "warning",
+   "z": 12,
+   "layer": "dynamic",
+   "opacity": 0.0,
+   "role": "state",
+   "x2": 1382,
+   "y2": 434,
+   "width_px": 2,
+   "visibility": {
+    "binding": "indicator_right",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.4
+  },
+  {
+   "id": "state.right.ground2",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 1274,
+    "y": 444,
+    "w": 120,
+    "h": 1
+   },
+   "color_token": "warning",
+   "z": 12,
+   "layer": "dynamic",
+   "opacity": 0.0,
+   "role": "state",
+   "x2": 1394,
+   "y2": 444,
+   "width_px": 2,
+   "visibility": {
+    "binding": "indicator_right",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.4
+  },
+  {
+   "id": "state.brake.reflection",
+   "kind": "vector",
+   "shape": "polygon",
+   "bounds": {
+    "x": 642,
+    "y": 424,
+    "w": 637,
+    "h": 40
+   },
+   "color_token": "critical",
+   "z": 11,
+   "layer": "dynamic",
+   "opacity": 0.0,
+   "role": "state",
+   "exempt_from_safe_area": true,
+   "points": [
+    [
+     672,
+     428
+    ],
+    [
+     1249,
+     428
+    ],
+    [
+     1219,
+     462
+    ],
+    [
+     702,
+     462
+    ]
+   ],
+   "visibility": {
+    "binding": "brake",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.24
+  },
+  {
+   "id": "state.headlight.left",
+   "kind": "vector",
+   "shape": "polygon",
+   "bounds": {
+    "x": 250,
+    "y": 320,
+    "w": 170,
+    "h": 100
+   },
+   "color_token": "throw",
+   "z": 10,
+   "layer": "dynamic",
+   "opacity": 0.0,
+   "role": "state",
+   "exempt_from_safe_area": true,
+   "points": [
+    [
+     420,
+     320
+    ],
+    [
+     250,
+     380
+    ],
+    [
+     250,
+     420
+    ],
+    [
+     420,
+     350
+    ]
+   ],
+   "visibility": {
+    "binding": "headlight",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.08
+  },
+  {
+   "id": "state.headlight.right",
+   "kind": "vector",
+   "shape": "polygon",
+   "bounds": {
+    "x": 1500,
+    "y": 320,
+    "w": 170,
+    "h": 100
+   },
+   "color_token": "throw",
+   "z": 10,
+   "layer": "dynamic",
+   "opacity": 0.0,
+   "role": "state",
+   "exempt_from_safe_area": true,
+   "points": [
+    [
+     1500,
+     320
+    ],
+    [
+     1670,
+     380
+    ],
+    [
+     1670,
+     420
+    ],
+    [
+     1500,
+     350
+    ]
+   ],
+   "visibility": {
+    "binding": "headlight",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.08
+  },
+  {
+   "id": "warn.glass.fill",
+   "kind": "vector",
+   "shape": "roundrect",
+   "bounds": {
+    "x": 660,
+    "y": 406,
+    "w": 600,
+    "h": 36
+   },
+   "color_token": "glass_fill",
+   "z": 29,
+   "layer": "dynamic",
+   "opacity": 0.7,
+   "radius_token": "capsule",
+   "stroke_token": "glass_border",
+   "role": "glass",
+   "visibility": {
+    "binding": "warning_active",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.7
+  },
+  {
+   "id": "warn.glass.edge",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 662,
+    "y": 406,
+    "w": 596,
+    "h": 1
+   },
+   "color_token": "glass_top_edge",
+   "z": 30,
+   "layer": "dynamic",
+   "opacity": 0.22,
+   "role": "glass",
+   "x2": 1258,
+   "y2": 406,
+   "visibility": {
+    "binding": "warning_active",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.22
+  },
+  {
+   "id": "warn.glass.shade",
+   "kind": "vector",
+   "shape": "line",
+   "bounds": {
+    "x": 662,
+    "y": 441,
+    "w": 596,
+    "h": 1
+   },
+   "color_token": "glass_bottom_shade",
+   "z": 30,
+   "layer": "dynamic",
+   "opacity": 0.38,
+   "role": "glass",
+   "x2": 1258,
+   "y2": 441,
+   "visibility": {
+    "binding": "warning_active",
+    "show_when_true": true
+   },
+   "visible_opacity": 0.38
+  },
+  {
+   "id": "warn.text",
+   "kind": "text",
+   "bounds": {
+    "x": 660,
+    "y": 424,
+    "w": 600,
+    "h": 30
+   },
+   "align": "center",
+   "z": 40,
+   "layer": "dynamic",
+   "binding": "warning_text",
+   "format": "{}",
+   "invalid_text": "",
+   "font_token": "CAPTION",
+   "color_token": "warning"
+  }
+ ],
+ "screenshot_states": [
+  "v5_neutral",
+  "v5_left",
+  "v5_right",
+  "v5_hazard",
+  "v5_brake",
+  "v5_headlight",
+  "v5_brake_left",
+  "v5_brake_right",
+  "v5_brake_hazard",
+  "v5_door_fl",
+  "v5_door_fr",
+  "v5_door_rl",
+  "v5_door_rr",
+  "v5_all_doors",
+  "v5_frunk",
+  "v5_trunk",
+  "v5_low_soc",
+  "v5_unknown",
+  "v5_stale",
+  "v5_navigation"
+ ],
+ "screenshot_names": [
+  "horizon_v5_01_neutral.png",
+  "horizon_v5_02_left_indicator.png",
+  "horizon_v5_03_right_indicator.png",
+  "horizon_v5_04_hazard.png",
+  "horizon_v5_05_brake.png",
+  "horizon_v5_06_headlight.png",
+  "horizon_v5_07_brake_left.png",
+  "horizon_v5_08_brake_right.png",
+  "horizon_v5_09_brake_hazard.png",
+  "horizon_v5_10_door_fl.png",
+  "horizon_v5_11_door_fr.png",
+  "horizon_v5_12_door_rl.png",
+  "horizon_v5_13_door_rr.png",
+  "horizon_v5_14_all_doors.png",
+  "horizon_v5_15_frunk.png",
+  "horizon_v5_16_trunk.png",
+  "horizon_v5_17_low_soc.png",
+  "horizon_v5_18_unknown.png",
+  "horizon_v5_19_stale.png",
+  "horizon_v5_20_navigation.png"
+ ]
+}
