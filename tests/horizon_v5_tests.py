@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Objective checks for the V5 prototype.
+"""Objective checks for the Horizon V5 reference implementation.
 
-These are the checks that do not need eyes: the layout rules the whole Horizon
-family shares, the navigation zero-pixel rule, the state set actually rendering
-at 1920x480, deterministic output, and the accounting the report quotes. Whether
-V5 looks right is a human decision and is not asserted here.
+These are the checks that do not need eyes: the shared Horizon layout rules,
+the reference contract, the things the review explicitly forbade (white road
+trapezoids, a red brake trapezoid, decoration lines with no semantics, runtime
+blur), the baked assets actually existing at the size the layout claims, the
+frozen 356x236 vehicle contract being untouched, and the review deliverables
+being present. Whether V5 looks right is a human decision and is not asserted.
 
 Usage:
     python3 tests/horizon_v5_tests.py
@@ -19,6 +21,14 @@ REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LAYOUT = os.path.join(REPO, "assets", "ui", "horizon_v5_layout.json")
 TOKENS = os.path.join(REPO, "assets", "ui", "horizon_v5_tokens.json")
 SCENE = os.path.join(REPO, "scenes", "horizon_v5.scene")
+REFERENCE = os.path.join(REPO, "assets", "ui", "horizon_v5_reference.png")
+MEASUREMENTS = os.path.join(REPO, "assets", "ui",
+                            "horizon_v5_reference_measurements.json")
+VEHICLE_MANIFEST = os.path.join(REPO, "assets", "manifest.json")
+VEHICLE_LAYERS = os.path.join(REPO, "assets", "rendered", "vehicle",
+                              "horizon_v5", "horizon_v5_vehicle.json")
+ENVIRONMENT = os.path.join(REPO, "tools", "blender",
+                           "build_horizon_v5_environment.py")
 EVIDENCE = os.path.join(REPO, "assets", "checkpoints", "horizon_v5",
                         "horizon_v5_report.json")
 QA = os.path.join(REPO, "tools", "preview", "horizon_v2_layout_qa.py")
@@ -32,6 +42,7 @@ def check(condition, label):
     else:
         print(f"  FAIL {label}")
         FAILURES.append(label)
+    return condition
 
 
 def main():
@@ -39,6 +50,8 @@ def main():
     result = subprocess.run([sys.executable, QA, "--layout", LAYOUT,
                              "--scene", SCENE, "--tokens", TOKENS],
                             capture_output=True, text=True)
+    if result.returncode != 0:
+        print(result.stdout[-2000:])
     check(result.returncode == 0,
           "the shared Horizon layout QA passes (bounds, mask, zones, text "
           "collisions, the ten-speed km/h test, UNKNOWN, no debug text, "
@@ -48,40 +61,118 @@ def main():
     tokens = json.load(open(TOKENS))
     scene = json.load(open(SCENE))
 
-    print("frozen contract")
-    vehicle = next(c for c in layout["components"] if c["id"] == "vehicle")
-    check(bool(vehicle.get("crop")),
-          "the vehicle uses the shared crop (framing only, no geometry change)")
-    check(all(part.get("binding") for part in vehicle["parts"]),
-          "the moving panels still bind to the delta-layer architecture")
-    check(layout.get("forbidden_in_production"),
-          "the forbidden production text list is inherited")
-    check(tokens["reference"]["state"] in ("TEMPORARY_PENDING_REFERENCE",
-                                           "MEASURED_FROM_REFERENCE"),
-          "the reference state is declared, so a temporary background can never "
-          "be mistaken for final art")
+    print("reference contract")
+    check(os.path.isfile(REFERENCE),
+          "the approved reference image is in the repository "
+          "(assets/ui/horizon_v5_reference.png)")
+    check(os.path.isfile(MEASUREMENTS),
+          "the reference analysis exists "
+          "(assets/ui/horizon_v5_reference_measurements.json)")
+    check(tokens["reference"]["state"] == "MEASURED_FROM_REFERENCE",
+          "every reference-derived parameter is marked "
+          "MEASURED_FROM_REFERENCE, so a temporary background can never be "
+          "mistaken for final art")
+    mapping = tokens["reference"].get("mapping", {})
+    check(abs(mapping.get("scale", 0) - 480 / 724.0) < 1e-9
+          and mapping.get("content_box") == [240, 0, 1440, 480],
+          "the 3:1 reference -> 4:1 panel mapping is stated once and used "
+          "everywhere (1:1 by height inside a centred 1440x480 content box)")
+    measurements = json.load(open(MEASUREMENTS))
+    check(len(measurements["vehicle"]["bbox"]) == 4
+          and measurements["vehicle"]["visible_width"] > 0,
+          "the reference's vehicle silhouette was measured, not assumed")
 
-    print("state coverage")
-    states = layout["screenshot_states"]
-    check(len(states) == 20, f"twenty states are declared ({len(states)})")
-    check("v5_unknown" in states and "v5_stale" in states,
-          "both the unknown and the stale state are covered")
+    print("forbidden by the review")
+    shapes = [c.get("shape") for c in layout["components"]
+              if c.get("kind") == "vector"]
+    check("polygon" not in shapes,
+          "no polygon components exist, so neither the white road trapezoids "
+          "nor the red brake trapezoid can be generated by this layout")
+    check(not [n for n in scene["nodes"] if n.get("type") == "vector"
+               and n.get("shape") == "polygon"],
+          "the generated scene carries no polygon either")
+    blur = [c["id"] for c in layout["components"]
+            if "blur" in json.dumps(c).lower()]
+    check(not blur, f"no component asks for runtime blur ({blur})")
+    check(tokens["cost_model"]["runtime_blur"] == "none",
+          "the cost model declares no runtime blur")
+    glow = [c for c in layout["components"] if c.get("role") == "glow"]
+    check(glow and all(c["kind"] == "image" for c in glow),
+          "every glow is a pre-baked bitmap, not a runtime filter")
+
+    print("baked assets")
+    from PIL import Image
+    for component in layout["components"]:
+        if component.get("kind") != "image":
+            continue
+        path = os.path.join(REPO, component["src"])
+        if not check(os.path.isfile(path), f"{component['id']} bitmap exists"):
+            continue
+        with Image.open(path) as image:
+            check(list(image.size) == [component["bounds"]["w"],
+                                       component["bounds"]["h"]],
+                  f"{component['id']} is {image.size[0]}x{image.size[1]}, the "
+                  f"size the layout places it at")
+    background = tokens["cost_model"]["baked_background"]
+    check(os.path.isfile(os.path.join(REPO, background)),
+          "the environment plate is a baked render, not a gradient")
+
+    print("frozen 356x236 contract")
+    manifest = json.load(open(VEHICLE_MANIFEST))
+    check(manifest["canvas"] == {"width": 356, "height": 236},
+          "the device vehicle manifest still declares the frozen 356x236 "
+          "canvas: the V5 tier did not rewrite the asset contract")
+    source = open(ENVIRONMENT).read()
+    check('"ortho_scale": 5.55' in source
+          and '"location": (-5.30, -4.55, 3.85)' in source,
+          "the V5 environment script still carries the frozen Horizon camera "
+          "numbers (position, target, orthographic scale)")
+    check("HORIZON_CAMERA" in source,
+          "the frozen camera is imported by name, not re-derived")
+    layers = json.load(open(VEHICLE_LAYERS))
+    check(layers["layers"],
+          f"the vehicle layer set exists for {len(layers['layers'])} states")
+    for state, entry in layers["layers"].items():
+        path = os.path.join(REPO, entry["source"])
+        check(os.path.isfile(path), f"the {state} vehicle layer is baked")
+        if os.path.isfile(path):
+            with Image.open(path) as image:
+                check(image.mode == "RGBA",
+                      f"the {state} layer carries alpha (car + road response)")
 
     print("rendered evidence")
     if os.path.isfile(EVIDENCE):
         report = json.load(open(EVIDENCE))
+        deliverables = report["deliverables"]
+        for key, path in deliverables.items():
+            check(os.path.isfile(os.path.join(REPO, path)),
+                  f"deliverable {key} exists ({os.path.basename(path)})")
         check(report["navigation_hidden_pixels"] == 0,
               f"a hidden navigation draws zero pixels "
               f"({report['navigation_hidden_pixels']})")
-        check(len(report["screenshots"]) == 20,
-              "all twenty screenshots were rendered")
-        check(os.path.isfile(os.path.join(REPO, report["contact_sheet"])),
-              "the contact sheet exists")
-        check(os.path.isfile(os.path.join(REPO, report["physical_scale"])),
-              "the physical-scale sheet exists")
-        missing = [path for path in report["screenshots"].values()
-                   if not os.path.isfile(os.path.join(REPO, path))]
-        check(not missing, f"every declared screenshot exists ({missing})")
+        vehicle = report["vehicle_bbox_from_final_render"]
+        silhouette = vehicle["visible_silhouette"]
+        check(silhouette is not None,
+              "the visible vehicle silhouette was measured from the final "
+              "1920x480 render")
+        if silhouette:
+            speed = report["speed_cluster_bbox"]
+            energy = report["energy_cluster_bbox"]
+            car_right = silhouette[0] + silhouette[2]
+            check(silhouette[0] > speed[0] + speed[2],
+                  f"the car ({silhouette[0]}..{car_right}) starts right of the "
+                  f"speed cluster (ends at {speed[0] + speed[2]})")
+            check(car_right < energy[0],
+                  f"the car ends left of the energy cluster (starts at "
+                  f"{energy[0]})")
+            check(report["vehicle_pixels_solid"] > 20000,
+                  f"the measured car is {report['vehicle_pixels_solid']} px of "
+                  f"solid difference against the same render without it")
+        memory = report["decoded_memory"]["total_decoded_mb"]
+        check(0 < memory < 24,
+              f"the decoded bitmap resident estimate is {memory} MB")
+        check(report["reference_measurements"]["canvas"] == [2172, 724],
+              "the report quotes the reference measurements it was built from")
     else:
         check(False, "the evidence report exists (run "
                      "tools/preview/horizon_v5_evidence.py)")

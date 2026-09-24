@@ -167,6 +167,10 @@ def text_node(component, tokens):
                  "alpha": component.get("visible_opacity", 0.5)},
                 {"when": {"signal": vis["binding"], "valid": False},
                  "alpha": 0.0},
+                # A threshold rule has no rule that matches when the value is
+                # outside it, and an unmatched alpha_when falls back to visible.
+                # That is how a low-SOC warning rail stayed lit at 63 %.
+                {"when": {"always": True}, "alpha": 0.0},
             ]
         elif vis.get("show_when_true"):
             node["opacity"] = 1.0
@@ -258,12 +262,40 @@ def vector_node(component, tokens, layout):
                                 "from": prog.get("from", "start"),
                                 "color": tokens.color(prog.get("color_token", "accent")),
                                 "opacity": prog.get("opacity", 1.0)}
+    elif shape == "arc_ticks":
+        # Radial marks on the instrument arc: the quiet ring of the dial.
+        node.update({"cx": component["cx"], "cy": component["cy"],
+                     "radius": component["radius"],
+                     "start_deg": component.get("start_deg", 0),
+                     "end_deg": component.get("end_deg", 360),
+                     "count": component.get("count", 24),
+                     "length_px": component.get("length_px", 8),
+                     "major_every": component.get("major_every", 0),
+                     "major_length_px": component.get("major_length_px",
+                                                      component.get("length_px", 8)),
+                     "color": tokens.color(component["color_token"]),
+                     "major_color": tokens.color(
+                         component.get("major_token",
+                                       component["color_token"])),
+                     "width_px": component.get("width_px", 2),
+                     "opacity": component.get("opacity", 1.0)})
+    elif shape == "polyline":
+        node.update({"points": component.get("points", []),
+                     "color": tokens.color(component["color_token"]),
+                     "width_px": component.get("width_px", 2),
+                     "opacity": component.get("opacity", 1.0)})
     elif shape == "vticks":
-        node.update({"x": b["x"], "y": b["y"], "height": b["h"],
+        # A vertical tick column grows upward from its bottom row. The bounds
+        # are the box the checker reasons about (top based); `y_bottom` is what
+        # the renderer draws from, so the declared box and the ink agree.
+        node.update({"x": b["x"],
+                     "y": component.get("y_bottom", b["y"] + b["h"]),
+                     "height": b["h"],
                      "count": component.get("count", 20),
                      "major_every": component.get("major_every", 0),
                      "width_px": component.get("width_px", 6),
                      "major_width_px": component.get("major_width_px", 10),
+                     "tick_height_px": component.get("tick_height_px", 2),
                      "color": tokens.color(component["color_token"]),
                      "major_color": tokens.color(component["color_token"]),
                      "lit_color": tokens.color(component.get("lit_token", "accent")),
@@ -327,6 +359,10 @@ def vector_node(component, tokens, layout):
                  "alpha": component.get("visible_opacity", 0.5)},
                 {"when": {"signal": vis["binding"], "valid": False},
                  "alpha": 0.0},
+                # A threshold rule has no rule that matches when the value is
+                # outside it, and an unmatched alpha_when falls back to visible.
+                # That is how a low-SOC warning rail stayed lit at 63 %.
+                {"when": {"always": True}, "alpha": 0.0},
             ]
         elif vis.get("show_when_true"):
             node["opacity"] = 1.0
@@ -377,6 +413,46 @@ def vehicle_node(component, tokens):
     }
 
 
+def image_node(component):
+    """A baked bitmap: the environment plate, a cluster glow, a vehicle layer.
+
+    `src` is a repository-relative path; it is kept as written so the device
+    build can ship the same file. `asset` (resolved through the vehicle
+    manifest) stays supported for the frozen vehicle asset set.
+    """
+    b = component["bounds"]
+    node = {
+        "id": component["id"],
+        "type": "image",
+        "z": component["z"],
+        "layer": component.get("layer", "static"),
+        "x": b["x"], "y": b["y"], "width": b["w"], "height": b["h"],
+    }
+    for key in ("src", "asset"):
+        if key in component:
+            node[key] = component[key]
+    if "opacity" in component:
+        node["opacity"] = component["opacity"]
+    if "visibility" in component:
+        vis = component["visibility"]
+        visible_opacity = component.get("visible_opacity", 1.0)
+        if vis.get("show_when_true"):
+            node["opacity"] = 1.0
+            node["alpha_when"] = [
+                {"when": {"signal": vis["binding"], "is_true": True},
+                 "alpha": visible_opacity},
+                {"when": {"signal": vis["binding"], "is_true": False},
+                 "alpha": 0.0}]
+        elif vis.get("show_when_valid"):
+            node["opacity"] = 1.0
+            node["alpha_when"] = [
+                {"when": {"signal": vis["binding"], "valid": True},
+                 "alpha": visible_opacity},
+                {"when": {"signal": vis["binding"], "valid": False},
+                 "alpha": 0.0}]
+    return node
+
+
 def main():
     import argparse
     parser = argparse.ArgumentParser()
@@ -401,6 +477,8 @@ def main():
             nodes.append(vector_node(component, tokens, layout))
         elif kind == "vehicle":
             nodes.append(vehicle_node(component, tokens))
+        elif kind == "image":
+            nodes.append(image_node(component))
         else:
             raise SystemExit(f"[v2] unsupported component kind: {kind}")
 

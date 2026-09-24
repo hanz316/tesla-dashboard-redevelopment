@@ -1,65 +1,201 @@
 {
- "schema": "horizon-v5-evidence v1",
- "status": "HORIZON_V5_VISUAL = AWAITING HUMAN VISUAL APPROVAL",
+ "schema": "horizon-v5-evidence v2",
+ "status": "HORIZON_V5_NEUTRAL = AWAITING HUMAN VISUAL APPROVAL",
+ "why": "IMPLEMENT, MEASURE, RENDER, REPORT - no visual claim is made here. Only a human decides whether this matches the reference.",
  "reference": {
-  "expected_image": "assets/ui/horizon_v5_reference.png",
-  "state": "TEMPORARY_PENDING_REFERENCE",
-  "background_art": "BACKGROUND_ART_REQUIRED"
+  "file": "assets/ui/horizon_v5_reference.png",
+  "size": [
+   2172,
+   724
+  ],
+  "status": "PRESENT",
+  "mapping": {
+   "why": "the panel is 4:1, the reference is 3:1: the reference is placed 1:1 by height in a centred 1440x480 content box and the extra 480 px is environment",
+   "scale": 0.6629834254143646,
+   "content_box": [
+    240,
+    0,
+    1440,
+    480
+   ],
+   "panel_x": "960 + (x_ref - 1086) * 480/724",
+   "panel_y": "y_ref * 480/724"
+  }
  },
- "vehicle_bounds": {
-  "x": 642,
-  "y": 4,
-  "w": 637,
-  "h": 439
+ "deliverables": {
+  "A_reference": "assets/ui/horizon_v5_reference.png",
+  "B_implementation_neutral": "assets/checkpoints/horizon_v5/horizon_v5_neutral.png",
+  "C_reference_vs_implementation": "assets/checkpoints/horizon_v5/horizon_v5_reference_vs_implementation.png",
+  "D_physical_scale": "assets/checkpoints/horizon_v5/horizon_v5_physical_scale.png"
  },
- "vehicle_visible_bounds_closed": {
-  "x": 649,
-  "y": 92,
-  "w": 627,
-  "h": 348
- },
- "navigation_hidden_pixels": 0,
- "screenshots": {
+ "other_screenshots": {
   "horizon_v5_01_neutral.png": "assets/checkpoints/horizon_v5/horizon_v5_01_neutral.png",
   "horizon_v5_02_left_indicator.png": "assets/checkpoints/horizon_v5/horizon_v5_02_left_indicator.png",
   "horizon_v5_03_right_indicator.png": "assets/checkpoints/horizon_v5/horizon_v5_03_right_indicator.png",
   "horizon_v5_04_hazard.png": "assets/checkpoints/horizon_v5/horizon_v5_04_hazard.png",
   "horizon_v5_05_brake.png": "assets/checkpoints/horizon_v5/horizon_v5_05_brake.png",
-  "horizon_v5_06_headlight.png": "assets/checkpoints/horizon_v5/horizon_v5_06_headlight.png",
-  "horizon_v5_07_brake_left.png": "assets/checkpoints/horizon_v5/horizon_v5_07_brake_left.png",
-  "horizon_v5_08_brake_right.png": "assets/checkpoints/horizon_v5/horizon_v5_08_brake_right.png",
-  "horizon_v5_09_brake_hazard.png": "assets/checkpoints/horizon_v5/horizon_v5_09_brake_hazard.png",
-  "horizon_v5_10_door_fl.png": "assets/checkpoints/horizon_v5/horizon_v5_10_door_fl.png",
-  "horizon_v5_11_door_fr.png": "assets/checkpoints/horizon_v5/horizon_v5_11_door_fr.png",
-  "horizon_v5_12_door_rl.png": "assets/checkpoints/horizon_v5/horizon_v5_12_door_rl.png",
-  "horizon_v5_13_door_rr.png": "assets/checkpoints/horizon_v5/horizon_v5_13_door_rr.png",
-  "horizon_v5_14_all_doors.png": "assets/checkpoints/horizon_v5/horizon_v5_14_all_doors.png",
-  "horizon_v5_15_frunk.png": "assets/checkpoints/horizon_v5/horizon_v5_15_frunk.png",
-  "horizon_v5_16_trunk.png": "assets/checkpoints/horizon_v5/horizon_v5_16_trunk.png",
-  "horizon_v5_17_low_soc.png": "assets/checkpoints/horizon_v5/horizon_v5_17_low_soc.png",
-  "horizon_v5_18_unknown.png": "assets/checkpoints/horizon_v5/horizon_v5_18_unknown.png",
-  "horizon_v5_19_stale.png": "assets/checkpoints/horizon_v5/horizon_v5_19_stale.png",
-  "horizon_v5_20_navigation.png": "assets/checkpoints/horizon_v5/horizon_v5_20_navigation.png"
+  "horizon_v5_06_low_soc.png": "assets/checkpoints/horizon_v5/horizon_v5_06_low_soc.png",
+  "horizon_v5_07_unknown.png": "assets/checkpoints/horizon_v5/horizon_v5_07_unknown.png",
+  "horizon_v5_08_navigation.png": "assets/checkpoints/horizon_v5/horizon_v5_08_navigation.png"
  },
- "contact_sheet": "assets/checkpoints/horizon_v5/horizon_v5_contact_sheet.png",
- "physical_scale": "assets/checkpoints/horizon_v5/horizon_v5_physical_scale.png",
- "cost": {
-  "static_background_layers": 7,
-  "baked_background_assets": 1,
-  "persistent_decoded_assets": 5,
-  "estimated_rgba_resident_kb": 4327.2,
-  "cropped_vehicle_frame": [
-   260,
-   179
+ "vehicle_bbox_from_final_render": {
+  "visible_silhouette": [
+   752,
+   123,
+   403,
+   222
   ],
-  "state_overlays": 26,
-  "maximum_simultaneous_state_overlays": 3,
-  "dynamic_text_nodes": 21,
-  "maximum_simultaneous_animation_sequences": 2,
-  "per_frame_bitmaps_beyond_vehicle": 0,
-  "notes": [
-   "ESTIMATED on the Mac; UNKNOWN UNTIL DEVICE TEST on T113",
-   "the background is one baked 1920x480 bitmap, the vehicle is the only per-frame bitmap, decoration is static or opacity-only"
+  "with_ground_response": [
+   752,
+   123,
+   403,
+   327
   ]
- }
+ },
+ "vehicle_pixels_changed": 77402,
+ "vehicle_pixels_solid": 53977,
+ "ground_contact_row": 345,
+ "speed_cluster_bbox": [
+  281.9,
+  109.1,
+  275.2,
+  230.9
+ ],
+ "energy_cluster_bbox": [
+  1357.1,
+  118.0,
+  350.6,
+  248.9
+ ],
+ "driver_cluster_bbox": [
+  305.0,
+  22.5,
+  1315.3,
+  323.6
+ ],
+ "navigation_hidden_pixels": 0,
+ "reference_measurements": {
+  "canvas": [
+   2172,
+   724
+  ],
+  "horizon_row": 252,
+  "horizon_fraction": 0.3481,
+  "vehicle": {
+   "bbox": [
+    787,
+    195,
+    1469,
+    489
+   ],
+   "visible_width": 682,
+   "visible_height": 294,
+   "ground_contact_row": 489,
+   "centre_x": 1128.0,
+   "pixels": 100731,
+   "width_fraction": 0.314,
+   "height_fraction": 0.4061,
+   "area_fraction": 0.0641
+  },
+  "accent": "#2496D8",
+  "thirds": {
+   "left": 17.46,
+   "centre": 53.14,
+   "right": 14.58
+  },
+  "bands": {
+   "top": 29.63,
+   "middle": 45.55,
+   "bottom": 10.07
+  }
+ },
+ "decoded_memory": {
+  "assets": [
+   {
+    "id": "env.plate",
+    "size": [
+     1920,
+     480
+    ],
+    "decoded_rgba_bytes": 3686400
+   },
+   {
+    "id": "speed.arc.glow",
+    "size": [
+     236,
+     201
+    ],
+    "decoded_rgba_bytes": 189744
+   },
+   {
+    "id": "speed.numeral.glow",
+    "size": [
+     253,
+     167
+    ],
+    "decoded_rgba_bytes": 169004
+   },
+   {
+    "id": "energy.rail.track",
+    "size": [
+     39,
+     249
+    ],
+    "decoded_rgba_bytes": 38844
+   },
+   {
+    "id": "vehicle.base",
+    "size": [
+     452,
+     381
+    ],
+    "decoded_rgba_bytes": 688848
+   },
+   {
+    "id": "vehicle.running",
+    "size": [
+     452,
+     381
+    ],
+    "decoded_rgba_bytes": 688848
+   },
+   {
+    "id": "vehicle.brake",
+    "size": [
+     452,
+     381
+    ],
+    "decoded_rgba_bytes": 688848
+   },
+   {
+    "id": "vehicle.indicator_left",
+    "size": [
+     452,
+     381
+    ],
+    "decoded_rgba_bytes": 688848
+   },
+   {
+    "id": "vehicle.indicator_right",
+    "size": [
+     452,
+     381
+    ],
+    "decoded_rgba_bytes": 688848
+   },
+   {
+    "id": "vehicle.headlight",
+    "size": [
+     452,
+     381
+    ],
+    "decoded_rgba_bytes": 688848
+   }
+  ],
+  "total_decoded_rgba_bytes": 8217080,
+  "total_decoded_mb": 7.84,
+  "note": "ESTIMATED on the Mac; UNKNOWN UNTIL DEVICE TEST on T113"
+ },
+ "background_asset": "assets/ui/horizon_v5_background.png",
+ "runtime_blur": "none"
 }

@@ -59,6 +59,60 @@ def rect(source):
     return (b["x"], b["y"], b["x"] + b["w"], b["y"] + b["h"])
 
 
+def vehicle_from_layers(layout):
+    """A V5 scene has no vehicle_visual node: the car is a baked RGBA layer per
+    lighting state. The QA still needs the same facts about it, so they are
+    measured from the layer that is actually pasted: the opaque pixels are the
+    car (closed), the whole layer box is the car plus the ground response it
+    changes, which is the conservative bound for every collision check."""
+    layers = [c for c in layout["components"] if c.get("role") == "vehicle"]
+    if not layers:
+        return None
+    base = layers[0]
+    entry = {
+        "id": "vehicle",
+        "bounds": base["bounds"],
+        "permitted_region": {"x": layout["zones"]["vehicle"]["x"] - 260,
+                             "y": 0,
+                             "w": (layout["zones"]["vehicle"]["right"]
+                                   - layout["zones"]["vehicle"]["x"]) + 520,
+                             "h": layout["canvas"]["height"]},
+        "visible_width_target": [380, 430],
+        "ground_contact_band": [300, 400],
+        "measured_from_layers": True,
+        "layer": base,
+        "layers": [c["id"] for c in layers],
+    }
+    if not HAVE_PIL:
+        note("Pillow is missing: the vehicle layer bounds could not be "
+             "measured, only the declared layer boxes were checked")
+        entry["visible_bounds_closed"] = dict(base["bounds"])
+        entry["visible_bounds_open_union"] = dict(base["bounds"])
+        entry["ground_contact_y"] = base["bounds"]["y"] + base["bounds"]["h"]
+        return entry
+    image = Image.open(os.path.join(REPO, base["src"])).convert("RGBA")
+    alpha = image.getchannel("A")
+    solid = alpha.point(lambda value: 255 if value > 200 else 0).getbbox()
+    solid = solid or (0, 0, image.width, image.height)
+    full = alpha.getbbox() or solid
+    ox, oy = base["bounds"]["x"], base["bounds"]["y"]
+    entry["visible_bounds_closed"] = {
+        "x": ox + solid[0], "y": oy + solid[1],
+        "w": solid[2] - solid[0], "h": solid[3] - solid[1]}
+    entry["visible_bounds_open_union"] = {
+        "x": ox + full[0], "y": oy + full[1],
+        "w": full[2] - full[0], "h": full[3] - full[1]}
+    entry["ground_contact_y"] = oy + solid[3]
+    entry["layer_pixels"] = {
+        "solid": int((alpha.point(lambda v: 255 if v > 200 else 0)
+                      .getbbox() or (0, 0, 0, 0))[2]),
+        "alpha_coverage": round(
+            sum(1 for value in alpha.getdata() if value > 8)
+            / float(image.width * image.height), 4),
+    }
+    return entry
+
+
 def overlaps(a, b):
     ax0, ay0, ax1, ay1 = a
     bx0, by0, bx1, by1 = b
@@ -200,7 +254,38 @@ def check_zones(layout, components, check):
 
 def check_vehicle(layout, tokens, car_closed, car_open, permitted, check):
     print("vehicle")
-    vehicle = next(c for c in layout["components"] if c["id"] == "vehicle")
+    vehicle = (layout.get("vehicle_measured_from_layers")
+               or next(c for c in layout["components"]
+                       if c["id"] == "vehicle"))
+    if vehicle.get("measured_from_layers"):
+        # V5: the car is a baked layer, so the numbers above were measured from
+        # it. There is no node box to do arithmetic on; the checks that matter
+        # are the recorded bounds against the composition the reference set.
+        canvas = layout["canvas"]
+        safe = layout["safe_area"]
+        check(permitted[0] <= car_closed[0] and car_closed[2] <= permitted[2],
+              "the visible car is inside the vehicle zone horizontally")
+        check(car_closed[1] >= 0 and car_closed[3] <= canvas["height"],
+              "the visible car is inside the canvas vertically")
+        check(car_closed[1] >= safe["top"] - 40,
+              f"the visible car top {car_closed[1]:.0f} keeps clear of the top "
+              f"margin (allowing the 40 px the reference car itself uses)")
+        target = vehicle["visible_width_target"]
+        width = car_closed[2] - car_closed[0]
+        check(target[0] <= width <= target[1],
+              f"the visible car is {width:.0f} px wide, inside the "
+              f"{target[0]}-{target[1]} target taken from the reference")
+        contact = vehicle["ground_contact_y"]
+        band = vehicle["ground_contact_band"]
+        check(band[0] <= contact <= band[1],
+              f"the tyres meet the road at y {contact:.0f}, inside "
+              f"{band[0]}-{band[1]}")
+        check(car_open[3] <= canvas["height"],
+              "the ground response stays inside the canvas")
+        print(f"  note visible car bbox "
+              f"{[round(v, 1) for v in car_closed]}, with ground response "
+              f"{[round(v, 1) for v in car_open]}")
+        return
     canvas = layout["canvas"]
     safe = layout["safe_area"]
     check(car_closed[0] >= permitted[0] and car_closed[2] <= permitted[2] and
@@ -475,7 +560,8 @@ def check_speed_typography(scene, previewer, check):
         check(not (numeral[2] > box[0] and box[2] > numeral[0] and
                    numeral[3] > box[1] and box[3] > numeral[1]),
               f"the speed numeral is clear of {node_id}")
-    sign = nodes.get("speed.limit.sign") or nodes["speedlimit.glass.fill"]
+    sign = (nodes.get("speed.limit.sign") or nodes.get("speedlimit.glass.fill")
+            or nodes.get("speedlimit.ring"))
     sign_box = (sign["x"], sign["y"], sign["x"] + sign["width"],
                 sign["y"] + sign["height"])
     check(not (numeral[2] > sign_box[0] and sign_box[2] > numeral[0] and
@@ -504,6 +590,11 @@ def main():
              f"skipped, the geometry checks still run")
 
     components = {c["id"]: c for c in layout["components"]}
+    if "vehicle" not in components:
+        measured = vehicle_from_layers(layout)
+        if measured is not None:
+            components["vehicle"] = measured
+            layout["vehicle_measured_from_layers"] = measured
     check_golden(scene, layout, components, check, arguments.layout)
     check_tokens(scene, tokens, check)
     check_bounds(layout, components, check)

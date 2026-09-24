@@ -1,0 +1,185 @@
+{
+ "schema": "horizon-v5-vehicle-layers-report v1",
+ "alpha_edges": [
+  4.0,
+  12.0
+ ],
+ "reflection": {
+  "squash": 0.55,
+  "blur": 7.0,
+  "alpha": 0.75,
+  "falloff": 1.9,
+  "ripple": 0.18,
+  "ripple_cycles": 7.0,
+  "tint": [
+   0.42,
+   0.55,
+   0.68
+  ],
+  "tint_mix": 0.28,
+  "why": "the frozen 24.8 degree camera puts the car's own mirror image behind the car, so the wet-road reflection is baked from the car's pixels: mirrored, squashed, blurred, faded and rippled"
+ },
+ "records": [
+  {
+   "state": "base",
+   "crop_box": [
+    728,
+    99,
+    1180,
+    480
+   ],
+   "layer_size": [
+    452,
+    381
+   ],
+   "solid_car_pixels": 59148,
+   "response_pixels": 350,
+   "reflection_box": [
+    752,
+    346,
+    1156,
+    469
+   ],
+   "decoded_rgba_bytes": 688848,
+   "background_decoded_rgba_bytes": 3686400
+  },
+  {
+   "state": "running",
+   "crop_box": [
+    728,
+    99,
+    1180,
+    480
+   ],
+   "layer_size": [
+    452,
+    381
+   ],
+   "solid_car_pixels": 59148,
+   "response_pixels": 368,
+   "reflection_box": [
+    752,
+    346,
+    1156,
+    469
+   ],
+   "decoded_rgba_bytes": 688848,
+   "background_decoded_rgba_bytes": 3686400
+  },
+  {
+   "state": "brake",
+   "crop_box": [
+    728,
+    99,
+    1180,
+    480
+   ],
+   "layer_size": [
+    452,
+    381
+   ],
+   "solid_car_pixels": 59148,
+   "response_pixels": 374,
+   "reflection_box": [
+    752,
+    346,
+    1156,
+    469
+   ],
+   "decoded_rgba_bytes": 688848,
+   "background_decoded_rgba_bytes": 3686400
+  },
+  {
+   "state": "headlight",
+   "crop_box": [
+    728,
+    99,
+    1180,
+    480
+   ],
+   "layer_size": [
+    452,
+    381
+   ],
+   "solid_car_pixels": 59148,
+   "response_pixels": 374,
+   "reflection_box": [
+    752,
+    346,
+    1156,
+    469
+   ],
+   "decoded_rgba_bytes": 688848,
+   "background_decoded_rgba_bytes": 3686400
+  },
+  {
+   "state": "indicator_left",
+   "crop_box": [
+    728,
+    99,
+    1180,
+    480
+   ],
+   "layer_size": [
+    452,
+    381
+   ],
+   "solid_car_pixels": 59148,
+   "response_pixels": 372,
+   "reflection_box": [
+    752,
+    346,
+    1156,
+    469
+   ],
+   "decoded_rgba_bytes": 688848,
+   "background_decoded_rgba_bytes": 3686400
+  },
+  {
+   "state": "indicator_right",
+   "crop_box": [
+    728,
+    99,
+    1180,
+    480
+   ],
+   "layer_size": [
+    452,
+    381
+   ],
+   "solid_car_pixels": 59148,
+   "response_pixels": 372,
+   "reflection_box": [
+    752,
+    346,
+    1156,
+    469
+   ],
+   "decoded_rgba_bytes": 688848,
+   "background_decoded_rgba_bytes": 3686400
+  },
+  {
+   "state": "hazard",
+   "crop_box": [
+    728,
+    99,
+    1180,
+    480
+   ],
+   "layer_size": [
+    452,
+    381
+   ],
+   "solid_car_pixels": 59148,
+   "response_pixels": 373,
+   "reflection_box": [
+    752,
+    346,
+    1156,
+    469
+   ],
+   "decoded_rgba_bytes": 688848,
+   "background_decoded_rgba_bytes": 3686400
+  }
+ ]
+}

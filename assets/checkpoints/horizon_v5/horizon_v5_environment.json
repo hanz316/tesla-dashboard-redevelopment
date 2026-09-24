@@ -1,0 +1,120 @@
+{
+ "schema": "horizon-v5-environment v1",
+ "master": "assets/source/blender/model_a_material_candidate.blend",
+ "resolution": [
+  1920,
+  480
+ ],
+ "samples": 40,
+ "view_frame": {
+  "forward": [
+   0.75875,
+   0.65138,
+   0.0
+  ],
+  "right": [
+   0.65138,
+   -0.75875,
+   0.0
+  ],
+  "ground": [
+   -5.3,
+   -4.55,
+   3.85
+  ],
+  "azimuth_deg": 49.3542
+ },
+ "composition": {
+  "content_box": [
+   240,
+   0,
+   1440,
+   480
+  ],
+  "content_scale": 0.6629834254143646,
+  "car_visible_width_px": 401.0,
+  "car_centre_x_px": 954.0,
+  "car_ground_contact_y_px": 345.0,
+  "horizon_row_px": 167.0
+ },
+ "stages": [
+  "plate",
+  "road",
+  "car"
+ ],
+ "renders": {
+  "plate": "assets/ui/horizon_v5_background.png",
+  "road_no_car": "assets/rendered/vehicle/horizon_v5/road/no_car.png",
+  "car_base": "assets/rendered/vehicle/horizon_v5/car/base/000.png",
+  "road_base": "assets/rendered/vehicle/horizon_v5/road/base.png",
+  "car_base_alpha": "assets/rendered/vehicle/horizon_v5/car/base/000.png",
+  "car_running": "assets/rendered/vehicle/horizon_v5/car/running/000.png",
+  "road_running": "assets/rendered/vehicle/horizon_v5/road/running.png",
+  "car_running_alpha": "assets/rendered/vehicle/horizon_v5/car/running/000.png",
+  "car_brake": "assets/rendered/vehicle/horizon_v5/car/brake/000.png",
+  "road_brake": "assets/rendered/vehicle/horizon_v5/road/brake.png",
+  "car_brake_alpha": "assets/rendered/vehicle/horizon_v5/car/brake/000.png",
+  "car_headlight": "assets/rendered/vehicle/horizon_v5/car/headlight_on/000.png",
+  "road_headlight": "assets/rendered/vehicle/horizon_v5/road/headlight.png",
+  "car_headlight_alpha": "assets/rendered/vehicle/horizon_v5/car/headlight/000.png",
+  "car_indicator_left": "assets/rendered/vehicle/horizon_v5/car/indicator_left/000.png",
+  "road_indicator_left": "assets/rendered/vehicle/horizon_v5/road/indicator_left.png",
+  "car_indicator_left_alpha": "assets/rendered/vehicle/horizon_v5/car/indicator_left/000.png",
+  "car_indicator_right": "assets/rendered/vehicle/horizon_v5/car/indicator_right/000.png",
+  "road_indicator_right": "assets/rendered/vehicle/horizon_v5/road/indicator_right.png",
+  "car_indicator_right_alpha": "assets/rendered/vehicle/horizon_v5/car/indicator_right/000.png",
+  "car_hazard": "assets/rendered/vehicle/horizon_v5/car/hazard/000.png",
+  "road_hazard": "assets/rendered/vehicle/horizon_v5/road/hazard.png",
+  "car_hazard_alpha": "assets/rendered/vehicle/horizon_v5/car/hazard/000.png"
+ },
+ "timings_s": {
+  "plate": 10.2,
+  "road_no_car": 14.1,
+  "state_base": 28.5,
+  "state_running": 17.9,
+  "state_brake": 18.0,
+  "state_headlight": 18.3,
+  "state_indicator_left": 18.3,
+  "state_indicator_right": 18.9,
+  "state_hazard": 18.9
+ },
+ "studio_hidden": [
+  "ENV_Floor",
+  "ENV_Side",
+  "ENV_Sky"
+ ],
+ "environment_framing": {
+  "horizon_row_px": 166.99999809265137,
+  "shift_y": -0.009976519271731377,
+  "row_per_shift": 1920.0001001358032,
+  "target_row_px": 167.0
+ },
+ "car_framing": {
+  "ortho_scale": 18.91305160522461,
+  "shift_x": 0.0038402501959353685,
+  "shift_y": -0.011006813496351242,
+  "projected_box_px": [
+   753.5,
+   123.8,
+   1154.5,
+   345.0
+  ],
+  "projected_width_px": 401.0,
+  "projected_centre_x_px": 954.0,
+  "projected_contact_y_px": 345.0,
+  "target": {
+   "content_box": [
+    240,
+    0,
+    1440,
+    480
+   ],
+   "content_scale": 0.6629834254143646,
+   "car_visible_width_px": 401.0,
+   "car_centre_x_px": 954.0,
+   "car_ground_contact_y_px": 345.0,
+   "horizon_row_px": 167.0
+  }
+ },
+ "elapsed_s": 198.6
+}

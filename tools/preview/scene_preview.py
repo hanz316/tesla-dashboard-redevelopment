@@ -278,7 +278,7 @@ MOCK_STATES.update({
     # QA. These are the only place a Horizon V2 screen gets its values, and they
     # live in the previewer's mock table like every other fixture: the runtime
     # projection is the production path and has no mock data at all.
-    "v5_neutral": {"speed": 88, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": False, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -12.4, "warning_active": False, "warning_text": ''},
+    "v5_neutral": {"speed": 88, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": False, "indicator_left": False, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -12.4, "warning_active": False, "warning_text": '', "speed_limit": 120, "driver_status_text": "READY"},
     "v5_left": {"speed": 88, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": False, "indicator_left": True, "indicator_right": False, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -12.4, "warning_active": False, "warning_text": ''},
     "v5_right": {"speed": 88, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": False, "indicator_left": False, "indicator_right": True, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -12.4, "warning_active": False, "warning_text": ''},
     "v5_hazard": {"speed": 88, "gear": 4, "range": 253, "actual_soc": 63, "temperature_primary": 22, "position_light": True, "headlight": True, "brake": True, "indicator_left": True, "indicator_right": True, "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False, "frunk": False, "trunk": False, "battery_power": -12.4, "warning_active": False, "warning_text": ''},
@@ -611,6 +611,8 @@ class State:
 # ------------------------------------------------------------------ bindings
 
 def condition_holds(cond, state):
+    if cond.get("always"):
+        return True
     if "any" in cond:
         return any(condition_holds(c, state) for c in cond["any"])
     if "all" in cond:
@@ -866,6 +868,18 @@ def draw_vector(img, node, state):
     if shape == "arc":
         return draw_arc(draw, node, state, opacity)
 
+    if shape == "arc_ticks":
+        return draw_arc_ticks(draw, node, state, opacity)
+
+    if shape == "polyline":
+        points = [(px, py) for px, py in node.get("points", [])]
+        if len(points) > 1:
+            draw.line(points,
+                      fill=hex_to_rgb(node.get("color", "#C9D4DF"),
+                                      int(255 * opacity)),
+                      width=node.get("width_px", 2), joint="curve")
+        return
+
     if shape == "ticks":
         return draw_arc_ticks(draw, node, state, opacity)
 
@@ -913,7 +927,8 @@ def draw_vector(img, node, state):
 def _arc_bounds(node):
     r = node["radius"]
     cx, cy = node["cx"], node["cy"]
-    return [cx - r, cy - r, cx + r, cy + r]
+    return [int(round(cx - r)), int(round(cy - r)),
+            int(round(cx + r)), int(round(cy + r))]
 
 
 def draw_arc(draw, node, state, opacity):
@@ -922,7 +937,7 @@ def draw_arc(draw, node, state, opacity):
     Angles follow PIL/NanoVG convention: 0 deg at 3 o'clock, clockwise.
     """
     bounds = _arc_bounds(node)
-    width = node.get("width_px", 4)
+    width = int(round(node.get("width_px", 4)))
     start = node.get("start_deg", 0)
     end = node.get("end_deg", 360)
     draw.arc(bounds, start=start, end=end,
@@ -1175,6 +1190,22 @@ def paste_scaled(base, path, x, y, w, h):
     base.alpha_composite(img, (int(x), int(y)))
 
 
+def paste_scaled_alpha(base, path, x, y, w, h, alpha):
+    """Paste a baked bitmap with a conditional alpha applied to its own alpha
+    channel, so a hidden layer contributes nothing at all."""
+    if alpha <= 0.003:
+        return
+    img = Image.open(path).convert("RGBA")
+    if (img.width, img.height) != (w, h):
+        img = img.resize((w, h), Image.LANCZOS)
+    if alpha < 0.999:
+        import numpy as np
+        array = np.asarray(img).astype(np.float32)
+        array[:, :, 3] *= alpha
+        img = Image.fromarray(array.astype("uint8"), "RGBA")
+    base.alpha_composite(img, (int(x), int(y)))
+
+
 def paste_scaled_cropped(base, path, x, y, w, h, crop):
     """Paste one layer of a shared-frame asset set, cropped to the same box.
 
@@ -1358,10 +1389,19 @@ def render(scene, provider, raw_state, out_path, t_norm=1.0,
             draw_vehicle_visual(img, node, state, provider, t_norm,
                                 vehicle_image, vehicle_crop)
         elif ntype == "image":
-            path = resolve_asset_path(provider, node.get("asset", ""))
+            # A baked bitmap addressed by repository path (environment plate,
+            # cluster glow, vehicle layer) or through the vehicle manifest.
+            path = None
+            if node.get("src"):
+                candidate = os.path.join(REPO_ROOT, node["src"])
+                path = candidate if os.path.isfile(candidate) else None
+            if path is None:
+                path = resolve_asset_path(provider, node.get("asset", ""))
             if path and os.path.isfile(path):
-                paste_scaled(img, path, node.get("x", 0), node.get("y", 0),
-                             node.get("width", 0), node.get("height", 0))
+                paste_scaled_alpha(
+                    img, path, node.get("x", 0), node.get("y", 0),
+                    node.get("width", 0), node.get("height", 0),
+                    node.get("opacity", 1.0) * alpha_when(node, state))
         elif ntype == "image_anim":
             path = sequence_frame(provider, node["sequence"],
                                   node.get("bind"), state, t_norm)

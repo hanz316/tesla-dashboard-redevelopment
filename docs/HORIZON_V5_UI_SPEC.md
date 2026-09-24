@@ -1,187 +1,190 @@
-# HORIZON V5 - pending reference
+# HORIZON V5 - the approved reference, implemented
 
-状态：**等待人工视觉验收** （`HORIZON_V4_SPATIAL_GLASS = AWAITING HUMAN VISUAL APPROVAL`）。
+状态：`HORIZON_V5_NEUTRAL = AWAITING HUMAN VISUAL APPROVAL`
 
-V3 被否决的原因：三个候选是同一套构图换装饰线，那条粗青色斜线没有语义。
-V4 不复用那套语言，改为四层空间结构。本文与
-`assets/ui/horizon_v4_layout.json`、`assets/ui/horizon_v4_tokens.json`
-由同一份数据生成，文档不可能与场景不一致。
+人工审核结论（本轮之前）：V5 的**方向**没有被否决，被否决的是"没有实现已批准的
+reference"。旧截图里是
 
-## 1. 四层空间结构
-
-```text
-LAYER 0  deep environment
-LAYER 1  spatial road / vehicle stage
-LAYER 2  information glass (navigation, speed limit, warning)
-LAYER 3  state feedback
+```
+reference image = MISSING
+background      = TEMPORARY
+BACKGROUND_ART_REQUIRED
 ```
 
-| 层 | 元素数 | 元素 |
+所以本轮只做一件事：把 `assets/ui/horizon_v5_reference.png` 真正实现出来。
+本文与 `assets/ui/horizon_v5_layout.json`、`assets/ui/horizon_v5_tokens.json`
+由同一份数据生成，文档不可能与场景不一致。
+
+## 1. 从 reference 到坐标（唯一映射，只写一次）
+
+reference 是 **2172x724（3:1）**，面板是 **1920x480（4:1）**。映射方式：
+
+```
+panel_x = 960 + (x_ref - 1086) * 480/724      # 1086 = reference 水平中心
+panel_y = y_ref * 480/724
+```
+
+即：reference 按**高度 1:1** 放进一个居中的 **1440x480 内容盒**，多出来的左右各
+240 px 是环境。这样每一个元素的**大小和相对位置都是 reference 的**，并且所有元素
+都自然避开了面板的梯形遮罩（顶部切 116 px、底部切 51 px）。
+
+`tools/assets/analyze_v5_reference.py` 输出测量值，同时画出
+`assets/ui/horizon_v5_reference_annotation.png`，人可以把框和参考图直接对照。
+
+| 量 | reference 测量 |
+|---|---|
+| canvas | 2172x724 |
+| horizon row | 252（0.348 h）|
+| vehicle silhouette | x 775..1380, y 235..520（605x285）|
+| 仪器弧 | 圆心 (241.4, 338.6)，半径 174.1，拟合 rms 1.6 px |
+| energy rail | x 2020..2075, y 120..575 |
+| accent | `#2496D8`（hue 148）|
+| 三段平均亮度 | top 31.4 / middle 47.2 / bottom 11.1 |
+
+映射到面板：
+
+| 元素 | 面板坐标 |
+|---|---|
+| 仪表圆心 / 半径 | (400.0, 224.5) / 115.4 px |
+| 速度数字 | x 364.6..472.1, y 161.8..237.4（高 75.6 px）|
+| 限速牌 | x 557.5..604.6, y 118.0..164.4 |
+| RANGE 数值 | 右对齐于 x 1493, y 119..162 |
+| energy rail | x 1578.9..1615.4, y 79.6..381.2 |
+| SOC 63% | x 1619..1659, y 229..252 |
+| 车辆可见宽度 | 401 px（reference 是 605*0.663）|
+| 车辆接地 | y 345（reference 520*0.663）|
+| horizon | y 167 |
+
+## 2. 环境是渲染出来的，不是画出来的
+
+`tools/blender/build_horizon_v5_environment.py` 用 Cycles 渲染这个空间：
+
+| 组成 | 做法 |
+|---|---|
+| 天空 | 世界节点上的垂直渐变（夜景，地平线附近有暖灰光带）|
+| 山脊 | 3 层位移围幕网格，正弦叠加的脊线 + 由底部向顶部衰减的自发光 |
+| 城市 | 620 个面向相机的发光面片，色温分 5 族，距离 700–4200 m |
+| 路灯 | 6 个发光球体，近处 96 m 到 400 m |
+| 路面 | 深色沥青 + 噪声驱动的粗糙度（水膜 0.08 / 干燥 0.40），湿反射真实产生竖向光带 |
+| 大气 | 山脊自带梯度，不靠后期雾 |
+
+所有环境物体都放在**视空间** `(u, v, z)` 里——因为冻结的 Horizon 相机方位角是
+49.4°，把城市放在世界 +Y 上会让它整个跑出画面（本轮之前就是这样）。
+
+关键尺寸（驾驶位 1.8 m 高、35 mm 镜头）由
+`solve_environment_framing()` 反解相机位移，把地平线**精确**放在 y=167。
+
+## 3. 车辆：站在画面里
+
+冻结的相机是**正交 24.8° 俯视**。从这个角度，车辆自身的镜像会落在**车后面**——
+实测车下有车/无车的差异只有 2/255。因此按人工审核给出的资产清单，反射用**预烘焙**
+方式生成：
+
+```
+Plate  ->  VehicleLayer(base)  ->  UI
+```
+
+`tools/assets/compose_horizon_v5_vehicle.py` 把三张 Blender 输出合成一张 RGBA：
+
+| 输入 | 用途 |
+|---|---|
+| `road/no_car.png` | 没有车时的湿路面（参考基线）|
+| `road/<state>.png` | 同一相机、同一光照、有车的路面 |
+| `car/<state>/000.png` | 干净的车辆通道（film transparent）|
+
+差异 `C1 - C0` 就是"车改变了路面的所有像素"：遮挡、接地阴影、灯光在地面的响应。
+反射层则是把车辆像素**镜像、压扁 0.55、高斯模糊、随距离衰减、加水纹**后预烘焙的
+透明 PNG——设备端不做任何 runtime blur。
+
+| 状态 | 层 | 说明 |
 |---|---|---|
-| LAYER_0_DEEP_ENVIRONMENT | 4 | `env.base`, `env.horizon.glow`, `env.horizon.line`, `env.distant.ridge` |
-| LAYER_1_VEHICLE_STAGE | 5 | `stage.ground`, `stage.ground.sheen`, `stage.contact.shadow`, `stage.reflection`, `vehicle` |
-| LAYER_2_INFORMATION | 13 | `speed.value`, `speed.unit`, `gear.p`, `gear.r`, `gear.n`, `gear.d`, `energy.range`, `energy.rail`, `energy.soc`, `energy.power`, `nav.capsule.fill`, `speedlimit.glass.fill`, `warn.glass.fill` |
-| LAYER_3_STATE_FEEDBACK | 9 | `state.left.ground0`, `state.left.ground1`, `state.left.ground2`, `state.right.ground0`, `state.right.ground1`, `state.right.ground2`, `state.brake.reflection`, `state.headlight.left`, `state.headlight.right` |
+| base | 车 + 路面响应 + 反射 | 常显 |
+| running | 尾灯点亮 | `position_light` |
+| brake | 刹车灯 | `brake` |
+| indicator_left / right | 转向灯 | 对应信号 |
+| headlight | 前照灯 | `headlight` |
 
-## 2. 调色板（唯一来源）
+车辆可见轮廓（从最终 1920x480 渲染里量出来的，不是节点框；做法是同一场景去掉车辆
+图层再渲染一次做差）：**x 752..1155, y 123..345（403x222）**；连同湿路面响应
+（接地阴影 + 反射 + 灯光地面响应）延伸到 y 450。左侧 speed primary 到 x 672 结束，
+右侧 RANGE primary 从 x 1357 开始——两侧都不碰撞。
 
-| 用途 | 值 |
+## 4. 两个仪表簇
+
+**Speed cluster**：225° 完整部分弧（0 km/h 在左下 135°，240 km/h 在 0°），
+包含
+
+* 预烘焙 `horizon_v5_arc_glow.png`（弧的辉光，宽度 4.2×描边）；
+* 预烘焙 `horizon_v5_numeral_glow.png`（数字后面的光池）；
+* 24 格刻度环（每 12 格加长）；
+* 非激活弧 + 激活弧（`speed / 240`）；
+* 数字、`km/h`、PRND、READY/CHILL、22 °C、限速牌。
+
+**Energy cluster**：RANGE 数值、RANGE 标签、分隔线、功率波形（有语义：功率历史）、
+POWER 数值、SOC 百分比，以及**竖向分段 energy rail**：
+
+* 预烘焙 `horizon_v5_rail_track.png`（圆角轨道 + 24 段分隔）；
+* 24 个 `vticks` 段按 SOC 自下而上点亮；
+* SOC <= 20% 时切换到警告色（阈值规则）。
+
+## 5. 被明令禁止、并且真的不存在的元素
+
+| 禁止项 | 现状 |
 |---|---|
-| bg_deep | `#05090D` |
-| bg_mid | `#071017` |
-| bg_horizon | `#0A141C` |
-| bg_ground | `#0E1A22` |
-| ground_sheen | `#101A22` |
-| contact_shadow | `#02060A` |
-| reflection | `#0B141B` |
-| glass_fill | `#071017` |
-| glass_border | `#12202A` |
-| glass_top_edge | `#9FB6C4` |
-| glass_bottom_shade | `#02060A` |
-| primary_text | `#E9EEF3` |
-| secondary_text | `#C3CDD7` |
-| muted_text | `#7C8894` |
-| accent | `#58C8D8` |
-| accent_dim | `#1E3A44` |
-| warning | `#D8A657` |
-| critical | `#D8674F` |
-| ready | `#7BD2C4` |
-| throw | `#DCD8CC` |
+| WHITE ROAD TRAPEZOIDS | 整个 V5 布局里**没有任何 polygon 组件**；测试会失败如果出现 |
+| RED BRAKE TRAPEZOID | 同上；刹车的地面响应来自渲染差异 + 预烘焙红色反射 |
+| solid polygon light beam | 前照灯只改 `car.headlight` 图层，没有多边形光束 |
+| 没有语义的装饰线 | 只剩分隔线与功率波形，两条都有语义 |
+| runtime blur | `cost_model.runtime_blur = none`；所有辉光都是位图 |
+| gradient + polygon 当背景 | 背景是 Cycles 渲染的 1920x480 位图 |
 
-## 3. 字体层级
+## 6. 分层与成本
 
-| 层级 | 字号 | 字距 |
-|---|---|---|
-| DISPLAY | 124 | -2.0 |
-| TITLE | 62 | 0.0 |
-| BODY | 28 | 1.2 |
-| CAPTION | 22 | 1.6 |
-| LABEL | 16 | 2.4 |
+```text
+LAYER_0_ENVIRONMENT   env.plate, speed.arc.glow, speed.numeral.glow, energy.rail.track
+LAYER_1_VEHICLE      vehicle.base, vehicle.running, vehicle.brake,
+                     vehicle.indicator_left, vehicle.indicator_right,
+                     vehicle.headlight
+LAYER_2_INSTRUMENT   speed / energy / driver / sign 的全部文字与矢量
+LAYER_3_STATE        warn.glass, warn.text
+```
 
-## 4. 元素表（全部 65 项由 layout 生成，此处为可读摘要）
+解码内存估算（Mac 上估算，**T113 上未验证**）：
 
-| id | 类型 | x | y | w | h | z | 层 | 可见性 |
-|---|---|---|---|---|---|---|---|---|
-| `env.base` | vector/vgradient | 0 | 0 | 1920 | 480 | 0 | static | 总是 |
-| `env.horizon.glow` | vector/vgradient | 380 | 210 | 1160 | 96 | 1 | static | 总是 |
-| `env.horizon.line` | vector/line | 520 | 300 | 880 | 1 | 2 | static | 总是 |
-| `env.distant.ridge` | vector/polygon | 240 | 274 | 1440 | 26 | 2 | static | 总是 |
-| `stage.ground` | vector/vgradient | 0 | 300 | 1920 | 180 | 3 | static | 总是 |
-| `stage.ground.sheen` | vector/polygon | 500 | 300 | 920 | 180 | 4 | static | 总是 |
-| `stage.contact.shadow` | vector/polygon | 622 | 414 | 677 | 34 | 5 | static | 总是 |
-| `stage.reflection` | vector/vgradient | 682 | 436 | 557 | 32 | 6 | static | 总是 |
-| `vehicle` | vehicle/ | 642 | 4 | 637 | 439 | 30 | dynamic | 总是 |
-| `speed.arc` | vector/arc | 130 | 118 | 300 | 300 | 6 | static | 总是 |
-| `speed.arc.active` | vector/arc | 130 | 118 | 300 | 300 | 7 | static | 总是 |
-| `speed.mark.0` | vector/line | 126 | 118 | 10 | 1 | 8 | static | 总是 |
-| `speed.mark.120` | vector/line | 126 | 118 | 10 | 1 | 8 | static | 总是 |
-| `speed.mark.240` | vector/line | 126 | 118 | 10 | 1 | 8 | static | 总是 |
-| `speed.value` | text/ | 120 | 105 | 300 | 140 | 40 | dynamic | 总是 |
-| `speed.unit` | text/ | 124 | 250 | 120 | 26 | 40 | dynamic | 总是 |
-| `gear.p` | text/ | 120 | 283 | 30 | 34 | 40 | dynamic | 总是 |
-| `gear.r` | text/ | 164 | 283 | 30 | 34 | 40 | dynamic | 总是 |
-| `gear.n` | text/ | 208 | 283 | 30 | 34 | 40 | dynamic | 总是 |
-| `gear.d` | text/ | 252 | 283 | 30 | 34 | 40 | dynamic | 总是 |
-| `gear.unknown` | text/ | 120 | 283 | 30 | 34 | 40 | dynamic | binding=gear、show_when_invalid=True |
-| `driver.temperature` | text/ | 300 | 40 | 120 | 32 | 40 | dynamic | 总是 |
-| `driver.status` | text/ | 120 | 337 | 220 | 30 | 40 | dynamic | 总是 |
-| `speedlimit.glass.fill` | vector/roundrect | 316 | 240 | 76 | 76 | 24 | dynamic | binding=speed_limit、show_when_valid=True |
-| `speedlimit.glass.edge` | vector/line | 318 | 240 | 72 | 1 | 25 | dynamic | binding=speed_limit、show_when_valid=True |
-| `speedlimit.glass.shade` | vector/line | 318 | 315 | 72 | 1 | 25 | dynamic | binding=speed_limit、show_when_valid=True |
-| `speedlimit.ring` | vector/roundrect | 324 | 248 | 60 | 60 | 25 | dynamic | binding=speed_limit、show_when_valid=True |
-| `speedlimit.value` | text/ | 316 | 262 | 76 | 32 | 40 | dynamic | binding=speed_limit、show_when_valid=True |
-| `energy.range` | text/ | 1606 | 138 | 200 | 74 | 40 | dynamic | 总是 |
-| `energy.range.label` | text/ | 1606 | 216 | 200 | 24 | 40 | dynamic | 总是 |
-| `energy.rail` | vector/vticks | 1758 | 264 | 10 | 132 | 6 | static | 总是 |
-| `energy.rail.warn` | vector/vticks | 1758 | 264 | 10 | 132 | 7 | static | binding=actual_soc、lte=20 |
-| `energy.soc` | text/ | 1606 | 268 | 140 | 36 | 40 | dynamic | 总是 |
-| `energy.soc.label` | text/ | 1606 | 310 | 140 | 24 | 40 | dynamic | 总是 |
-| `energy.power` | text/ | 1606 | 336 | 200 | 36 | 40 | dynamic | 总是 |
-| `energy.power.label` | text/ | 1606 | 376 | 200 | 24 | 40 | dynamic | 总是 |
-| `energy.trend` | vector/line | 1560 | 414 | 186 | 1 | 8 | dynamic | binding=power_history_valid、show_when_true=True |
-| `top.clock` | text/ | 1606 | 40 | 200 | 32 | 40 | dynamic | 总是 |
-| `nav.capsule.fill` | vector/roundrect | 650 | 16 | 620 | 64 | 20 | dynamic | binding=nav_manoeuvre、show_when_valid=True |
-| `nav.capsule.edge` | vector/line | 652 | 16 | 616 | 1 | 21 | dynamic | binding=nav_manoeuvre、show_when_valid=True |
-| `nav.capsule.shade` | vector/line | 652 | 79 | 616 | 1 | 21 | dynamic | binding=nav_manoeuvre、show_when_valid=True |
-| `nav.icon` | text/ | 676 | 30 | 44 | 36 | 40 | dynamic | binding=nav_manoeuvre、show_when_valid=True |
-| `nav.distance` | text/ | 724 | 30 | 120 | 36 | 40 | dynamic | binding=nav_manoeuvre、show_when_valid=True |
-| `nav.instruction` | text/ | 850 | 30 | 400 | 36 | 40 | dynamic | binding=nav_manoeuvre、show_when_valid=True |
-| `state.left.ground0` | vector/line | 560 | 424 | 120 | 1 | 12 | dynamic | binding=indicator_left、show_when_true=True |
-| `state.left.ground1` | vector/line | 572 | 434 | 120 | 1 | 12 | dynamic | binding=indicator_left、show_when_true=True |
-| `state.left.ground2` | vector/line | 584 | 444 | 120 | 1 | 12 | dynamic | binding=indicator_left、show_when_true=True |
-| `state.right.ground0` | vector/line | 1250 | 424 | 120 | 1 | 12 | dynamic | binding=indicator_right、show_when_true=True |
-| `state.right.ground1` | vector/line | 1262 | 434 | 120 | 1 | 12 | dynamic | binding=indicator_right、show_when_true=True |
-| `state.right.ground2` | vector/line | 1274 | 444 | 120 | 1 | 12 | dynamic | binding=indicator_right、show_when_true=True |
-| `state.brake.reflection` | vector/polygon | 642 | 424 | 637 | 40 | 11 | dynamic | binding=brake、show_when_true=True |
-| `state.headlight.left` | vector/polygon | 250 | 320 | 170 | 100 | 10 | dynamic | binding=headlight、show_when_true=True |
-| `state.headlight.right` | vector/polygon | 1500 | 320 | 170 | 100 | 10 | dynamic | binding=headlight、show_when_true=True |
-| `warn.glass.fill` | vector/roundrect | 660 | 406 | 600 | 36 | 29 | dynamic | binding=warning_active、show_when_true=True |
-| `warn.glass.edge` | vector/line | 662 | 406 | 596 | 1 | 30 | dynamic | binding=warning_active、show_when_true=True |
-| `warn.glass.shade` | vector/line | 662 | 441 | 596 | 1 | 30 | dynamic | binding=warning_active、show_when_true=True |
-| `warn.text` | text/ | 660 | 424 | 600 | 30 | 40 | dynamic | 总是 |
+```
+总解码 RGBA ≈ 7.84 MB
+  env.plate            1920x480x4 = 3.69 MB
+  vehicle layer        452x381x4  = 0.66 MB (每状态一张, 同屏最多 2-3 张)
+  arc/numeral glow     约 0.5 MB
+  rail track           约 0.05 MB
+```
 
-## 5. 状态反应
+## 7. 复现
 
-| 层 | id | 绑定 | 触发 | 透明度 |
-|---|---|---|---|---|
-| dynamic | `gear.unknown` | gear | show_when_invalid=True | 1.0 |
-| dynamic | `speedlimit.glass.fill` | speed_limit | show_when_valid=True | 0.7 |
-| dynamic | `speedlimit.glass.edge` | speed_limit | show_when_valid=True | 0.22 |
-| dynamic | `speedlimit.glass.shade` | speed_limit | show_when_valid=True | 0.38 |
-| dynamic | `speedlimit.ring` | speed_limit | show_when_valid=True | 0.85 |
-| dynamic | `speedlimit.value` | speed_limit | show_when_valid=True | 1.0 |
-| static | `energy.rail.warn` | actual_soc | lte=20 | 1.0 |
-| dynamic | `energy.trend` | power_history_valid | show_when_true=True | 0.6 |
-| dynamic | `nav.capsule.fill` | nav_manoeuvre | show_when_valid=True | 0.7 |
-| dynamic | `nav.capsule.edge` | nav_manoeuvre | show_when_valid=True | 0.22 |
-| dynamic | `nav.capsule.shade` | nav_manoeuvre | show_when_valid=True | 0.38 |
-| dynamic | `nav.icon` | nav_manoeuvre | show_when_valid=True | 1.0 |
-| dynamic | `nav.distance` | nav_manoeuvre | show_when_valid=True | 1.0 |
-| dynamic | `nav.instruction` | nav_manoeuvre | show_when_valid=True | 1.0 |
-| dynamic | `state.left.ground0` | indicator_left | show_when_true=True | 0.4 |
-| dynamic | `state.left.ground1` | indicator_left | show_when_true=True | 0.4 |
-| dynamic | `state.left.ground2` | indicator_left | show_when_true=True | 0.4 |
-| dynamic | `state.right.ground0` | indicator_right | show_when_true=True | 0.4 |
-| dynamic | `state.right.ground1` | indicator_right | show_when_true=True | 0.4 |
-| dynamic | `state.right.ground2` | indicator_right | show_when_true=True | 0.4 |
-| dynamic | `state.brake.reflection` | brake | show_when_true=True | 0.24 |
-| dynamic | `state.headlight.left` | headlight | show_when_true=True | 0.08 |
-| dynamic | `state.headlight.right` | headlight | show_when_true=True | 0.08 |
-| dynamic | `warn.glass.fill` | warning_active | show_when_true=True | 0.7 |
-| dynamic | `warn.glass.edge` | warning_active | show_when_true=True | 0.22 |
-| dynamic | `warn.glass.shade` | warning_active | show_when_true=True | 0.38 |
+```bash
+python3 tools/assets/analyze_v5_reference.py        # 测量 + 标注图
+blender -b -P tools/blender/build_horizon_v5_environment.py -- \
+    --master assets/source/blender/model_a_material_candidate.blend \
+    --samples 64                                    # 环境 + 车辆通道
+python3 tools/assets/compose_horizon_v5_vehicle.py  # 合成车辆层
+python3 tools/assets/bake_horizon_v5_ui.py          # 弧辉光 / 轨道
+python3 tools/preview/build_horizon_v5.py           # 布局 -> 场景
+python3 tools/preview/horizon_v5_evidence.py        # A/B/C/D 四件交付物
+python3 tools/preview/horizon_v2_layout_qa.py --layout assets/ui/horizon_v5_layout.json \
+    --scene scenes/horizon_v5.scene --tokens assets/ui/horizon_v5_tokens.json
+```
 
-## 6. 动画令牌（本轮只声明）
+## 8. 本轮交付物
 
-| 令牌 | 值 |
+| | 文件 |
 |---|---|
-| state_fade_ms | 220 |
-| navigation_fade_ms | 200 |
-| navigation_slide_px | 12 |
-| indicator_ground_pulse_ms | 420 |
-| road_travel_ms | 900 |
-| arc_ease_ms | 160 |
+| A reference | `assets/ui/horizon_v5_reference.png` |
+| B implementation neutral | `assets/checkpoints/horizon_v5/horizon_v5_neutral.png` |
+| C reference vs implementation | `assets/checkpoints/horizon_v5/horizon_v5_reference_vs_implementation.png` |
+| D physical size | `assets/checkpoints/horizon_v5/horizon_v5_physical_scale.png` |
 
-## 7. T113 成本
+报告：`assets/checkpoints/horizon_v5/horizon_v5_report.json`。
 
-| 项 | 值 |
-|---|---|
-| 静态背景 | 3 层，可烘焙为 1 张 `assets/ui/horizon_v4_background.png` |
-| 玻璃材质 | 9-slice 位图，无运行时模糊 |
-| 常驻解码资产 | 5（背景位图 + 车辆底图 + 面板 delta 层）≈ 4.6 MB |
-| 每帧工作 | 文本 + 透明度 + 少量状态矢量；车辆是唯一每帧位图 |
-| 同时状态叠加 | ≤ 4 |
-| 同时动画序列 | ≤ 2 |
-
-## 8. 自动验收
-
-- 与 v2.1 同一套几何 QA（画布 / 梯形遮罩 / 区域 / 文本碰撞 /
-  速度 0–288 十档间距 / UNKNOWN / 无调试文本 / 装饰线不穿文字）
-- 导航隐藏 = 0 像素（探针渲染）
-- 与 V3 B 的像素差异（排除车辆位图）见 `horizon_v4_report.json`
-
-## 9. 证据
-
-`assets/checkpoints/horizon_v4/` 下：14 张状态图、`horizon_v4_contact_sheet.png`、
-`horizon_v4_key_states.png`、`horizon_v4_physical_scale.png`、
-`horizon_v3_vs_v4.png`、`horizon_v4_report.json`。
+**没有做的**（人工明确要求停在这里）：不生成 20 个状态、不 LOCK、不做设备集成、
+不替换生产 Horizon、不动其它页面。视觉结论只有人工能给：
+`HORIZON_V5_NEUTRAL = AWAITING HUMAN VISUAL APPROVAL`。

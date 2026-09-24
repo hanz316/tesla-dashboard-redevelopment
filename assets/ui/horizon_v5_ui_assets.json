@@ -1,0 +1,54 @@
+{
+ "schema": "horizon-v5-ui-assets v1",
+ "dial": {
+  "cx": 400.04419889502765,
+  "cy": 224.48618784530387,
+  "radius": 115.42541436464087,
+  "width": 5.194143646408839,
+  "ref_cx": 241.4,
+  "ref_cy": 338.6,
+  "ref_radius": 174.1
+ },
+ "arc_degrees": [
+  135.0,
+  360.0
+ ],
+ "content_scale": 0.6629834254143646,
+ "assets": {
+  "arc_glow": "assets/ui/horizon_v5_arc_glow.png",
+  "numeral_glow": "assets/ui/horizon_v5_numeral_glow.png",
+  "rail_track": "assets/ui/horizon_v5_rail_track.png"
+ },
+ "asset_boxes": {
+  "horizon_v5_arc_glow.png": [
+   282,
+   107,
+   518,
+   308
+  ],
+  "horizon_v5_numeral_glow.png": [
+   210,
+   135,
+   463,
+   302
+  ],
+  "horizon_v5_rail_track.png": [
+   1561,
+   126,
+   1600,
+   375
+  ]
+ },
+ "rail_track_box": [
+  1563.5,
+  128.0,
+  1597.4,
+  371.9
+ ],
+ "rail_segments_box": [
+  1567.5,
+  133.0,
+  1593.4,
+  366.9
+ ]
+}

@@ -1,0 +1,147 @@
+{
+ "schema": "horizon-v5-reference-measurements v2",
+ "image": "assets/ui/horizon_v5_reference.png",
+ "canvas": [
+  2172,
+  724
+ ],
+ "aspect": 3.0,
+ "is_target_canvas": false,
+ "target_canvas_aspect": 4.0,
+ "luminance": {
+  "overall_mean": 28.39,
+  "top_band_mean": 29.63,
+  "middle_band_mean": 45.55,
+  "bottom_band_mean": 10.07,
+  "row_profile_sampled": [
+   11.6,
+   13.3,
+   15.5,
+   19.3,
+   22.6,
+   34.8,
+   38.0,
+   56.3,
+   48.8,
+   56.0,
+   47.7,
+   44.1,
+   47.5,
+   50.9,
+   38.7,
+   30.4,
+   27.0,
+   16.7,
+   14.4,
+   9.9,
+   9.8,
+   8.7,
+   7.1,
+   5.2,
+   2.6
+  ]
+ },
+ "thirds": {
+  "left": 17.46,
+  "centre": 53.14,
+  "right": 14.58
+ },
+ "horizon": {
+  "horizon_row": 252,
+  "horizon_fraction": 0.3481,
+  "ground_band": [
+   252,
+   724
+  ],
+  "below_horizon_mean": 27.22
+ },
+ "palette": [
+  "#040C14",
+  "#04040C",
+  "#0C141C",
+  "#040404",
+  "#040C0C",
+  "#0C1424"
+ ],
+ "accent": "#2496D8",
+ "accent_hue": 148,
+ "vehicle": {
+  "bbox": [
+   787,
+   195,
+   1469,
+   489
+  ],
+  "visible_width": 682,
+  "visible_height": 294,
+  "ground_contact_row": 489,
+  "centre_x": 1128.0,
+  "pixels": 100731,
+  "width_fraction": 0.314,
+  "height_fraction": 0.4061,
+  "area_fraction": 0.0641
+ },
+ "arc": {
+  "cx": 241.4,
+  "cy": 338.6,
+  "radius": 174.1,
+  "fit_rms_px": 1.6,
+  "inliers": 1699,
+  "pixels": 4619,
+  "bbox": [
+   66,
+   131,
+   738,
+   563
+  ],
+  "angle_span_deg": [
+   -179.8,
+   179.9
+  ],
+  "as_fraction": {
+   "cx": 0.1111,
+   "cy": 0.4676,
+   "radius_h": 0.2405
+  }
+ },
+ "speed_numeral_box": [
+  81,
+  182,
+  354,
+  558
+ ],
+ "speed_limit_sign": [
+  479,
+  178,
+  550,
+  248
+ ],
+ "energy_rail": {
+  "bbox": [
+   1911,
+   184,
+   2066,
+   570
+  ],
+  "pixels": 3551,
+  "segments": 17
+ },
+ "left_cluster_box": [
+  66,
+  3,
+  651,
+  606
+ ],
+ "right_cluster_box": [
+  1520,
+  38,
+  2140,
+  644
+ ],
+ "notes": [
+  "vehicle is the largest 4-connected bright low-saturation blob below the horizon inside x in [0.24, 0.76] of the canvas",
+  "the annotated overlay next to this file draws every box and the fitted circle so a human can check the measurement against the image it came from",
+  "palette is quantised to 8 levels per channel and taken from the background band above the horizon",
+  "STATUS: MEASURED FROM THE REFERENCE IMAGE"
+ ]
+}
