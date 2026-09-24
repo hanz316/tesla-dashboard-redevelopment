@@ -1,0 +1,155 @@
+{
+ "schema": "model-a-material-candidate v1",
+ "status": "MODEL_A_MATERIAL_REVISION = AWAITING HUMAN VISUAL APPROVAL",
+ "variant": "B",
+ "master": "assets/source/blender/model_a_production_master.blend",
+ "camera": "Camera_Horizon",
+ "canvas": [
+  356,
+  236
+ ],
+ "samples": 32,
+ "lighting_or_hdri_changed": false,
+ "world_strength": {
+  "node": "Background",
+  "before": 1.0,
+  "after": 1.0,
+  "scale": 1.0
+ },
+ "geometry_changed": false,
+ "camera_changed": false,
+ "classes": {
+  "paint": {
+   "goal": "broad highlight transitions across roof, hood and shoulders",
+   "delta": {
+    "Base Color": "('mul', (0.96, 0.96, 0.965))",
+    "Roughness": "('set', 0.28)",
+    "Coat Weight": "('set', 0.78)",
+    "Coat Roughness": "('set', 0.06)",
+    "Specular IOR Level": "('set', 0.58)"
+   }
+  },
+  "glass": {
+   "goal": "clearly darker than white paint, with highlight structure",
+   "delta": {
+    "Base Color": "('mul', (0.45, 0.48, 0.54))",
+    "Specular IOR Level": "('set', 1.0)",
+    "Roughness": "('mul', (0.8, 0.8, 0.8))",
+    "Transmission Weight": "('mul', (0.65, 0.65, 0.65))",
+    "IOR": "('set', 1.25)"
+   }
+  },
+  "tire": {
+   "goal": "matte rubber, no sheen",
+   "delta": {
+    "Roughness": "('set', 0.95)",
+    "Specular IOR Level": "('set', 0.18)"
+   }
+  },
+  "rim": {
+   "goal": "metallic with a controlled highlight, quieter than the body",
+   "delta": {
+    "Roughness": "('set', 0.27)",
+    "Coat Weight": "('set', 0.16)",
+    "Specular IOR Level": "('set', 0.6)"
+   }
+  },
+  "trim": {
+   "goal": "distinct from glass, tyre and body",
+   "delta": {
+    "Metallic": "('set', 0.2)",
+    "Roughness": "('set', 0.62)"
+   }
+  }
+ },
+ "masks": {
+  "classes": "/Users/hanssmacbookair/tesla-dashboard-redevelopment/assets/checkpoints/model_a_material/material_classes.png"
+ },
+ "material_changes": {
+  "trim:M_Trim_v4": {
+   "Metallic": {
+    "before": 0.3,
+    "after": 0.2
+   },
+   "Roughness": {
+    "before": 0.55,
+    "after": 0.62
+   }
+  },
+  "paint:M_Paint_d_neutral_combined": {
+   "Roughness": {
+    "before": 0.295,
+    "after": 0.28
+   },
+   "Coat Weight": {
+    "before": 1.0,
+    "after": 0.78
+   },
+   "Coat Roughness": {
+    "before": 0.045,
+    "after": 0.06
+   },
+   "Specular IOR Level": {
+    "before": 0.5,
+    "after": 0.58
+   }
+  },
+  "glass:M_Glass_Reference_side": {
+   "Base Color": {
+    "before": [
+     0.022,
+     0.027,
+     0.036,
+     1.0
+    ],
+    "after": [
+     0.0099,
+     0.013,
+     0.0194,
+     0.54
+    ]
+   },
+   "Specular IOR Level": {
+    "before": 0.5,
+    "after": 1.0
+   },
+   "Roughness": {
+    "before": 0.02,
+    "after": 0.016
+   },
+   "Transmission Weight": {
+    "before": 0.3,
+    "after": 0.195
+   },
+   "IOR": {
+    "before": 1.52,
+    "after": 1.25
+   }
+  },
+  "tire:M_Tire_v4": {
+   "Roughness": {
+    "before": 0.93,
+    "after": 0.95
+   },
+   "Specular IOR Level": {
+    "before": 0.26,
+    "after": 0.18
+   }
+  },
+  "rim:M_Wheel_v4": {
+   "Roughness": {
+    "before": 0.225,
+    "after": 0.27
+   },
+   "Coat Weight": {
+    "before": 0.28,
+    "after": 0.16
+   },
+   "Specular IOR Level": {
+    "before": 0.7,
+    "after": 0.6
+   }
+  }
+ },
+ "candidate_master": "assets/source/blender/model_a_material_candidate.blend"
+}

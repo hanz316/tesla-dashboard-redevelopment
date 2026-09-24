@@ -335,3 +335,96 @@ HORIZON_V2_VISUAL = AWAITING HUMAN VISUAL APPROVAL
 **面板修复当时**的中性参考（记录用途）。测试不再与它比对，因为本轮的构图改动
 是刻意的；现在的"关闭态"检查是自证的——把车辆节点的状态层全部去掉再渲染，
 两者必须逐像素相同。
+
+---
+
+## 11. 三项人工缺陷的处置（v2.2）
+
+### 11.1 后备箱总成归属（结构性修复）
+
+**缺陷**：开箱盖时只有盖板动，装在上面的部件留在原位。
+
+**根因**：`build_vehicle_state_assets.py` 只旋转 `boot` 一个对象。
+
+**归属判定用几何，不用名字**（`tools/blender/report_trunk_ownership.py`）：每个网格对象
+的世界包围盒、到箱盖表面的 BVH 最小距离、在 356×236 上的投影框，以及"顶点落在
+箱盖包围盒内的比例"。结论写进 `tools/blender/panel_assembly.py`：
+
+```text
+TRUNK_MOVING（26 个，顶点 100% 落在箱盖盒内；back_chrome_light 91%）
+  boot · tembus_boot_ok · tembus red · black_boot · _plastic_black_124
+  rear_lightsl · rear_lightsr（内侧灯透镜）+ 其 Cavity/TailGuide
+  light_breake · breake_int · lightrevese_boot · light_turn_lr_boot ·
+  light_turn_rr_boot + 刹车腔 CavitySrc
+  platnomor（车牌）· chrome_light · chrome.001 · back_chrome_light
+
+FIXED_BODY（保持不动）
+  rear_lights（70% 落在盒内：内侧灯与叶子板灯合并在同一对象里，动它会把叶子板灯
+  一起拖走）· 叶子板灯的 Cavity/TailGuide · rear_bumper_ok · body · glass
+```
+
+**唯一权威变换**：所有成员共用同一个 `rotate_about(pivot, applied, axis)`；父级先写
+（第一版按字典序写，导致 boot/black_boot 出现 0.9 m 误差）。0/25/50/75/100% 实测
+刚性误差 **7.2e-07**。
+
+**屏幕空间**（生产相机投影，`trunk_assembly.json`）：盖板包围盒中心移动 28.9 px，
+内侧灯 46.0/46.1 px，车牌 54.6 px，刹车灯 41.6 px，倒车灯 46.2 px —— 全部同向，
+没有任何部件留在关闭位置。
+
+**灯光归属**：变体帧与普通开盖帧现在**同一次渲染**产出（此前两次渲染的降噪噪声会
+整片进入 delta 层）。层级信号从"28 像素、偏暗"变成"30 像素、明显更亮（平均 +41 R）"。
+
+证据：`assets/checkpoints/vehicle_state_assets/` 下 `trunk_ownership.json`（几何）、
+`trunk_assembly.json`（刚性与屏幕空间）、`trunk_ownership_sheet.png`（0/25/50/75/100%，
+诊断标注在渲染框外）。
+
+### 11.2 速度与 km/h 重叠
+
+**根因**：不是坐标问题——渲染器里**带字距的文本忽略垂直锚点**，每个字形按左上角
+绘制，于是 V2 全部 tracked 文本都偏低约 1/3 字号。数字实际画在 y208..297（布局意图
+是 y134..224），单位正好落进它的下半部。
+
+修复后：数字 y134..223、单位 y255..270，**最小间距 31 px**（要求 ≥6），对
+0/8/18/68/88/100/118/188/200/288 全部成立，并与档位行、限速牌、READY 行互不相交。
+
+### 11.3 Model A 材质候选（MODEL_A_MATERIAL_CANDIDATE）
+
+几何、相机、比例、灯光**未改**（`geometry_changed=false`、`camera_changed=false`、
+`lighting_or_hdri_changed=false`）。候选只改材质响应，且**未提升为生产**：生产主场景
+与全部现有状态资产继续用原材质，候选另存为可重生成的
+`assets/source/blender/model_a_material_candidate.blend`。
+
+| 类 | 改动 | mean / spread：生产 → 候选A |
+|---|---|---|
+| BODY | 底色 ×0.96、rough 0.295→0.28、coat 1.0→0.78、coat rough 0.06、spec 0.58 | 165.6 / 66.3 → **136.1 / 79.3** |
+| GLASS | 底色 ×0.45、透射 ×0.65、rough ×0.8、spec 1.0、IOR 1.52→1.25 | 138.6 / 51.0 → 132.5 / 54.7 |
+| TIRE | rough 0.95、spec 0.18 | 47.2 / 33.0 → 42.3 / 30.2 |
+| RIM | rough 0.27、coat 0.16、spec 0.60 | 63.2 / 77.9 → 63.1 / 77.0 |
+| TRIM | metallic 0.30→0.20、rough 0.55→0.62 | 88.7 / 128.7 → 78.1 / 103.7 |
+
+**一个必须由人决定的取舍**：把漆面提暗换来 +20% 明暗层次（66.3→79.3，即"曲面可读"
+变好），代价是漆面与玻璃的亮度差从 27.0 掉到 3.6 ✗；若不动漆面底色（变体 B），
+亮度差反而升到 **32.3** ✓ 但漆面层次不变。三版都已出图：
+
+| 版本 | 漆面 mean / spread | 玻璃 mean / spread | 漆面−玻璃 |
+|---|---|---|---|
+| 生产 | 165.6 / 66.3 | 138.6 / 51.0 | 27.0 |
+| 候选 A | 136.1 / 79.3 | 132.5 / 54.7 | 3.6 |
+| 候选 B | 165.3 / 66.7 | 133.0 / 55.0 | 32.3 |
+
+**玻璃为什么推不动**：三次测量（只改底色 138.6→138.5；改粗糙使层次 51→41 更平；
+改 IOR 仅 −6 级）说明掠射角下窗户亮度**几乎全部来自镜面反射的环境**，而冻结的影棚
+HDRI 是一片均匀亮场。也测过"HDRI 强度 ×0.6"：整车一起变暗（漆面 166→114），差距
+反而消失，因此**已实验并否决**，影棚保持原样。此项留给人工决定是否需要一次独立的
+环境结构化改动。
+
+证据：`assets/checkpoints/model_a_material/`（before/after/变体渲染、材质类亮度统计
+`material_metrics.json`、对比图 `material_before_after.png`、以及 1920×480 的
+`horizon_material_{before,after}.png`）。
+
+```text
+TRUNK_ASSEMBLY_OWNERSHIP = AWAITING HUMAN VISUAL APPROVAL
+HORIZON_SPEED_LAYOUT = AWAITING HUMAN VISUAL APPROVAL
+MODEL_A_MATERIAL_REVISION = AWAITING HUMAN VISUAL APPROVAL
+HORIZON_V2_DEVICE_INTEGRATION = BLOCKED_BY_HUMAN_VISUAL_REVIEW
+```
