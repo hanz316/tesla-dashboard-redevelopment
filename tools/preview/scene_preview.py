@@ -352,6 +352,54 @@ MOCK_STATES.update({
         "frunk": False, "trunk": True, "battery_power": -12.4,
         "warning_active": False, "warning_text": "",
     },
+    "h2_door_fr": {
+        "speed": 88, "gear": 4, "range": 253, "actual_soc": 63,
+        "temperature_primary": 22, "position_light": True, "headlight": True,
+        "brake": False, "indicator_left": False, "indicator_right": False,
+        "door_fl": False, "door_fr": True, "door_rl": False, "door_rr": False,
+        "frunk": False, "trunk": False, "battery_power": -12.4,
+        "warning_active": False, "warning_text": "",
+    },
+    "h2_door_rl": {
+        "speed": 88, "gear": 4, "range": 253, "actual_soc": 63,
+        "temperature_primary": 22, "position_light": True, "headlight": True,
+        "brake": False, "indicator_left": False, "indicator_right": False,
+        "door_fl": False, "door_fr": False, "door_rl": True, "door_rr": False,
+        "frunk": False, "trunk": False, "battery_power": -12.4,
+        "warning_active": False, "warning_text": "",
+    },
+    "h2_door_rr": {
+        "speed": 88, "gear": 4, "range": 253, "actual_soc": 63,
+        "temperature_primary": 22, "position_light": True, "headlight": True,
+        "brake": False, "indicator_left": False, "indicator_right": False,
+        "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": True,
+        "frunk": False, "trunk": False, "battery_power": -12.4,
+        "warning_active": False, "warning_text": "",
+    },
+    "h2_trunk_left": {
+        "speed": 88, "gear": 4, "range": 253, "actual_soc": 63,
+        "temperature_primary": 22, "position_light": True, "headlight": True,
+        "brake": False, "indicator_left": True, "indicator_right": False,
+        "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False,
+        "frunk": False, "trunk": True, "battery_power": -12.4,
+        "warning_active": False, "warning_text": "",
+    },
+    "h2_trunk_hazard": {
+        "speed": 88, "gear": 4, "range": 253, "actual_soc": 63,
+        "temperature_primary": 22, "position_light": True, "headlight": True,
+        "brake": False, "indicator_left": True, "indicator_right": True,
+        "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False,
+        "frunk": False, "trunk": True, "battery_power": -12.4,
+        "warning_active": False, "warning_text": "",
+    },
+    "h2_mixed": {
+        "speed": 88, "gear": 4, "range": 253, "actual_soc": 63,
+        "temperature_primary": 22, "position_light": True, "headlight": True,
+        "brake": True, "indicator_left": True, "indicator_right": False,
+        "door_fl": True, "door_fr": False, "door_rl": False, "door_rr": False,
+        "frunk": True, "trunk": True, "battery_power": -12.4,
+        "warning_active": False, "warning_text": "",
+    },
     "h2_low_soc": {
         "speed": 74, "gear": 4, "range": 42, "actual_soc": 14,
         "temperature_primary": 19, "position_light": True, "headlight": True,
@@ -968,6 +1016,64 @@ def paste_scaled(base, path, x, y, w, h):
     base.alpha_composite(img, (int(x), int(y)))
 
 
+_DELTA_INDEX = None
+_DELTA_WARNED = False
+
+
+def delta_index():
+    """Map every state render to the layer that contains only its changes.
+
+    Every state render in the asset set is a whole car, so compositing two of
+    them repaints the first one's open panel back to closed. The bake step
+    (tools/assets/bake_vehicle_deltas.py) writes, for each state frame, the
+    pixels that frame changes about the car; composing the base with those
+    layers is what makes "door FL + door RL open" represent two open doors
+    instead of one.
+
+    Returns {source_path: layer_path}, or None when the bake has not been run
+    (then the old full-frame behaviour is used and a warning is printed once).
+    """
+    global _DELTA_INDEX
+    if _DELTA_INDEX is not None:
+        return _DELTA_INDEX or None
+    root = os.path.join(REPO_ROOT, "assets", "rendered", "vehicle")
+    report_path = os.path.join(root, "delta", "delta_report.json")
+    if not os.path.isfile(report_path):
+        _DELTA_INDEX = {}
+        return None
+    index = {}
+    with open(report_path) as fh:
+        report = json.load(fh)
+    for group in report.get("groups", {}).values():
+        source_dir = os.path.join(REPO_ROOT, group["source"])
+        for entry in group.get("entries", []):
+            index[os.path.join(source_dir, entry["frame"])] = os.path.join(
+                REPO_ROOT, entry["layer"])
+    _DELTA_INDEX = index
+    return index or None
+
+
+def state_layer_path(path):
+    """The delta layer for a state frame, or the frame itself when unavailable."""
+    global _DELTA_WARNED
+    index = delta_index()
+    if index is None:
+        if not _DELTA_WARNED:
+            _DELTA_WARNED = True
+            print("[preview] warning: no baked delta layers; state renders will "
+                  "be composited as whole cars (open panels can be repainted "
+                  "closed by a later layer). Run "
+                  "tools/assets/bake_vehicle_deltas.py")
+        return path
+    mapped = index.get(path)
+    if mapped and os.path.isfile(mapped):
+        return mapped
+    if mapped is None and not _DELTA_WARNED:
+        _DELTA_WARNED = True
+        print(f"[preview] warning: {os.path.basename(path)} has no baked layer")
+    return path
+
+
 def draw_vehicle_visual(img, node, state, provider, t_norm,
                         vehicle_image=None, vehicle_crop=False):
     x, y = node.get("x", 0), node.get("y", 0)
@@ -1006,14 +1112,16 @@ def draw_vehicle_visual(img, node, state, provider, t_norm,
             t_norm, contract)
         covered |= took
         for path in paths:
-            paste_scaled(img, path, x, y, w, h)
+            # Base + per-state deltas: a layer carries only what its state
+            # changes, so it can never repaint another panel to closed.
+            paste_scaled(img, state_layer_path(path), x, y, w, h)
     for ov in node.get("overlays", []):
         sig = state.signal(ov["bind"]) if ov.get("bind") else Signal(True, True)
         if not (sig.valid and sig.value):
             continue
         path = resolve_asset_path(provider, ov["asset"])
         if path and os.path.isfile(path):
-            paste_scaled(img, path, x, y, w, h)
+            paste_scaled(img, state_layer_path(path), x, y, w, h)
     for side, part in node.get("indicators", {}).items():
         # A channel already delivered by a moving panel's own lighting variant
         # must not be drawn again at the closed-position location.
@@ -1023,7 +1131,7 @@ def draw_vehicle_visual(img, node, state, provider, t_norm,
         path = sequence_frame(provider, part["sequence"], part.get("bind"),
                               state, t_norm)
         if path:
-            paste_scaled(img, path, x, y, w, h)
+            paste_scaled(img, state_layer_path(path), x, y, w, h)
 
 
 def apply_safe_area(img, canvas):

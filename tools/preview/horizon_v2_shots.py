@@ -25,18 +25,24 @@ OUT = os.path.join(REPO, "assets", "checkpoints", "horizon_v2")
 PREVIEW = os.path.join(REPO, "tools", "preview", "scene_preview.py")
 
 LABELS = {
-    "h2_neutral": "1 neutral",
-    "h2_brake": "2 brake",
-    "h2_left": "3 left indicator",
-    "h2_right": "4 right indicator",
-    "h2_hazard": "5 hazard",
-    "h2_door_fl": "6 driver door open",
-    "h2_all_doors": "7 all doors open",
-    "h2_frunk": "8 frunk open",
-    "h2_trunk": "9 trunk open",
-    "h2_low_soc": "10 low SOC",
-    "h2_unknown": "11 unknown (no data)",
-    "h2_navigation": "12 navigation",
+    "h2_neutral": "neutral",
+    "h2_door_fl": "door FL open",
+    "h2_door_fr": "door FR open",
+    "h2_door_rl": "door RL open",
+    "h2_door_rr": "door RR open",
+    "h2_all_doors": "all doors open",
+    "h2_frunk": "frunk open",
+    "h2_trunk": "trunk open",
+    "h2_trunk_left": "trunk open + left indicator",
+    "h2_trunk_hazard": "trunk open + hazard",
+    "h2_brake": "brake",
+    "h2_left": "left indicator",
+    "h2_right": "right indicator",
+    "h2_hazard": "hazard",
+    "h2_mixed": "mixed: brake + FL + frunk + trunk + left",
+    "h2_low_soc": "low SOC",
+    "h2_unknown": "unknown (no data)",
+    "h2_navigation": "navigation",
 }
 
 
@@ -66,19 +72,24 @@ def main():
         rendered.append(path)
         print(f"[shots] {name:32s} {image.size[0]}x{image.size[1]}")
 
-    # Contact sheet, one column per state, labelled. Review aid only: never a
-    # runtime asset.
+    # Contact sheet: the states a human needs to judge the moving panels, in
+    # the order the layout lists, then everything else. Review aid only.
+    order = layout.get("contact_sheet_order") or states
+    sheet_states = [s for s in order if s in states] + \
+                   [s for s in states if s not in order]
     from PIL import ImageDraw
     cell_w, cell_h, label_h = 960, 240, 26
-    sheet = Image.new("RGB", (cell_w, (cell_h + label_h) * len(rendered)),
+    sheet = Image.new("RGB", (cell_w, (cell_h + label_h) * len(sheet_states)),
                       (10, 14, 18))
     draw = ImageDraw.Draw(sheet)
-    for index, path in enumerate(rendered):
+    by_state = dict(zip(states, rendered))
+    for index, state in enumerate(sheet_states):
+        path = by_state[state]
         image = Image.open(path).convert("RGB").resize((cell_w, cell_h),
                                                        Image.LANCZOS)
         y = index * (cell_h + label_h)
         sheet.paste(image, (0, y + label_h))
-        draw.text((10, y + 6), LABELS[states[index]], fill=(220, 228, 235))
+        draw.text((10, y + 6), LABELS[state], fill=(220, 228, 235))
     sheet_path = os.path.join(OUT, "horizon_v2_contact_sheet.png")
     sheet.save(sheet_path)
     print(f"[shots] contact sheet -> {os.path.relpath(sheet_path, REPO)}")
