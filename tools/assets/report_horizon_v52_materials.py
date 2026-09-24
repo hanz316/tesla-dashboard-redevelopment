@@ -203,6 +203,13 @@ def support_surface_metrics(phase, frame_path, plate):
         return None
     frame = np.asarray(Image.open(frame_path).convert("RGB")).astype(float)
     background = np.asarray(Image.open(plate).convert("RGB")).astype(float)
+    # Compare identical physical masks; the panel corner cut is not a scrim.
+    sys.path.insert(0, os.path.join(REPO, "tools", "preview"))
+    from scene_preview import apply_safe_area
+    canvas = json.load(open(os.path.join(REPO, "scenes", "horizon_v5.scene")))["canvas"]
+    masked = Image.fromarray(background.astype("uint8")).convert("RGBA")
+    apply_safe_area(masked, canvas)
+    background = np.asarray(masked.convert("RGB")).astype(float)
     drop = background.mean(axis=2) - frame.mean(axis=2)
     # Only a real supporting surface counts: a few levels of darkening is the
     # wet-road response, which belongs to the environment, while the rejected
@@ -295,7 +302,7 @@ def main():
             entry["vehicle"] = vehicle_metrics(car, hidden)
         layer_manifest = os.path.join(
             VEHICLE, "horizon_v5_vehicle.json") if phase == "night" else \
-            os.path.join(VEHICLE, phase, f"horizon_v5_vehicle_{phase}.json")
+            os.path.join(VEHICLE, f"horizon_v5_vehicle_{phase}.json")
         car_box = None
         if os.path.isfile(layer_manifest):
             layers = json.load(open(layer_manifest))["layers"]

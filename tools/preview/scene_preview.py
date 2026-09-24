@@ -612,11 +612,15 @@ class State:
         if path == "closures_valid":
             return Signal("closures" in self.raw, True)
         if path in self.raw:
-            return Signal(self.raw[path], True)
+            value = self.raw[path]
+            if isinstance(value, dict) and "value" in value:
+                return Signal(value["value"], bool(value.get("valid", False))
+                              and not value.get("stale", False), value)
+            return Signal(value, value is not None)
         return Signal(None, False)
 
     def has(self, key):
-        return key in self.raw and self.raw[key] is not None
+        return self.signal(key).valid
 
 
 # ------------------------------------------------------------------ bindings
@@ -630,7 +634,7 @@ def condition_holds(cond, state):
         return all(condition_holds(c, state) for c in cond["all"])
     sig = state.signal(cond.get("signal", ""))
     if "equals" in cond:
-        return sig.value == cond["equals"]
+        return sig.valid and sig.value == cond["equals"]
     if "lte" in cond:
         return sig.valid and sig.value is not None and float(sig.value) <= float(cond["lte"])
     if "gte" in cond:
@@ -638,7 +642,7 @@ def condition_holds(cond, state):
     if "valid" in cond:
         return sig.valid == cond["valid"]
     if "is_true" in cond:
-        return bool(sig.value) == cond["is_true"]
+        return sig.valid and bool(sig.value) == cond["is_true"]
     return False
 
 
@@ -743,6 +747,10 @@ def alpha_when(node, state, default_key="alpha"):
     for rule in node.get("alpha_when", []):
         if condition_holds(rule["when"], state):
             return rule["alpha"]
+    # A boolean visibility rule with no fresh value is hidden. Unknown must
+    # never fall through to the default opaque image.
+    if any("is_true" in rule.get("when", {}) for rule in node.get("alpha_when", [])):
+        return 0.0
     return node.get(default_key, 1.0)
 
 
@@ -1450,6 +1458,36 @@ def apply_colour_map(node, mapping):
     return copy or node
 
 
+def blend_vehicle_layers(first, second, fraction):
+    """Blend aligned premultiplied pixels inside the bounded union of two crops.
+
+    Straight-alpha over-compositing two cars changes opacity at their edges;
+    stretching one crop to another changes the car itself. Neither is a light
+    transition. Inputs retain their measured placement on the 1920x480 canvas.
+    """
+    import numpy as np
+    entries = (first, second)
+    x0 = min(e["offset"][0] for e in entries)
+    y0 = min(e["offset"][1] for e in entries)
+    x1 = max(e["offset"][0] + e["size"][0] for e in entries)
+    y1 = max(e["offset"][1] + e["size"][1] for e in entries)
+    arrays = []
+    for entry in entries:
+        layer = Image.open(entry["source"]).convert("RGBA")
+        if list(layer.size) != entry["size"]:
+            raise ValueError("vehicle crop size disagrees with manifest")
+        aligned = Image.new("RGBA", (x1-x0, y1-y0))
+        aligned.paste(layer, (entry["offset"][0]-x0, entry["offset"][1]-y0))
+        array = np.asarray(aligned).astype(np.float32) / 255.0
+        array[:, :, :3] *= array[:, :, 3:4]
+        arrays.append(array)
+    fraction = max(0.0, min(1.0, fraction))
+    mixed = arrays[0] * (1-fraction) + arrays[1] * fraction
+    mixed[:, :, :3] /= np.maximum(mixed[:, :, 3:4], 1e-8)
+    return Image.fromarray(np.clip(mixed * 255 + 0.5, 0, 255).astype("uint8"),
+                           "RGBA"), (x0, y0)
+
+
 def render(scene, provider, raw_state, out_path, t_norm=1.0,
            banner=None, vehicle_image=None, vehicle_crop=False,
            environment=None):
@@ -1462,6 +1500,9 @@ def render(scene, provider, raw_state, out_path, t_norm=1.0,
     nodes = sorted(scene["nodes"], key=lambda n: n.get("z", 0))
     for node in nodes:
         node = apply_colour_map(node, colour_map)
+        token = node.get("color_token")
+        if token in environment.get("palette", {}):
+            node = dict(node, color=environment["palette"][token])
         ntype = node.get("type")
         if ntype == "vector":
             draw_vector(img, node, state)
@@ -1491,25 +1532,20 @@ def render(scene, provider, raw_state, out_path, t_norm=1.0,
                 state_name = node["id"][len("vehicle."):]
                 phase_layer = vehicle_override.get(state_name)
                 if phase_layer:
-                    entry_x, entry_y = node.get("x", 0), node.get("y", 0)
-                    if phase_layer != node.get("src"):
-                        paste_scaled_alpha(img, os.path.join(REPO_ROOT,
-                                                             phase_layer),
-                                           entry_x, entry_y,
-                                           node.get("width", 0),
-                                           node.get("height", 0), 1.0)
-                        # The car is lit by the environment, so it crossfades
-                        # with it: the same car under changing light, never a
-                        # material preset swap.
-                        next_layer = (environment.get("next_vehicle")
-                                      or {}).get(state_name)
-                        blend = float(environment.get("blend", 0.0))
-                        if next_layer and blend > 0.0:
-                            paste_scaled_alpha(
-                                img, os.path.join(REPO_ROOT, next_layer),
-                                entry_x, entry_y, node.get("width", 0),
-                                node.get("height", 0), blend)
-                        continue
+                    # Crops have phase-specific margins, never phase-specific
+                    # body scale. Preserve the manifest's canvas coordinates.
+                    alpha = node.get("opacity", 1.0) * alpha_when(node, state)
+                    if alpha > 0:
+                        next_layer = (environment.get("next_vehicle") or {}).get(
+                            state_name, phase_layer)
+                        source, origin = blend_vehicle_layers(
+                            phase_layer, next_layer,
+                            float(environment.get("blend", 0.0)))
+                        if alpha < 1:
+                            source.putalpha(source.getchannel("A").point(
+                                lambda value: round(value * alpha)))
+                        img.alpha_composite(source, origin)
+                    continue
             path = None
             if node.get("src"):
                 candidate = os.path.join(REPO_ROOT, node["src"])
@@ -1664,15 +1700,16 @@ def environment_context(tokens, when=None, phase=None, blend=0.0,
         if isinstance(token, str):
             colour_map[token.upper()] = value
     def layers_for(phase):
-        found = {}
-        for state_name in ("base", "running", "brake", "headlight",
-                           "indicator_left", "indicator_right", "hazard"):
-            candidate = os.path.join(
-                "assets", "rendered", "vehicle", "horizon_v5", phase, "layer",
-                f"{state_name}.png")
-            if os.path.isfile(os.path.join(root, candidate)):
-                found[state_name] = candidate
-        return found
+        suffix = "" if phase == "night" else "_" + phase
+        manifest = os.path.join(root, "assets", "rendered", "vehicle",
+                                "horizon_v5", "horizon_v5_vehicle" + suffix + ".json")
+        if not os.path.isfile(manifest):
+            return {}
+        with open(manifest) as handle:
+            entries = json.load(handle)["layers"]
+        return {key: dict(entry, source=os.path.join(root, entry["source"]))
+                for key, entry in entries.items()
+                if os.path.isfile(os.path.join(root, entry["source"]))}
 
     vehicle = layers_for(first)
     next_vehicle = layers_for(second) if second != first else {}
@@ -1683,6 +1720,7 @@ def environment_context(tokens, when=None, phase=None, blend=0.0,
         "phase": first, "next_phase": second,
         "darkness": darkness,
         "colour_map": colour_map,
+        "palette": palette,
         "vehicle": vehicle,
         "next_vehicle": next_vehicle,
     }

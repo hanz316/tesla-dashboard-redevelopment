@@ -202,6 +202,9 @@ if(BUILD_HOST_TOOLS)
                          "${CMAKE_CURRENT_SOURCE_DIR}/tests/horizon_v5_1_tests.py")
         # V5.2 gates what the review actually named: daylight depth, material
         # separation per environment, and motion that is visible at panel size.
+        add_test(NAME dashboard_horizon_phase_compositing_tests
+                 COMMAND "${PYTHON3_EXECUTABLE}"
+                         "${CMAKE_CURRENT_SOURCE_DIR}/tests/horizon_phase_compositing_tests.py")
         add_test(NAME dashboard_horizon_v5_2_tests
                  COMMAND "${PYTHON3_EXECUTABLE}"
                          "${CMAKE_CURRENT_SOURCE_DIR}/tests/horizon_v5_2_tests.py")

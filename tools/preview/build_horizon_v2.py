@@ -113,6 +113,8 @@ def text_node(component, tokens):
         "size": tier["size"],
         "font": tier["size"],
         "font_role": tier["role"],
+        "shadow": component.get("shadow", True),
+        "color_token": component["color_token"],
         "bold": tier["role"] == "bold",
         "tracking": tier["tracking"],
         "align": align,
