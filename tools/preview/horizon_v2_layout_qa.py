@@ -343,6 +343,70 @@ def check_unknown(scene, previewer, check):
              "(the placeholder rule above is still enforced)")
 
 
+def check_speed_typography(scene, previewer, check):
+    """The unit must never sit inside the numeral, at any speed.
+
+    Measured with real rendered ink bounds, not the nominal layout boxes: the
+    renderer used to ignore the vertical anchor for tracked text, which put the
+    unit inside the bottom of the numeral while the boxes looked fine.
+    """
+    print("speed typography")
+    if previewer is None or not HAVE_PIL:
+        note("Pillow is absent: the speed/unit ink measurement is skipped")
+        return
+    from PIL import Image, ImageDraw
+
+    nodes = {node["id"]: node for node in scene["nodes"]}
+    scratch = Image.new("RGB", (scene["canvas"]["width"], scene["canvas"]["height"]))
+    draw = ImageDraw.Draw(scratch)
+
+    def ink(node_id, text):
+        node = nodes[node_id]
+        font = previewer.load_font(node.get("font", 32), node.get("bold", False),
+                                   node.get("font_role"))
+        anchor = {"center": "mm", "left": "lm", "right": "rm"}.get(
+            node.get("align", "center"), "mm")
+        return draw.textbbox((node.get("x", 0), node.get("y", 0)), text,
+                             font=font, anchor=anchor)
+
+    smallest = None
+    worst = None
+    for value in (0, 8, 18, 68, 88, 100, 118, 188, 200, 288):
+        numeral = ink("speed.value", str(value))
+        unit = ink("speed.unit", "km/h")
+        overlap = not (numeral[2] <= unit[0] or unit[2] <= numeral[0] or
+                       numeral[3] <= unit[1] or unit[3] <= numeral[1])
+        gap = unit[1] - numeral[3]
+        if smallest is None or gap < smallest:
+            smallest, worst = gap, value
+        check(not overlap,
+              f"speed {value}: the unit is not inside the numeral "
+              f"(numeral y{numeral[1]}..{numeral[3]}, unit y{unit[1]}..{unit[3]})")
+        check(gap >= 6,
+              f"speed {value}: {gap} px of clear space under the numeral")
+    check(smallest is not None and smallest >= 6,
+          f"the tightest gap over every tested speed is {smallest} px (at {worst})")
+
+    # And the cluster as a whole stays clear of itself.
+    unit_box = ink("speed.unit", "km/h")
+    numeral = ink("speed.value", "288")
+    for node_id, text in (("gear.p", "P"), ("gear.d", "D"),
+                          ("driver.status", "READY"), ("speed.limit.value", "50")):
+        box = ink(node_id, text)
+        check(not (unit_box[2] > box[0] and box[2] > unit_box[0] and
+                   unit_box[3] > box[1] and box[3] > unit_box[1]),
+              f"the unit is clear of {node_id}")
+        check(not (numeral[2] > box[0] and box[2] > numeral[0] and
+                   numeral[3] > box[1] and box[3] > numeral[1]),
+              f"the speed numeral is clear of {node_id}")
+    sign = nodes["speed.limit.sign"]
+    sign_box = (sign["x"], sign["y"], sign["x"] + sign["width"],
+                sign["y"] + sign["height"])
+    check(not (numeral[2] > sign_box[0] and sign_box[2] > numeral[0] and
+               numeral[3] > sign_box[1] and sign_box[3] > numeral[1]),
+          "the speed numeral is clear of the speed limit sign")
+
+
 def main():
     layout = load(LAYOUT)
     tokens = load(TOKENS)
@@ -366,6 +430,7 @@ def main():
     check_debug(scene, layout, check)
     check_text(scene, previewer, check)
     check_unknown(scene, previewer, check)
+    check_speed_typography(scene, previewer, check)
 
     print("")
     if FAILURES:

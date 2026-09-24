@@ -1,0 +1,31 @@
+{
+  "contract": "assets/vehicle_state_moving_lighting.json",
+  "canvas": [
+    356,
+    236
+  ],
+  "frames": 14,
+  "open_angle_deg": 55.0,
+  "variants": {
+    "ind_left": {
+      "dir": "trunk/ind_left",
+      "frames": 14,
+      "state": "LEFT_INDICATOR",
+      "png_bytes_total": 956945
+    },
+    "ind_right": {
+      "dir": "trunk/ind_right",
+      "frames": 14,
+      "state": "RIGHT_INDICATOR",
+      "png_bytes_total": 957021
+    },
+    "ind_both": {
+      "dir": "trunk/ind_both",
+      "frames": 14,
+      "state": "HAZARD",
+      "png_bytes_total": 957945
+    }
+  },
+  "verification_renders": {},
+  "png_bytes_total": 2871911
+}

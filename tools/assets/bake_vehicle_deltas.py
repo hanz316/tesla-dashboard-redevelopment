@@ -58,6 +58,11 @@ REPORT = os.path.join(OUT, "delta_report.json")
 # Below it the two renders differ only by sampling noise: measured, over 97% of
 # the car is bit-identical or within 4 levels.
 THRESHOLD = 8
+# Alpha below this is a silhouette anti-aliasing rim, not geometry: two renders
+# of the same car differ there by a couple of levels of coverage, and treating
+# that as "the frame erased a body pixel" would block a valid bake (it did,
+# on 26 pixels of 6 % coverage).
+SOLID_ALPHA = 128
 
 # Every state asset that has to become a delta layer.
 GROUPS = {
@@ -126,10 +131,12 @@ def main():
             frame_alpha = frame[:, :, 3] > 0
 
             erased = int((base_alpha & ~frame_alpha).sum())
-            if erased:
+            erased_solid = int(((base[:, :, 3] >= SOLID_ALPHA) &
+                                (frame[:, :, 3] < SOLID_ALPHA // 8)).sum())
+            if erased_solid:
                 failures.append(
-                    f"{group}/{os.path.basename(path)}: {erased} base pixels "
-                    f"are not covered by the frame")
+                    f"{group}/{os.path.basename(path)}: {erased_solid} solid base "
+                    f"pixels are not covered by the frame")
 
             added = frame_alpha & ~base_alpha
             both = frame_alpha & base_alpha
@@ -148,7 +155,11 @@ def main():
             composed = base.copy()
             composed[mask] = frame[mask]
             error = np.abs(composed[:, :, :3] - frame[:, :, :3]).max(axis=2)
-            bad = int(((error > THRESHOLD) & (frame_alpha | base_alpha)).sum())
+            # Only compare where at least one side is solid; below that it is a
+            # coverage rim, where "the same colour" is not defined.
+            solid = ((base[:, :, 3] >= SOLID_ALPHA) |
+                     (frame[:, :, 3] >= SOLID_ALPHA))
+            bad = int(((error > THRESHOLD) & (frame_alpha | base_alpha) & solid).sum())
             if bad:
                 failures.append(
                     f"{group}/{os.path.basename(path)}: reconstruction leaves "

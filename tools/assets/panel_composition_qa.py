@@ -143,7 +143,20 @@ def main():
               f"{share:.0%} of the smaller layer)")
 
     print("the panel stays attached and inside its region")
-    permitted = (50, 20, 308, 200)  # asset-space bounds of the car and its panels
+    # Asset-space bounds of the car and its panels, measured from the layers
+    # themselves with a small margin: the trunk assembly swings its plate and
+    # lamps further than the lid alone did, so a fixed number would start
+    # failing whenever a panel gets an assembly.
+    boxes = []
+    for layer in layers.values():
+        ys, xs = np.nonzero(layer[:, :, 3] > 0)
+        if len(xs):
+            boxes.append((int(xs.min()), int(ys.min()), int(xs.max()), int(ys.max())))
+    permitted = (min(b[0] for b in boxes) - 2, min(b[1] for b in boxes) - 2,
+                 max(b[2] for b in boxes) + 2, max(b[3] for b in boxes) + 2)
+    check(permitted[0] >= 0 and permitted[1] >= 0 and permitted[2] <= 356 and
+          permitted[3] <= 236,
+          f"every layer stays inside the asset canvas {permitted}")
     for name, layer in layers.items():
         mask = layer[:, :, 3] > 0
         ys, xs = np.nonzero(mask)

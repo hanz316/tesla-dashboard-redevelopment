@@ -1,0 +1,568 @@
+{
+ "schema": "trunk-assembly v1",
+ "master": "assets/source/blender/model_a_production_master.blend",
+ "canvas": [
+  356,
+  236
+ ],
+ "progress": [
+  0.0,
+  0.25,
+  0.5,
+  0.75,
+  1.0
+ ],
+ "open_angle_deg": 55.0,
+ "assembly_members": [
+  "CavitySrc_LEFT:light_breake:0",
+  "CavitySrc_RIGHT:light_breake:1",
+  "Cavity_LEFT:rear_lightsl:0_6.0mm",
+  "Cavity_RIGHT:rear_lightsr:0_6.0mm",
+  "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s0",
+  "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s1",
+  "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s0",
+  "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s1",
+  "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s2",
+  "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s3",
+  "_plastic_black_124",
+  "back_chrome_light",
+  "black_boot",
+  "boot",
+  "breake_int",
+  "chrome.001",
+  "chrome_light",
+  "light_breake",
+  "light_turn_lr_boot",
+  "light_turn_rr_boot",
+  "lightrevese_boot",
+  "platnomor",
+  "rear_lightsl",
+  "rear_lightsr",
+  "tembus red",
+  "tembus_boot_ok"
+ ],
+ "tracked": {
+  "trunk_panel": "boot",
+  "inner_lamp_left": "rear_lightsl",
+  "inner_lamp_right": "rear_lightsr",
+  "license_plate": "platnomor",
+  "plate_trim": "chrome_light",
+  "brake_lamp": "light_breake",
+  "reverse_lamp": "lightrevese_boot"
+ },
+ "missing_tracked_objects": [],
+ "steps": [
+  {
+   "progress": 0.0,
+   "applied_deg": 0.0,
+   "rigidity_error": 2.0865780925305444e-07,
+   "rigidity_worst_member": "tembus_boot_ok",
+   "parts": {
+    "trunk_panel": {
+     "bbox": [
+      45.3,
+      98.6,
+      151.2,
+      189.7
+     ],
+     "centroid": [
+      98.3,
+      144.2
+     ]
+    },
+    "inner_lamp_left": {
+     "bbox": [
+      54.7,
+      134.8,
+      70.3,
+      148.7
+     ],
+     "centroid": [
+      62.5,
+      141.8
+     ]
+    },
+    "inner_lamp_right": {
+     "bbox": [
+      104.8,
+      156.1,
+      120.4,
+      170.0
+     ],
+     "centroid": [
+      112.6,
+      163.0
+     ]
+    },
+    "license_plate": {
+     "bbox": [
+      69.2,
+      152.3,
+      96.7,
+      175.0
+     ],
+     "centroid": [
+      83.0,
+      163.7
+     ]
+    },
+    "plate_trim": {
+     "bbox": [
+      54.8,
+      134.6,
+      120.6,
+      170.0
+     ],
+     "centroid": [
+      87.7,
+      152.3
+     ]
+    },
+    "brake_lamp": {
+     "bbox": [
+      53.4,
+      135.5,
+      127.4,
+      167.9
+     ],
+     "centroid": [
+      90.4,
+      151.7
+     ]
+    },
+    "reverse_lamp": {
+     "bbox": [
+      56.4,
+      139.6,
+      118.7,
+      167.1
+     ],
+     "centroid": [
+      87.6,
+      153.4
+     ]
+    }
+   }
+  },
+  {
+   "progress": 0.25,
+   "applied_deg": 3.438,
+   "rigidity_error": 2.1606683731079102e-07,
+   "rigidity_worst_member": "tembus_boot_ok",
+   "parts": {
+    "trunk_panel": {
+     "bbox": [
+      43.9,
+      98.6,
+      151.3,
+      187.2
+     ],
+     "centroid": [
+      97.6,
+      142.9
+     ]
+    },
+    "inner_lamp_left": {
+     "bbox": [
+      53.8,
+      132.7,
+      69.6,
+      146.3
+     ],
+     "centroid": [
+      61.7,
+      139.5
+     ]
+    },
+    "inner_lamp_right": {
+     "bbox": [
+      104.0,
+      154.0,
+      119.7,
+      167.6
+     ],
+     "centroid": [
+      111.8,
+      160.8
+     ]
+    },
+    "license_plate": {
+     "bbox": [
+      68.0,
+      149.8,
+      95.8,
+      172.5
+     ],
+     "centroid": [
+      81.9,
+      161.1
+     ]
+    },
+    "plate_trim": {
+     "bbox": [
+      54.0,
+      132.6,
+      120.0,
+      167.5
+     ],
+     "centroid": [
+      87.0,
+      150.1
+     ]
+    },
+    "brake_lamp": {
+     "bbox": [
+      52.6,
+      133.7,
+      126.6,
+      165.8
+     ],
+     "centroid": [
+      89.6,
+      149.7
+     ]
+    },
+    "reverse_lamp": {
+     "bbox": [
+      55.6,
+      137.5,
+      117.9,
+      164.7
+     ],
+     "centroid": [
+      86.8,
+      151.1
+     ]
+    }
+   }
+  },
+  {
+   "progress": 0.5,
+   "applied_deg": 27.5,
+   "rigidity_error": 3.5762786865234375e-07,
+   "rigidity_worst_member": "boot",
+   "parts": {
+    "trunk_panel": {
+     "bbox": [
+      37.6,
+      90.7,
+      151.2,
+      172.8
+     ],
+     "centroid": [
+      94.4,
+      131.8
+     ]
+    },
+    "inner_lamp_left": {
+     "bbox": [
+      50.8,
+      114.3,
+      67.7,
+      127.0
+     ],
+     "centroid": [
+      59.3,
+      120.6
+     ]
+    },
+    "inner_lamp_right": {
+     "bbox": [
+      100.9,
+      135.6,
+      117.8,
+      148.3
+     ],
+     "centroid": [
+      109.4,
+      141.9
+     ]
+    },
+    "license_plate": {
+     "bbox": [
+      62.7,
+      127.9,
+      93.0,
+      150.5
+     ],
+     "centroid": [
+      77.8,
+      139.2
+     ]
+    },
+    "plate_trim": {
+     "bbox": [
+      50.9,
+      114.3,
+      118.0,
+      148.3
+     ],
+     "centroid": [
+      84.5,
+      131.3
+     ]
+    },
+    "brake_lamp": {
+     "bbox": [
+      49.7,
+      117.2,
+      123.5,
+      148.8
+     ],
+     "centroid": [
+      86.6,
+      133.0
+     ]
+    },
+    "reverse_lamp": {
+     "bbox": [
+      52.9,
+      119.0,
+      115.2,
+      145.6
+     ],
+     "centroid": [
+      84.0,
+      132.3
+     ]
+    }
+   }
+  },
+  {
+   "progress": 0.75,
+   "applied_deg": 51.562,
+   "rigidity_error": 6.556510925292969e-07,
+   "rigidity_worst_member": "tembus_boot_ok",
+   "parts": {
+    "trunk_panel": {
+     "bbox": [
+      38.4,
+      68.2,
+      151.1,
+      167.0
+     ],
+     "centroid": [
+      94.7,
+      117.6
+     ]
+    },
+    "inner_lamp_left": {
+     "bbox": [
+      53.6,
+      91.4,
+      70.5,
+      106.3
+     ],
+     "centroid": [
+      62.0,
+      98.9
+     ]
+    },
+    "inner_lamp_right": {
+     "bbox": [
+      103.7,
+      112.7,
+      120.6,
+      127.6
+     ],
+     "centroid": [
+      112.1,
+      120.1
+     ]
+    },
+    "license_plate": {
+     "bbox": [
+      64.2,
+      101.9,
+      96.1,
+      124.1
+     ],
+     "centroid": [
+      80.1,
+      113.0
+     ]
+    },
+    "plate_trim": {
+     "bbox": [
+      53.7,
+      91.5,
+      120.7,
+      127.8
+     ],
+     "centroid": [
+      87.2,
+      109.7
+     ]
+    },
+    "brake_lamp": {
+     "bbox": [
+      51.8,
+      96.4,
+      125.0,
+      129.6
+     ],
+     "centroid": [
+      88.4,
+      113.0
+     ]
+    },
+    "reverse_lamp": {
+     "bbox": [
+      55.8,
+      96.2,
+      117.5,
+      124.5
+     ],
+     "centroid": [
+      86.6,
+      110.4
+     ]
+    }
+   }
+  },
+  {
+   "progress": 1.0,
+   "applied_deg": 55.0,
+   "rigidity_error": 7.152557373046875e-07,
+   "rigidity_worst_member": "boot",
+   "parts": {
+    "trunk_panel": {
+     "bbox": [
+      39.1,
+      65.3,
+      151.1,
+      165.6
+     ],
+     "centroid": [
+      95.1,
+      115.5
+     ]
+    },
+    "inner_lamp_left": {
+     "bbox": [
+      54.4,
+      88.2,
+      71.2,
+      103.3
+     ],
+     "centroid": [
+      62.8,
+      95.7
+     ]
+    },
+    "inner_lamp_right": {
+     "bbox": [
+      104.6,
+      109.5,
+      121.4,
+      124.6
+     ],
+     "centroid": [
+      113.0,
+      117.0
+     ]
+    },
+    "license_plate": {
+     "bbox": [
+      64.9,
+      98.2,
+      97.0,
+      120.1
+     ],
+     "centroid": [
+      81.0,
+      109.1
+     ]
+    },
+    "plate_trim": {
+     "bbox": [
+      54.5,
+      88.3,
+      121.5,
+      124.8
+     ],
+     "centroid": [
+      88.0,
+      106.6
+     ]
+    },
+    "brake_lamp": {
+     "bbox": [
+      52.5,
+      93.4,
+      125.6,
+      126.7
+     ],
+     "centroid": [
+      89.1,
+      110.1
+     ]
+    },
+    "reverse_lamp": {
+     "bbox": [
+      56.7,
+      93.0,
+      118.2,
+      121.5
+     ],
+     "centroid": [
+      87.4,
+      107.2
+     ]
+    }
+   }
+  }
+ ],
+ "screen_space": {
+  "trunk_panel": {
+   "travel_px": 28.9,
+   "lid_travel_px": 28.9,
+   "travel_ratio": 1.0,
+   "same_direction_as_lid": true,
+   "left_the_closed_position": true
+  },
+  "inner_lamp_left": {
+   "travel_px": 46.1,
+   "lid_travel_px": 28.9,
+   "travel_ratio": 1.596,
+   "same_direction_as_lid": true,
+   "left_the_closed_position": true
+  },
+  "inner_lamp_right": {
+   "travel_px": 46.0,
+   "lid_travel_px": 28.9,
+   "travel_ratio": 1.593,
+   "same_direction_as_lid": true,
+   "left_the_closed_position": true
+  },
+  "license_plate": {
+   "travel_px": 54.6,
+   "lid_travel_px": 28.9,
+   "travel_ratio": 1.892,
+   "same_direction_as_lid": true,
+   "left_the_closed_position": true
+  },
+  "plate_trim": {
+   "travel_px": 45.7,
+   "lid_travel_px": 28.9,
+   "travel_ratio": 1.583,
+   "same_direction_as_lid": true,
+   "left_the_closed_position": true
+  },
+  "brake_lamp": {
+   "travel_px": 41.6,
+   "lid_travel_px": 28.9,
+   "travel_ratio": 1.441,
+   "same_direction_as_lid": true,
+   "left_the_closed_position": true
+  },
+  "reverse_lamp": {
+   "travel_px": 46.2,
+   "lid_travel_px": 28.9,
+   "travel_ratio": 1.6,
+   "same_direction_as_lid": true,
+   "left_the_closed_position": true
+  }
+ },
+ "rigidity_max_error": 7.152557373046875e-07
+}

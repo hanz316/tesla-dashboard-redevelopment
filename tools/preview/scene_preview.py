@@ -634,6 +634,16 @@ def draw_text(img, node, state):
     if tracking:
         # PIL has no letter-spacing, so draw glyph by glyph. Needed because
         # wide-tracked small capitals are most of the "OEM" read.
+        #
+        # The vertical anchor still has to be honoured: drawing each glyph from
+        # the top-left, as this used to, put every tracked text about a third of
+        # its size too low - which is how the speed unit ended up inside the
+        # speed numeral's ink instead of under it.
+        ascent, descent = font.getmetrics()
+        if anchor in ("mm", "lm", "rm"):
+            baseline = y + (ascent - descent) / 2.0
+        else:
+            baseline = y + ascent
         total = 0
         widths = []
         for ch in text:
@@ -649,9 +659,9 @@ def draw_text(img, node, state):
             cx = x
         for ch, w in zip(text, widths):
             if shadow:
-                draw.text((cx + 1, y + 1), ch, font=font,
+                draw.text((cx + 1, baseline + 1), ch, font=font, anchor="ls",
                           fill=(0, 0, 0, int(160 * alpha)))
-            draw.text((cx, y), ch, font=font, fill=fill)
+            draw.text((cx, baseline), ch, font=font, anchor="ls", fill=fill)
             cx += w + tracking
         return
     if shadow:

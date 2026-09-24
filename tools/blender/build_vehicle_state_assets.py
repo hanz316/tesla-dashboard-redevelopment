@@ -39,6 +39,7 @@ except ImportError:  # pragma: no cover
     sys.exit("Run inside Blender")
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import panel_assembly as assembly  # noqa: E402
 import taillight_states as states  # noqa: E402
 import taillight_system as tail  # noqa: E402
 
@@ -451,15 +452,26 @@ def main():
                                "plays the same frames backwards at its own "
                                "duration"})
         pivot = rest.translation.copy()
+        # A panel can be an assembly: the trunk lid carries its lamps, plate and
+        # trim, and every one of them rotates about the same hinge with the same
+        # transform. Members and their rest poses come from panel_assembly.py.
+        rests = assembly.rest_matrices(bpy, name, object_name)
+        info["assembly_members"] = sorted(rests)
         out_dir = os.path.join(args.out, name)
         os.makedirs(out_dir, exist_ok=True)
         frames_written = []
         affines = []
+        rigidity = []
         for i in range(count):
             t = i / float(count - 1)
             applied = ease_open(t) * angle * info["sign"]
-            obj.matrix_world = rotate_about(pivot, applied, axis) @ rest
-            bpy.context.view_layer.update()
+            transform = assembly.set_progress(bpy, name, object_name, rests,
+                                              applied, axis, rotate_about)
+            if len(rests) > 1:
+                worst, worst_name = assembly.rigidity_error(
+                    bpy, rests, object_name, transform)
+                rigidity.append({"t": round(t, 3), "max_error": worst,
+                                 "worst_member": worst_name})
             if name == "trunk":
                 # The trunk carries the inner lamps, so a lighting overlay
                 # mounted on them has to follow the same screen transform.
@@ -467,8 +479,15 @@ def main():
             path = os.path.join(out_dir, f"{i:03d}.png")
             render_to(scene, path)
             frames_written.append(path)
-        obj.matrix_world = rest
-        bpy.context.view_layer.update()
+        assembly.restore(bpy, rests)
+        if rigidity:
+            info["rigidity"] = {
+                "why": "child_now @ rest_child^-1 must equal the panel's own "
+                       "transform for every member, at every progress",
+                "max_error": max(entry["max_error"] for entry in rigidity),
+                "worst_member": max(rigidity, key=lambda e: e["max_error"])["worst_member"],
+                "samples": rigidity,
+            }
         info["png_bytes_total"] = sum(os.path.getsize(p) for p in frames_written)
         info["decoded_rgba_bytes_total"] = count * CANVAS[0] * CANVAS[1] * 4
         info["decoded_rgba_bytes_per_frame"] = CANVAS[0] * CANVAS[1] * 4

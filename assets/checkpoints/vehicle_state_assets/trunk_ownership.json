@@ -1,0 +1,2915 @@
+{
+ "schema": "trunk-ownership v1",
+ "master": "assets/source/blender/model_a_production_master.blend",
+ "camera": "Camera_Horizon",
+ "canvas": [
+  356,
+  236
+ ],
+ "trunk_object": "boot",
+ "trunk_world_bounds": [
+  -2.3133,
+  -0.7407,
+  0.6093,
+  -1.503,
+  0.7407,
+  1.2074
+ ],
+ "objects": [
+  {
+   "name": "CavitySrc_LEFT:light_breake:0",
+   "parent": null,
+   "materials": [],
+   "world_bounds": [
+    -2.1261,
+    0.6327,
+    0.8602,
+    -2.067,
+    0.7339,
+    0.8688
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.073,
+   "projected_bbox": [
+    53.4,
+    135.5,
+    60.8,
+    139.6
+   ]
+  },
+  {
+   "name": "CavitySrc_RIGHT:light_breake:1",
+   "parent": null,
+   "materials": [],
+   "world_bounds": [
+    -2.1261,
+    -0.7339,
+    0.8602,
+    -2.067,
+    -0.6327,
+    0.8688
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.073,
+   "projected_bbox": [
+    120.0,
+    163.8,
+    127.4,
+    167.9
+   ]
+  },
+  {
+   "name": "Cavity_LEFT:rear_lights:0_5.0mm",
+   "parent": null,
+   "materials": [
+    "M_TailCavity_v4"
+   ],
+   "world_bounds": [
+    -2.1501,
+    0.6189,
+    0.7767,
+    -1.961,
+    0.8182,
+    0.9271
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.013,
+   "projected_bbox": [
+    48.3,
+    127.2,
+    65.9,
+    146.2
+   ]
+  },
+  {
+   "name": "Cavity_LEFT:rear_lightsl:0_6.0mm",
+   "parent": null,
+   "materials": [
+    "M_TailCavity_v4"
+   ],
+   "world_bounds": [
+    -2.2216,
+    0.4042,
+    0.8282,
+    -2.1046,
+    0.6255,
+    0.9266
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0027,
+   "projected_bbox": [
+    54.7,
+    134.7,
+    70.4,
+    148.8
+   ]
+  },
+  {
+   "name": "Cavity_RIGHT:rear_lights:1_5.0mm",
+   "parent": null,
+   "materials": [
+    "M_TailCavity_v4"
+   ],
+   "world_bounds": [
+    -2.1501,
+    -0.8182,
+    0.7767,
+    -1.961,
+    -0.6189,
+    0.9271
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.013,
+   "projected_bbox": [
+    118.3,
+    156.9,
+    135.9,
+    175.9
+   ]
+  },
+  {
+   "name": "Cavity_RIGHT:rear_lightsr:0_6.0mm",
+   "parent": null,
+   "materials": [
+    "M_TailCavity_v4"
+   ],
+   "world_bounds": [
+    -2.2216,
+    -0.6255,
+    0.8282,
+    -2.1046,
+    -0.4042,
+    0.9266
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0027,
+   "projected_bbox": [
+    104.8,
+    156.0,
+    120.5,
+    170.1
+   ]
+  },
+  {
+   "name": "JUST_BLACK",
+   "parent": "chassis",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    -1.5505,
+    -0.8557,
+    0.1783,
+    2.33,
+    0.8557,
+    1.2481
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0001,
+   "projected_bbox": [
+    71.6,
+    1.1,
+    317.0,
+    203.3
+   ]
+  },
+  {
+   "name": "JUST_BLACK.001",
+   "parent": "JUST_BLACK",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    -2.3104,
+    -0.961,
+    0.2291,
+    -1.3677,
+    0.961,
+    1.1384
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0,
+   "projected_bbox": [
+    34.7,
+    95.5,
+    167.6,
+    220.3
+   ]
+  },
+  {
+   "name": "Leather_white",
+   "parent": "Seat Leather white",
+   "materials": [
+    "M_Interior_v4"
+   ],
+   "world_bounds": [
+    -1.7837,
+    -0.7572,
+    0.3923,
+    0.8531,
+    0.7572,
+    1.314
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.1415,
+   "projected_bbox": [
+    66.6,
+    34.2,
+    250.5,
+    192.2
+   ]
+  },
+  {
+   "name": "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run0_s0",
+   "parent": null,
+   "materials": [],
+   "world_bounds": [
+    -2.1364,
+    0.6462,
+    0.7858,
+    -2.1301,
+    0.6582,
+    0.7873
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0426,
+   "projected_bbox": [
+    56.7,
+    144.2,
+    57.5,
+    144.7
+   ]
+  },
+  {
+   "name": "TailGuide_LEFT:rear_lights:0_5.0mm_rounded_rect_1.0_run1_s0",
+   "parent": null,
+   "materials": [],
+   "world_bounds": [
+    -2.1042,
+    0.6451,
+    0.8045,
+    -1.9826,
+    0.8079,
+    0.917
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0256,
+   "projected_bbox": [
+    50.8,
+    128.7,
+    63.8,
+    142.7
+   ]
+  },
+  {
+   "name": "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s0",
+   "parent": null,
+   "materials": [],
+   "world_bounds": [
+    -2.2095,
+    0.427,
+    0.8503,
+    -2.184,
+    0.4679,
+    0.903
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0161,
+   "projected_bbox": [
+    62.9,
+    141.5,
+    66.0,
+    146.6
+   ]
+  },
+  {
+   "name": "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s1",
+   "parent": null,
+   "materials": [],
+   "world_bounds": [
+    -2.1834,
+    0.4683,
+    0.9087,
+    -2.1179,
+    0.6133,
+    0.9182
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0102,
+   "projected_bbox": [
+    56.9,
+    135.8,
+    66.7,
+    141.1
+   ]
+  },
+  {
+   "name": "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s0",
+   "parent": null,
+   "materials": [],
+   "world_bounds": [
+    -2.1437,
+    -0.6338,
+    0.7927,
+    -2.1383,
+    -0.6269,
+    0.8005
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0254,
+   "projected_bbox": [
+    118.9,
+    170.0,
+    119.5,
+    170.9
+   ]
+  },
+  {
+   "name": "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run0_s1",
+   "parent": null,
+   "materials": [],
+   "world_bounds": [
+    -2.1368,
+    -0.6498,
+    0.8036,
+    -2.1296,
+    -0.6374,
+    0.8055
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0422,
+   "projected_bbox": [
+    119.7,
+    169.7,
+    120.6,
+    170.3
+   ]
+  },
+  {
+   "name": "TailGuide_RIGHT:rear_lights:1_5.0mm_rounded_rect_1.0_run1_s0",
+   "parent": null,
+   "materials": [],
+   "world_bounds": [
+    -2.0997,
+    -0.8083,
+    0.8021,
+    -1.9822,
+    -0.6473,
+    0.9201
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0206,
+   "projected_bbox": [
+    121.8,
+    158.5,
+    134.5,
+    172.8
+   ]
+  },
+  {
+   "name": "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s0",
+   "parent": null,
+   "materials": [],
+   "world_bounds": [
+    -2.2141,
+    -0.4196,
+    0.8459,
+    -2.2107,
+    -0.4151,
+    0.8541
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0093,
+   "projected_bbox": [
+    105.7,
+    163.7,
+    106.1,
+    164.5
+   ]
+  },
+  {
+   "name": "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s1",
+   "parent": null,
+   "materials": [],
+   "world_bounds": [
+    -2.2091,
+    -0.4414,
+    0.8501,
+    -2.1986,
+    -0.4273,
+    0.8762
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0179,
+   "projected_bbox": [
+    106.5,
+    162.2,
+    107.6,
+    164.5
+   ]
+  },
+  {
+   "name": "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s2",
+   "parent": null,
+   "materials": [],
+   "world_bounds": [
+    -2.1975,
+    -0.4591,
+    0.8814,
+    -2.1882,
+    -0.4435,
+    0.8984
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0166,
+   "projected_bbox": [
+    107.8,
+    160.7,
+    108.9,
+    162.5
+   ]
+  },
+  {
+   "name": "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s3",
+   "parent": null,
+   "materials": [],
+   "world_bounds": [
+    -2.183,
+    -0.6118,
+    0.909,
+    -2.1182,
+    -0.4692,
+    0.9187
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.011,
+   "projected_bbox": [
+    109.6,
+    158.2,
+    119.3,
+    163.4
+   ]
+  },
+  {
+   "name": "_plastic_black_124",
+   "parent": "_satin_black_134",
+   "materials": [
+    "M_LightHousing_v4.001"
+   ],
+   "world_bounds": [
+    -1.9567,
+    -0.3359,
+    1.1061,
+    -1.8646,
+    0.3359,
+    1.1235
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0287,
+   "projected_bbox": [
+    79.9,
+    121.4,
+    116.4,
+    138.7
+   ]
+  },
+  {
+   "name": "back_chrome_light",
+   "parent": "black_lights",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    -2.1397,
+    -0.8184,
+    0.7778,
+    -1.9601,
+    0.8186,
+    0.9272
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0128,
+   "projected_bbox": [
+    48.8,
+    127.2,
+    135.9,
+    175.6
+   ]
+  },
+  {
+   "name": "black.003",
+   "parent": "base",
+   "materials": [
+    "M_LightHousing_v4.001"
+   ],
+   "world_bounds": [
+    -1.9877,
+    -0.753,
+    0.8191,
+    1.3709,
+    0.753,
+    1.4043
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0001,
+   "projected_bbox": [
+    58.3,
+    15.6,
+    271.9,
+    167.8
+   ]
+  },
+  {
+   "name": "black.004",
+   "parent": "base",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    -2.2005,
+    -0.965,
+    0.1389,
+    2.3125,
+    0.965,
+    0.6892
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.4015,
+   "projected_bbox": [
+    39.1,
+    37.6,
+    321.6,
+    223.9
+   ]
+  },
+  {
+   "name": "black_boot",
+   "parent": "boot_dummy",
+   "materials": [
+    "M_LightHousing_v4.001"
+   ],
+   "world_bounds": [
+    -2.2271,
+    -0.6337,
+    0.7779,
+    -2.0694,
+    0.6337,
+    0.9392
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0,
+   "projected_bbox": [
+    54.1,
+    132.8,
+    122.4,
+    173.9
+   ]
+  },
+  {
+   "name": "black_lights",
+   "parent": "chassis",
+   "materials": [
+    "M_LightHousing_v4.001"
+   ],
+   "world_bounds": [
+    -2.1564,
+    -0.8305,
+    0.7719,
+    -1.7453,
+    0.8305,
+    0.9408
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0,
+   "projected_bbox": [
+    47.5,
+    120.8,
+    145.5,
+    176.7
+   ]
+  },
+  {
+   "name": "body",
+   "parent": "chassis",
+   "materials": [
+    "M_Paint_d_neutral_combined"
+   ],
+   "world_bounds": [
+    -2.0027,
+    -0.9744,
+    0.1389,
+    2.1839,
+    0.9744,
+    1.3735
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0002,
+   "projected_bbox": [
+    46.9,
+    -6.4,
+    316.7,
+    219.4
+   ]
+  },
+  {
+   "name": "boot",
+   "parent": "black_boot",
+   "materials": [
+    "M_Paint_d_neutral_combined"
+   ],
+   "world_bounds": [
+    -2.3133,
+    -0.7407,
+    0.6093,
+    -1.503,
+    0.7407,
+    1.2074
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0,
+   "projected_bbox": [
+    45.3,
+    98.6,
+    151.2,
+    189.7
+   ]
+  },
+  {
+   "name": "breake_int",
+   "parent": "black_lights",
+   "materials": [
+    "M_TailLens_Outer_v4.001"
+   ],
+   "world_bounds": [
+    -1.9398,
+    -0.3338,
+    1.1086,
+    -1.8642,
+    0.3338,
+    1.1202
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0461,
+   "projected_bbox": [
+    80.7,
+    121.7,
+    116.4,
+    138.1
+   ]
+  },
+  {
+   "name": "cahrome",
+   "parent": "base",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    -1.5499,
+    -0.9279,
+    0.6609,
+    1.2472,
+    0.9279,
+    1.3406
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0001,
+   "projected_bbox": [
+    68.1,
+    19.4,
+    275.3,
+    171.7
+   ]
+  },
+  {
+   "name": "chrome.001",
+   "parent": "black_boot",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    -2.2816,
+    -0.0476,
+    0.8661,
+    -2.2629,
+    0.0476,
+    0.9559
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0001,
+   "projected_bbox": [
+    80.3,
+    148.4,
+    85.8,
+    157.0
+   ]
+  },
+  {
+   "name": "chrome_light",
+   "parent": "black_boot",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    -2.2194,
+    -0.6251,
+    0.8298,
+    -2.1017,
+    0.6252,
+    0.9266
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0037,
+   "projected_bbox": [
+    54.8,
+    134.6,
+    120.6,
+    170.0
+   ]
+  },
+  {
+   "name": "glass",
+   "parent": "chassis",
+   "materials": [
+    "M_Glass_Reference_side",
+    "M_Glass_Reference_side"
+   ],
+   "world_bounds": [
+    -1.988,
+    -0.7481,
+    0.9923,
+    0.3081,
+    0.7481,
+    1.4087
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0,
+   "projected_bbox": [
+    58.5,
+    41.0,
+    227.3,
+    155.8
+   ]
+  },
+  {
+   "name": "light_breake",
+   "parent": "back_chrome_light",
+   "materials": [
+    "M_TailLens_Outer_v4.001"
+   ],
+   "world_bounds": [
+    -2.1261,
+    -0.7339,
+    0.8602,
+    -2.067,
+    0.7339,
+    0.8688
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.073,
+   "projected_bbox": [
+    53.4,
+    135.5,
+    127.4,
+    167.9
+   ]
+  },
+  {
+   "name": "light_turn_lr_boot",
+   "parent": "black_boot",
+   "materials": [
+    "M_TailLens_Outer_v4.001"
+   ],
+   "world_bounds": [
+    -2.1948,
+    0.4677,
+    0.8596,
+    -2.1334,
+    0.6141,
+    0.8683
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0353,
+   "projected_bbox": [
+    56.4,
+    139.6,
+    66.1,
+    144.7
+   ]
+  },
+  {
+   "name": "light_turn_rr_boot",
+   "parent": "black_boot",
+   "materials": [
+    "M_TailLens_Outer_v4.001"
+   ],
+   "world_bounds": [
+    -2.1948,
+    -0.6141,
+    0.8596,
+    -2.1334,
+    -0.4677,
+    0.8683
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0353,
+   "projected_bbox": [
+    109.1,
+    162.0,
+    118.8,
+    167.1
+   ]
+  },
+  {
+   "name": "lightrevese_boot",
+   "parent": "black_boot",
+   "materials": [
+    "M_TailLens_Outer_v4.001"
+   ],
+   "world_bounds": [
+    -2.1951,
+    -0.6141,
+    0.8596,
+    -2.1337,
+    0.6141,
+    0.8683
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0353,
+   "projected_bbox": [
+    56.4,
+    139.6,
+    118.7,
+    167.1
+   ]
+  },
+  {
+   "name": "pantulans",
+   "parent": "back_chrome_light",
+   "materials": [
+    "M_TailReflector_v4.001"
+   ],
+   "world_bounds": [
+    -1.9669,
+    -0.8199,
+    0.8545,
+    -1.8516,
+    0.8199,
+    0.8872
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0831,
+   "projected_bbox": [
+    55.9,
+    127.3,
+    140.5,
+    166.2
+   ]
+  },
+  {
+   "name": "platnomor",
+   "parent": "black_boot",
+   "materials": [
+    "M_Trim_v4",
+    "M_Trim_v4",
+    "M_Interior_v4",
+    "M_Plate_v4"
+   ],
+   "world_bounds": [
+    -2.2962,
+    -0.2638,
+    0.6743,
+    -2.2528,
+    0.2638,
+    0.8307
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0,
+   "projected_bbox": [
+    69.2,
+    152.3,
+    96.7,
+    175.0
+   ]
+  },
+  {
+   "name": "rear_bumper_ok",
+   "parent": "rear_bumper",
+   "materials": [
+    "M_Paint_d_neutral_combined"
+   ],
+   "world_bounds": [
+    -2.347,
+    -0.9744,
+    0.1903,
+    -1.5974,
+    0.9744,
+    0.7792
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0013,
+   "projected_bbox": [
+    32.5,
+    125.4,
+    158.7,
+    224.1
+   ]
+  },
+  {
+   "name": "rear_lights",
+   "parent": "back_chrome_light",
+   "materials": [
+    "M_TailLens_Outer_v4.001"
+   ],
+   "world_bounds": [
+    -2.1501,
+    -0.8182,
+    0.7767,
+    -1.9626,
+    0.8182,
+    0.9271
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.013,
+   "projected_bbox": [
+    48.3,
+    127.3,
+    135.8,
+    175.9
+   ]
+  },
+  {
+   "name": "rear_lightsl",
+   "parent": "black_boot",
+   "materials": [
+    "M_TailLens_Outer_v4.001"
+   ],
+   "world_bounds": [
+    -2.2216,
+    0.4042,
+    0.8297,
+    -2.1079,
+    0.6255,
+    0.9266
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0038,
+   "projected_bbox": [
+    54.7,
+    134.8,
+    70.3,
+    148.7
+   ]
+  },
+  {
+   "name": "rear_lightsr",
+   "parent": "black_boot",
+   "materials": [
+    "M_TailLens_Outer_v4.001"
+   ],
+   "world_bounds": [
+    -2.2216,
+    -0.6255,
+    0.8297,
+    -2.1079,
+    -0.4042,
+    0.9266
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0038,
+   "projected_bbox": [
+    104.8,
+    156.1,
+    120.4,
+    170.0
+   ]
+  },
+  {
+   "name": "tembus red",
+   "parent": "black_lights",
+   "materials": [
+    "M_TailLens_Outer_v4.001"
+   ],
+   "world_bounds": [
+    -1.958,
+    -0.3355,
+    1.1067,
+    -1.8727,
+    0.3355,
+    1.1233
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0277,
+   "projected_bbox": [
+    79.9,
+    121.6,
+    116.1,
+    138.7
+   ]
+  },
+  {
+   "name": "tembus_belakang",
+   "parent": "rear_bumper",
+   "materials": [
+    "M_TailLens_Outer_v4.001"
+   ],
+   "world_bounds": [
+    -2.161,
+    -0.8336,
+    0.7713,
+    -1.7471,
+    0.8336,
+    0.9403
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0003,
+   "projected_bbox": [
+    47.1,
+    120.9,
+    145.6,
+    176.9
+   ]
+  },
+  {
+   "name": "tembus_boot_ok",
+   "parent": "black_boot",
+   "materials": [
+    "M_TailLens_Outer_v4.001"
+   ],
+   "world_bounds": [
+    -2.231,
+    -0.634,
+    0.7809,
+    -2.1007,
+    0.634,
+    0.9394
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0,
+   "projected_bbox": [
+    53.9,
+    133.6,
+    121.1,
+    173.8
+   ]
+  },
+  {
+   "name": "wheels.001",
+   "parent": "wheel_rf_dummy",
+   "materials": [
+    "M_Trim_v4",
+    "M_Trim_v4",
+    "M_Trim_v4",
+    "M_Tire_v4",
+    "M_Tire_v4",
+    "M_BrakeDisc_v4",
+    "M_Wheel_v4"
+   ],
+   "world_bounds": [
+    -1.6395,
+    -0.9669,
+    0.0,
+    -0.9613,
+    0.9674,
+    0.6782
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.5128,
+   "projected_bbox": [
+    62.4,
+    117.2,
+    184.9,
+    220.0
+   ]
+  },
+  {
+   "name": "whiteleather",
+   "parent": "base",
+   "materials": [
+    "M_Interior_v4"
+   ],
+   "world_bounds": [
+    -1.9221,
+    -0.8313,
+    0.8261,
+    1.1503,
+    0.8313,
+    1.4037
+   ],
+   "gap_to_trunk": 0.0,
+   "surface_distance": 0.0509,
+   "projected_bbox": [
+    57.2,
+    19.4,
+    266.5,
+    167.3
+   ]
+  },
+  {
+   "name": "suspensi",
+   "parent": "base",
+   "materials": [
+    "M_Trim_v4",
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    -1.3548,
+    -0.7601,
+    0.3586,
+    1.6137,
+    0.7601,
+    0.7811
+   ],
+   "gap_to_trunk": 0.1482,
+   "surface_distance": 0.4147,
+   "projected_bbox": [
+    84.4,
+    52.4,
+    282.4,
+    184.3
+   ]
+  },
+  {
+   "name": "hub_lb",
+   "parent": "Tesla Model 3",
+   "materials": [
+    "M_BrakeDisc_v4"
+   ],
+   "world_bounds": [
+    -1.5191,
+    0.7288,
+    0.2607,
+    -1.4162,
+    0.8754,
+    0.4154
+   ],
+   "gap_to_trunk": 0.1938,
+   "surface_distance": 0.7078,
+   "projected_bbox": [
+    71.9,
+    148.0,
+    83.4,
+    164.2
+   ]
+  },
+  {
+   "name": "hub_rb",
+   "parent": "Tesla Model 3",
+   "materials": [
+    "M_BrakeDisc_v4"
+   ],
+   "world_bounds": [
+    -1.5191,
+    -0.8755,
+    0.2607,
+    -1.4162,
+    -0.7289,
+    0.4154
+   ],
+   "gap_to_trunk": 0.1938,
+   "surface_distance": 0.7078,
+   "projected_bbox": [
+    150.0,
+    181.2,
+    161.4,
+    197.3
+   ]
+  },
+  {
+   "name": "suspensi2",
+   "parent": "base",
+   "materials": [
+    "M_Trim_v4",
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    -1.4373,
+    -0.804,
+    0.2031,
+    1.7173,
+    0.804,
+    0.4033
+   ],
+   "gap_to_trunk": 0.2059,
+   "surface_distance": 0.7711,
+   "projected_bbox": [
+    78.8,
+    74.9,
+    288.9,
+    197.8
+   ]
+  },
+  {
+   "name": "rear_bumper",
+   "parent": "bump_rear_dummy",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    -2.2528,
+    -0.7781,
+    0.353,
+    -2.0785,
+    0.7781,
+    0.3903
+   ],
+   "gap_to_trunk": 0.2189,
+   "surface_distance": 0.2281,
+   "projected_bbox": [
+    46.0,
+    167.7,
+    129.0,
+    206.6
+   ]
+  },
+  {
+   "name": "light_pantulan",
+   "parent": "rear_bumper",
+   "materials": [
+    "M_TailReflector_v4.001"
+   ],
+   "world_bounds": [
+    -2.2477,
+    -0.7712,
+    0.3545,
+    -2.0786,
+    0.7712,
+    0.3885
+   ],
+   "gap_to_trunk": 0.2208,
+   "surface_distance": 0.2296,
+   "projected_bbox": [
+    46.6,
+    168.0,
+    128.7,
+    206.3
+   ]
+  },
+  {
+   "name": "bodysills",
+   "parent": "chassis",
+   "materials": [
+    "M_Paint_d_neutral_combined"
+   ],
+   "world_bounds": [
+    -1.2355,
+    -0.9548,
+    0.2323,
+    1.0478,
+    0.9548,
+    1.3405
+   ],
+   "gap_to_trunk": 0.2675,
+   "surface_distance": 0.3525,
+   "projected_bbox": [
+    79.9,
+    23.6,
+    268.3,
+    194.1
+   ]
+  },
+  {
+   "name": "door_lr",
+   "parent": "door_lr_dummy",
+   "materials": [
+    "M_Trim_v4",
+    "M_Interior_v4",
+    "M_Trim_v4",
+    "M_Trim_v4",
+    "M_Paint_d_neutral_combined",
+    "M_Trim_v4",
+    "M_Trim_v4",
+    "M_Interior_v4",
+    "M_Trim_v4",
+    "M_Glass_Reference_side",
+    "M_Paint_d_neutral_combined",
+    "M_Paint_d_neutral_combined"
+   ],
+   "world_bounds": [
+    -1.2306,
+    0.6308,
+    0.2465,
+    -0.0863,
+    0.9642,
+    1.3176
+   ],
+   "gap_to_trunk": 0.2724,
+   "surface_distance": 0.3559,
+   "projected_bbox": [
+    79.7,
+    52.3,
+    143.7,
+    160.2
+   ]
+  },
+  {
+   "name": "door_rr",
+   "parent": "door_rr_dummy",
+   "materials": [
+    "M_Trim_v4",
+    "M_Interior_v4",
+    "M_Trim_v4",
+    "M_Trim_v4",
+    "M_Paint_d_neutral_combined",
+    "M_Trim_v4",
+    "M_Trim_v4",
+    "M_Interior_v4",
+    "M_Trim_v4",
+    "M_Glass_Reference_side",
+    "M_Paint_d_neutral_combined"
+   ],
+   "world_bounds": [
+    -1.2306,
+    -0.9642,
+    0.2465,
+    -0.0863,
+    -0.6308,
+    1.3176
+   ],
+   "gap_to_trunk": 0.2724,
+   "surface_distance": 0.3559,
+   "projected_bbox": [
+    157.3,
+    85.2,
+    221.3,
+    193.2
+   ]
+  },
+  {
+   "name": "Plastic",
+   "parent": "base",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    -1.1692,
+    -0.8316,
+    0.2908,
+    1.2778,
+    0.8316,
+    1.3075
+   ],
+   "gap_to_trunk": 0.3338,
+   "surface_distance": 0.3682,
+   "projected_bbox": [
+    88.7,
+    22.9,
+    271.9,
+    185.9
+   ]
+  },
+  {
+   "name": "hitam.004",
+   "parent": "base",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    -2.2639,
+    -0.7465,
+    0.2047,
+    -2.001,
+    0.7465,
+    0.2713
+   ],
+   "gap_to_trunk": 0.338,
+   "surface_distance": 0.3407,
+   "projected_bbox": [
+    47.1,
+    174.7,
+    130.7,
+    216.4
+   ]
+  },
+  {
+   "name": "belt",
+   "parent": "base",
+   "materials": [
+    "M_Interior_v4"
+   ],
+   "world_bounds": [
+    -1.1612,
+    -0.7444,
+    0.3214,
+    0.0213,
+    0.7444,
+    1.1595
+   ],
+   "gap_to_trunk": 0.3418,
+   "surface_distance": 0.3728,
+   "projected_bbox": [
+    93.3,
+    65.1,
+    215.1,
+    181.8
+   ]
+  },
+  {
+   "name": "Seat Leather white",
+   "parent": "base",
+   "materials": [
+    "M_Interior_v4"
+   ],
+   "world_bounds": [
+    -1.1499,
+    -0.7064,
+    0.3684,
+    0.5661,
+    0.7064,
+    1.2483
+   ],
+   "gap_to_trunk": 0.3531,
+   "surface_distance": 0.3836,
+   "projected_bbox": [
+    95.6,
+    46.7,
+    236.0,
+    177.5
+   ]
+  },
+  {
+   "name": "base",
+   "parent": "chassis",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    -1.1281,
+    -0.8707,
+    0.3007,
+    0.9963,
+    0.8707,
+    1.3406
+   ],
+   "gap_to_trunk": 0.3749,
+   "surface_distance": 0.3885,
+   "projected_bbox": [
+    88.5,
+    26.6,
+    262.0,
+    185.1
+   ]
+  },
+  {
+   "name": "Putih.001",
+   "parent": "base",
+   "materials": [
+    "M_Interior_v4"
+   ],
+   "world_bounds": [
+    -0.856,
+    -0.5935,
+    0.4179,
+    -0.7502,
+    0.5934,
+    0.6228
+   ],
+   "gap_to_trunk": 0.647,
+   "surface_distance": 0.8462,
+   "projected_bbox": [
+    113.4,
+    123.6,
+    175.5,
+    164.7
+   ]
+  },
+  {
+   "name": "Carpet",
+   "parent": "base",
+   "materials": [
+    "M_Interior_v4"
+   ],
+   "world_bounds": [
+    -0.8556,
+    -0.8091,
+    0.3207,
+    1.1234,
+    0.8091,
+    0.7012
+   ],
+   "gap_to_trunk": 0.6474,
+   "surface_distance": 0.951,
+   "projected_bbox": [
+    102.9,
+    68.7,
+    264.3,
+    175.9
+   ]
+  },
+  {
+   "name": "chromeBELT",
+   "parent": "base",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    -0.8291,
+    -0.5707,
+    0.5732,
+    -0.7705,
+    0.5707,
+    0.6057
+   ],
+   "gap_to_trunk": 0.6739,
+   "surface_distance": 0.8751,
+   "projected_bbox": [
+    115.6,
+    125.7,
+    173.6,
+    153.0
+   ]
+  },
+  {
+   "name": "texture_Leather",
+   "parent": "base",
+   "materials": [
+    "M_Interior_v4"
+   ],
+   "world_bounds": [
+    -0.7924,
+    -0.7108,
+    0.3574,
+    0.5703,
+    0.7108,
+    1.1059
+   ],
+   "gap_to_trunk": 0.7106,
+   "surface_distance": 0.9903,
+   "projected_bbox": [
+    110.3,
+    56.2,
+    236.4,
+    169.8
+   ]
+  },
+  {
+   "name": "satin_red",
+   "parent": "base",
+   "materials": [
+    "M_TailSatinRed_v4.001"
+   ],
+   "world_bounds": [
+    -0.7902,
+    -0.1889,
+    0.4722,
+    0.1917,
+    0.1889,
+    0.513
+   ],
+   "gap_to_trunk": 0.7129,
+   "surface_distance": 1.0528,
+   "projected_bbox": [
+    135.8,
+    116.8,
+    195.2,
+    151.1
+   ]
+  },
+  {
+   "name": "chassis",
+   "parent": "chassis_dummy",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    -0.4536,
+    -0.9309,
+    0.2316,
+    -0.4535,
+    0.9314,
+    0.2316
+   ],
+   "gap_to_trunk": 1.0494,
+   "surface_distance": 1.4203,
+   "projected_bbox": [
+    113.7,
+    136.3,
+    204.4,
+    174.8
+   ]
+  },
+  {
+   "name": "Carpet_Light",
+   "parent": "base",
+   "materials": [
+    "M_Interior_v4"
+   ],
+   "world_bounds": [
+    -0.3683,
+    -0.7103,
+    0.3209,
+    1.0886,
+    0.7103,
+    0.4813
+   ],
+   "gap_to_trunk": 1.1347,
+   "surface_distance": 1.3925,
+   "projected_bbox": [
+    128.0,
+    86.6,
+    258.1,
+    162.1
+   ]
+  },
+  {
+   "name": "hitam.006",
+   "parent": "base",
+   "materials": [
+    "M_LightHousing_v4.001"
+   ],
+   "world_bounds": [
+    -0.3495,
+    -0.8441,
+    0.9163,
+    -0.0809,
+    0.844,
+    1.3411
+   ],
+   "gap_to_trunk": 1.1536,
+   "surface_distance": 1.1677,
+   "projected_bbox": [
+    122.3,
+    53.0,
+    215.7,
+    123.5
+   ]
+  },
+  {
+   "name": "Putih",
+   "parent": "base",
+   "materials": [
+    "M_Interior_v4"
+   ],
+   "world_bounds": [
+    -0.3008,
+    -0.7152,
+    1.0275,
+    -0.131,
+    0.7152,
+    1.2106
+   ],
+   "gap_to_trunk": 1.2023,
+   "surface_distance": 1.2036,
+   "projected_bbox": [
+    130.6,
+    65.9,
+    207.3,
+    112.1
+   ]
+  },
+  {
+   "name": "door_lr_ok",
+   "parent": "door_lr",
+   "materials": [
+    "M_Paint_d_neutral_combined"
+   ],
+   "world_bounds": [
+    -0.2938,
+    0.8537,
+    0.8781,
+    -0.2664,
+    0.8565,
+    0.8838
+   ],
+   "gap_to_trunk": 1.2092,
+   "surface_distance": 1.2615,
+   "projected_bbox": [
+    124.0,
+    88.6,
+    125.3,
+    89.7
+   ]
+  },
+  {
+   "name": "door_rr_ok",
+   "parent": "door_rr",
+   "materials": [
+    "M_Paint_d_neutral_combined"
+   ],
+   "world_bounds": [
+    -0.2831,
+    -0.8821,
+    0.8604,
+    -0.2542,
+    -0.8788,
+    0.8657
+   ],
+   "gap_to_trunk": 1.2199,
+   "surface_distance": 1.2807,
+   "projected_bbox": [
+    208.9,
+    125.4,
+    210.3,
+    126.6
+   ]
+  },
+  {
+   "name": "Putih.002",
+   "parent": "base",
+   "materials": [
+    "M_Interior_v4"
+   ],
+   "world_bounds": [
+    -0.2445,
+    -0.687,
+    1.0028,
+    0.3475,
+    0.687,
+    1.2832
+   ],
+   "gap_to_trunk": 1.2585,
+   "surface_distance": 1.2668,
+   "projected_bbox": [
+    134.3,
+    49.9,
+    226.0,
+    111.8
+   ]
+  },
+  {
+   "name": "door_lf",
+   "parent": "door_lf_dummy",
+   "materials": [
+    "M_Trim_v4",
+    "M_Interior_v4",
+    "M_Trim_v4",
+    "M_Trim_v4",
+    "M_Paint_d_neutral_combined",
+    "M_Trim_v4",
+    "M_Trim_v4",
+    "M_Interior_v4",
+    "M_Trim_v4",
+    "M_Chrome_v4",
+    "M_Glass_Reference_side",
+    "M_Trim_v4",
+    "M_Trim_v4",
+    "M_Paint_d_neutral_combined"
+   ],
+   "world_bounds": [
+    -0.2329,
+    0.6607,
+    0.2357,
+    1.0435,
+    1.0929,
+    1.3132
+   ],
+   "gap_to_trunk": 1.2701,
+   "surface_distance": 1.2832,
+   "projected_bbox": [
+    115.1,
+    22.7,
+    189.4,
+    136.3
+   ]
+  },
+  {
+   "name": "door_rf",
+   "parent": "door_rf_dummy",
+   "materials": [
+    "M_Trim_v4",
+    "M_Interior_v4",
+    "M_Trim_v4",
+    "M_Trim_v4",
+    "M_Paint_d_neutral_combined",
+    "M_Trim_v4",
+    "M_Trim_v4",
+    "M_Interior_v4",
+    "M_Trim_v4",
+    "M_Chrome_v4",
+    "M_Glass_Reference_side",
+    "M_Trim_v4",
+    "M_Paint_d_neutral_combined"
+   ],
+   "world_bounds": [
+    -0.2329,
+    -1.0929,
+    0.2357,
+    1.0435,
+    -0.6607,
+    1.3132
+   ],
+   "gap_to_trunk": 1.2701,
+   "surface_distance": 1.2798,
+   "projected_bbox": [
+    200.4,
+    59.0,
+    274.8,
+    172.6
+   ]
+  },
+  {
+   "name": "chrome_",
+   "parent": "base",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    -0.2211,
+    -0.6636,
+    0.9651,
+    -0.1636,
+    0.6636,
+    1.0182
+   ],
+   "gap_to_trunk": 1.2819,
+   "surface_distance": 1.2908,
+   "projected_bbox": [
+    136.5,
+    80.9,
+    203.5,
+    113.4
+   ]
+  },
+  {
+   "name": "texture_Leather.001",
+   "parent": "base",
+   "materials": [
+    "M_Interior_v4"
+   ],
+   "world_bounds": [
+    -0.1437,
+    -0.7055,
+    0.3774,
+    1.1606,
+    0.7055,
+    0.8922
+   ],
+   "gap_to_trunk": 1.3594,
+   "surface_distance": 1.579,
+   "projected_bbox": [
+    137.7,
+    56.8,
+    260.8,
+    152.7
+   ]
+  },
+  {
+   "name": "door_lf_ok",
+   "parent": "door_lf",
+   "materials": [
+    "M_Paint_d_neutral_combined"
+   ],
+   "world_bounds": [
+    -0.0655,
+    0.8403,
+    0.8842,
+    -0.0459,
+    0.8442,
+    0.8915
+   ],
+   "gap_to_trunk": 1.4376,
+   "surface_distance": 1.4791,
+   "projected_bbox": [
+    134.2,
+    83.0,
+    135.2,
+    84.1
+   ]
+  },
+  {
+   "name": "black.002",
+   "parent": "base",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    -0.0654,
+    -0.6856,
+    0.2592,
+    0.5225,
+    0.6856,
+    0.505
+   ],
+   "gap_to_trunk": 1.4377,
+   "surface_distance": 1.6058,
+   "projected_bbox": [
+    141.9,
+    99.1,
+    233.2,
+    158.5
+   ]
+  },
+  {
+   "name": "aluminium2",
+   "parent": "base",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    -0.0505,
+    -0.7572,
+    0.4414,
+    1.004,
+    0.7572,
+    0.9503
+   ],
+   "gap_to_trunk": 1.4526,
+   "surface_distance": 1.6466,
+   "projected_bbox": [
+    139.0,
+    55.5,
+    256.8,
+    147.1
+   ]
+  },
+  {
+   "name": "door_rf_ok",
+   "parent": "door_rf",
+   "materials": [
+    "M_Paint_d_neutral_combined"
+   ],
+   "world_bounds": [
+    -0.03,
+    -0.8557,
+    0.8818,
+    -0.0104,
+    -0.8518,
+    0.8891
+   ],
+   "gap_to_trunk": 1.473,
+   "surface_distance": 1.5157,
+   "projected_bbox": [
+    218.2,
+    117.4,
+    219.2,
+    118.4
+   ]
+  },
+  {
+   "name": "windscreen_ok",
+   "parent": "windscreen_dummy",
+   "materials": [
+    "M_Glass_Reference_side"
+   ],
+   "world_bounds": [
+    0.209,
+    -0.7525,
+    0.8248,
+    1.3666,
+    0.7525,
+    1.3273
+   ],
+   "gap_to_trunk": 1.712,
+   "surface_distance": 1.7179,
+   "projected_bbox": [
+    150.1,
+    21.0,
+    271.7,
+    114.5
+   ]
+  },
+  {
+   "name": "black",
+   "parent": "base",
+   "materials": [
+    "M_LightHousing_v4.001"
+   ],
+   "world_bounds": [
+    0.2692,
+    -0.6858,
+    0.3332,
+    0.4444,
+    0.6858,
+    0.3978
+   ],
+   "gap_to_trunk": 1.7722,
+   "surface_distance": 1.9282,
+   "projected_bbox": [
+    155.9,
+    108.4,
+    229.9,
+    145.4
+   ]
+  },
+  {
+   "name": "interiorlights",
+   "parent": "black_lights",
+   "materials": [
+    "M_Lens_Clear_v4.001"
+   ],
+   "world_bounds": [
+    0.2977,
+    -0.1314,
+    1.2706,
+    0.3399,
+    0.1314,
+    1.2897
+   ],
+   "gap_to_trunk": 1.8007,
+   "surface_distance": 1.875,
+   "projected_bbox": [
+    184.0,
+    61.2,
+    198.6,
+    68.9
+   ]
+  },
+  {
+   "name": "mirror_inside",
+   "parent": "base",
+   "materials": [
+    "M_Chrome_v4"
+   ],
+   "world_bounds": [
+    0.4235,
+    -0.105,
+    1.1659,
+    0.4284,
+    0.105,
+    1.2346
+   ],
+   "gap_to_trunk": 1.9265,
+   "surface_distance": 1.9987,
+   "projected_bbox": [
+    190.6,
+    63.3,
+    201.0,
+    72.5
+   ]
+  },
+  {
+   "name": "movsteer_1.0",
+   "parent": "steering_dummy",
+   "materials": [
+    "M_Trim_v4",
+    "M_Interior_v4",
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    0.479,
+    0.2303,
+    0.622,
+    0.7021,
+    0.6082,
+    1.0017
+   ],
+   "gap_to_trunk": 1.982,
+   "surface_distance": 2.0494,
+   "projected_bbox": [
+    168.4,
+    64.8,
+    196.1,
+    99.1
+   ]
+  },
+  {
+   "name": "paint_black",
+   "parent": "base",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    0.6063,
+    -0.1721,
+    0.686,
+    0.6687,
+    0.1721,
+    0.9505
+   ],
+   "gap_to_trunk": 2.1094,
+   "surface_distance": 2.2084,
+   "projected_bbox": [
+    195.0,
+    75.7,
+    214.3,
+    102.4
+   ]
+  },
+  {
+   "name": "LCDs",
+   "parent": "base",
+   "materials": [
+    "M_Screen_v4"
+   ],
+   "world_bounds": [
+    0.6068,
+    -0.1693,
+    0.6891,
+    0.6669,
+    0.1693,
+    0.9479
+   ],
+   "gap_to_trunk": 2.1098,
+   "surface_distance": 2.2088,
+   "projected_bbox": [
+    195.1,
+    75.9,
+    214.1,
+    102.2
+   ]
+  },
+  {
+   "name": "hitam.005",
+   "parent": "base",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    0.6101,
+    -0.1721,
+    0.6801,
+    0.8335,
+    0.1721,
+    0.9496
+   ],
+   "gap_to_trunk": 2.1132,
+   "surface_distance": 2.2122,
+   "projected_bbox": [
+    195.1,
+    71.8,
+    221.2,
+    102.7
+   ]
+  },
+  {
+   "name": "black.001",
+   "parent": "base",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    0.6159,
+    0.3338,
+    0.6692,
+    0.8585,
+    0.5068,
+    0.8483
+   ],
+   "gap_to_trunk": 2.119,
+   "surface_distance": 2.1741,
+   "projected_bbox": [
+    179.1,
+    71.2,
+    197.6,
+    92.9
+   ]
+  },
+  {
+   "name": "aluminium",
+   "parent": "base",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    0.6223,
+    0.2171,
+    0.8006,
+    0.6884,
+    0.6236,
+    0.8305
+   ],
+   "gap_to_trunk": 2.1254,
+   "surface_distance": 2.1522,
+   "projected_bbox": [
+    173.7,
+    74.1,
+    196.2,
+    86.1
+   ]
+  },
+  {
+   "name": "texture_Buttons",
+   "parent": "base",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    0.6233,
+    0.2198,
+    0.8089,
+    0.6863,
+    0.6209,
+    0.8306
+   ],
+   "gap_to_trunk": 2.1263,
+   "surface_distance": 2.153,
+   "projected_bbox": [
+    173.8,
+    74.2,
+    196.0,
+    85.5
+   ]
+  },
+  {
+   "name": "black.005",
+   "parent": "base",
+   "materials": [
+    "M_LightHousing_v4.001"
+   ],
+   "world_bounds": [
+    0.653,
+    0.277,
+    0.771,
+    0.7007,
+    0.5637,
+    0.8216
+   ],
+   "gap_to_trunk": 2.156,
+   "surface_distance": 2.1858,
+   "projected_bbox": [
+    177.8,
+    75.7,
+    193.8,
+    86.2
+   ]
+  },
+  {
+   "name": "hitam.002",
+   "parent": "base",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    0.9621,
+    0.256,
+    0.4553,
+    1.0614,
+    0.4985,
+    0.6477
+   ],
+   "gap_to_trunk": 2.4651,
+   "surface_distance": 2.5606,
+   "projected_bbox": [
+    193.9,
+    80.2,
+    209.9,
+    100.8
+   ]
+  },
+  {
+   "name": "frunkplastic",
+   "parent": "base",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    1.026,
+    -0.7614,
+    0.7824,
+    1.4793,
+    0.7614,
+    0.9284
+   ],
+   "gap_to_trunk": 2.529,
+   "surface_distance": 2.5445,
+   "projected_bbox": [
+    183.8,
+    45.5,
+    276.9,
+    97.9
+   ]
+  },
+  {
+   "name": "hitam.003",
+   "parent": "base",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    1.0307,
+    0.9062,
+    0.2306,
+    1.1614,
+    0.9099,
+    0.2358
+   ],
+   "gap_to_trunk": 2.5337,
+   "surface_distance": 2.7103,
+   "projected_bbox": [
+    176.8,
+    97.6,
+    182.4,
+    101.2
+   ]
+  },
+  {
+   "name": "dvorright",
+   "parent": "dvornik_dummy",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    1.1382,
+    -0.7432,
+    0.7152,
+    1.441,
+    0.0975,
+    0.9819
+   ],
+   "gap_to_trunk": 2.6412,
+   "surface_distance": 2.6596,
+   "projected_bbox": [
+    220.8,
+    62.0,
+    274.4,
+    93.9
+   ]
+  },
+  {
+   "name": "hitam.001",
+   "parent": "base",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    1.1451,
+    -0.7333,
+    0.8295,
+    1.372,
+    0.3824,
+    0.8751
+   ],
+   "gap_to_trunk": 2.6481,
+   "surface_distance": 2.6659,
+   "projected_bbox": [
+    207.2,
+    59.6,
+    271.0,
+    91.2
+   ]
+  },
+  {
+   "name": "chrome1",
+   "parent": "base",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    1.1747,
+    -0.9279,
+    0.6657,
+    1.2171,
+    -0.9169,
+    0.7067
+   ],
+   "gap_to_trunk": 2.6777,
+   "surface_distance": 2.7316,
+   "projected_bbox": [
+    271.7,
+    101.7,
+    274.0,
+    105.8
+   ]
+  },
+  {
+   "name": "chrome2",
+   "parent": "base",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    1.1747,
+    0.9168,
+    0.6658,
+    1.217,
+    0.9277,
+    0.7067
+   ],
+   "gap_to_trunk": 2.6777,
+   "surface_distance": 2.7315,
+   "projected_bbox": [
+    181.9,
+    63.6,
+    184.2,
+    67.6
+   ]
+  },
+  {
+   "name": "bonnet_ok",
+   "parent": "bonnet_dummy",
+   "materials": [
+    "M_Paint_d_neutral_combined"
+   ],
+   "world_bounds": [
+    1.1816,
+    -0.7504,
+    0.6101,
+    2.2713,
+    0.7504,
+    0.8877
+   ],
+   "gap_to_trunk": 2.6847,
+   "surface_distance": 2.7016,
+   "projected_bbox": [
+    190.8,
+    29.4,
+    309.4,
+    105.7
+   ]
+  },
+  {
+   "name": "dvorleft",
+   "parent": "other",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    1.2198,
+    -0.2295,
+    0.7785,
+    1.3753,
+    0.6505,
+    0.9181
+   ],
+   "gap_to_trunk": 2.7228,
+   "surface_distance": 2.7469,
+   "projected_bbox": [
+    197.3,
+    53.7,
+    246.6,
+    79.8
+   ]
+  },
+  {
+   "name": "wheels",
+   "parent": "wheel_rf_dummy",
+   "materials": [
+    "M_Trim_v4",
+    "M_Trim_v4",
+    "M_Trim_v4",
+    "M_Tire_v4",
+    "M_Tire_v4",
+    "M_BrakeDisc_v4",
+    "M_Wheel_v4"
+   ],
+   "world_bounds": [
+    1.2266,
+    -0.9644,
+    0.006,
+    1.8928,
+    0.9649,
+    0.6722
+   ],
+   "gap_to_trunk": 2.7296,
+   "surface_distance": 2.8449,
+   "projected_bbox": [
+    182.3,
+    48.9,
+    304.0,
+    150.5
+   ]
+  },
+  {
+   "name": "hub_lf",
+   "parent": "Tesla Model 3",
+   "materials": [
+    "M_BrakeDisc_v4",
+    "M_BrakeDisc_v4"
+   ],
+   "world_bounds": [
+    1.354,
+    0.795,
+    0.1738,
+    1.49,
+    0.9125,
+    0.5062
+   ],
+   "gap_to_trunk": 2.857,
+   "surface_distance": 2.9619,
+   "projected_bbox": [
+    190.2,
+    71.1,
+    201.6,
+    99.6
+   ]
+  },
+  {
+   "name": "hub_rf",
+   "parent": "Tesla Model 3",
+   "materials": [
+    "M_BrakeDisc_v4",
+    "M_BrakeDisc_v4"
+   ],
+   "world_bounds": [
+    1.354,
+    -0.9225,
+    0.172,
+    1.4896,
+    -0.8047,
+    0.5044
+   ],
+   "gap_to_trunk": 2.8571,
+   "surface_distance": 2.9638,
+   "projected_bbox": [
+    273.7,
+    106.7,
+    285.1,
+    135.2
+   ]
+  },
+  {
+   "name": "_satin_black_134",
+   "parent": "black_lights",
+   "materials": [
+    "M_LightHousing_v4.001"
+   ],
+   "world_bounds": [
+    1.7121,
+    -0.838,
+    0.5799,
+    2.1923,
+    0.838,
+    0.7925
+   ],
+   "gap_to_trunk": 3.2151,
+   "surface_distance": 3.2409,
+   "projected_bbox": [
+    208.8,
+    36.1,
+    310.4,
+    96.9
+   ]
+  },
+  {
+   "name": "aluminium_light",
+   "parent": "black_lights",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    1.7299,
+    -0.8259,
+    0.6072,
+    2.1543,
+    0.8259,
+    0.7844
+   ],
+   "gap_to_trunk": 3.2329,
+   "surface_distance": 3.2605,
+   "projected_bbox": [
+    210.1,
+    37.8,
+    308.2,
+    94.3
+   ]
+  },
+  {
+   "name": "chrome",
+   "parent": "black_lights",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    1.7364,
+    -0.8311,
+    0.707,
+    1.9285,
+    0.8311,
+    0.7827
+   ],
+   "gap_to_trunk": 3.2395,
+   "surface_distance": 3.2664,
+   "projected_bbox": [
+    210.1,
+    43.2,
+    299.0,
+    87.4
+   ]
+  },
+  {
+   "name": "tembus_depan_ok",
+   "parent": "front_black",
+   "materials": [
+    "M_TailLens_Outer_v4.001"
+   ],
+   "world_bounds": [
+    1.7484,
+    -0.8725,
+    0.3827,
+    2.2296,
+    0.8725,
+    0.7932
+   ],
+   "gap_to_trunk": 3.2514,
+   "surface_distance": 3.2768,
+   "projected_bbox": [
+    208.6,
+    34.4,
+    313.6,
+    110.2
+   ]
+  },
+  {
+   "name": "chrome_foglight_l",
+   "parent": "black_lights",
+   "materials": [
+    "M_Lens_Clear_v4.001"
+   ],
+   "world_bounds": [
+    1.7528,
+    0.6483,
+    0.6908,
+    1.9783,
+    0.7993,
+    0.7845
+   ],
+   "gap_to_trunk": 3.2558,
+   "surface_distance": 3.2822,
+   "projected_bbox": [
+    212.3,
+    42.6,
+    229.1,
+    57.5
+   ]
+  },
+  {
+   "name": "chrome_foglight_r",
+   "parent": "black_lights",
+   "materials": [
+    "M_Lens_Clear_v4.001"
+   ],
+   "world_bounds": [
+    1.7528,
+    -0.7993,
+    0.6908,
+    1.9783,
+    -0.6483,
+    0.7845
+   ],
+   "gap_to_trunk": 3.2558,
+   "surface_distance": 3.2822,
+   "projected_bbox": [
+    282.8,
+    72.5,
+    299.6,
+    87.5
+   ]
+  },
+  {
+   "name": "front_bumper_ok",
+   "parent": "bump_front_dummy",
+   "materials": [
+    "M_Paint_d_neutral_combined"
+   ],
+   "world_bounds": [
+    1.7614,
+    -0.9388,
+    0.1432,
+    2.347,
+    0.9388,
+    0.6539
+   ],
+   "gap_to_trunk": 3.2644,
+   "surface_distance": 3.3204,
+   "projected_bbox": [
+    205.9,
+    39.8,
+    321.8,
+    127.7
+   ]
+  },
+  {
+   "name": "turn_indicat_l",
+   "parent": "black_lights",
+   "materials": [
+    "M_Lens_Clear_v4.001"
+   ],
+   "world_bounds": [
+    1.8319,
+    0.6705,
+    0.6192,
+    1.9802,
+    0.8311,
+    0.7242
+   ],
+   "gap_to_trunk": 3.3349,
+   "surface_distance": 3.3692,
+   "projected_bbox": [
+    214.1,
+    46.0,
+    228.1,
+    60.1
+   ]
+  },
+  {
+   "name": "turn_indicat_r",
+   "parent": "black_lights",
+   "materials": [
+    "M_Lens_Clear_v4.001"
+   ],
+   "world_bounds": [
+    1.8319,
+    -0.8307,
+    0.6192,
+    1.9802,
+    -0.6701,
+    0.7242
+   ],
+   "gap_to_trunk": 3.3349,
+   "surface_distance": 3.3691,
+   "projected_bbox": [
+    287.2,
+    77.0,
+    301.2,
+    91.1
+   ]
+  },
+  {
+   "name": "hitam",
+   "parent": "base",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    1.9474,
+    -0.819,
+    0.5827,
+    2.1511,
+    0.819,
+    0.641
+   ],
+   "gap_to_trunk": 3.4504,
+   "surface_distance": 3.4942,
+   "projected_bbox": [
+    219.5,
+    47.9,
+    307.7,
+    90.6
+   ]
+  },
+  {
+   "name": "chrome_Lights_head_l",
+   "parent": "black_lights",
+   "materials": [
+    "M_Lens_Clear_v4.001",
+    "M_Lens_Clear_v4.001"
+   ],
+   "world_bounds": [
+    1.9568,
+    -0.6707,
+    0.616,
+    2.0408,
+    0.671,
+    0.6844
+   ],
+   "gap_to_trunk": 3.4598,
+   "surface_distance": 3.497,
+   "projected_bbox": [
+    227.1,
+    50.6,
+    295.9,
+    85.0
+   ]
+  },
+  {
+   "name": "front_black",
+   "parent": "bump_front_dummy",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    2.0066,
+    -0.8799,
+    0.2092,
+    2.3127,
+    0.8799,
+    0.4328
+   ],
+   "gap_to_trunk": 3.5096,
+   "surface_distance": 3.593,
+   "projected_bbox": [
+    219.0,
+    57.0,
+    317.5,
+    116.1
+   ]
+  },
+  {
+   "name": "chrome.002",
+   "parent": "front_black",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    2.0581,
+    -0.8303,
+    0.4012,
+    2.0783,
+    0.8303,
+    0.4189
+   ],
+   "gap_to_trunk": 3.5611,
+   "surface_distance": 3.6426,
+   "projected_bbox": [
+    223.6,
+    64.6,
+    305.2,
+    100.6
+   ]
+  },
+  {
+   "name": "indicator_lights_l",
+   "parent": "front_black",
+   "materials": [
+    "M_Lens_Clear_v4.001"
+   ],
+   "world_bounds": [
+    2.0615,
+    0.8038,
+    0.3988,
+    2.0887,
+    0.8376,
+    0.4216
+   ],
+   "gap_to_trunk": 3.5645,
+   "surface_distance": 3.6458,
+   "projected_bbox": [
+    223.4,
+    64.0,
+    226.2,
+    66.9
+   ]
+  },
+  {
+   "name": "indicator_lights_r",
+   "parent": "front_black",
+   "materials": [
+    "M_Lens_Clear_v4.001"
+   ],
+   "world_bounds": [
+    2.0615,
+    -0.8376,
+    0.3988,
+    2.0887,
+    -0.8038,
+    0.4216
+   ],
+   "gap_to_trunk": 3.5645,
+   "surface_distance": 3.6458,
+   "projected_bbox": [
+    303.3,
+    97.9,
+    306.0,
+    100.9
+   ]
+  },
+  {
+   "name": "foglights_l",
+   "parent": "front_black",
+   "materials": [
+    "M_Lens_Clear_v4.001"
+   ],
+   "world_bounds": [
+    2.0786,
+    0.6063,
+    0.3927,
+    2.2055,
+    0.8041,
+    0.4119
+   ],
+   "gap_to_trunk": 3.5817,
+   "surface_distance": 3.6633,
+   "projected_bbox": [
+    225.7,
+    62.6,
+    240.6,
+    71.0
+   ]
+  },
+  {
+   "name": "foglights_r",
+   "parent": "front_black",
+   "materials": [
+    "M_Lens_Clear_v4.001"
+   ],
+   "world_bounds": [
+    2.0786,
+    -0.8041,
+    0.3927,
+    2.2055,
+    -0.6063,
+    0.4119
+   ],
+   "gap_to_trunk": 3.5817,
+   "surface_distance": 3.6633,
+   "projected_bbox": [
+    294.4,
+    91.7,
+    309.3,
+    100.2
+   ]
+  },
+  {
+   "name": "chrome_bonnet_ok",
+   "parent": "bonnet_ok",
+   "materials": [
+    "M_Trim_v4"
+   ],
+   "world_bounds": [
+    2.1495,
+    -0.0476,
+    0.6415,
+    2.2298,
+    0.0476,
+    0.6875
+   ],
+   "gap_to_trunk": 3.6526,
+   "surface_distance": 3.7339,
+   "projected_bbox": [
+    265.5,
+    58.7,
+    273.5,
+    65.8
+   ]
+  }
+ ]
+}

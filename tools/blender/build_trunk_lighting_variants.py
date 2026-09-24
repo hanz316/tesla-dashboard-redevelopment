@@ -44,6 +44,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import taillight_states as states  # noqa: E402
 import taillight_system as tail  # noqa: E402
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import panel_assembly as assembly  # noqa: E402
+
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 CANVAS = (356, 236)
 TRUNK_OBJECT = "boot"
@@ -66,7 +69,11 @@ def parse_args():
     ap.add_argument("--out", required=True)
     ap.add_argument("--contract", required=True)
     ap.add_argument("--report", required=True)
-    ap.add_argument("--samples", type=int, default=16)
+    ap.add_argument("--samples", type=int, default=32,
+                    help="must match build_vehicle_state_assets.py: a "
+                         "different sampling count makes the whole car differ "
+                         "slightly, and that difference ends up inside the "
+                         "delta layer")
     ap.add_argument("--verify-dir", default=None,
                     help="where to write the direct reference renders")
     return ap.parse_args(argv)
@@ -159,6 +166,8 @@ def main():
     if trunk is None:
         sys.exit(f"no {TRUNK_OBJECT} in the master")
     rest = trunk.matrix_world.copy()
+    rests = assembly.rest_matrices(bpy, TRUNK_PANEL, TRUNK_OBJECT)
+    print(f"[trunk-lighting] assembly members: {len(rests)}")
     pivot = rest.translation.copy()
     lights = tail.channel_materials()
     base_lens = None
@@ -175,6 +184,25 @@ def main():
 
     # ---- trunk animation frames, per indicator channel -------------------
     variants = {}
+    # The unlit frames are rendered HERE, in the same pass as the lit variants.
+    # They used to come from build_vehicle_state_assets.py, and two render
+    # passes of the same car differ by a few pixels of denoiser noise across the
+    # whole body; baked into a delta layer that shows up as specks on the
+    # finished screen. One pass, one noise floor, and the only difference
+    # between the frames is the lamp.
+    plain_dir = os.path.join(args.out, TRUNK_PANEL)
+    os.makedirs(plain_dir, exist_ok=True)
+    apply_state("OFF", parts, (lights, lens_states))
+    plain_written = []
+    for i in range(FRAMES):
+        t = i / float(FRAMES - 1)
+        assembly.set_progress(bpy, TRUNK_PANEL, TRUNK_OBJECT, rests,
+                              ease_open(t) * OPEN_ANGLE_DEG, "Y", rotate_about)
+        path = os.path.join(plain_dir, f"{i:03d}.png")
+        render(scene, path)
+        plain_written.append(os.path.getsize(path))
+    print(f"[trunk-lighting] plain: {FRAMES} frames, "
+          f"{sum(plain_written) / 1024.0:.0f} KB (unlit, same pass as variants)")
     for name, state in VARIANT_STATE.items():
         directory = os.path.join(args.out, TRUNK_PANEL, name)
         os.makedirs(directory, exist_ok=True)
@@ -182,9 +210,11 @@ def main():
         written = []
         for i in range(FRAMES):
             t = i / float(FRAMES - 1)
-            trunk.matrix_world = rotate_about(
-                pivot, ease_open(t) * OPEN_ANGLE_DEG) @ rest
-            bpy.context.view_layer.update()
+            # The lid's lamps, plate and trim move with the lid: one transform
+            # for the whole assembly, from panel_assembly.py.
+            assembly.set_progress(bpy, TRUNK_PANEL, TRUNK_OBJECT, rests,
+                                  ease_open(t) * OPEN_ANGLE_DEG, "Y",
+                                  rotate_about)
             path = os.path.join(directory, f"{i:03d}.png")
             render(scene, path)
             written.append(os.path.getsize(path))
@@ -206,9 +236,9 @@ def main():
             apply_state(state, parts, (lights, lens_states))
             for i in VERIFY_POSITIONS:
                 t = i / float(FRAMES - 1)
-                trunk.matrix_world = rotate_about(
-                    pivot, ease_open(t) * OPEN_ANGLE_DEG) @ rest
-                bpy.context.view_layer.update()
+                assembly.set_progress(bpy, TRUNK_PANEL, TRUNK_OBJECT, rests,
+                                      ease_open(t) * OPEN_ANGLE_DEG, "Y",
+                                      rotate_about)
                 path = os.path.join(args.verify_dir,
                                     f"{label}_{i:03d}.png")
                 render(scene, path)
@@ -221,8 +251,7 @@ def main():
             print(f"[trunk-lighting] verify {label}: "
                   f"{len(VERIFY_POSITIONS)} reference renders")
         apply_state("OFF", parts, (lights, lens_states))
-    trunk.matrix_world = rest
-    bpy.context.view_layer.update()
+    assembly.restore(bpy, rests)
 
     contract = {
         "schema": "vehicle-state-moving-lighting v1",

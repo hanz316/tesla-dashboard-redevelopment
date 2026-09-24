@@ -19,19 +19,19 @@
           "dir": "trunk/ind_left",
           "frames": 14,
           "state": "LEFT_INDICATOR",
-          "png_bytes_total": 943313
+          "png_bytes_total": 956945
         },
         "ind_right": {
           "dir": "trunk/ind_right",
           "frames": 14,
           "state": "RIGHT_INDICATOR",
-          "png_bytes_total": 944489
+          "png_bytes_total": 957021
         },
         "ind_both": {
           "dir": "trunk/ind_both",
           "frames": 14,
           "state": "HAZARD",
-          "png_bytes_total": 944896
+          "png_bytes_total": 957945
         }
       },
       "hazard": "own variant (ind_both): drawing two full-vehicle variants in sequence would let the second one's unlit pixels overwrite the first one's lit lamp",

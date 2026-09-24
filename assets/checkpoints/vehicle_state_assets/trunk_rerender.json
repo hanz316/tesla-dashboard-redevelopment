@@ -1,0 +1,435 @@
+{
+  "canvas": [
+    356,
+    236
+  ],
+  "camera": {
+    "name": "Camera_Horizon",
+    "type": "ORTHO",
+    "ortho_scale": 5.55,
+    "location": [
+      -5.3,
+      -4.55,
+      3.85
+    ],
+    "target": [
+      0.0,
+      0.0,
+      0.62
+    ]
+  },
+  "samples": 32,
+  "contract": "assets/manifest.json (v6-vehicle v2)",
+  "assets": [],
+  "panels": {
+    "trunk": {
+      "hinge": [
+        -1.51915,
+        0.00023,
+        1.20405
+      ],
+      "bbox_min": [
+        -2.3133,
+        -0.7407,
+        0.6093
+      ],
+      "bbox_max": [
+        -1.503,
+        0.7407,
+        1.2074
+      ],
+      "hinge_from_nearest_edge_m": 0.01612,
+      "panel_extent_along_x_m": 0.8102,
+      "hinge_kind": "lateral hinge at an X edge (top of the panel)",
+      "hinge_on_edge": true,
+      "sign": 1.0,
+      "far_edge_travel_m": 0.90414,
+      "rule": "outward |y| for doors, upward z for hood/boot",
+      "object": "boot",
+      "axis": "Y",
+      "open_angle_deg": 55.0,
+      "frames": 14,
+      "fps": 24,
+      "open_duration_s": 0.542,
+      "close_duration_s": 0.472,
+      "easing": "ease_in_out_cubic (open); the close animation plays the same frames backwards at its own duration",
+      "assembly_members": [
+        "CavitySrc_LEFT:light_breake:0",
+        "CavitySrc_RIGHT:light_breake:1",
+        "Cavity_LEFT:rear_lightsl:0_6.0mm",
+        "Cavity_RIGHT:rear_lightsr:0_6.0mm",
+        "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s0",
+        "TailGuide_LEFT:rear_lightsl:0_6.0mm_rounded_rect_0.8_run0_s1",
+        "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s0",
+        "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s1",
+        "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s2",
+        "TailGuide_RIGHT:rear_lightsr:0_6.0mm_rounded_rect_0.45_run0_s3",
+        "_plastic_black_124",
+        "back_chrome_light",
+        "black_boot",
+        "boot",
+        "breake_int",
+        "chrome.001",
+        "chrome_light",
+        "light_breake",
+        "light_turn_lr_boot",
+        "light_turn_rr_boot",
+        "lightrevese_boot",
+        "platnomor",
+        "rear_lightsl",
+        "rear_lightsr",
+        "tembus red",
+        "tembus_boot_ok"
+      ],
+      "rigidity": {
+        "why": "child_now @ rest_child^-1 must equal the panel's own transform for every member, at every progress",
+        "max_error": 7.152557373046875e-07,
+        "worst_member": "boot",
+        "samples": [
+          {
+            "t": 0.0,
+            "max_error": 2.0865780925305444e-07,
+            "worst_member": "tembus_boot_ok"
+          },
+          {
+            "t": 0.077,
+            "max_error": 5.066394805908203e-07,
+            "worst_member": "boot"
+          },
+          {
+            "t": 0.154,
+            "max_error": 2.1047890186309814e-07,
+            "worst_member": "black_boot"
+          },
+          {
+            "t": 0.231,
+            "max_error": 2.60770320892334e-07,
+            "worst_member": "tembus_boot_ok"
+          },
+          {
+            "t": 0.308,
+            "max_error": 3.8743019104003906e-07,
+            "worst_member": "black_boot"
+          },
+          {
+            "t": 0.385,
+            "max_error": 2.980232238769531e-07,
+            "worst_member": "boot"
+          },
+          {
+            "t": 0.462,
+            "max_error": 2.384185791015625e-07,
+            "worst_member": "tembus_boot_ok"
+          },
+          {
+            "t": 0.538,
+            "max_error": 5.364418029785156e-07,
+            "worst_member": "tembus_boot_ok"
+          },
+          {
+            "t": 0.615,
+            "max_error": 4.76837158203125e-07,
+            "worst_member": "tembus_boot_ok"
+          },
+          {
+            "t": 0.692,
+            "max_error": 4.76837158203125e-07,
+            "worst_member": "tembus_boot_ok"
+          },
+          {
+            "t": 0.769,
+            "max_error": 4.76837158203125e-07,
+            "worst_member": "boot"
+          },
+          {
+            "t": 0.846,
+            "max_error": 1.1920928955078125e-07,
+            "worst_member": "boot"
+          },
+          {
+            "t": 0.923,
+            "max_error": 1.1920928955078125e-07,
+            "worst_member": "boot"
+          },
+          {
+            "t": 1.0,
+            "max_error": 7.152557373046875e-07,
+            "worst_member": "boot"
+          }
+        ]
+      },
+      "png_bytes_total": 956659,
+      "decoded_rgba_bytes_total": 4704896,
+      "decoded_rgba_bytes_per_frame": 336064,
+      "lighting_overlay_screen_affine_per_frame": [
+        {
+          "a": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "b": [
+            -0.0,
+            1.0,
+            0.0
+          ],
+          "verification": {
+            "points_checked": 65,
+            "max_error_px": 2.8e-05,
+            "exact": true
+          },
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows; maps the CLOSED screen position of a trunk-attached point to its position at this frame's opening angle"
+        },
+        {
+          "a": [
+            1.00013601,
+            0.00061737,
+            -0.06805
+          ],
+          "b": [
+            -0.00065442,
+            0.99884651,
+            0.27614
+          ],
+          "verification": {
+            "points_checked": 65,
+            "max_error_px": 0.058161,
+            "exact": false
+          },
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows; maps the CLOSED screen position of a trunk-attached point to its position at this frame's opening angle"
+        },
+        {
+          "a": [
+            1.00100991,
+            0.00493642,
+            -0.54023
+          ],
+          "b": [
+            -0.00540546,
+            0.99084261,
+            2.19977
+          ],
+          "verification": {
+            "points_checked": 65,
+            "max_error_px": 0.460859,
+            "exact": false
+          },
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows; maps the CLOSED screen position of a trunk-attached point to its position at this frame's opening angle"
+        },
+        {
+          "a": [
+            1.00270096,
+            0.01663856,
+            -1.78687
+          ],
+          "b": [
+            -0.01968387,
+            0.96967537,
+            7.34577
+          ],
+          "verification": {
+            "points_checked": 65,
+            "max_error_px": 1.517489,
+            "exact": false
+          },
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows; maps the CLOSED screen position of a trunk-attached point to its position at this frame's opening angle"
+        },
+        {
+          "a": [
+            1.0031254,
+            0.03937676,
+            -4.08038
+          ],
+          "b": [
+            -0.05278079,
+            0.93062463,
+            17.05201
+          ],
+          "verification": {
+            "points_checked": 65,
+            "max_error_px": 3.434566,
+            "exact": false
+          },
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows; maps the CLOSED screen position of a trunk-attached point to its position at this frame's opening angle"
+        },
+        {
+          "a": [
+            0.9955402,
+            0.0769538,
+            -7.55167
+          ],
+          "b": [
+            -0.12014663,
+            0.87175811,
+            32.13785
+          ],
+          "verification": {
+            "points_checked": 65,
+            "max_error_px": 6.247672,
+            "exact": false
+          },
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows; maps the CLOSED screen position of a trunk-attached point to its position at this frame's opening angle"
+        },
+        {
+          "a": [
+            0.96529998,
+            0.13408941,
+            -12.31429
+          ],
+          "b": [
+            -0.24231434,
+            0.79451004,
+            52.47376
+          ],
+          "verification": {
+            "points_checked": 65,
+            "max_error_px": 9.806589,
+            "exact": false
+          },
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows; maps the CLOSED screen position of a trunk-attached point to its position at this frame's opening angle"
+        },
+        {
+          "a": [
+            0.89519155,
+            0.21110347,
+            -18.36611
+          ],
+          "b": [
+            -0.42010958,
+            0.70829422,
+            74.98725
+          ],
+          "verification": {
+            "points_checked": 65,
+            "max_error_px": 13.499497,
+            "exact": false
+          },
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows; maps the CLOSED screen position of a trunk-attached point to its position at this frame's opening angle"
+        },
+        {
+          "a": [
+            0.82109332,
+            0.19928195,
+            -7.44923
+          ],
+          "b": [
+            -0.55869671,
+            0.53086465,
+            114.78364
+          ],
+          "verification": {
+            "points_checked": 65,
+            "max_error_px": 13.78163,
+            "exact": false
+          },
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows; maps the CLOSED screen position of a trunk-attached point to its position at this frame's opening angle"
+        },
+        {
+          "a": [
+            0.75512364,
+            0.23616432,
+            -9.34201
+          ],
+          "b": [
+            -0.65952353,
+            0.48926272,
+            124.61192
+          ],
+          "verification": {
+            "points_checked": 65,
+            "max_error_px": 14.762283,
+            "exact": false
+          },
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows; maps the CLOSED screen position of a trunk-attached point to its position at this frame's opening angle"
+        },
+        {
+          "a": [
+            0.75978239,
+            -0.13208291,
+            76.22968
+          ],
+          "b": [
+            -0.65213695,
+            -0.07410399,
+            249.68559
+          ],
+          "verification": {
+            "points_checked": 65,
+            "max_error_px": 13.775819,
+            "exact": false
+          },
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows; maps the CLOSED screen position of a trunk-attached point to its position at this frame's opening angle"
+        },
+        {
+          "a": [
+            0.73092836,
+            -0.12443871,
+            76.96643
+          ],
+          "b": [
+            -0.69058744,
+            -0.08010524,
+            251.55298
+          ],
+          "verification": {
+            "points_checked": 65,
+            "max_error_px": 13.692972,
+            "exact": false
+          },
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows; maps the CLOSED screen position of a trunk-attached point to its position at this frame's opening angle"
+        },
+        {
+          "a": [
+            0.72011409,
+            -0.12157375,
+            77.22673
+          ],
+          "b": [
+            -0.70453776,
+            -0.08229013,
+            252.20981
+          ],
+          "verification": {
+            "points_checked": 65,
+            "max_error_px": 13.662045,
+            "exact": false
+          },
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows; maps the CLOSED screen position of a trunk-attached point to its position at this frame's opening angle"
+        },
+        {
+          "a": [
+            0.71856208,
+            -0.12116269,
+            77.26343
+          ],
+          "b": [
+            -0.70652066,
+            -0.08260098,
+            252.30223
+          ],
+          "verification": {
+            "points_checked": 65,
+            "max_error_px": 13.65763,
+            "exact": false
+          },
+          "note": "screen (u,v) = A * (x,y) + c, in render pixels, bottom-up rows; maps the CLOSED screen position of a trunk-attached point to its position at this frame's opening angle"
+        }
+      ],
+      "carries_lighting": true
+    }
+  },
+  "sequences": {
+    "vehicle.trunk": {
+      "dir": "trunk",
+      "frames": 14,
+      "fps": 24,
+      "mode": "to_state"
+    }
+  },
+  "overlays": {},
+  "totals": {
+    "png_bytes": 956659,
+    "assets": 0,
+    "panels": 1
+  }
+}

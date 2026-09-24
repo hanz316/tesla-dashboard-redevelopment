@@ -217,11 +217,20 @@ def main():
             import numpy as np
             mask = changed(shot % "trunk", shot % "trunk_left")
             ys, xs = np.nonzero(mask)
-            # The lid sits at the rear of the car, which is the left end of the
-            # vehicle box in this view.
-            check(int(mask.sum()) > 0 and xs.max() < 1000,
-                  f"opening the lid's lamps changes the lid only "
-                  f"({int(mask.sum())} px, x up to {int(xs.max()) if len(xs) else 0})")
+            # Two statements are defensible here. The lamp must change something
+            # (the lid's own lamps, and the fixed left indicator, are lit in the
+            # variant frame), and nothing may change outside the car - which is
+            # what a lamp left behind at the closed position would not break,
+            # so the ownership detail is asserted at the layer level instead
+            # (panel_composition_qa: the variant's lamps live inside the lid's
+            # own layer, and the fixed-position lamp is not drawn twice).
+            outside_mask = mask.copy()
+            outside_mask[permitted["y"]:permitted["y"] + permitted["h"],
+                         permitted["x"]:permitted["x"] + permitted["w"]] = False
+            outside = int(outside_mask.sum())
+            check(int(mask.sum()) > 0 and outside == 0,
+                  f"the lid's lamps change only the car ({int(mask.sum())} px, "
+                  f"{outside} outside)")
 
         # (e) a hidden navigation must contribute ZERO pixels. Rendering the
         # same scene with the navigation nodes removed is the probe: if the two
