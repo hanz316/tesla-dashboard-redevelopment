@@ -123,7 +123,7 @@ def rail_track(size, box, segments, colours):
     return track
 
 
-def cluster_backing(size, centre, radii, colour, alpha):
+def _unused_cluster_backing(size, centre, radii, colour, alpha):
     """A soft dark pool behind a cluster. Daylight puts bright environment
     behind white-on-dark information; this keeps the information on a
     controlled surface without turning the screen into glass panels."""
@@ -176,16 +176,10 @@ def main():
                            dial["radius"] * 1.05, (120, 205, 225), 16)
     save(numeral, "horizon_v5_numeral_glow.png")
 
-    dial_backing = cluster_backing(
-        (width, height), (dial["cx"], dial["cy"] + dial["radius"] * 0.05),
-        (dial["radius"] * 1.55, dial["radius"] * 1.35), (5, 8, 13), 214)
-    save(dial_backing, "horizon_v5_dial_backing.png", margin=4)
-
-    # The right-hand module: one surface for RANGE / SOC / rail / POWER instead
-    # of four widgets competing with a bright sky.
-    energy_backing = cluster_backing(
-        (width, height), (1500.0, 240.0), (250.0, 210.0), (5, 8, 13), 176)
-    save(energy_backing, "horizon_v5_energy_backing.png", margin=4)
+    # No cluster backplates are baked any more. The daylight solution is an
+    # under-stroke on the arc plus environment-side contrast, because a support
+    # surface large enough to fix contrast by area is large enough to be seen,
+    # and the human review called the two ellipses black holes.
 
     rail = json.load(open(args.measurements))["energy_rail"]["bbox"]
     rail_box = (panel_x(rail[0]), panel_y(rail[1]),
@@ -211,8 +205,6 @@ def main():
         "arc_degrees": [ARC_START_DEG, ARC_END_DEG],
         "content_scale": CONTENT_SCALE,
         "assets": {
-            "dial_backing": "assets/ui/horizon_v5_dial_backing.png",
-            "energy_backing": "assets/ui/horizon_v5_energy_backing.png",
             "arc_glow": "assets/ui/horizon_v5_arc_glow.png",
             "numeral_glow": "assets/ui/horizon_v5_numeral_glow.png",
             "rail_track": "assets/ui/horizon_v5_rail_track.png",

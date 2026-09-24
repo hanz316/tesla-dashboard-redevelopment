@@ -53,6 +53,10 @@ SEMANTIC_COLOURS = {
     "warning": "#D8A657",
     "ready": "#5FC98A",
     "ready_dim": "#3E8F62",
+    # READY is semantic (it keeps its meaning) but it does not keep its exact
+    # value: on a bright day the night green disappears, so daylight uses a
+    # deeper member of the same hue.
+    "on_road_status": "#5FC98A",
 }
 
 # Only the informational palette moves between phases: it is about legibility.
@@ -67,6 +71,8 @@ PALETTES = {
         "glass_fill": "#071017", "glass_border": "#12202A",
         "glass_top_edge": "#9FB6C4", "glass_bottom_shade": "#02060A",
         "rule": "#E9EEF3",
+        "on_road_label": "#C3CDD7",
+        "on_road_value": "#E9EEF3",
     },
     "dawn": {
         "primary_text": "#F2EDE6", "secondary_text": "#D6CBC0",
@@ -76,6 +82,7 @@ PALETTES = {
         "glass_fill": "#141119", "glass_border": "#2A2530",
         "glass_top_edge": "#C9B6A6", "glass_bottom_shade": "#0A0809",
         "rule": "#F2EDE6",
+        "": "#D6CBC0",
     },
     "day": {
         # Measured, not chosen: the first daylight palette scored 2.4:1 for the
@@ -91,6 +98,7 @@ PALETTES = {
         # In daylight the separator sits on the dark road, so it has to be the
         # light value; the rule is a graphic, not small text.
         "rule": "#B9C8D2",
+        "": "#D9E3EA",
     },
     "dusk": {
         "primary_text": "#F4E9DC", "secondary_text": "#D9C9B6",
@@ -100,8 +108,25 @@ PALETTES = {
         "glass_fill": "#17131A", "glass_border": "#2E2732",
         "glass_top_edge": "#D6B795", "glass_bottom_shade": "#0B0809",
         "rule": "#F4E9DC",
+        "": "#D9C9B6",
     },
 }
+
+
+# Information that always sits on the dark road band (km/h, the gear row, the
+# READY/CHILL line, SOC and POWER) needs a light value in every phase: in
+# daylight a dark token disappears against the asphalt. Declared once here so a
+# new phase cannot silently miss it.
+ON_ROAD_COLOURS = {
+    "night": ("#C3CDD7", "#E9EEF3"),
+    "dawn": ("#D6CBC0", "#F2EDE6"),
+    "day": ("#C7D3DB", "#E4ECF1"),
+    "dusk": ("#D9C9B6", "#F4E9DC"),
+}
+for _phase, (_label, _value) in ON_ROAD_COLOURS.items():
+    PALETTES.setdefault(_phase, {})
+    PALETTES[_phase]["on_road_label"] = _label
+    PALETTES[_phase]["on_road_value"] = _value
 
 
 def smoothstep(edge0, edge1, value):
@@ -225,7 +250,8 @@ def palette(weights):
     for name in ("primary_text", "secondary_text", "muted_text", "dim_text",
                  "accent", "accent_bright", "accent_dim", "rail_lit",
                  "glass_fill", "glass_border", "glass_top_edge",
-                 "glass_bottom_shade", "rule"):
+                 "glass_bottom_shade", "rule", "on_road_label",
+                 "on_road_value"):
         red = green = blue = 0.0
         for phase, weight in weights.items():
             if weight <= 0.0:

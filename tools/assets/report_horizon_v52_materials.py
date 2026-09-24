@@ -162,6 +162,69 @@ def vehicle_metrics(path, hidden):
     return result
 
 
+def background_only_frame(phase):
+    """Render the phase with the text and vector HUD removed.
+
+    A support surface is a *background* change, so it has to be measured on a
+    frame that has no ink in it: comparing the finished frame with the plate
+    counts every dark glyph as if it were a panel.
+    """
+    import subprocess
+    scene_path = os.path.join(REPO, "scenes", "horizon_v5.scene")
+    preview = os.path.join(REPO, "tools", "preview", "scene_preview.py")
+    scratch = os.path.join(REPO, "assets", "checkpoints", "horizon_v5")
+    document = json.load(open(scene_path))
+    document["nodes"] = [node for node in document["nodes"]
+                         if node.get("type") not in ("text", "vector")]
+    stripped = os.path.join(scratch, f"_background_only_{phase}.scene")
+    with open(stripped, "w") as handle:
+        json.dump(document, handle)
+    name = f"_background_only_{phase}"
+    subprocess.run([sys.executable, preview, "--scene", stripped, "--state",
+                    "v5_neutral", "--out", scratch, "--out-name", name,
+                    "--environment-phase", phase], check=True,
+                   capture_output=True)
+    return os.path.join(scratch, name + ".png")
+
+
+def support_surface_metrics(phase, frame_path, plate):
+    """DAY_CLUSTER_SURFACE_DOMINANCE.
+
+    The human rejected the daylight solution because two large dark ellipses
+    read as holes pasted onto the dashboard. This measures exactly that failure:
+    how much of the frame is darkened relative to the environment plate, how
+    dark it gets, and how large the largest single supporting region is. A
+    readability treatment that is invisible at panel scale keeps all three
+    numbers small; a backplate cannot.
+    """
+    import numpy as np
+    from PIL import Image
+    if not os.path.isfile(frame_path):
+        return None
+    frame = np.asarray(Image.open(frame_path).convert("RGB")).astype(float)
+    background = np.asarray(Image.open(plate).convert("RGB")).astype(float)
+    drop = background.mean(axis=2) - frame.mean(axis=2)
+    # Only a real supporting surface counts: a few levels of darkening is the
+    # wet-road response, which belongs to the environment, while the rejected
+    # backplates were opaque ellipses that took 100+ levels out of a large area.
+    supported = drop > 40.0
+    # The car itself darkens its own footprint; the clusters are what is judged.
+    region = np.zeros(drop.shape, dtype=bool)
+    region[:, 240:700] = True
+    region[:, 1280:1720] = True
+    supported &= region
+    fraction = float(supported.sum()) / float(region.sum())
+    peak = float(drop[supported].max()) if supported.any() else 0.0
+    return {
+        "supported_area_fraction": round(fraction, 5),
+        "peak_darkening_levels": round(peak, 1),
+        "mean_darkening_levels": round(
+            float(drop[supported].mean()) if supported.any() else 0.0, 2),
+        "pass_rule": "supporting pixels (darkening > 40 levels) must be at "
+                     "most 2 % of the cluster regions",
+    }
+
+
 def reflection_metrics(phase, car_box, hidden):
     """How far and how strongly the car's own reflection reaches below it.
 
@@ -246,10 +309,16 @@ def main():
                         if record.get("state") == "base" and record.get("car_box"):
                             car_box = record["car_box"]
         entry["reflection"] = reflection_metrics(phase, car_box, hidden)
+        entry["support_surface"] = support_surface_metrics(
+            phase, background_only_frame(phase), plate)
         report["phases"][phase] = entry
         environment = entry["environment"]
         vehicle = entry.get("vehicle") or {}
         reflection = entry.get("reflection") or {}
+        surface = entry.get("support_surface") or {}
+        print(f"[v5.2] {phase:5s} support area "
+              f"{surface.get('supported_area_fraction')} peak "
+              f"{surface.get('peak_darkening_levels')}")
         print(f"[v5.2] {phase:5s} sky {environment['sky']:6.1f} "
               f"ground {environment['ground_near']:6.1f} "
               f"ratio {environment['ground_to_sky_ratio']:.2f} | terrain "

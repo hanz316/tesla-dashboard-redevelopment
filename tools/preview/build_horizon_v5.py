@@ -270,6 +270,9 @@ def build_tokens(measurements, ui_assets):
             "rail_lit": "#8FD8EE", "warning": "#D8A657", "critical": "#D8674F",
             "ready": "#5FC98A", "ready_dim": "#3E8F62",
             "throw": "#DCD8CC", "rule": "#E9EEF3",
+            "arc_underlay": "#03080C",
+            "on_road_label": "#C3CDD7", "on_road_value": "#E9EEF3",
+            "on_road_status": "#5FC98A",
         },
         "horizon_row": measurements["horizon"]["horizon_row"],
         "typography": {"tiers": {
@@ -356,16 +359,19 @@ def build_components(measurements, ui_assets, vehicle, alignment):
                             environment_opacity=dict(glow_backing)))
     components.append(baked("energy.rail.track", "horizon_v5_rail_track.png",
                             z=4, role="glow"))
-    # Daylight puts a bright environment behind the information, so each
-    # cluster gets a soft baked surface that fades in with the daylight. Zero at
-    # night: the accepted night look is unchanged.
-    backing = {"day": 1.0, "dawn": 0.40, "dusk": 0.40, "night": 0.0}
-    components.append(baked("cluster.dial.backing",
-                            "horizon_v5_dial_backing.png", z=9, role="glow",
-                            environment_opacity=dict(backing)))
-    components.append(baked("cluster.energy.backing",
-                            "horizon_v5_energy_backing.png", z=9, role="glow",
-                            environment_opacity=dict(backing)))
+    # Daylight legibility without a surface: a dark under-stroke one step wider
+    # than the arc it protects. The earlier solution was a large dark ellipse,
+    # which passed the contrast measurement and destroyed the composition - two
+    # black holes pasted onto the dashboard. An under-stroke costs no area at
+    # all, so the support is invisible at panel scale by construction.
+    components.append(vector("speed.arc.underlay", "arc",
+                             {"x": cx - radius, "y": cy - radius,
+                              "w": radius * 2, "h": radius * 2}, "arc_underlay",
+                             z=9, opacity=0.62, role="speed",
+                             cx=round(cx, 1), cy=round(cy, 1),
+                             radius=round(radius, 1),
+                             start_deg=ARC_START_DEG, end_deg=ARC_END_DEG,
+                             width_px=round(stroke * 2.6, 1)))
 
     # ---- LAYER 1: the vehicle ------------------------------------------
     layers = vehicle["layers"]
@@ -448,7 +454,7 @@ def build_components(measurements, ui_assets, vehicle, alignment):
                               "invalid_text": "\u2014", "role": "speed"}))
     components.append(text("speed.unit", aligned(box("speed_unit")), "left",
                            "BODY",
-                           "secondary_text", text="km/h", z=40, role="speed"))
+                           "on_road_label", text="km/h", z=40, role="speed"))
     for index, letter in enumerate(("P", "R", "N", "D")):
         bounds = box("gear_row")
         width = bounds["w"] / 4.0
@@ -458,7 +464,7 @@ def build_components(measurements, ui_assets, vehicle, alignment):
                        "y": bounds["y"], "w": round(width, 1),
                        "h": bounds["h"]},
             "align": "center", "font_token": "BODY",
-            "color_token": "secondary_text", "z": 40, "layer": "dynamic",
+            "color_token": "on_road_value", "z": 40, "layer": "dynamic",
             "text": letter, "role": "speed",
             "highlight_when_gear": letter,
             "highlight_color_token": "accent_bright",
@@ -473,11 +479,11 @@ def build_components(measurements, ui_assets, vehicle, alignment):
                            **{"binding": "temperature_primary",
                               "format": "{} \u00b0C", "invalid_text": "\u2014"}))
     components.append(text("driver.status", "driver_status", "left", "CAPTION",
-                           "ready_dim", z=40, role="driver",
+                           "on_road_status", z=40, role="driver",
                            **{"binding": "driver_status_text", "format": "{}",
                               "invalid_text": ""}))
     components.append(text("climate.status", "climate_status", "left",
-                           "CAPTION", "dim_text", text="CHILL", z=40,
+                           "CAPTION", "on_road_label", text="CHILL", z=40,
                            role="driver"))
     sign = box("speed_sign")
     components.append(vector("speedlimit.ring", "roundrect",
@@ -526,11 +532,11 @@ def build_components(measurements, ui_assets, vehicle, alignment):
                                      [trace["x"] + trace["w"],
                                       trace["y"] + trace["h"] * 0.62]]))
     components.append(text("energy.power", "power_value", "right", "BODY",
-                           "secondary_text", z=40, role="energy",
+                           "on_road_value", z=40, role="energy",
                            **{"binding": "battery_power", "format": "{} kW",
                               "invalid_text": "\u2014 kW"}))
     components.append(text("energy.power.label", "power_label", "right",
-                           "LABEL", "muted_text", text="POWER", z=40,
+                           "LABEL", "on_road_label", text="POWER", z=40,
                            role="energy"))
     rail = box("rail")
     segments = ui_assets["rail_segments_box"]
@@ -564,14 +570,14 @@ def build_components(measurements, ui_assets, vehicle, alignment):
                              visible_opacity=0.95,
                              progress={"binding": "actual_soc", "max": 100}))
     components.append(text("energy.soc", "soc_value", "left", "BODY",
-                           "secondary_text", z=40, role="energy",
+                           "on_road_value", z=40, role="energy",
                            **{"binding": "actual_soc", "format": "{}%",
                               "invalid_text": "\u2014 %"}))
     soc_box = box("soc_value")
     components.append(text("energy.soc.label",
                            {"x": soc_box["x"], "y": soc_box["y"] + soc_box["h"] + 2,
                             "w": 90, "h": 18}, "left", "LABEL",
-                           "muted_text", text="SOC", z=40, role="energy"))
+                           "on_road_label", text="SOC", z=40, role="energy"))
     components.append(text("top.clock", "clock", "right", "CAPTION",
                            "muted_text", z=40, source="clock", format="%H:%M",
                            role="driver"))

@@ -21,6 +21,7 @@ MATERIAL = os.path.join(REPO, "assets", "checkpoints", "horizon_v5",
                         "horizon_v52_material_metrics.json")
 MOTION = os.path.join(REPO, "assets", "checkpoints", "horizon_v5",
                       "horizon_v52_motion_gate.json")
+LAYOUT = os.path.join(REPO, "assets", "ui", "horizon_v5_layout.json")
 
 FAILURES = []
 
@@ -65,7 +66,41 @@ def main():
             check(environment["ground_near"] < environment["sky"],
                   f"{name}: the ground stays darker than the sky")
 
-        print("vehicle material, per environment")
+            print("daylight cluster surface (the rejected black-hole solution)")
+        for name in ("dawn", "day", "dusk", "night"):
+            surface = phases[name].get("support_surface")
+            if not surface:
+                continue
+            check(surface["supported_area_fraction"] <= 0.02,
+                  f"{name}: supporting surface covers "
+                  f"{surface['supported_area_fraction'] * 100:.2f}% of the "
+                  f"cluster regions (rule <= 2%)")
+            # A large surface is the failure; an isolated dark pixel belongs to
+            # the vehicle (which is allowed to be darker than the road).
+            if surface["supported_area_fraction"] > 0.005:
+                check(surface["peak_darkening_levels"] <= 90.0,
+                      f"{name}: a surface of "
+                      f"{surface['supported_area_fraction'] * 100:.2f}% darkens "
+                      f"by {surface['peak_darkening_levels']} levels")
+            else:
+                print(f"  note {name}: supporting area is "
+                      f"{surface['supported_area_fraction'] * 100:.2f}%, which "
+                      f"is the vehicle edge, not a surface")
+        layout_document = json.load(open(LAYOUT))
+        backplates = [component["id"] for component in layout_document["components"]
+                      if "backing" in component["id"]
+                      or "backing" in component.get("src", "")]
+        check(not backplates,
+              f"no cluster backplate exists in the layout ({backplates})")
+        leftovers = [name for name in ("horizon_v5_dial_backing.png",
+                                       "horizon_v5_energy_backing.png")
+                     if os.path.isfile(os.path.join(REPO, "assets", "ui", name))]
+        check(not leftovers,
+              f"the rejected backplate assets are gone ({leftovers})")
+
+    print("vehicle material, per environment")
+    if os.path.isfile(MATERIAL):
+        phases = json.load(open(MATERIAL))["phases"]
         for name in ("dawn", "day", "dusk", "night"):
             vehicle = phases[name].get("vehicle")
             if not vehicle:

@@ -92,6 +92,7 @@
    "vehicle.headlight"
   ],
   "LAYER_2_INSTRUMENT": [
+   "speed.arc.underlay",
    "speed.arc.track",
    "speed.arc.ticks",
    "speed.arc.active",
@@ -200,44 +201,26 @@
    "role": "glow"
   },
   {
-   "id": "cluster.dial.backing",
-   "kind": "image",
-   "src": "assets/ui/horizon_v5_dial_backing.png",
+   "id": "speed.arc.underlay",
+   "kind": "vector",
+   "shape": "arc",
    "bounds": {
-    "x": 225,
-    "y": 70,
-    "w": 367,
-    "h": 321
+    "x": 293.4487845303868,
+    "y": 109.060773480663,
+    "w": 230.85082872928174,
+    "h": 230.85082872928174
    },
+   "color_token": "arc_underlay",
    "z": 9,
    "layer": "static",
-   "role": "glow",
-   "environment_opacity": {
-    "day": 1.0,
-    "dawn": 0.4,
-    "dusk": 0.4,
-    "night": 0.0
-   }
-  },
-  {
-   "id": "cluster.energy.backing",
-   "kind": "image",
-   "src": "assets/ui/horizon_v5_energy_backing.png",
-   "bounds": {
-    "x": 1246,
-    "y": 26,
-    "w": 509,
-    "h": 429
-   },
-   "z": 9,
-   "layer": "static",
-   "role": "glow",
-   "environment_opacity": {
-    "day": 1.0,
-    "dawn": 0.4,
-    "dusk": 0.4,
-    "night": 0.0
-   }
+   "opacity": 0.62,
+   "role": "speed",
+   "cx": 408.9,
+   "cy": 224.5,
+   "radius": 115.4,
+   "start_deg": 135.0,
+   "end_deg": 360.0,
+   "width_px": 13.5
   },
   {
    "id": "vehicle.base",
@@ -860,7 +843,7 @@
    "z": 40,
    "layer": "dynamic",
    "font_token": "BODY",
-   "color_token": "secondary_text",
+   "color_token": "on_road_label",
    "text": "km/h",
    "role": "speed"
   },
@@ -875,7 +858,7 @@
    },
    "align": "center",
    "font_token": "BODY",
-   "color_token": "secondary_text",
+   "color_token": "on_road_value",
    "z": 40,
    "layer": "dynamic",
    "text": "P",
@@ -895,7 +878,7 @@
    },
    "align": "center",
    "font_token": "BODY",
-   "color_token": "secondary_text",
+   "color_token": "on_road_value",
    "z": 40,
    "layer": "dynamic",
    "text": "R",
@@ -915,7 +898,7 @@
    },
    "align": "center",
    "font_token": "BODY",
-   "color_token": "secondary_text",
+   "color_token": "on_road_value",
    "z": 40,
    "layer": "dynamic",
    "text": "N",
@@ -935,7 +918,7 @@
    },
    "align": "center",
    "font_token": "BODY",
-   "color_token": "secondary_text",
+   "color_token": "on_road_value",
    "z": 40,
    "layer": "dynamic",
    "text": "D",
@@ -998,7 +981,7 @@
    "z": 40,
    "layer": "dynamic",
    "font_token": "CAPTION",
-   "color_token": "ready_dim",
+   "color_token": "on_road_status",
    "role": "driver",
    "binding": "driver_status_text",
    "format": "{}",
@@ -1017,7 +1000,7 @@
    "z": 40,
    "layer": "dynamic",
    "font_token": "CAPTION",
-   "color_token": "dim_text",
+   "color_token": "on_road_label",
    "text": "CHILL",
    "role": "driver"
   },
@@ -1173,7 +1156,7 @@
    "z": 40,
    "layer": "dynamic",
    "font_token": "BODY",
-   "color_token": "secondary_text",
+   "color_token": "on_road_value",
    "role": "energy",
    "binding": "battery_power",
    "format": "{} kW",
@@ -1192,7 +1175,7 @@
    "z": 40,
    "layer": "dynamic",
    "font_token": "LABEL",
-   "color_token": "muted_text",
+   "color_token": "on_road_label",
    "text": "POWER",
    "role": "energy"
   },
@@ -1268,7 +1251,7 @@
    "z": 40,
    "layer": "dynamic",
    "font_token": "BODY",
-   "color_token": "secondary_text",
+   "color_token": "on_road_value",
    "role": "energy",
    "binding": "actual_soc",
    "format": "{}%",
@@ -1287,7 +1270,7 @@
    "z": 40,
    "layer": "dynamic",
    "font_token": "LABEL",
-   "color_token": "muted_text",
+   "color_token": "on_road_label",
    "text": "SOC",
    "role": "energy"
   },

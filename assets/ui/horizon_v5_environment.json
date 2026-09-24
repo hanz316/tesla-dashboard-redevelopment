@@ -124,7 +124,9 @@
    "glass_border": "#12202A",
    "glass_top_edge": "#9FB6C4",
    "glass_bottom_shade": "#02060A",
-   "rule": "#E9EEF3"
+   "rule": "#E9EEF3",
+   "on_road_label": "#C3CDD7",
+   "on_road_value": "#E9EEF3"
   },
   "dawn": {
    "primary_text": "#F2EDE6",
@@ -139,7 +141,10 @@
    "glass_border": "#2A2530",
    "glass_top_edge": "#C9B6A6",
    "glass_bottom_shade": "#0A0809",
-   "rule": "#F2EDE6"
+   "rule": "#F2EDE6",
+   "": "#D6CBC0",
+   "on_road_label": "#D6CBC0",
+   "on_road_value": "#F2EDE6"
   },
   "day": {
    "primary_text": "#05090D",
@@ -154,7 +159,10 @@
    "glass_border": "#A9B6C0",
    "glass_top_edge": "#FFFFFF",
    "glass_bottom_shade": "#7C8A95",
-   "rule": "#B9C8D2"
+   "rule": "#B9C8D2",
+   "": "#D9E3EA",
+   "on_road_label": "#C7D3DB",
+   "on_road_value": "#E4ECF1"
   },
   "dusk": {
    "primary_text": "#F4E9DC",
@@ -169,14 +177,18 @@
    "glass_border": "#2E2732",
    "glass_top_edge": "#D6B795",
    "glass_bottom_shade": "#0B0809",
-   "rule": "#F4E9DC"
+   "rule": "#F4E9DC",
+   "": "#D9C9B6",
+   "on_road_label": "#D9C9B6",
+   "on_road_value": "#F4E9DC"
   }
  },
  "semantic_colours_fixed": {
   "critical": "#D8674F",
   "warning": "#D8A657",
   "ready": "#5FC98A",
-  "ready_dim": "#3E8F62"
+  "ready_dim": "#3E8F62",
+  "on_road_status": "#5FC98A"
  },
  "memory": {
   "resident_plates": 2,

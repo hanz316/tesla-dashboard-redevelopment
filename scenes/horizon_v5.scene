@@ -73,26 +73,19 @@
    "src": "assets/ui/horizon_v5_rail_track.png"
   },
   {
-   "id": "cluster.dial.backing",
-   "type": "image",
+   "id": "speed.arc.underlay",
+   "type": "vector",
+   "shape": "arc",
    "z": 9,
    "layer": "static",
-   "x": 225,
-   "y": 70,
-   "width": 367,
-   "height": 321,
-   "src": "assets/ui/horizon_v5_dial_backing.png"
-  },
-  {
-   "id": "cluster.energy.backing",
-   "type": "image",
-   "z": 9,
-   "layer": "static",
-   "x": 1246,
-   "y": 26,
-   "width": 509,
-   "height": 429,
-   "src": "assets/ui/horizon_v5_energy_backing.png"
+   "cx": 408.9,
+   "cy": 224.5,
+   "radius": 115.4,
+   "start_deg": 135.0,
+   "end_deg": 360.0,
+   "width_px": 13.5,
+   "color": "#03080C",
+   "opacity": 0.62
   },
   {
    "id": "vehicle.base",
@@ -730,7 +723,7 @@
    "bold": false,
    "tracking": 0.6,
    "align": "center",
-   "color": "#C3CDD7",
+   "color": "#E9EEF3",
    "text": "P",
    "color_when": [
     {
@@ -779,7 +772,7 @@
    "bold": false,
    "tracking": 0.6,
    "align": "center",
-   "color": "#C3CDD7",
+   "color": "#E9EEF3",
    "text": "R",
    "color_when": [
     {
@@ -828,7 +821,7 @@
    "bold": false,
    "tracking": 0.6,
    "align": "center",
-   "color": "#C3CDD7",
+   "color": "#E9EEF3",
    "text": "N",
    "color_when": [
     {
@@ -877,7 +870,7 @@
    "bold": false,
    "tracking": 0.6,
    "align": "center",
-   "color": "#C3CDD7",
+   "color": "#E9EEF3",
    "text": "D",
    "color_when": [
     {
@@ -977,7 +970,7 @@
    "bold": false,
    "tracking": 1.0,
    "align": "left",
-   "color": "#3E8F62",
+   "color": "#5FC98A",
    "bind": "driver_status_text",
    "format": "{}",
    "invalid_text": ""
@@ -995,7 +988,7 @@
    "bold": false,
    "tracking": 1.0,
    "align": "left",
-   "color": "#5E6875",
+   "color": "#C3CDD7",
    "text": "CHILL"
   },
   {
@@ -1155,7 +1148,7 @@
    "bold": false,
    "tracking": 0.6,
    "align": "right",
-   "color": "#C3CDD7",
+   "color": "#E9EEF3",
    "bind": "battery_power",
    "format": "{} kW",
    "invalid_text": "— kW"
@@ -1173,7 +1166,7 @@
    "bold": false,
    "tracking": 3.0,
    "align": "right",
-   "color": "#8792A0",
+   "color": "#C3CDD7",
    "text": "POWER"
   },
   {
@@ -1257,7 +1250,7 @@
    "bold": false,
    "tracking": 0.6,
    "align": "left",
-   "color": "#C3CDD7",
+   "color": "#E9EEF3",
    "bind": "actual_soc",
    "format": "{}%",
    "invalid_text": "— %"
@@ -1275,7 +1268,7 @@
    "bold": false,
    "tracking": 3.0,
    "align": "left",
-   "color": "#8792A0",
+   "color": "#C3CDD7",
    "text": "SOC"
   },
   {

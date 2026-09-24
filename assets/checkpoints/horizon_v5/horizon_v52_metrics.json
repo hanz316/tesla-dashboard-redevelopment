@@ -50,6 +50,12 @@
      "mean_magnitude": 3.14,
      "peak_magnitude": 69.0,
      "lit_row_fraction": 0.836
+    },
+    "support_surface": {
+     "supported_area_fraction": 0.00027,
+     "peak_darkening_levels": 194.7,
+     "mean_darkening_levels": 102.29,
+     "pass_rule": "supporting pixels (darkening > 40 levels) must be at most 2 % of the cluster regions"
     }
    },
    "day": {
@@ -90,6 +96,12 @@
      "mean_magnitude": 2.6,
      "peak_magnitude": 65.0,
      "lit_row_fraction": 0.769
+    },
+    "support_surface": {
+     "supported_area_fraction": 0.01433,
+     "peak_darkening_levels": 73.3,
+     "mean_darkening_levels": 52.42,
+     "pass_rule": "supporting pixels (darkening > 40 levels) must be at most 2 % of the cluster regions"
     }
    },
    "dusk": {
@@ -130,6 +142,12 @@
      "mean_magnitude": 3.13,
      "peak_magnitude": 73.0,
      "lit_row_fraction": 0.843
+    },
+    "support_surface": {
+     "supported_area_fraction": 0.00026,
+     "peak_darkening_levels": 198.0,
+     "mean_darkening_levels": 109.49,
+     "pass_rule": "supporting pixels (darkening > 40 levels) must be at most 2 % of the cluster regions"
     }
    },
    "night": {
@@ -170,6 +188,12 @@
      "mean_magnitude": 3.38,
      "peak_magnitude": 90.0,
      "lit_row_fraction": 0.896
+    },
+    "support_surface": {
+     "supported_area_fraction": 0.00025,
+     "peak_darkening_levels": 199.7,
+     "mean_darkening_levels": 117.89,
+     "pass_rule": "supporting pixels (darkening > 40 levels) must be at most 2 % of the cluster regions"
     }
    }
   }
