@@ -67,19 +67,19 @@
  "accent_hue": 148,
  "vehicle": {
   "bbox": [
-   787,
-   195,
-   1469,
-   489
+   788,
+   194,
+   1380,
+   486
   ],
-  "visible_width": 682,
-  "visible_height": 294,
-  "ground_contact_row": 489,
-  "centre_x": 1128.0,
-  "pixels": 100731,
-  "width_fraction": 0.314,
-  "height_fraction": 0.4061,
-  "area_fraction": 0.0641
+  "visible_width": 592,
+  "visible_height": 292,
+  "ground_contact_row": 486,
+  "centre_x": 1084.0,
+  "pixels": 98569,
+  "width_fraction": 0.2726,
+  "height_fraction": 0.4033,
+  "area_fraction": 0.0627
  },
  "arc": {
   "cx": 241.4,

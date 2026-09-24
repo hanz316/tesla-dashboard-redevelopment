@@ -192,10 +192,10 @@
    "kind": "image",
    "src": "assets/rendered/vehicle/horizon_v5/layer/base.png",
    "bounds": {
-    "x": 728,
-    "y": 99,
-    "w": 452,
-    "h": 381
+    "x": 732,
+    "y": 101,
+    "w": 510,
+    "h": 379
    },
    "z": 20,
    "layer": "dynamic",
@@ -208,10 +208,10 @@
    "kind": "image",
    "src": "assets/rendered/vehicle/horizon_v5/layer/running.png",
    "bounds": {
-    "x": 728,
-    "y": 99,
-    "w": 452,
-    "h": 381
+    "x": 732,
+    "y": 103,
+    "w": 512,
+    "h": 377
    },
    "z": 21,
    "layer": "dynamic",
@@ -229,10 +229,10 @@
    "kind": "image",
    "src": "assets/rendered/vehicle/horizon_v5/layer/brake.png",
    "bounds": {
-    "x": 728,
-    "y": 99,
-    "w": 452,
-    "h": 381
+    "x": 732,
+    "y": 103,
+    "w": 512,
+    "h": 377
    },
    "z": 22,
    "layer": "dynamic",
@@ -250,10 +250,10 @@
    "kind": "image",
    "src": "assets/rendered/vehicle/horizon_v5/layer/indicator_left.png",
    "bounds": {
-    "x": 728,
-    "y": 99,
-    "w": 452,
-    "h": 381
+    "x": 732,
+    "y": 103,
+    "w": 512,
+    "h": 377
    },
    "z": 23,
    "layer": "dynamic",
@@ -271,10 +271,10 @@
    "kind": "image",
    "src": "assets/rendered/vehicle/horizon_v5/layer/indicator_right.png",
    "bounds": {
-    "x": 728,
-    "y": 99,
-    "w": 452,
-    "h": 381
+    "x": 732,
+    "y": 103,
+    "w": 512,
+    "h": 377
    },
    "z": 24,
    "layer": "dynamic",
@@ -292,10 +292,10 @@
    "kind": "image",
    "src": "assets/rendered/vehicle/horizon_v5/layer/headlight.png",
    "bounds": {
-    "x": 728,
-    "y": 99,
-    "w": 452,
-    "h": 381
+    "x": 732,
+    "y": 103,
+    "w": 512,
+    "h": 377
    },
    "z": 25,
    "layer": "dynamic",

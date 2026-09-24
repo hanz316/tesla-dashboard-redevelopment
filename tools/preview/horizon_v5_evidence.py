@@ -76,15 +76,26 @@ def vehicle_bbox_from_render(neutral_path, layout):
     difference = np.abs(a - b).max(axis=2)
     layer = next(c for c in layout["components"]
                  if c.get("role") == "vehicle")
-    with Image.open(os.path.join(REPO, layer["src"])) as image:
-        alpha = image.convert("RGBA").getchannel("A")
-        solid = alpha.point(lambda value: 255 if value > 200 else 0).getbbox()
-    contact = layer["bounds"]["y"] + (solid[3] if solid else layer["bounds"]["h"])
+    contact = None
+    layer_report = os.path.join(OUT, "horizon_v5_vehicle_layers.json")
+    if os.path.isfile(layer_report):
+        for record in json.load(open(layer_report))["records"]:
+            if record.get("state") == "base" and record.get("car_box"):
+                contact = record["car_box"][3]
+    if contact is None:
+        with Image.open(os.path.join(REPO, layer["src"])) as image:
+            alpha = image.convert("RGBA").getchannel("A")
+            solid = alpha.point(lambda value: 255 if value > 200
+                                else 0).getbbox()
+        contact = layer["bounds"]["y"] + (solid[3] if solid
+                                          else layer["bounds"]["h"])
     mask = difference > 6
     ys, xs = np.nonzero(mask)
     if xs.size == 0:
         return None, 0, contact
-    car_mask = mask.copy()
+    # The silhouette is the car itself: a strong difference. A faint one is the
+    # shadow and reflection it lays on the road.
+    car_mask = (difference > 60)
     car_mask[max(0, contact):, :] = False
     ys2, xs2 = np.nonzero(car_mask)
     # [x, y, w, h] like every other box in the report.

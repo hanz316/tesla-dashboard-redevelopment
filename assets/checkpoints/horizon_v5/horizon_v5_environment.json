@@ -5,7 +5,7 @@
   1920,
   480
  ],
- "samples": 40,
+ "samples": 64,
  "view_frame": {
   "forward": [
    0.75875,
@@ -32,18 +32,16 @@
    480
   ],
   "content_scale": 0.6629834254143646,
-  "car_visible_width_px": 401.0,
+  "car_visible_width_px": 392.5,
   "car_centre_x_px": 954.0,
   "car_ground_contact_y_px": 345.0,
   "horizon_row_px": 167.0
  },
  "stages": [
-  "plate",
   "road",
   "car"
  ],
  "renders": {
-  "plate": "assets/ui/horizon_v5_background.png",
   "road_no_car": "assets/rendered/vehicle/horizon_v5/road/no_car.png",
   "car_base": "assets/rendered/vehicle/horizon_v5/car/base/000.png",
   "road_base": "assets/rendered/vehicle/horizon_v5/road/base.png",
@@ -68,15 +66,14 @@
   "car_hazard_alpha": "assets/rendered/vehicle/horizon_v5/car/hazard/000.png"
  },
  "timings_s": {
-  "plate": 10.2,
-  "road_no_car": 14.1,
-  "state_base": 28.5,
-  "state_running": 17.9,
-  "state_brake": 18.0,
-  "state_headlight": 18.3,
-  "state_indicator_left": 18.3,
-  "state_indicator_right": 18.9,
-  "state_hazard": 18.9
+  "road_no_car": 17.1,
+  "state_base": 39.0,
+  "state_running": 24.5,
+  "state_brake": 24.9,
+  "state_headlight": 25.5,
+  "state_indicator_left": 25.4,
+  "state_indicator_right": 28.8,
+  "state_hazard": 30.3
  },
  "studio_hidden": [
   "ENV_Floor",
@@ -90,16 +87,16 @@
   "target_row_px": 167.0
  },
  "car_framing": {
-  "ortho_scale": 18.91305160522461,
-  "shift_x": 0.0038402501959353685,
-  "shift_y": -0.011006813496351242,
+  "ortho_scale": 19.322633743286133,
+  "shift_x": 0.0038250854704529047,
+  "shift_y": -0.009614288806915283,
   "projected_box_px": [
-   753.5,
-   123.8,
-   1154.5,
+   757.7,
+   128.5,
+   1150.3,
    345.0
   ],
-  "projected_width_px": 401.0,
+  "projected_width_px": 392.5,
   "projected_centre_x_px": 954.0,
   "projected_contact_y_px": 345.0,
   "target": {
@@ -110,11 +107,11 @@
     480
    ],
    "content_scale": 0.6629834254143646,
-   "car_visible_width_px": 401.0,
+   "car_visible_width_px": 392.5,
    "car_centre_x_px": 954.0,
    "car_ground_contact_y_px": 345.0,
    "horizon_row_px": 167.0
   }
  },
- "elapsed_s": 198.6
+ "elapsed_s": 258.5
 }

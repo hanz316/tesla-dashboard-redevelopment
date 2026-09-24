@@ -59,6 +59,47 @@ def rect(source):
     return (b["x"], b["y"], b["x"] + b["w"], b["y"] + b["h"])
 
 
+FRAMING_REPORT = os.path.join(REPO, "assets", "checkpoints", "horizon_v5",
+                              "horizon_v5_environment.json")
+LAYER_REPORT = os.path.join(REPO, "assets", "checkpoints", "horizon_v5",
+                            "horizon_v5_vehicle_layers.json")
+
+
+def _recorded_car_box():
+    """The car-only box the compositor measured (canvas coordinates).
+
+    Read from the layer report rather than re-measured here: the layer's own
+    alpha cannot separate the car from the road it changed, and the compositor
+    is the place that knows which pixels came from the car pass.
+    """
+    try:
+        with open(LAYER_REPORT) as handle:
+            records = json.load(handle)["records"]
+    except (OSError, ValueError, KeyError):
+        return None
+    for record in records:
+        if record.get("state") == "base" and record.get("car_box"):
+            x0, y0, x1, y1 = record["car_box"]
+            return {"x": x0, "y": y0, "w": x1 - x0, "h": y1 - y0}
+    return None
+
+
+def _framed_width_target():
+    """The width the composition was solved for, +/-5 %.
+
+    The car's width on the panel is not a free number: it is the reference's
+    measured car width mapped by height, and the framing solver reports what it
+    achieved. The QA checks the measured silhouette against that, so a drift in
+    either the render or the layout fails here.
+    """
+    try:
+        with open(FRAMING_REPORT) as handle:
+            framed = json.load(handle)["car_framing"]["projected_width_px"]
+    except (OSError, ValueError, KeyError):
+        return [380, 430]
+    return [round(framed * 0.95), round(framed * 1.05)]
+
+
 def vehicle_from_layers(layout):
     """A V5 scene has no vehicle_visual node: the car is a baked RGBA layer per
     lighting state. The QA still needs the same facts about it, so they are
@@ -96,7 +137,7 @@ def vehicle_from_layers(layout):
                              "w": (layout["zones"]["vehicle"]["right"]
                                    - layout["zones"]["vehicle"]["x"]) + 520,
                              "h": layout["canvas"]["height"]},
-        "visible_width_target": [380, 430],
+        "visible_width_target": _framed_width_target(),
         "ground_contact_band": [300, 400],
         "measured_from_layers": True,
         "layer": base,
@@ -116,10 +157,16 @@ def vehicle_from_layers(layout):
         return entry
     image = Image.open(layer_path).convert("RGBA")
     alpha = image.getchannel("A")
-    solid = alpha.point(lambda value: 255 if value > 200 else 0).getbbox()
-    solid = solid or (0, 0, image.width, image.height)
-    full = alpha.getbbox() or solid
     ox, oy = base["bounds"]["x"], base["bounds"]["y"]
+    recorded = _recorded_car_box()
+    if recorded:
+        solid = (recorded["x"] - ox, recorded["y"] - oy,
+                 recorded["x"] - ox + recorded["w"],
+                 recorded["y"] - oy + recorded["h"])
+    else:
+        solid = alpha.point(lambda value: 255 if value > 200 else 0).getbbox()
+        solid = solid or (0, 0, image.width, image.height)
+    full = alpha.getbbox() or solid
     entry["visible_bounds_closed"] = {
         "x": ox + solid[0], "y": oy + solid[1],
         "w": solid[2] - solid[0], "h": solid[3] - solid[1]}

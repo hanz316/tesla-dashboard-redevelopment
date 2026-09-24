@@ -79,8 +79,12 @@ CANVAS = (1920, 480)
 COMPOSITION = {
     "content_box": [240, 0, 1440, 480],
     "content_scale": 480 / 724.0,
-    "car_visible_width_px": 401.0,
+    # The reference's car measures 592 px wide (paint rule, tuned against the
+    # annotated overlay); 592 * 480/724 = 392.5 px on this panel.
+    "car_visible_width_px": 392.5,
     "car_centre_x_px": 954.0,
+    # contact = car top (194 * 480/724 = 128.6) + height from the measured
+    # width and the car's own 1.82 aspect = 216 px -> 344.6
     "car_ground_contact_y_px": 345.0,
     "horizon_row_px": 167.0,
 }
@@ -627,6 +631,12 @@ def main():
         if "road" in stages:
             # The road alone: the reference the car's ground response is
             # measured against. Rendered once, because it is state independent.
+            # The environment plate is rendered without the car rig, so the
+            # road reference has to be too: otherwise the difference would
+            # carry the shadow of a studio light that the place it is
+            # composited into does not have.
+            for obj in rig:
+                obj.hide_render = True
             configure_render(scene, args.samples, False, (width, height))
             set_rays([road_obj], camera=True)
             # The car has to leave the road completely: `camera=False` alone
@@ -639,6 +649,8 @@ def main():
             render_to(scene, path)
             report["timings_s"]["road_no_car"] = round(time.time() - started, 1)
             report["renders"]["road_no_car"] = os.path.relpath(path, REPO_ROOT)
+            for obj in rig:
+                obj.hide_render = False
             set_rays(car, camera=True, glossy=True, diffuse=True, shadow=True,
                      transmission=True, volume_scatter=True)
         if "car" in stages:
@@ -674,9 +686,13 @@ def main():
                 set_rays([road_obj], camera=True)
                 set_rays(car, camera=True, glossy=True, shadow=True,
                          diffuse=True)
+                for obj in rig:
+                    obj.hide_render = True
                 configure_render(scene, args.samples, False, (width, height))
                 road_path = os.path.join(args.out, "road", f"{name}.png")
                 render_to(scene, road_path)
+                for obj in rig:
+                    obj.hide_render = False
                 report["renders"][f"road_{name}"] = os.path.relpath(
                     road_path, REPO_ROOT)
                 report["timings_s"][f"state_{name}"] = round(

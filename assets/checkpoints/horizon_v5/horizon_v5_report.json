@@ -40,21 +40,21 @@
  },
  "vehicle_bbox_from_final_render": {
   "visible_silhouette": [
-   752,
-   123,
-   403,
-   222
+   757,
+   129,
+   392,
+   217
   ],
   "with_ground_response": [
-   752,
-   123,
-   403,
-   327
+   756,
+   128,
+   421,
+   352
   ]
  },
- "vehicle_pixels_changed": 77402,
- "vehicle_pixels_solid": 53977,
- "ground_contact_row": 345,
+ "vehicle_pixels_changed": 99189,
+ "vehicle_pixels_solid": 37582,
+ "ground_contact_row": 346,
  "speed_cluster_bbox": [
   281.9,
   109.1,
@@ -83,19 +83,19 @@
   "horizon_fraction": 0.3481,
   "vehicle": {
    "bbox": [
-    787,
-    195,
-    1469,
-    489
+    788,
+    194,
+    1380,
+    486
    ],
-   "visible_width": 682,
-   "visible_height": 294,
-   "ground_contact_row": 489,
-   "centre_x": 1128.0,
-   "pixels": 100731,
-   "width_fraction": 0.314,
-   "height_fraction": 0.4061,
-   "area_fraction": 0.0641
+   "visible_width": 592,
+   "visible_height": 292,
+   "ground_contact_row": 486,
+   "centre_x": 1084.0,
+   "pixels": 98569,
+   "width_fraction": 0.2726,
+   "height_fraction": 0.4033,
+   "area_fraction": 0.0627
   },
   "accent": "#2496D8",
   "thirds": {
@@ -146,54 +146,54 @@
    {
     "id": "vehicle.base",
     "size": [
-     452,
-     381
+     510,
+     379
     ],
-    "decoded_rgba_bytes": 688848
+    "decoded_rgba_bytes": 773160
    },
    {
     "id": "vehicle.running",
     "size": [
-     452,
-     381
+     512,
+     377
     ],
-    "decoded_rgba_bytes": 688848
+    "decoded_rgba_bytes": 772096
    },
    {
     "id": "vehicle.brake",
     "size": [
-     452,
-     381
+     512,
+     377
     ],
-    "decoded_rgba_bytes": 688848
+    "decoded_rgba_bytes": 772096
    },
    {
     "id": "vehicle.indicator_left",
     "size": [
-     452,
-     381
+     512,
+     377
     ],
-    "decoded_rgba_bytes": 688848
+    "decoded_rgba_bytes": 772096
    },
    {
     "id": "vehicle.indicator_right",
     "size": [
-     452,
-     381
+     512,
+     377
     ],
-    "decoded_rgba_bytes": 688848
+    "decoded_rgba_bytes": 772096
    },
    {
     "id": "vehicle.headlight",
     "size": [
-     452,
-     381
+     512,
+     377
     ],
-    "decoded_rgba_bytes": 688848
+    "decoded_rgba_bytes": 772096
    }
   ],
-  "total_decoded_rgba_bytes": 8217080,
-  "total_decoded_mb": 7.84,
+  "total_decoded_rgba_bytes": 8717632,
+  "total_decoded_mb": 8.31,
   "note": "ESTIMATED on the Mac; UNKNOWN UNTIL DEVICE TEST on T113"
  },
  "background_asset": "assets/ui/horizon_v5_background.png",

@@ -46,14 +46,10 @@ def smoothstep(edge0, edge1, values):
 def bake_reflection(car_image, spec):
     """The wet road's answer to the car, as a pre-baked transparent layer.
 
-    Why this is not measured from the render: the frozen Horizon camera looks
-    down at 24.8 degrees, and from that angle the car's own mirror image lands
-    behind the car - the measured difference between the road with and without
-    the car is at most 2 of 255 in the 30 px band under the tyres. A reference
-    shot from a lower camera shows a strong reflection, so the reflection is
-    baked from the car's own pixels: mirrored about the contact line, squashed,
-    blurred with a falloff that grows with distance, faded out and broken up by
-    a fixed ripple pattern. Pre-baked, so the device still does no runtime blur.
+    The render already carries the sharp part of the reflection (the wet road
+    mirroring the car). This layer adds the part a real water film adds and a
+    path tracer at this roughness does not: a soft, rippled, distance-faded
+    copy of the car. Pre-baked, so the device still does no runtime blur.
     """
     import numpy as np
     from PIL import Image, ImageFilter
@@ -85,12 +81,24 @@ def bake_reflection(car_image, spec):
     return layer, box
 
 
-def compose(state_dir, state, margin, alpha_edges, reflection_spec):
+def compose(state_dir, state, margin, alpha_edges, reflection_spec,
+            plate_path):
     import numpy as np
     from PIL import Image
 
     no_car = load_rgb(os.path.join(state_dir, "road", "no_car.png"))
     with_car = load_rgb(os.path.join(state_dir, "road", f"{state}.png"))
+    # The two renders are orthographic and the plate they are pasted onto is
+    # perspective, so the road tones differ before the car is involved. The
+    # layer therefore carries "the plate's road plus the car's local change",
+    # not "the ortho road": with the offset applied, a pixel the car did not
+    # touch composites back to exactly the plate and no seam can appear.
+    plate = load_rgb(plate_path)
+    if plate.shape != no_car.shape:
+        from PIL import Image
+        plate = np.asarray(Image.open(plate_path).convert("RGB").resize(
+            (no_car.shape[1], no_car.shape[0]), Image.LANCZOS)).astype(np.int16)
+    offset = (plate - no_car).astype(np.float32)
     car = np.asarray(Image.open(os.path.join(state_dir, "car", state,
                                                 "000.png")).convert("RGBA"))
     height, width = no_car.shape[:2]
@@ -101,14 +109,21 @@ def compose(state_dir, state, margin, alpha_edges, reflection_spec):
     # whole frame.
     response_alpha[response_alpha < 0.05] = 0.0
     car_alpha = (car[:, :, 3].astype(np.float32) / 255.0)
+    # The car's own silhouette, measured on the car pass. It is recorded so the
+    # QA never has to guess which pixels of the finished layer are the car and
+    # which are the road it changed.
+    car_only = Image.fromarray((car_alpha * 255).astype(np.uint8)).getbbox()
     # The ground response lives around and below the car. Outside that band the
     # only differences between two renders of the same road are denoiser noise,
     # so the response is measured there and nowhere else.
     car_box = Image.fromarray((car_alpha * 255).astype(np.uint8)).getbbox()
     if car_box:
         band = np.zeros_like(response_alpha)
-        band[max(0, car_box[1] - 16):min(height, car_box[3] + 170),
-             max(0, car_box[0] - 60):min(width, car_box[2] + 60)] = 1.0
+        # Deep enough for the mirror image the wet road returns (the car's own
+        # height below the contact) and wide enough for its shadow, but not the
+        # whole frame: outside this band the two renders differ only by noise.
+        band[max(0, car_box[1] - 16):min(height, car_box[3] + 300),
+             max(0, car_box[0] - 90):min(width, car_box[2] + 90)] = 1.0
         response_alpha *= band
     # Drop isolated specks: a ground response is a connected patch, and one
     # lonely pixel would otherwise grow the layer's crop box and paste a stray
@@ -126,7 +141,7 @@ def compose(state_dir, state, margin, alpha_edges, reflection_spec):
     layer_alpha = np.clip(car_alpha + response_alpha, 0.0, 1.0)
 
     car_rgb = car[:, :, :3].astype(np.float32)
-    response_rgb = with_car.astype(np.float32)
+    response_rgb = with_car.astype(np.float32) + offset
     total = np.maximum(layer_alpha, 1e-6)
     rgb = (car_rgb * car_alpha[:, :, None]
            + response_rgb * response_alpha[:, :, None]) / total[:, :, None]
@@ -152,6 +167,7 @@ def compose(state_dir, state, margin, alpha_edges, reflection_spec):
         "solid_car_pixels": int((car_alpha > 0.5).sum()),
         "response_pixels": int((response_alpha > 0.5).sum()),
         "reflection_box": list(reflection_box) if reflection_box else None,
+        "car_box": list(car_only) if car_only else None,
         "decoded_rgba_bytes": crop.width * crop.height * 4,
         "background_decoded_rgba_bytes": width * height * 4,
     }
@@ -166,7 +182,7 @@ def main():
                                             "indicator_left,indicator_right,"
                                             "hazard")
     parser.add_argument("--margin", type=int, default=24)
-    parser.add_argument("--alpha-edges", default="4.0,12.0",
+    parser.add_argument("--alpha-edges", default="3.0,14.0",
                         help="difference values (0-255) that map to alpha 0 and 1")
     parser.add_argument("--manifest", default=os.path.join(
         REPO, "assets", "rendered", "vehicle", "horizon_v5",
@@ -174,10 +190,12 @@ def main():
     parser.add_argument("--report", default=os.path.join(
         REPO, "assets", "checkpoints", "horizon_v5",
         "horizon_v5_vehicle_layers.json"))
-    parser.add_argument("--reflection-squash", type=float, default=0.55)
+    parser.add_argument("--reflection-squash", type=float, default=0.62)
     parser.add_argument("--reflection-blur", type=float, default=7.0)
-    parser.add_argument("--reflection-alpha", type=float, default=0.75)
+    parser.add_argument("--reflection-alpha", type=float, default=0.30)
     parser.add_argument("--reflection-falloff", type=float, default=1.9)
+    parser.add_argument("--plate", default=os.path.join(
+        REPO, "assets", "ui", "horizon_v5_background.png"))
     args = parser.parse_args()
     try:
         import numpy  # noqa: F401
@@ -195,16 +213,16 @@ def main():
         "ripple_cycles": 7.0,
         "tint": [0.42, 0.55, 0.68],
         "tint_mix": 0.28,
-        "why": "the frozen 24.8 degree camera puts the car's own mirror image "
-               "behind the car, so the wet-road reflection is baked from the "
-               "car's pixels: mirrored, squashed, blurred, faded and rippled",
+        "why": "the wet road already returns the car's mirror image; this baked "
+               "layer is the soft, rippled part of that reflection - the light "
+               "that scatters on the water rather than the sharp mirror line",
     }
     states = args.states.split(",")
     layers = {}
     records = []
     for state in states:
         layer, stats = compose(args.dir, state, args.margin, edges,
-                               reflection_spec)
+                               reflection_spec, args.plate)
         out = os.path.join(args.dir, "layer", f"{state}.png")
         os.makedirs(os.path.dirname(out), exist_ok=True)
         layer.save(out)

@@ -211,10 +211,14 @@ def measure(path):
     # The car's roof is above the horizon row, so the search band starts above
     # it. A small dilation bridges the dark glass so the blob is the car and
     # not the paint alone; the reported box is shrunk back by the radius.
-    DILATE = 3
+    # Threshold and dilation were tuned against the annotated overlay: at 110
+    # with a 3 px bridge the blob runs past the car's nose into the road sheen
+    # (box 676 px wide where the car reads ~590), at 140 with 2 px it stops at
+    # the bumper. The number the layout consumes has to be the car.
+    DILATE = 2
     centre_band = np.zeros(width, dtype=bool)
     centre_band[int(width * 0.24):int(width * 0.76)] = True
-    body = (lum > 110) & (sat < 60) & centre_band[None, :]
+    body = (lum > 140) & (sat < 60) & centre_band[None, :]
     body[:max(0, horizon - int(height * 0.12)), :] = False
     _, vehicle_box = largest_component(dilate(body, DILATE))
     vehicle_pixels = 0

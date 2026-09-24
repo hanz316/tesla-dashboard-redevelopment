@@ -35,7 +35,7 @@ panel_y = y_ref * 480/724
 |---|---|
 | canvas | 2172x724 |
 | horizon row | 252（0.348 h）|
-| vehicle silhouette | x 775..1380, y 235..520（605x285）|
+| vehicle silhouette | x 788..1380, y 194..486（592x292 亮漆；含深色轮胎/阴影的真实高度约 326）|
 | 仪器弧 | 圆心 (241.4, 338.6)，半径 174.1，拟合 rms 1.6 px |
 | energy rail | x 2020..2075, y 120..575 |
 | accent | `#2496D8`（hue 148）|
@@ -51,8 +51,8 @@ panel_y = y_ref * 480/724
 | RANGE 数值 | 右对齐于 x 1493, y 119..162 |
 | energy rail | x 1578.9..1615.4, y 79.6..381.2 |
 | SOC 63% | x 1619..1659, y 229..252 |
-| 车辆可见宽度 | 401 px（reference 是 605*0.663）|
-| 车辆接地 | y 345（reference 520*0.663）|
+| 车辆可见宽度 | 392.5 px（reference 592 * 480/724；渲染实测 392）|
+| 车辆接地 | y 345（reference 车顶 194*0.663 = 128.6，车高按 1.82 长宽比 = 216 → 344.6；实测 346）|
 | horizon | y 167 |
 
 ## 2. 环境是渲染出来的，不是画出来的
@@ -105,9 +105,10 @@ Plate  ->  VehicleLayer(base)  ->  UI
 | headlight | 前照灯 | `headlight` |
 
 车辆可见轮廓（从最终 1920x480 渲染里量出来的，不是节点框；做法是同一场景去掉车辆
-图层再渲染一次做差）：**x 752..1155, y 123..345（403x222）**；连同湿路面响应
-（接地阴影 + 反射 + 灯光地面响应）延伸到 y 450。左侧 speed primary 到 x 672 结束，
-右侧 RANGE primary 从 x 1357 开始——两侧都不碰撞。
+图层再渲染一次做差，再按合成器记录的车辆矩形切掉地面响应）：
+**x 757..1149, y 129..346（392x217）**；连同湿路面响应（接地阴影 + 反射 + 灯光
+地面响应）延伸到 y 480。左侧 speed primary 到 x 672 结束，右侧 RANGE primary 从
+x 1357 开始——两侧都不碰撞。
 
 ## 4. 两个仪表簇
 
@@ -152,11 +153,11 @@ LAYER_3_STATE        warn.glass, warn.text
 解码内存估算（Mac 上估算，**T113 上未验证**）：
 
 ```
-总解码 RGBA ≈ 7.84 MB
+总解码 RGBA ≈ 8.31 MB（六个状态层全算上）
   env.plate            1920x480x4 = 3.69 MB
-  vehicle layer        452x381x4  = 0.66 MB (每状态一张, 同屏最多 2-3 张)
-  arc/numeral glow     约 0.5 MB
-  rail track           约 0.05 MB
+  vehicle layer        510x379x4  = 0.77 MB (每状态一张, 同屏最多 2-3 张)
+  arc/numeral glow     0.36 MB
+  rail track           0.04 MB
 ```
 
 ## 7. 复现
