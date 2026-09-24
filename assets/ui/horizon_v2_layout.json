@@ -43,15 +43,29 @@
    "id": "speed_x",
    "prompt": "speed x = 90",
    "actual": 120,
-   "reason": "The panel mask reaches x = 101.8 at the top of the speed box (y = 105). At x = 90 the leading digit would be cut on the real panel. 120 clears the mask by 18 px.",
-   "evidence": "panel.top_corner_cut/bottom_corner_cut, calibrated on the device"
+   "reason": "The panel mask reaches x = 101.8 at the top of the speed box. At x = 90 the leading digit would be cut on the real panel.",
+   "evidence": "panel.top_corner_cut calibrated on the device"
   },
   {
    "id": "time_anchor",
    "prompt": "time x = 1640",
    "actual": 1806,
-   "reason": "Read as a right-anchored clock in the energy column: the clock's right edge aligns with the range and SOC column instead of floating mid-screen. Recorded here so the human can overrule it.",
-   "evidence": "range and SOC are right-aligned at 1806 in this file"
+   "reason": "Right-anchored in the energy column so the clock aligns with the range and SOC rows.",
+   "evidence": "range and SOC are right-aligned at 1806"
+  },
+  {
+   "id": "vehicle_scale",
+   "prompt": "+25% to +35% visible width, 460-520 px",
+   "actual": "+22.7% (515 px)",
+   "reason": "The two figures disagree: 420 px plus 25% is 525 px, above the stated 460-520 band. The explicit pixel band was honoured, taking the largest width that keeps every panel state inside the permitted region and the frame on-canvas.",
+   "evidence": "visible_bounds_closed / visible_bounds_open_union in this file"
+  },
+  {
+   "id": "speed_limit_move",
+   "prompt": "sign floats near the speed cluster",
+   "actual": "x 316-370, y 248-302",
+   "reason": "Placed on the same band as the gear row instead of floating in the upper left centre, so it reads as part of the speed cluster.",
+   "evidence": "speed.limit.sign bounds"
   }
  ],
  "tokens": {
@@ -84,10 +98,10 @@
    "kind": "vector",
    "shape": "radial",
    "bounds": {
-    "x": 560,
-    "y": 40,
-    "w": 800,
-    "h": 380
+    "x": 300,
+    "y": -40,
+    "w": 1320,
+    "h": 520
    },
    "z": 1,
    "layer": "static",
@@ -95,7 +109,8 @@
    "color_to_token": "background",
    "opacity_token": "atmosphere",
    "exempt_from_safe_area": true,
-   "role": "atmosphere"
+   "role": "atmosphere",
+   "shape_note": "Broad and weak: it is there to give depth, not to read as an oval behind the car."
   },
   {
    "id": "road.horizon",
@@ -103,15 +118,17 @@
    "shape": "line",
    "x2_rule": "zone_width",
    "bounds": {
-    "x": 430,
-    "y": 300,
-    "w": 1060,
+    "x": 300,
+    "y": 296,
+    "w": 1320,
     "h": 1
    },
    "z": 2,
    "layer": "static",
    "color_token": "hairline",
-   "role": "road"
+   "role": "road",
+   "x2": 1620,
+   "y2": 296
   },
   {
    "id": "road.plane",
@@ -119,16 +136,34 @@
    "shape": "polygon",
    "points_rule": "road_trapezoid",
    "bounds": {
-    "x": 430,
-    "y": 300,
-    "w": 1060,
-    "h": 156
+    "x": 360,
+    "y": 296,
+    "w": 1200,
+    "h": 160
    },
    "z": 3,
    "layer": "static",
    "color_token": "road_plane",
    "opacity_token": "road_plane",
-   "role": "road"
+   "role": "road",
+   "points": [
+    [
+     760,
+     296
+    ],
+    [
+     1160,
+     296
+    ],
+    [
+     1560,
+     456
+    ],
+    [
+     360,
+     456
+    ]
+   ]
   },
   {
    "id": "road.lane.left",
@@ -136,16 +171,18 @@
    "shape": "line",
    "points_rule": "lane_left",
    "bounds": {
-    "x": 560,
-    "y": 300,
-    "w": 120,
-    "h": 156
+    "x": 500,
+    "y": 296,
+    "w": 380,
+    "h": 160
    },
    "z": 4,
    "layer": "static",
    "color_token": "road_lane",
    "width_px": 2,
-   "role": "road"
+   "role": "road",
+   "x2": 880,
+   "y2": 296
   },
   {
    "id": "road.lane.right",
@@ -153,16 +190,18 @@
    "shape": "line",
    "points_rule": "lane_right",
    "bounds": {
-    "x": 1240,
-    "y": 300,
-    "w": 120,
-    "h": 156
+    "x": 1040,
+    "y": 296,
+    "w": 380,
+    "h": 160
    },
    "z": 4,
    "layer": "static",
    "color_token": "road_lane",
    "width_px": 2,
-   "role": "road"
+   "role": "road",
+   "x2": 1420,
+   "y2": 456
   },
   {
    "id": "nav.pill",
@@ -271,7 +310,7 @@
     "h": 34
    },
    "align": "left",
-   "font_token": "BODY",
+   "font_token": "CAPTION",
    "color_token": "muted_text",
    "z": 22,
    "layer": "dynamic",
@@ -292,7 +331,7 @@
    },
    "anchor_note": "Right-aligned: the renderer anchors the text at x + w = 1806, which is the same column as the range and SOC. This is the deviation recorded for time_anchor.",
    "align": "right",
-   "font_token": "BODY",
+   "font_token": "CAPTION",
    "color_token": "muted_text",
    "z": 22,
    "layer": "dynamic",
@@ -344,8 +383,8 @@
    "kind": "vector",
    "shape": "roundrect",
    "bounds": {
-    "x": 386,
-    "y": 118,
+    "x": 316,
+    "y": 248,
     "w": 54,
     "h": 54
    },
@@ -366,8 +405,8 @@
    "id": "speed.limit.value",
    "kind": "text",
    "bounds": {
-    "x": 386,
-    "y": 151,
+    "x": 316,
+    "y": 275,
     "w": 54,
     "h": 30
    },
@@ -393,7 +432,7 @@
    "text": "P",
    "bounds": {
     "x": 120,
-    "y": 292,
+    "y": 283,
     "w": 30,
     "h": 34
    },
@@ -414,7 +453,7 @@
    "text": "R",
    "bounds": {
     "x": 164,
-    "y": 292,
+    "y": 283,
     "w": 30,
     "h": 34
    },
@@ -435,7 +474,7 @@
    "text": "N",
    "bounds": {
     "x": 208,
-    "y": 292,
+    "y": 283,
     "w": 30,
     "h": 34
    },
@@ -456,7 +495,7 @@
    "text": "D",
    "bounds": {
     "x": 252,
-    "y": 292,
+    "y": 283,
     "w": 30,
     "h": 34
    },
@@ -477,7 +516,7 @@
    "text": "—",
    "bounds": {
     "x": 120,
-    "y": 292,
+    "y": 283,
     "w": 30,
     "h": 34
    },
@@ -498,7 +537,7 @@
    "kind": "text",
    "bounds": {
     "x": 120,
-    "y": 344,
+    "y": 337,
     "w": 220,
     "h": 30
    },
@@ -516,10 +555,10 @@
    "id": "vehicle",
    "kind": "vehicle",
    "bounds": {
-    "x": 666,
-    "y": 85,
-    "w": 584,
-    "h": 387
+    "x": 600,
+    "y": 0,
+    "w": 716,
+    "h": 474
    },
    "anchor": {
     "x": 0.5,
@@ -586,26 +625,28 @@
    },
    "hazard_note": "Hazard is not a fourth lamp: the runtime's safety layer already ORs hazards into indicator_left and indicator_right, so the fixture sets both and the asset lighting variants follow.",
    "visible_bounds_closed": {
-    "x": 750,
-    "y": 178,
-    "w": 420,
-    "h": 233
+    "x": 703,
+    "y": 115,
+    "w": 515,
+    "h": 286
    },
    "visible_bounds_open_union": {
-    "x": 748,
-    "y": 119,
-    "w": 421,
-    "h": 293
+    "x": 701,
+    "y": 42,
+    "w": 517,
+    "h": 358
    },
    "permitted_region": {
     "x": 560,
-    "y": 100,
+    "y": 36,
     "w": 800,
-    "h": 356
+    "h": 420
    },
    "exempt_from_safe_area": true,
    "exempt_reason": "The node box is the render frame, which is transparent outside the car. The check that matters is on the visible bounds, which are inside the safe area.",
-   "role": "vehicle"
+   "role": "vehicle",
+   "ground_contact_y": 400,
+   "scale_note": "Frame 716x474 (scale 2.011 from the 356x236 render). Visible car 515x286, centre x 960, ground contact y 400. The request asked for 460-520 px visible width; 520 would need scale 2.031 and put the frame bottom at 479 with the ground at 404, which is inside the canvas but leaves no margin under the tyres, so 515 was chosen."
   },
   {
    "id": "indicator.left",
@@ -711,9 +752,9 @@
    "kind": "vector",
    "shape": "roundrect",
    "bounds": {
-    "x": 1626,
-    "y": 268,
-    "w": 180,
+    "x": 1606,
+    "y": 294,
+    "w": 120,
     "h": 12
    },
    "radius_token": "bar",
@@ -728,9 +769,9 @@
    "shape": "roundrect",
    "shape_note": "Horizontal value bar: a roundrect with a `progress` block draws only the value fill, because the layout draws its own track as soc.bar.track.",
    "bounds": {
-    "x": 1626,
-    "y": 268,
-    "w": 180,
+    "x": 1606,
+    "y": 294,
+    "w": 120,
     "h": 12
    },
    "radius_token": "bar",
@@ -754,7 +795,7 @@
    "kind": "text",
    "bounds": {
     "x": 1606,
-    "y": 294,
+    "y": 282,
     "w": 200,
     "h": 36
    },
@@ -768,14 +809,30 @@
    "invalid_text": "— %",
    "invalid_opacity_token": "muted",
    "unknown_behavior": "placeholder",
-   "role": "energy"
+   "role": "energy",
+   "color_when": [
+    {
+     "when": {
+      "signal": "actual_soc",
+      "lte": 20
+     },
+     "color_token": "soc_low"
+    },
+    {
+     "when": {
+      "signal": "actual_soc",
+      "lte": 10
+     },
+     "color_token": "soc_critical"
+    }
+   ]
   },
   {
    "id": "energy.secondary",
    "kind": "text",
    "bounds": {
     "x": 1606,
-    "y": 352,
+    "y": 336,
     "w": 200,
     "h": 32
    },
@@ -882,5 +939,7 @@
   "h2_trunk_left",
   "h2_trunk_hazard",
   "h2_mixed"
- ]
+ ],
+ "revision": "v2.1",
+ "revision_note": "Composition revision after human review: the vehicle is the visual anchor, the road connects the three zones, the atmosphere pool is broad and weak instead of a spotlight, the speed limit sits with the speed cluster, and the SOC line shares the gear band."
 }

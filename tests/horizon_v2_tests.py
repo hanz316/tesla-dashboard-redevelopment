@@ -27,6 +27,7 @@ GEN = os.path.join(REPO, "tools", "preview", "build_horizon_v2.py")
 QA = os.path.join(REPO, "tools", "preview", "horizon_v2_layout_qa.py")
 SCENE = os.path.join(REPO, "scenes", "horizon_v2.scene")
 LAYOUT = os.path.join(REPO, "assets", "ui", "horizon_v2_layout.json")
+TOKENS = os.path.join(REPO, "assets", "ui", "design_tokens.json")
 SHOTS = os.path.join(REPO, "assets", "checkpoints", "horizon_v2")
 
 FAILURES = []
@@ -61,6 +62,19 @@ def changed_pixels(first, second):
     a = np.asarray(Image.open(first).convert("RGB"), dtype=np.int16)
     b = np.asarray(Image.open(second).convert("RGB"), dtype=np.int16)
     return np.abs(a - b).max(axis=2) > 8
+
+
+def mapping_from_layout():
+    """Where the vehicle node sits on screen, derived from the design source."""
+    layout = json.load(open(LAYOUT))
+    vehicle = next(c for c in layout["components"] if c["id"] == "vehicle")
+    tokens = json.load(open(TOKENS))
+    frame_w = tokens["vehicle"]["measurements"]["frame_width"]
+    frame_h = tokens["vehicle"]["measurements"]["frame_height"]
+    scale_x = vehicle["bounds"]["w"] / float(frame_w)
+    scale_y = vehicle["bounds"]["h"] / float(frame_h)
+    return (vehicle["bounds"]["x"], vehicle["bounds"]["y"], scale_x, scale_y,
+            vehicle["permitted_region"])
 
 
 def delta_report():
@@ -128,7 +142,9 @@ def main():
     # compositor let a later state repaint an earlier open panel back to closed.
     print("panel composition")
     shot = os.path.join(SHOTS, "horizon_v2_%s.png")
-    vehicle_box = (666, 85, 1250, 472)
+    origin_x, origin_y, scale_x, scale_y, permitted = mapping_from_layout()
+    vehicle_box = (permitted["x"], permitted["y"],
+                   permitted["x"] + permitted["w"], permitted["y"] + permitted["h"])
 
     def changed(first, second):
         return changed_pixels(first, second)
@@ -137,62 +153,32 @@ def main():
                         ("neutral", "door_fl", "door_fr", "door_rl", "door_rr",
                          "all_doors", "frunk", "trunk", "trunk_left", "trunk_hazard")):
         neutral = shot % "neutral"
-        # (a) CLOSED must not have moved. The reference is the neutral rendered
-        # before the composition change. Differences are allowed only where a
-        # lamp layer legitimately draws (the tail bar) and in the clock box,
-        # which shows the wall clock.
-        reference = os.path.join(SHOTS, "reference", "neutral_pre_panel_fix.png")
-        if os.path.exists(reference):
-            import numpy as np
-            mask = changed(reference, neutral)
-            # Allowed: the clock (it shows the wall clock) and wherever a lamp
-            # layer draws. The lamp frames are whole-car renders whose silhouette
-            # differs from the base by an anti-aliased edge, so their layers
-            # legitimately touch the car's outline.
-            allowed = np.zeros_like(mask)
-            allowed[48:112, 1600:1812] = True  # the clock, including its shadow line
-            # The lamp layers themselves, mapped into the vehicle box: their
-            # frames are whole-car renders, so their layers legitimately run
-            # along the car's anti-aliased outline.
-            from PIL import Image as PILImage
-            sx, sy = 584.0 / 356.0, 387.0 / 236.0
-            for group in ("headlight_on", "running_on", "brake_on"):
-                for entry in report_delta.get("groups", {}).get(group, {}).get("entries", []):
-                    layer = PILImage.open(os.path.join(REPO, entry["layer"])).convert("RGBA")
-                    alpha = layer.getchannel("A").resize((584, 387), PILImage.LANCZOS)
-                    box = np.asarray(alpha) > 8
-                    for _ in range(3):
-                        box = (box | np.roll(box, 1, axis=0) | np.roll(box, -1, axis=0) |
-                               np.roll(box, 1, axis=1) | np.roll(box, -1, axis=1))
-                    sub = allowed[85:85 + 387, 666:666 + 584]
-                    allowed[85:85 + 387, 666:666 + 584] = sub | box
-            # And the car's own anti-aliased outline: the old path pasted whole
-            # frames whose fully transparent pixels still carried colour, which
-            # LANCZOS smeared along the silhouette. The layers carry no such
-            # data, so the edge is the one place a legitimate difference can
-            # appear. Inside the body, nothing may move.
-            base_asset = PILImage.open(os.path.join(
-                REPO, "assets", "rendered", "vehicle", "base", "000.png")).convert("RGBA")
-            body = np.asarray(base_asset.getchannel("A").resize(
-                (584, 387), PILImage.LANCZOS)) > 8
-            edge = np.zeros_like(body)
-            for _ in range(4):
-                edge = (edge | body | np.roll(body, 1, axis=0) |
-                        np.roll(body, -1, axis=0) | np.roll(body, 1, axis=1) |
-                        np.roll(body, -1, axis=1))
-                body = edge
-            interior = ~edge
-            sub = allowed[85:85 + 387, 666:666 + 584]
-            allowed[85:85 + 387, 666:666 + 584] = sub | edge
-            interior_box = np.zeros_like(mask)
-            interior_box[85:85 + 387, 666:666 + 584] = interior
-            check(int((mask & interior_box).sum()) == 0,
-                  "the closed car's interior is pixel-identical to the "
-                  f"reference ({int((mask & interior_box).sum())} px differ)")
-            stray = int((mask & ~allowed).sum())
-            check(stray == 0,
-                  f"the closed state is unchanged outside the lamp bar and the "
-                  f"clock ({stray} px stray, {int(mask.sum())} px total)")
+        # (a) CLOSED must be exactly the base car: render the same state with
+        # the vehicle node stripped of every state layer and compare. This is
+        # self-contained - it does not depend on any earlier screenshot.
+        scene_doc = json.load(open(SCENE))
+        stripped = json.loads(json.dumps(scene_doc))
+        for node in stripped["nodes"]:
+            if node.get("type") == "vehicle_visual":
+                node.pop("parts", None)
+                node.pop("overlays", None)
+                node.pop("indicators", None)
+        probe_dir = tempfile.mkdtemp()
+        probe_path = os.path.join(probe_dir, "base_only.scene")
+        with open(probe_path, "w") as fh:
+            json.dump(stripped, fh)
+        subprocess.run([sys.executable, PREVIEW, "--scene", probe_path,
+                        "--state", "h2_closed_off", "--out", probe_dir,
+                        "--out-name", "base_only"], check=True, capture_output=True)
+        closed_dir = tempfile.mkdtemp()
+        subprocess.run([sys.executable, PREVIEW, "--scene", SCENE,
+                        "--state", "h2_closed_off", "--out", closed_dir,
+                        "--out-name", "closed"], check=True, capture_output=True)
+        mask = changed_pixels(os.path.join(probe_dir, "base_only.png"),
+                              os.path.join(closed_dir, "closed.png"))
+        check(int(mask.sum()) == 0,
+              f"the closed state draws the base car and nothing else "
+              f"({int(mask.sum())} px differ)")
 
         # (b) every panel state changes the car and nothing else.
         for name in ("door_fl", "door_fr", "door_rl", "door_rr", "all_doors",
@@ -237,6 +223,41 @@ def main():
                   f"opening the lid's lamps changes the lid only "
                   f"({int(mask.sum())} px, x up to {int(xs.max()) if len(xs) else 0})")
 
+        # (e) a hidden navigation must contribute ZERO pixels. Rendering the
+        # same scene with the navigation nodes removed is the probe: if the two
+        # renders differ at all, something invisible is still being drawn.
+        probe_dir = tempfile.mkdtemp()
+        scene_doc = json.load(open(SCENE))
+        # The clock shows the wall time, so two renders seconds apart differ in
+        # the clock digits. Both probes drop it, leaving the navigation as the
+        # only variable.
+        def without(predicate, name):
+            doc = json.loads(json.dumps(scene_doc))
+            doc["nodes"] = [n for n in doc["nodes"] if not predicate(n)]
+            path = os.path.join(probe_dir, name + ".scene")
+            with open(path, "w") as fh:
+                json.dump(doc, fh)
+            subprocess.run([sys.executable, PREVIEW, "--scene", path,
+                            "--state", "h2_neutral", "--out", probe_dir,
+                            "--out-name", name], check=True, capture_output=True)
+            return os.path.join(probe_dir, name + ".png")
+
+        no_nav = without(lambda n: n["id"].startswith("nav.") or
+                         n.get("source") == "clock", "no_nav")
+        with_nav = without(lambda n: n.get("source") == "clock", "with_nav")
+        mask = changed_pixels(no_nav, with_nav)
+        check(int(mask.sum()) == 0,
+              f"a hidden navigation draws zero pixels ({int(mask.sum())})")
+
+        # (f) the moving panels still go through the baked delta layers.
+        groups = set(report_delta.get("groups", {}))
+        needed = {"door_fl", "door_fr", "door_rl", "door_rr", "frunk", "trunk",
+                  "trunk_ind_left", "trunk_ind_right", "trunk_ind_both",
+                  "indicator_left", "indicator_right", "brake_on",
+                  "headlight_on", "running_on"}
+        check(needed <= groups,
+              f"the delta-panel architecture is active ({sorted(needed - groups)} missing)")
+
     with tempfile.TemporaryDirectory() as first, tempfile.TemporaryDirectory() as second:
         if not have_pil:
             print("")
@@ -261,9 +282,11 @@ def main():
         if "h2_neutral" in frames:
             neutral = frames["h2_neutral"]
             # The vehicle's permitted region plus the warning strip: a state
-            # change belongs there and nowhere else.
+            # change belongs there and nowhere else. Both come from the layout,
+            # so scaling the car cannot silently move the goalposts.
             import numpy as np
-            vehicle = {"x": 560, "y": 100, "w": 800, "h": 356}
+            vehicle = {"x": permitted["x"], "y": permitted["y"],
+                       "w": permitted["w"], "h": permitted["h"]}
             warn = {"x": 660, "y": 400, "w": 600, "h": 60}
 
             def outside_allowed(mask):
@@ -295,9 +318,10 @@ def main():
                     entries = report_delta["groups"][group]["entries"]
                     best = max(entries, key=lambda entry: entry["pixels"])
                     with_delta = best["bbox"]
-                    sx, sy = 584.0 / 356.0, 387.0 / 236.0
-                    return (666 + with_delta[0] * sx, 85 + with_delta[1] * sy,
-                            666 + with_delta[2] * sx, 85 + with_delta[3] * sy)
+                    return (origin_x + with_delta[0] * scale_x,
+                            origin_y + with_delta[1] * scale_y,
+                            origin_x + with_delta[2] * scale_x,
+                            origin_y + with_delta[3] * scale_y)
 
                 left_rect = lamp_rect("indicator_left")
                 right_rect = lamp_rect("indicator_right")

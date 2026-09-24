@@ -206,6 +206,32 @@ def check_vehicle(layout, tokens, car_closed, car_open, permitted, check):
           car_open[3] <= canvas["height"] - safe["bottom"],
           "the car with every panel open is inside the safe area")
 
+    # The recorded visible bounds must be the arithmetic of the node box and the
+    # measured asset, not a number somebody typed: this is what keeps the layout
+    # honest when the vehicle is scaled.
+    vehicle = next(c for c in layout["components"] if c["id"] == "vehicle")
+    measurements = tokens["vehicle"]["measurements"]
+    scale = vehicle["bounds"]["w"] / float(measurements["frame_width"])
+    for key, bbox_key in (("visible_bounds_closed", "closed_bbox"),
+                          ("visible_bounds_open_union", "open_union_bbox")):
+        x0, y0, x1, y1 = measurements[bbox_key]
+        expected = (vehicle["bounds"]["x"] + x0 * scale,
+                    vehicle["bounds"]["y"] + y0 * scale,
+                    (x1 - x0) * scale, (y1 - y0) * scale)
+        recorded = vehicle[key]
+        check(all(abs(expected[index] - recorded[field]) <= 1.0
+                  for index, field in enumerate(("x", "y", "w", "h"))),
+              f"{key} matches the asset bounds at this scale "
+              f"({[round(value, 1) for value in expected]})")
+    ground = vehicle["bounds"]["y"] + measurements["closed_bbox"][3] * scale
+    check(abs(ground - vehicle.get("ground_contact_y", ground)) <= 1.0,
+          f"the tyres meet the road at y {ground:.0f}")
+    check(460 <= car_closed[2] - car_closed[0] <= 520,
+          f"the visible car is {car_closed[2] - car_closed[0]:.0f} px wide, "
+          f"inside the 460-520 target")
+    check(390 <= ground <= 410,
+          f"the ground contact is inside the requested 390-410 band ({ground:.0f})")
+
     if not HAVE_PIL:
         note("Pillow is absent: the Model A alpha-bbox drift check is skipped "
              "(the golden numbers in design_tokens.json still apply)")

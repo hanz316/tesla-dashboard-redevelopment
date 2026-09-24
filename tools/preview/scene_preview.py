@@ -278,6 +278,16 @@ MOCK_STATES.update({
     # QA. These are the only place a Horizon V2 screen gets its values, and they
     # live in the previewer's mock table like every other fixture: the runtime
     # projection is the production path and has no mock data at all.
+    "h2_closed_off": {
+        # Rendered value check: the car closed with every lamp off, so a render
+        # of it must equal a render of the base asset alone.
+        "speed": 88, "gear": 4, "range": 253, "actual_soc": 63,
+        "temperature_primary": 22, "position_light": False, "headlight": False,
+        "brake": False, "indicator_left": False, "indicator_right": False,
+        "door_fl": False, "door_fr": False, "door_rl": False, "door_rr": False,
+        "frunk": False, "trunk": False, "battery_power": -12.4,
+        "warning_active": False, "warning_text": "",
+    },
     "h2_neutral": {
         "speed": 88, "gear": 4, "range": 253, "actual_soc": 63,
         "temperature_primary": 22, "position_light": True, "headlight": True,
@@ -657,6 +667,12 @@ def draw_vector(img, node, state):
     shape = node.get("shape", "rect")
     opacity = node.get("opacity", 1.0)
     opacity *= alpha_when(node, state)
+    # A fully transparent shape must not be drawn at all. Handing Pillow an
+    # alpha-0 fill is not the same as not drawing: it still writes the pixels
+    # (flattening whatever was under it), which is how a hidden element left a
+    # visible rectangle behind.
+    if opacity <= 0.003:
+        return
 
     if shape == "vgradient":
         top = hex_to_rgb(node["from"], int(255 * opacity))
@@ -734,8 +750,12 @@ def draw_vector(img, node, state):
                                    fill=hex_to_rgb(node.get("fill", "#182028"),
                                                    int(255 * opacity)))
         if "stroke" in node:
+            # The stroke has to honour the same opacity as the fill, or a hidden
+            # element still draws its outline - which is exactly how an empty
+            # navigation rectangle stayed visible on a screen with no route.
             draw.rounded_rectangle([x, y, x + w, y + h], radius=radius,
-                                   outline=hex_to_rgb(node["stroke"]), width=2)
+                                   outline=hex_to_rgb(node["stroke"],
+                                                      int(255 * opacity)), width=2)
         if progress:
             ratio = progress_ratio(progress, state)
             if ratio is not None:

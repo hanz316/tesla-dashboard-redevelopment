@@ -27,10 +27,26 @@
   "typography": {
     "why": "Exactly four tiers. Nothing in a component picks its own size.",
     "tiers": {
-      "DISPLAY": {"size": 120, "role": "bold", "tracking": -2.0},
-      "TITLE": {"size": 62, "role": "bold", "tracking": 0.0},
-      "BODY": {"size": 28, "role": "medium", "tracking": 1.2},
-      "CAPTION": {"size": 22, "role": "medium", "tracking": 1.6}
+      "DISPLAY": {
+        "size": 124,
+        "role": "bold",
+        "tracking": -2.0
+      },
+      "TITLE": {
+        "size": 62,
+        "role": "bold",
+        "tracking": 0.0
+      },
+      "BODY": {
+        "size": 28,
+        "role": "medium",
+        "tracking": 1.2
+      },
+      "CAPTION": {
+        "size": 22,
+        "role": "medium",
+        "tracking": 1.6
+      }
     },
     "notes": [
       "The prompt asked for a 22-26 px unit and an 18-20 px label. One CAPTION tier at 22 px satisfies the unit and is 2 px above the label suggestion; those two are separated by opacity, not by a fifth size.",
@@ -55,8 +71,8 @@
     "inactive_gear": 0.28,
     "active_gear": 1.0,
     "soc_fill": 0.9,
-    "road_plane": 0.55,
-    "atmosphere": 0.5,
+    "road_plane": 0.5,
+    "atmosphere": 0.26,
     "nav_pill_fill": 0.86,
     "nav_pill_stroke": 0.35
   },
@@ -76,9 +92,21 @@
       "why": "Measured from the committed Model A renders. Golden numbers so layout maths does not depend on reading PNGs; the QA re-measures when the assets are present and fails on drift.",
       "frame_width": 356,
       "frame_height": 236,
-      "closed_bbox": [51, 57, 307, 199],
-      "open_union_bbox": [50, 21, 307, 199],
+      "closed_bbox": [
+        51,
+        57,
+        307,
+        199
+      ],
+      "open_union_bbox": [
+        50,
+        21,
+        307,
+        199
+      ],
       "open_union_note": "Union over base, brake, headlight, running, all four doors, frunk, trunk and both indicator sequences. The frunk lid is what reaches y=21; the trunk indicator variant reaches x=50."
     }
-  }
+  },
+  "revision": "v2.1",
+  "revision_note": "Composition revision after human review: bigger vehicle, stronger road, wider and weaker atmosphere pool, speed limit pulled into the speed cluster, SOC line on the same band as the gear row."
 }

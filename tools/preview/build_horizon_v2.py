@@ -213,11 +213,14 @@ def vector_node(component, tokens, layout):
                      "opacity": tokens.opt(component.get("opacity_token"))})
     elif shape == "line":
         node.update({"x": b["x"], "y": b["y"],
-                     "x2": b["x"] + b["w"], "y2": b["y"] + b["h"],
+                     # A line may state its own end point; the bounds are then
+                     # just the box that contains it, for the layout checks.
+                     "x2": component.get("x2", b["x"] + b["w"]),
+                     "y2": component.get("y2", b["y"] + b["h"]),
                      "color": tokens.color(component["color_token"]),
                      "width_px": component.get("width_px", 1)})
     elif shape == "polygon":
-        node.update({"points": road_points(layout),
+        node.update({"points": component.get("points") or road_points(layout),
                      "fill": tokens.color(component["color_token"]),
                      "opacity": tokens.opt(component.get("opacity_token"))})
     elif shape == "roundrect":
