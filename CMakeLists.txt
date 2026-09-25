@@ -154,6 +154,7 @@ if(BUILD_HOST_TOOLS)
     # Blender or the source model.
     find_program(PYTHON3_EXECUTABLE python3)
     if(PYTHON3_EXECUTABLE)
+        include(cmake/HostPython.cmake)
         add_test(NAME dashboard_taillight_guide_tests
                  COMMAND "${PYTHON3_EXECUTABLE}"
                          "${CMAKE_CURRENT_SOURCE_DIR}/tests/taillight_guide_tests.py")
