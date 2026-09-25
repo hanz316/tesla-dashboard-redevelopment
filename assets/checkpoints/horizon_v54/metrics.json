@@ -21,7 +21,7 @@
       "combined_layer_box": [
         677,
         127,
-        1185,
+        1186,
         453
       ],
       "material_classes": {
@@ -175,7 +175,7 @@
         }
       },
       "plate_sha256": "46a99da7274de07e76189aaf2bdee397afa7429e35d0ddc3e122b24bcf8a7e54",
-      "base_layer_decoded_bytes": 831776
+      "base_layer_decoded_bytes": 833272
     },
     "night": {
       "body_box": [
@@ -437,77 +437,216 @@
       }
     }
   },
-  "blind_zone": {
+  "awareness_zone": {
     "none": {
+      "semantic": "none",
       "changed_pixels": 0,
       "combined_box": null,
-      "left_safe_zone_overlap_pixels": 0,
-      "right_safe_zone_overlap_pixels": 0,
-      "indicator_attention": false
+      "information_band_overlap_pixels": 0,
+      "opposite_side_zone_leak_pixels": null
     },
-    "left": {
-      "changed_pixels": 6399,
+    "left_presence": {
+      "semantic": "left/amber",
+      "changed_pixels": 43117,
       "combined_box": [
-        604,
-        232,
-        736,
-        308
+        53,
+        48,
+        194,
+        475
       ],
-      "left_safe_zone_overlap_pixels": 0,
-      "right_safe_zone_overlap_pixels": 0,
-      "indicator_attention": false
+      "information_band_overlap_pixels": 0,
+      "opposite_side_zone_leak_pixels": 0,
+      "own_side_zone_pixels": 43117
+    },
+    "right_presence": {
+      "semantic": "right/amber",
+      "changed_pixels": 43117,
+      "combined_box": [
+        1726,
+        48,
+        1867,
+        475
+      ],
+      "information_band_overlap_pixels": 0,
+      "opposite_side_zone_leak_pixels": 0,
+      "own_side_zone_pixels": 43117
+    },
+    "both_presence": {
+      "semantic": "both/amber",
+      "changed_pixels": 86234,
+      "combined_box": [
+        53,
+        48,
+        1867,
+        475
+      ],
+      "information_band_overlap_pixels": 0,
+      "opposite_side_zone_leak_pixels": null
+    },
+    "left_turn": {
+      "semantic": "left/green",
+      "changed_pixels": 41060,
+      "combined_box": [
+        53,
+        49,
+        190,
+        475
+      ],
+      "information_band_overlap_pixels": 0,
+      "opposite_side_zone_leak_pixels": 0,
+      "own_side_zone_pixels": 41060
+    },
+    "right_turn": {
+      "semantic": "right/green",
+      "changed_pixels": 41060,
+      "combined_box": [
+        1730,
+        49,
+        1867,
+        475
+      ],
+      "information_band_overlap_pixels": 0,
+      "opposite_side_zone_leak_pixels": 0,
+      "own_side_zone_pixels": 41060
+    },
+    "left_conflict": {
+      "semantic": "left/red",
+      "changed_pixels": 42086,
+      "combined_box": [
+        53,
+        48,
+        192,
+        475
+      ],
+      "information_band_overlap_pixels": 0,
+      "opposite_side_zone_leak_pixels": 0,
+      "own_side_zone_pixels": 42086
+    },
+    "right_conflict": {
+      "semantic": "right/red",
+      "changed_pixels": 42086,
+      "combined_box": [
+        1728,
+        48,
+        1867,
+        475
+      ],
+      "information_band_overlap_pixels": 0,
+      "opposite_side_zone_leak_pixels": 0,
+      "own_side_zone_pixels": 42086
+    },
+    "hazards_clear": {
+      "semantic": "both/green",
+      "changed_pixels": 82120,
+      "combined_box": [
+        53,
+        49,
+        1867,
+        475
+      ],
+      "information_band_overlap_pixels": 0,
+      "opposite_side_zone_leak_pixels": null
+    },
+    "hazards_conflict": {
+      "semantic": "both/red",
+      "changed_pixels": 84172,
+      "combined_box": [
+        53,
+        48,
+        1867,
+        475
+      ],
+      "information_band_overlap_pixels": 0,
+      "opposite_side_zone_leak_pixels": null
+    },
+    "left_turn_unconfirmed": {
+      "semantic": "suppressed",
+      "changed_pixels": 0,
+      "combined_box": null,
+      "information_band_overlap_pixels": 0,
+      "opposite_side_zone_leak_pixels": null
+    }
+  },
+  "information_band_px": [
+    284,
+    1680
+  ],
+  "awareness_zone_columns": {
+    "left": [
+      50,
+      218
+    ],
+    "right": [
+      1702,
+      1870
+    ]
+  },
+  "awareness_suppression_max_channel_delta": {
+    "unknown": 0,
+    "stale": 0,
+    "synthetic": 0
+  },
+  "awareness_assets": {
+    "left": {
+      "alpha_equal_across_colours": true,
+      "colour_min_channel_separation": 83,
+      "mirror_max_channel_error": 0
     },
     "right": {
-      "changed_pixels": 6662,
-      "combined_box": [
-        1184,
-        232,
-        1316,
-        307
-      ],
-      "left_safe_zone_overlap_pixels": 0,
-      "right_safe_zone_overlap_pixels": 0,
-      "indicator_attention": false
+      "alpha_equal_across_colours": true,
+      "colour_min_channel_separation": 83,
+      "mirror_max_channel_error": 0
     },
-    "both": {
-      "changed_pixels": 13061,
+    "ghost": {
+      "max_alpha_gradient": 9,
+      "mirror_max_channel_error": 0
+    }
+  },
+  "awareness_ghost": {
+    "presence": {
+      "changed_pixels": 9839,
       "combined_box": [
-        604,
-        232,
-        1316,
-        308
+        612,
+        282,
+        780,
+        359
       ],
-      "left_safe_zone_overlap_pixels": 0,
-      "right_safe_zone_overlap_pixels": 0,
-      "indicator_attention": false
+      "other_side_changed_pixels": 0
     },
-    "left_indicator": {
-      "changed_pixels": 9342,
+    "conflict": {
+      "changed_pixels": 10179,
       "combined_box": [
-        604,
-        108,
-        1074,
-        382
+        612,
+        281,
+        780,
+        360
       ],
-      "left_safe_zone_overlap_pixels": 0,
-      "right_safe_zone_overlap_pixels": 0,
-      "indicator_attention": true
+      "other_side_changed_pixels": 0
     },
-    "right_indicator": {
-      "changed_pixels": 9590,
-      "combined_box": [
-        742,
-        108,
-        1316,
-        382
-      ],
-      "left_safe_zone_overlap_pixels": 0,
-      "right_safe_zone_overlap_pixels": 0,
-      "indicator_attention": true
+    "conflict_minus_presence_max_channel_delta": 20
+  },
+  "awareness_semantics": {
+    "left": {
+      "presence_vs_conflict_support_difference_pixels": 1031,
+      "presence_vs_conflict_support_overlap_ratio": 0.9761,
+      "presence_vs_conflict_max_channel_delta": 69,
+      "turn_vs_presence_support_difference_pixels": 2057,
+      "presence_vs_turn_max_channel_delta": 127,
+      "opposite_turn_repaints_present_side_pixels": 0,
+      "opposite_turn_paints_other_side_pixels": 41060
+    },
+    "right": {
+      "presence_vs_conflict_support_difference_pixels": 1031,
+      "presence_vs_conflict_support_overlap_ratio": 0.9761,
+      "presence_vs_conflict_max_channel_delta": 69,
+      "turn_vs_presence_support_difference_pixels": 2057,
+      "presence_vs_turn_max_channel_delta": 127,
+      "opposite_turn_repaints_present_side_pixels": 0,
+      "opposite_turn_paints_other_side_pixels": 41060
     }
   },
   "body_boxes_equal": false,
-  "blind_symmetry_max_channel_error": 0,
+  "awareness_symmetry_max_channel_error": 0,
   "body_box_max_delta_px": 1,
   "body_footprint_within_raster_tolerance": true,
   "selected_scale": 1.09

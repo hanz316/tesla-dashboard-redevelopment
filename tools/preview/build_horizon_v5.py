@@ -60,6 +60,8 @@ MICRO_MOTION_HZ = 0.55
 # labels survive half size at 2.48:1) while C's smoked glass scored higher
 # contrast but costs four times the memory and stays visible at night. The
 # alternative candidates remain switchable for a human comparison.
+AWARENESS_ASSETS = os.path.join(REPO, "assets", "checkpoints", "horizon_v54",
+                                "awareness_assets.json")
 SURFACE_CANDIDATE = os.environ.get("HORIZON_SUPPORT_CANDIDATE") or "scrim"
 SURFACES = os.path.join(REPO, "assets", "checkpoints", "horizon_v54",
                         "scrim.json")
@@ -197,36 +199,87 @@ def motion_components(assets, vehicle_layers):
     return nodes
 
 
-def blind_zone_components():
-    """Bounded semantic awareness layer; protocol bits never reach this list."""
+def side_awareness_components():
+    """Peripheral Side Awareness Zones, replacing the rejected ghost outline.
+
+    The panel's slanted trapezoid edges are the peripheral band a driver actually
+    notices, so each side gets a wedge between the physical edge and a vertical
+    internal boundary, strongest at the outer edge and fading to nothing inward.
+    Three semantic colours are selected by state, not tinted at run time:
+
+        green  indicator on, that side clear      (TURN ONLY)
+        amber  someone there, no turn intent      (BLIND PRESENCE ONLY)
+        red    turn intent + presence, same side  (SIDE CONFLICT)
+
+    The ghost vehicle stays only as a soft secondary silhouette: no outline, low
+    opacity, and it never carries the warning on its own.
+    """
+    if not os.path.isfile(AWARENESS_ASSETS):
+        return []
+    assets = json.load(open(AWARENESS_ASSETS))["assets"]
     nodes = []
-    for side, binding, x in (
-            ("left", "blind_left", 604),
-            ("right", "blind_right", 1184)):
-        source = f"assets/ui/horizon_v54_blind_ghost_{side}.png"
-        nodes.append(image(f"blind.{side}.peripheral", "assets/ui/horizon_v54_blind_glow.png",
-                           {"x": x - 24, "y": 164, "w": 180, "h": 220}, z=17,
-                           layer="dynamic", role="awareness", opacity=0.82,
-                           visibility={"binding": binding, "show_when_true": True},
-                           visible_opacity=0.82,
-                           exempt_from_safe_area=True,
-                           exempt_reason="bounded amber semantic awareness field"))
-        nodes.append(image(f"blind.{side}.ghost", source,
-                           {"x": x, "y": 226, "w": 132, "h": 88}, z=18,
-                           layer="dynamic", role="awareness", opacity=0.92,
-                           visibility={"binding": binding, "show_when_true": True},
-                           visible_opacity=0.92,
-                           exempt_from_safe_area=True,
-                           exempt_reason="baked low-opacity adjacent vehicle silhouette"))
-        for node in nodes[-2:]:
-            node["alpha_when"] = [
-                {"when": {"all": [
-                    {"signal": binding, "is_true": True},
-                    {"any": [{"signal": "indicator_" + side, "is_true": True},
-                             {"signal": "hazards", "is_true": True}]}]}, "alpha": 1.0},
-                {"when": {"signal": binding, "is_true": True}, "alpha": 0.6},
-                {"when": {"always": True}, "alpha": 0.0}]
+    strength = {"day": 1.0, "dawn": 0.62, "dusk": 0.62, "night": 0.45}
+    for side in ("left", "right"):
+        other = "right" if side == "left" else "left"
+        for name, condition in (
+                ("green", {"all": [
+                    {"any": [{"signal": f"indicator_{side}", "is_true": True},
+                             {"signal": "hazards", "is_true": True}]},
+                    {"signal": f"blind_{side}", "is_true": False}]}),
+                ("amber", {"all": [
+                    {"signal": f"blind_{side}", "is_true": True},
+                    {"signal": f"indicator_{side}", "is_true": False},
+                    {"signal": "hazards", "is_true": False}]}),
+                ("red", {"all": [
+                    {"signal": f"blind_{side}", "is_true": True},
+                    {"any": [{"signal": f"indicator_{side}", "is_true": True},
+                             {"signal": "hazards", "is_true": True}]}]})):
+            entry = assets.get(f"{side}_{name}")
+            if not entry:
+                continue
+            box = entry["box"]
+            nodes.append(image(f"awareness.{side}.{name}", entry["file"],
+                               {"x": box[0], "y": box[1], "w": box[2] - box[0],
+                                "h": box[3] - box[1]}, z=16, layer="dynamic",
+                               role="awareness", opacity=1.0,
+                               alpha_when=[{"when": condition, "alpha": 1.0},
+                                           {"when": {"always": True},
+                                            "alpha": 0.0}],
+                               environment_opacity=dict(strength),
+                               exempt_from_safe_area=True,
+                               exempt_reason="the zone is the peripheral band "
+                                             "between the panel edge and its "
+                                             "internal boundary; it never "
+                                             "reaches the information"))
+        ghost = assets.get(f"ghost_{side}")
+        if ghost:
+            x = 612 if side == "left" else 1140
+            nodes.append(image(f"awareness.{side}.ghost", ghost["file"],
+                               {"x": x, "y": 268, "w": ghost["size"][0],
+                                "h": ghost["size"][1]}, z=15, layer="dynamic",
+                               role="awareness", opacity=0.55,
+                               visibility={"binding": f"blind_{side}",
+                                           "show_when_true": True},
+                               visible_opacity=0.55,
+                               environment_opacity=dict(strength),
+                               exempt_from_safe_area=True,
+                               exempt_reason="soft secondary proximity cue; "
+                                             "no outline, and its opacity is "
+                                             "below the side field's"))
+        for node in nodes[-3:]:
+            if node.get("role") == "awareness" and "ghost" in node["id"]:
+                node["alpha_when"] = [
+                    {"when": {"all": [
+                        {"signal": f"blind_{side}", "is_true": True},
+                        {"any": [{"signal": f"indicator_{side}", "is_true": True},
+                                 {"signal": "hazards", "is_true": True}]}]},
+                     "alpha": 0.72},
+                    {"when": {"signal": f"blind_{side}", "is_true": True},
+                     "alpha": 0.5},
+                    {"when": {"always": True}, "alpha": 0.0}]
     return nodes
+
+
 V2_LAYOUT = os.path.join(UI, "horizon_v2_layout.json")
 
 CONTENT_SCALE = 480 / 724.0
@@ -430,7 +483,7 @@ def build_components(measurements, ui_assets, vehicle, alignment):
                             exempt_reason="the environment plate is the whole "
                                           "canvas and is itself clear of the "
                             "panel mask by construction"))
-    components.extend(blind_zone_components())
+    components.extend(side_awareness_components())
     # A glow is the element's own emission: it is strong at night and held back
     # in daylight, where the arc has to read as a shape rather than as light.
     glow_backing = {"day": 0.35, "dawn": 0.7, "dusk": 0.7, "night": 1.0}

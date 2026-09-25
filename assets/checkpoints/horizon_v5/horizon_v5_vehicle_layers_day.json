@@ -26,15 +26,15 @@
    "crop_box": [
     653,
     103,
-    1209,
+    1210,
     477
    ],
    "layer_size": [
-    556,
+    557,
     374
    ],
    "solid_car_pixels": 56658,
-   "response_pixels": 26298,
+   "response_pixels": 26277,
    "reflection_box": [
     757,
     346,
@@ -47,7 +47,7 @@
     1152,
     346
    ],
-   "decoded_rgba_bytes": 831776,
+   "decoded_rgba_bytes": 833272,
    "background_decoded_rgba_bytes": 3686400
   },
   {
@@ -63,7 +63,7 @@
     374
    ],
    "solid_car_pixels": 56658,
-   "response_pixels": 26303,
+   "response_pixels": 26261,
    "reflection_box": [
     757,
     346,
@@ -82,17 +82,17 @@
   {
    "state": "brake",
    "crop_box": [
-    657,
+    653,
     103,
     1209,
     477
    ],
    "layer_size": [
-    552,
+    556,
     374
    ],
    "solid_car_pixels": 56658,
-   "response_pixels": 26296,
+   "response_pixels": 26263,
    "reflection_box": [
     757,
     346,
@@ -105,23 +105,23 @@
     1152,
     346
    ],
-   "decoded_rgba_bytes": 825792,
+   "decoded_rgba_bytes": 831776,
    "background_decoded_rgba_bytes": 3686400
   },
   {
    "state": "headlight",
    "crop_box": [
-    657,
+    653,
     103,
     1209,
     477
    ],
    "layer_size": [
-    552,
+    556,
     374
    ],
    "solid_car_pixels": 56658,
-   "response_pixels": 26296,
+   "response_pixels": 26263,
    "reflection_box": [
     757,
     346,
@@ -134,7 +134,7 @@
     1152,
     346
    ],
-   "decoded_rgba_bytes": 825792,
+   "decoded_rgba_bytes": 831776,
    "background_decoded_rgba_bytes": 3686400
   },
   {
@@ -150,7 +150,7 @@
     374
    ],
    "solid_car_pixels": 56658,
-   "response_pixels": 26291,
+   "response_pixels": 26256,
    "reflection_box": [
     757,
     346,
@@ -179,7 +179,7 @@
     374
    ],
    "solid_car_pixels": 56658,
-   "response_pixels": 26296,
+   "response_pixels": 26256,
    "reflection_box": [
     757,
     346,
@@ -208,7 +208,7 @@
     374
    ],
    "solid_car_pixels": 56658,
-   "response_pixels": 26293,
+   "response_pixels": 26253,
    "reflection_box": [
     757,
     346,

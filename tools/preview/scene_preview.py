@@ -591,6 +591,16 @@ MOCK_STATES['v5_stale'] = {
 }
 MOCK_STATES['v5_stale'].update(warning_active=False, warning_text='')
 
+# `hazards` is part of the VehicleState contract (include/dashboard/
+# vehicle_state.h) and the awareness layer reads it, but the fixtures never
+# carried it, so every hazard condition was permanently unknown. A fixture is a
+# fresh confirmed reading unless it is one of the unknown/stale ones.
+for _state in MOCK_STATES.values():
+    _state.setdefault('hazards', False)
+for _name in ('v5_hazard', 'v5_brake_hazard', 'h4_hazard'):
+    if _name in MOCK_STATES:
+        MOCK_STATES[_name]['hazards'] = True
+
 # ---------------------------------------------------------------- data model
 
 class Signal:
@@ -1420,12 +1430,17 @@ def apply_safe_area(img, canvas):
     bottom = int(safe.get("bottom_corner_cut", 0))
     if top <= 0 and bottom <= 0:
         return img
-    d = ImageDraw.Draw(img)
     w, h = img.size
     mask = hex_to_rgb(canvas.get("mask_color", "#000000"))
-    d.polygon([(0, 0), (top, 0), (bottom, h), (0, h)], fill=mask)
-    d.polygon([(w, 0), (w - top, 0), (w - bottom, h), (w, h)],
-              fill=mask)
+    # The two slanted corners are mirror images of each other, so the right one
+    # is drawn as the mirror of the left. Filling both with the polygon
+    # rasteriser directly made them differ by a pixel along the slant - an
+    # asymmetry that showed up in every left/right symmetry measurement.
+    corner = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    ImageDraw.Draw(corner).polygon([(0, 0), (top, 0), (bottom, h), (0, h)],
+                                   fill=mask)
+    img.alpha_composite(corner)
+    img.alpha_composite(corner.transpose(Image.FLIP_LEFT_RIGHT))
     return img
 
 

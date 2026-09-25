@@ -137,55 +137,85 @@ def roadflow_tile(size, seed, streaks=38):
 
 
 def wheel_overlays(car_path, boxes, spin_deg):
-    """Rotational blur of the visible wheels, baked from the render itself.
+    """Rotational blur of the wheels, applied only to the wheel itself.
 
-    Measured first: rotating the master's `wheels` meshes in Blender changes
-    1.8 k pixels and leaves the rim contrast untouched, i.e. those meshes are
-    not the wheels this camera sees (the visible ones belong to the body mesh).
-    Splitting them out would be a geometry change, and geometry is frozen, so
-    the blur is produced from the pixels the camera actually shows: the wheel
-    patch is rotated about its own centre across the exposure and the samples
-    averaged, then written as an RGBA layer that *replaces* the wheel disc.
-
-    That replacement is what makes the level a crossfade rather than a
-    double exposure: at level 0 the layer is transparent (the sharp wheel the
-    car render already has), at level 1 the disc is the fully swept wheel.
+    Blurring the wheel's bounding box smeared the rear quarter panel, because
+    that box also contains the bumper and the arch. The blur is therefore
+    weighted by how much a pixel belongs to the wheel: the tyre and the rim are
+    the dark parts of the box, the body panels around them are bright. The
+    weight is the pixel's darkness inside its own local range, so the bright
+    bumper inside the same box carries weight zero and is never touched - the
+    body keeps its sharpness by construction rather than by a hand-drawn mask.
     """
     import numpy as np
-    from PIL import Image, ImageDraw, ImageFilter
+    from PIL import Image
 
     car = Image.open(car_path).convert("RGBA")
     layer = Image.new("RGBA", (CANVAS[0], CANVAS[1]), (0, 0, 0, 0))
     for box in boxes:
         x0, y0, x1, y1 = [int(round(value)) for value in box]
-        width, height = x1 - x0, y1 - y0
-        patch = car.crop((x0, y0, x1, y1))
-        cx, cy = width / 2.0, height / 2.0
-        radius = 0.50 * min(width, height)
+        crop_box = (max(0, x0), max(0, y0), min(CANVAS[0], x1), min(CANVAS[1], y1))
+        patch = car.crop(crop_box)
+        width, height = patch.size
+        if width < 8 or height < 8:
+            continue
+        # A reduced sweep: a full exposure of a rotating wheel smears radii far
+        # beyond the tyre and drags the road and the arch into the disc. A third
+        # of the arc stays inside the wheel while still reading as rotation.
         samples = 11
         accumulator = None
         for index in range(samples):
             t = index / float(samples - 1) - 0.5
-            rotated = patch.rotate(spin_deg * t, resample=Image.BILINEAR,
-                                   center=(cx, cy))
+            rotated = patch.rotate(spin_deg * 0.34 * t, resample=Image.BILINEAR,
+                                   center=(width / 2.0, height / 2.0))
             array = np.asarray(rotated).astype(np.float32)
             accumulator = array if accumulator is None else accumulator + array
         accumulator /= float(samples)
-        mask_image = Image.new("L", (width, height), 0)
-        draw = ImageDraw.Draw(mask_image)
-        draw.ellipse([cx - radius, cy - radius, cx + radius, cy + radius],
-                     fill=255)
-        mask_image = mask_image.filter(ImageFilter.GaussianBlur(radius * 0.06))
-        mask = np.asarray(mask_image).astype(np.float32) / 255.0
-        # Only the car's own pixels: inside the wheel disc the road is
-        # transparent in this pass, and a blurred patch must not paint black
-        # over it. This is why the disc is masked twice - by its own shape and
-        # by the car's alpha.
-        car_alpha = np.asarray(patch)[:, :, 3].astype(np.float32) / 255.0
-        accumulator[:, :, 3] = mask * car_alpha * 255.0
+        patch_array = np.asarray(patch).astype(np.float32)
+        luminance = patch_array[:, :, :3].mean(axis=2)
+        # Locate the wheel inside its own box: the tyre is the darkest round
+        # region, so its centroid is the wheel centre and the spread of those
+        # pixels is its radius. The bounding box is wider than the wheel and
+        # blurring all of it is what smeared the quarter panel.
+        dark = luminance < np.quantile(luminance, 0.18)
+        ys, xs = np.nonzero(dark)
+        if xs.size < 40:
+            continue
+        cx = float(xs.mean())
+        cy = float(ys.mean())
+        radius = float(np.quantile(np.hypot(xs - cx, ys - cy), 0.92))
+        radius = max(14.0, min(radius * 0.92, 0.48 * min(width, height)))
+        yy, xx = np.mgrid[0:height, 0:width].astype(np.float32)
+        distance = np.hypot(xx - cx, yy - cy)
+        disc = np.clip((radius * 1.02 - distance) / max(1.0, radius * 0.16),
+                       0.0, 1.0)
+        disc = disc * disc * (3.0 - 2.0 * disc)
+        disc = np.ones_like(disc)
+        # Inside the disc only the wheel itself changes: the tyre and the rim
+        # are the dark part of the patch, the bright bodywork that also falls
+        # inside the disc keeps weight zero, so no pale plate can appear over
+        # the bumper.
+        bright = float(np.quantile(luminance, 0.72))
+        dark = float(np.quantile(luminance, 0.06))
+        weight = np.clip((bright - luminance) / max(6.0, bright - dark), 0.0, 1.0)
+        weight = weight * weight * (3.0 - 2.0 * weight)
+        # The wheel is achromatic. A saturating gate keeps the tail lamp lens -
+        # which sits inside the same bounding box and is dark enough to pass the
+        # luminance test - out of the smear, so the lamp stays a lamp.
+        channels = patch_array[:, :, :3]
+        high = channels.max(axis=2)
+        low = channels.min(axis=2)
+        saturation = (high - low) / np.maximum(high, 1.0)
+        weight = weight * np.clip(1.0 - saturation * 3.0, 0.0, 1.0)
+        # The wheel is solid geometry, so its pixels are opaque: requiring a
+        # solid alpha keeps the road and the soft shadow edge below the tyre out
+        # of the smear, which is what produced a grey flap under the wheel.
+        car_alpha = np.clip((patch_array[:, :, 3] / 255.0 - 0.55) / 0.35, 0.0, 1.0)
+        alpha = disc * weight * car_alpha
+        accumulator[:, :, 3] = alpha * 255.0
         layer.paste(Image.fromarray(np.clip(accumulator, 0, 255).astype("uint8"),
-                                    "RGBA"),
-                    (x0, y0), mask_image)
+                                    "RGBA"), (crop_box[0], crop_box[1]),
+                    Image.fromarray((alpha * 255).astype("uint8")))
     return layer
 
 
@@ -198,6 +228,8 @@ def main():
     parser.add_argument("--report", default=os.path.join(
         REPO, "assets", "checkpoints", "horizon_v5",
         "horizon_v5_motion_assets.json"))
+    parser.add_argument("--phase", default="night",
+                        help="which car pass the wheel overlays are baked from")
     args = parser.parse_args()
     width, height = CANVAS
     if not os.path.isdir(os.path.join(args.vehicle, "car", "base")):
@@ -231,7 +263,9 @@ def main():
     car_body = [offset[0] + solid[0], offset[1] + solid[1],
                 offset[0] + solid[2], offset[1] + solid[3]]
 
-    car_pass = os.path.join(args.vehicle, "car", "base", "000.png")
+    car_pass = os.path.join(
+        args.vehicle, "car", "base", "000.png") if args.phase == "night" else \
+        os.path.join(args.vehicle, args.phase, "car", "base", "000.png")
     car_pass_alpha = None
     if os.path.isfile(car_pass):
         car_pass_alpha = (np.asarray(Image.open(car_pass).convert("RGBA"))
@@ -289,17 +323,29 @@ def main():
     print(f"[v5-motion] roadflow tile {flow.size}")
 
     wheel_report = {}
-    car_pass = os.path.join(args.vehicle, "car", "base", "000.png")
-    framing_path = os.path.join(REPO, "assets", "checkpoints", "horizon_v5",
-                                "horizon_v5_environment.json")
+    car_pass = os.path.join(
+        args.vehicle, "car", "base", "000.png") if args.phase == "night" else \
+        os.path.join(args.vehicle, args.phase, "car", "base", "000.png")
+    # Prefer the phase report the car pass actually came from: the projected
+    # wheel boxes differ per environment, and a fallback box (the car's lower
+    # half) is far too wide to blur - that is what smeared the quarter panel.
+    framing_candidates = [
+        os.path.join(REPO, "assets", "checkpoints", "horizon_v5",
+                     f"horizon_v5_environment_{args.phase}.json"),
+        os.path.join(REPO, "assets", "checkpoints", "horizon_v5",
+                     "horizon_v5_environment.json"),
+    ]
     wheel_boxes = None
-    if os.path.isfile(framing_path):
+    for framing_path in framing_candidates:
+        if not os.path.isfile(framing_path):
+            continue
         try:
             entries = json.load(open(framing_path)).get("wheel_boxes_px", [])
-            if entries:
-                wheel_boxes = entries[0]["boxes"]
         except (OSError, ValueError):
-            wheel_boxes = None
+            entries = []
+        if entries:
+            wheel_boxes = entries[0]["boxes"]
+            break
     if wheel_boxes is None:
         # Fall back to the geometry the car render itself shows: a wheel
         # occupies the lower quarter of the car box, front and rear.

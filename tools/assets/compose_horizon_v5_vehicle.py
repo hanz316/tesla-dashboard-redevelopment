@@ -82,7 +82,7 @@ def bake_reflection(car_image, spec):
 
 
 def compose(state_dir, state, margin, alpha_edges, reflection_spec,
-            plate_path):
+            plate_path, no_response=False):
     import numpy as np
     from PIL import Image
 
@@ -138,6 +138,8 @@ def compose(state_dir, state, margin, alpha_edges, reflection_spec,
     # Where the car is solid the car frame owns the pixel; the road response
     # only carries the pixels the car changed around itself.
     response_alpha *= (1.0 - car_alpha)
+    if no_response:
+        response_alpha[:] = 0.0
     layer_alpha = np.clip(car_alpha + response_alpha, 0.0, 1.0)
 
     car_rgb = car[:, :, :3].astype(np.float32)
@@ -153,7 +155,7 @@ def compose(state_dir, state, margin, alpha_edges, reflection_spec,
     reflection, reflection_box = bake_reflection(
         Image.open(os.path.join(state_dir, "car", state, "000.png"))
         .convert("RGBA"), reflection_spec)
-    if reflection is not None:
+    if reflection is not None and reflection_spec.get("alpha", 0.0) > 0.0:
         layer.alpha_composite(reflection, reflection_box[:2])
 
     box = layer.getchannel("A").getbbox() or (0, 0, 1, 1)
@@ -182,6 +184,10 @@ def main():
                                             "indicator_left,indicator_right,"
                                             "hazard")
     parser.add_argument("--margin", type=int, default=24)
+    parser.add_argument("--no-response", action="store_true",
+                        help="diagnostic: omit the road response layer")
+    parser.add_argument("--no-reflection", action="store_true",
+                        help="diagnostic: omit the baked reflection")
     parser.add_argument("--alpha-edges", default="3.0,14.0",
                         help="difference values (0-255) that map to alpha 0 and 1")
     parser.add_argument("--manifest", default=os.path.join(
@@ -249,6 +255,8 @@ def main():
                "layer is the soft, rippled part of that reflection - the light "
                "that scatters on the water rather than the sharp mirror line",
     }
+    if args.no_reflection:
+        reflection_spec["alpha"] = 0.0
     reflection_spec.update(PHASE_REFLECTION.get(
         args.reflection_phase or args.phase or "night", {}))
     reflection_spec["phase"] = args.reflection_phase or args.phase or "night"
@@ -257,7 +265,7 @@ def main():
     records = []
     for state in states:
         layer, stats = compose(args.dir, state, args.margin, edges,
-                               reflection_spec, args.plate)
+                               reflection_spec, args.plate, args.no_response)
         out = os.path.join(args.dir, "layer", f"{state}.png")
         os.makedirs(os.path.dirname(out), exist_ok=True)
         layer.save(out)

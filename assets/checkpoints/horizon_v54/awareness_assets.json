@@ -1,0 +1,149 @@
+{
+ "schema": "horizon-v5.4-awareness-assets v1",
+ "geometry": {
+  "inner_left": 224.0,
+  "inner_right": 1696.0,
+  "top_y": 40.0,
+  "bottom_y": 480.0,
+  "panel_cut": {
+   "top": 116,
+   "bottom": 51
+  }
+ },
+ "semantic": {
+  "green": {
+   "rgb": [
+    58,
+    176,
+    118
+   ],
+   "meaning": "TURN ONLY - emerald"
+  },
+  "amber": {
+   "rgb": [
+    214,
+    158,
+    62
+   ],
+   "meaning": "BLIND PRESENCE ONLY - amber"
+  },
+  "red": {
+   "rgb": [
+    206,
+    74,
+    62
+   ],
+   "meaning": "SIDE CONFLICT - controlled warning red"
+  }
+ },
+ "assets": {
+  "left_green": {
+   "file": "assets/ui/horizon_v54_zone_left_green.png",
+   "box": [
+    50,
+    41,
+    218,
+    480
+   ],
+   "size": [
+    168,
+    439
+   ],
+   "meaning": "TURN ONLY - emerald",
+   "decoded_rgba_bytes": 295008
+  },
+  "left_amber": {
+   "file": "assets/ui/horizon_v54_zone_left_amber.png",
+   "box": [
+    50,
+    41,
+    218,
+    480
+   ],
+   "size": [
+    168,
+    439
+   ],
+   "meaning": "BLIND PRESENCE ONLY - amber",
+   "decoded_rgba_bytes": 295008
+  },
+  "left_red": {
+   "file": "assets/ui/horizon_v54_zone_left_red.png",
+   "box": [
+    50,
+    41,
+    218,
+    480
+   ],
+   "size": [
+    168,
+    439
+   ],
+   "meaning": "SIDE CONFLICT - controlled warning red",
+   "decoded_rgba_bytes": 295008
+  },
+  "right_green": {
+   "file": "assets/ui/horizon_v54_zone_right_green.png",
+   "box": [
+    1702,
+    41,
+    1870,
+    480
+   ],
+   "size": [
+    168,
+    439
+   ],
+   "meaning": "TURN ONLY - emerald",
+   "decoded_rgba_bytes": 295008
+  },
+  "right_amber": {
+   "file": "assets/ui/horizon_v54_zone_right_amber.png",
+   "box": [
+    1702,
+    41,
+    1870,
+    480
+   ],
+   "size": [
+    168,
+    439
+   ],
+   "meaning": "BLIND PRESENCE ONLY - amber",
+   "decoded_rgba_bytes": 295008
+  },
+  "right_red": {
+   "file": "assets/ui/horizon_v54_zone_right_red.png",
+   "box": [
+    1702,
+    41,
+    1870,
+    480
+   ],
+   "size": [
+    168,
+    439
+   ],
+   "meaning": "SIDE CONFLICT - controlled warning red",
+   "decoded_rgba_bytes": 295008
+  },
+  "ghost_left": {
+   "file": "assets/ui/horizon_v54_ghost_left.png",
+   "size": [
+    168,
+    96
+   ],
+   "why": "soft low-detail adjacent silhouette, no outline, amber-grey",
+   "decoded_rgba_bytes": 64512
+  },
+  "ghost_right": {
+   "file": "assets/ui/horizon_v54_ghost_right.png",
+   "size": [
+    168,
+    96
+   ],
+   "why": "soft low-detail adjacent silhouette, no outline, amber-grey",
+   "decoded_rgba_bytes": 64512
+  }
+ }
+}

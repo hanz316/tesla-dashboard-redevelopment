@@ -56,15 +56,115 @@
    "src": "assets/ui/horizon_v5_background.png"
   },
   {
-   "id": "blind.left.peripheral",
+   "id": "awareness.left.green",
    "type": "image",
-   "z": 17,
+   "z": 16,
    "layer": "dynamic",
-   "x": 580,
-   "y": 164,
-   "width": 180,
-   "height": 220,
-   "src": "assets/ui/horizon_v54_blind_glow.png",
+   "x": 50,
+   "y": 41,
+   "width": 168,
+   "height": 439,
+   "src": "assets/ui/horizon_v54_zone_left_green.png",
+   "environment_opacity": {
+    "day": 1.0,
+    "dawn": 0.62,
+    "dusk": 0.62,
+    "night": 0.45
+   },
+   "opacity": 1.0,
+   "alpha_when": [
+    {
+     "when": {
+      "all": [
+       {
+        "any": [
+         {
+          "signal": "indicator_left",
+          "is_true": true
+         },
+         {
+          "signal": "hazards",
+          "is_true": true
+         }
+        ]
+       },
+       {
+        "signal": "blind_left",
+        "is_true": false
+       }
+      ]
+     },
+     "alpha": 1.0
+    },
+    {
+     "when": {
+      "always": true
+     },
+     "alpha": 0.0
+    }
+   ]
+  },
+  {
+   "id": "awareness.left.amber",
+   "type": "image",
+   "z": 16,
+   "layer": "dynamic",
+   "x": 50,
+   "y": 41,
+   "width": 168,
+   "height": 439,
+   "src": "assets/ui/horizon_v54_zone_left_amber.png",
+   "environment_opacity": {
+    "day": 1.0,
+    "dawn": 0.62,
+    "dusk": 0.62,
+    "night": 0.45
+   },
+   "opacity": 1.0,
+   "alpha_when": [
+    {
+     "when": {
+      "all": [
+       {
+        "signal": "blind_left",
+        "is_true": true
+       },
+       {
+        "signal": "indicator_left",
+        "is_true": false
+       },
+       {
+        "signal": "hazards",
+        "is_true": false
+       }
+      ]
+     },
+     "alpha": 1.0
+    },
+    {
+     "when": {
+      "always": true
+     },
+     "alpha": 0.0
+    }
+   ]
+  },
+  {
+   "id": "awareness.left.red",
+   "type": "image",
+   "z": 16,
+   "layer": "dynamic",
+   "x": 50,
+   "y": 41,
+   "width": 168,
+   "height": 439,
+   "src": "assets/ui/horizon_v54_zone_left_red.png",
+   "environment_opacity": {
+    "day": 1.0,
+    "dawn": 0.62,
+    "dusk": 0.62,
+    "night": 0.45
+   },
    "opacity": 1.0,
    "alpha_when": [
     {
@@ -92,13 +192,6 @@
     },
     {
      "when": {
-      "signal": "blind_left",
-      "is_true": true
-     },
-     "alpha": 0.6
-    },
-    {
-     "when": {
       "always": true
      },
      "alpha": 0.0
@@ -106,15 +199,21 @@
    ]
   },
   {
-   "id": "blind.left.ghost",
+   "id": "awareness.left.ghost",
    "type": "image",
-   "z": 18,
+   "z": 15,
    "layer": "dynamic",
-   "x": 604,
-   "y": 226,
-   "width": 132,
-   "height": 88,
-   "src": "assets/ui/horizon_v54_blind_ghost_left.png",
+   "x": 612,
+   "y": 268,
+   "width": 168,
+   "height": 96,
+   "src": "assets/ui/horizon_v54_ghost_left.png",
+   "environment_opacity": {
+    "day": 1.0,
+    "dawn": 0.62,
+    "dusk": 0.62,
+    "night": 0.45
+   },
    "opacity": 1.0,
    "alpha_when": [
     {
@@ -138,14 +237,14 @@
        }
       ]
      },
-     "alpha": 1.0
+     "alpha": 0.72
     },
     {
      "when": {
       "signal": "blind_left",
       "is_true": true
      },
-     "alpha": 0.6
+     "alpha": 0.5
     },
     {
      "when": {
@@ -156,15 +255,115 @@
    ]
   },
   {
-   "id": "blind.right.peripheral",
+   "id": "awareness.right.green",
    "type": "image",
-   "z": 17,
+   "z": 16,
    "layer": "dynamic",
-   "x": 1160,
-   "y": 164,
-   "width": 180,
-   "height": 220,
-   "src": "assets/ui/horizon_v54_blind_glow.png",
+   "x": 1702,
+   "y": 41,
+   "width": 168,
+   "height": 439,
+   "src": "assets/ui/horizon_v54_zone_right_green.png",
+   "environment_opacity": {
+    "day": 1.0,
+    "dawn": 0.62,
+    "dusk": 0.62,
+    "night": 0.45
+   },
+   "opacity": 1.0,
+   "alpha_when": [
+    {
+     "when": {
+      "all": [
+       {
+        "any": [
+         {
+          "signal": "indicator_right",
+          "is_true": true
+         },
+         {
+          "signal": "hazards",
+          "is_true": true
+         }
+        ]
+       },
+       {
+        "signal": "blind_right",
+        "is_true": false
+       }
+      ]
+     },
+     "alpha": 1.0
+    },
+    {
+     "when": {
+      "always": true
+     },
+     "alpha": 0.0
+    }
+   ]
+  },
+  {
+   "id": "awareness.right.amber",
+   "type": "image",
+   "z": 16,
+   "layer": "dynamic",
+   "x": 1702,
+   "y": 41,
+   "width": 168,
+   "height": 439,
+   "src": "assets/ui/horizon_v54_zone_right_amber.png",
+   "environment_opacity": {
+    "day": 1.0,
+    "dawn": 0.62,
+    "dusk": 0.62,
+    "night": 0.45
+   },
+   "opacity": 1.0,
+   "alpha_when": [
+    {
+     "when": {
+      "all": [
+       {
+        "signal": "blind_right",
+        "is_true": true
+       },
+       {
+        "signal": "indicator_right",
+        "is_true": false
+       },
+       {
+        "signal": "hazards",
+        "is_true": false
+       }
+      ]
+     },
+     "alpha": 1.0
+    },
+    {
+     "when": {
+      "always": true
+     },
+     "alpha": 0.0
+    }
+   ]
+  },
+  {
+   "id": "awareness.right.red",
+   "type": "image",
+   "z": 16,
+   "layer": "dynamic",
+   "x": 1702,
+   "y": 41,
+   "width": 168,
+   "height": 439,
+   "src": "assets/ui/horizon_v54_zone_right_red.png",
+   "environment_opacity": {
+    "day": 1.0,
+    "dawn": 0.62,
+    "dusk": 0.62,
+    "night": 0.45
+   },
    "opacity": 1.0,
    "alpha_when": [
     {
@@ -192,13 +391,6 @@
     },
     {
      "when": {
-      "signal": "blind_right",
-      "is_true": true
-     },
-     "alpha": 0.6
-    },
-    {
-     "when": {
       "always": true
      },
      "alpha": 0.0
@@ -206,15 +398,21 @@
    ]
   },
   {
-   "id": "blind.right.ghost",
+   "id": "awareness.right.ghost",
    "type": "image",
-   "z": 18,
+   "z": 15,
    "layer": "dynamic",
-   "x": 1184,
-   "y": 226,
-   "width": 132,
-   "height": 88,
-   "src": "assets/ui/horizon_v54_blind_ghost_right.png",
+   "x": 1140,
+   "y": 268,
+   "width": 168,
+   "height": 96,
+   "src": "assets/ui/horizon_v54_ghost_right.png",
+   "environment_opacity": {
+    "day": 1.0,
+    "dawn": 0.62,
+    "dusk": 0.62,
+    "night": 0.45
+   },
    "opacity": 1.0,
    "alpha_when": [
     {
@@ -238,14 +436,14 @@
        }
       ]
      },
-     "alpha": 1.0
+     "alpha": 0.72
     },
     {
      "when": {
       "signal": "blind_right",
       "is_true": true
      },
-     "alpha": 0.6
+     "alpha": 0.5
     },
     {
      "when": {
@@ -905,10 +1103,10 @@
    "type": "image",
    "z": 26,
    "layer": "dynamic",
-   "x": 785,
-   "y": 203,
-   "width": 349,
-   "height": 145,
+   "x": 774,
+   "y": 139,
+   "width": 373,
+   "height": 207,
    "src": "assets/ui/horizon_v5_wheel_low.png",
    "opacity_from": {
     "binding": "speed",
@@ -951,10 +1149,10 @@
    "type": "image",
    "z": 27,
    "layer": "dynamic",
-   "x": 785,
-   "y": 203,
-   "width": 349,
-   "height": 145,
+   "x": 774,
+   "y": 139,
+   "width": 373,
+   "height": 207,
    "src": "assets/ui/horizon_v5_wheel_medium.png",
    "opacity_from": {
     "binding": "speed",
@@ -997,10 +1195,10 @@
    "type": "image",
    "z": 28,
    "layer": "dynamic",
-   "x": 785,
-   "y": 203,
-   "width": 349,
-   "height": 145,
+   "x": 774,
+   "y": 139,
+   "width": 373,
+   "height": 207,
    "src": "assets/ui/horizon_v5_wheel_high.png",
    "opacity_from": {
     "binding": "speed",

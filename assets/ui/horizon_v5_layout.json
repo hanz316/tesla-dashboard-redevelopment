@@ -171,26 +171,123 @@
    "exempt_reason": "the environment plate is the whole canvas and is itself clear of the panel mask by construction"
   },
   {
-   "id": "blind.left.peripheral",
+   "id": "awareness.left.green",
    "kind": "image",
-   "src": "assets/ui/horizon_v54_blind_glow.png",
+   "src": "assets/ui/horizon_v54_zone_left_green.png",
    "bounds": {
-    "x": 580,
-    "y": 164,
-    "w": 180,
-    "h": 220
+    "x": 50,
+    "y": 41,
+    "w": 168,
+    "h": 439
    },
-   "z": 17,
+   "z": 16,
    "layer": "dynamic",
    "role": "awareness",
-   "opacity": 0.82,
-   "visibility": {
-    "binding": "blind_left",
-    "show_when_true": true
+   "opacity": 1.0,
+   "alpha_when": [
+    {
+     "when": {
+      "all": [
+       {
+        "any": [
+         {
+          "signal": "indicator_left",
+          "is_true": true
+         },
+         {
+          "signal": "hazards",
+          "is_true": true
+         }
+        ]
+       },
+       {
+        "signal": "blind_left",
+        "is_true": false
+       }
+      ]
+     },
+     "alpha": 1.0
+    },
+    {
+     "when": {
+      "always": true
+     },
+     "alpha": 0.0
+    }
+   ],
+   "environment_opacity": {
+    "day": 1.0,
+    "dawn": 0.62,
+    "dusk": 0.62,
+    "night": 0.45
    },
-   "visible_opacity": 0.82,
    "exempt_from_safe_area": true,
-   "exempt_reason": "bounded amber semantic awareness field",
+   "exempt_reason": "the zone is the peripheral band between the panel edge and its internal boundary; it never reaches the information"
+  },
+  {
+   "id": "awareness.left.amber",
+   "kind": "image",
+   "src": "assets/ui/horizon_v54_zone_left_amber.png",
+   "bounds": {
+    "x": 50,
+    "y": 41,
+    "w": 168,
+    "h": 439
+   },
+   "z": 16,
+   "layer": "dynamic",
+   "role": "awareness",
+   "opacity": 1.0,
+   "alpha_when": [
+    {
+     "when": {
+      "all": [
+       {
+        "signal": "blind_left",
+        "is_true": true
+       },
+       {
+        "signal": "indicator_left",
+        "is_true": false
+       },
+       {
+        "signal": "hazards",
+        "is_true": false
+       }
+      ]
+     },
+     "alpha": 1.0
+    },
+    {
+     "when": {
+      "always": true
+     },
+     "alpha": 0.0
+    }
+   ],
+   "environment_opacity": {
+    "day": 1.0,
+    "dawn": 0.62,
+    "dusk": 0.62,
+    "night": 0.45
+   },
+   "exempt_from_safe_area": true,
+   "exempt_reason": "the zone is the peripheral band between the panel edge and its internal boundary; it never reaches the information"
+  },
+  {
+   "id": "awareness.left.red",
+   "kind": "image",
+   "src": "assets/ui/horizon_v54_zone_left_red.png",
+   "bounds": {
+    "x": 50,
+    "y": 41,
+    "w": 168,
+    "h": 439
+   },
+   "z": 16,
+   "layer": "dynamic",
+   "role": "awareness",
+   "opacity": 1.0,
    "alpha_when": [
     {
      "when": {
@@ -217,40 +314,47 @@
     },
     {
      "when": {
-      "signal": "blind_left",
-      "is_true": true
-     },
-     "alpha": 0.6
-    },
-    {
-     "when": {
       "always": true
      },
      "alpha": 0.0
     }
-   ]
+   ],
+   "environment_opacity": {
+    "day": 1.0,
+    "dawn": 0.62,
+    "dusk": 0.62,
+    "night": 0.45
+   },
+   "exempt_from_safe_area": true,
+   "exempt_reason": "the zone is the peripheral band between the panel edge and its internal boundary; it never reaches the information"
   },
   {
-   "id": "blind.left.ghost",
+   "id": "awareness.left.ghost",
    "kind": "image",
-   "src": "assets/ui/horizon_v54_blind_ghost_left.png",
+   "src": "assets/ui/horizon_v54_ghost_left.png",
    "bounds": {
-    "x": 604,
-    "y": 226,
-    "w": 132,
-    "h": 88
+    "x": 612,
+    "y": 268,
+    "w": 168,
+    "h": 96
    },
-   "z": 18,
+   "z": 15,
    "layer": "dynamic",
    "role": "awareness",
-   "opacity": 0.92,
+   "opacity": 0.55,
    "visibility": {
     "binding": "blind_left",
     "show_when_true": true
    },
-   "visible_opacity": 0.92,
+   "visible_opacity": 0.55,
+   "environment_opacity": {
+    "day": 1.0,
+    "dawn": 0.62,
+    "dusk": 0.62,
+    "night": 0.45
+   },
    "exempt_from_safe_area": true,
-   "exempt_reason": "baked low-opacity adjacent vehicle silhouette",
+   "exempt_reason": "soft secondary proximity cue; no outline, and its opacity is below the side field's",
    "alpha_when": [
     {
      "when": {
@@ -273,14 +377,14 @@
        }
       ]
      },
-     "alpha": 1.0
+     "alpha": 0.72
     },
     {
      "when": {
       "signal": "blind_left",
       "is_true": true
      },
-     "alpha": 0.6
+     "alpha": 0.5
     },
     {
      "when": {
@@ -291,26 +395,123 @@
    ]
   },
   {
-   "id": "blind.right.peripheral",
+   "id": "awareness.right.green",
    "kind": "image",
-   "src": "assets/ui/horizon_v54_blind_glow.png",
+   "src": "assets/ui/horizon_v54_zone_right_green.png",
    "bounds": {
-    "x": 1160,
-    "y": 164,
-    "w": 180,
-    "h": 220
+    "x": 1702,
+    "y": 41,
+    "w": 168,
+    "h": 439
    },
-   "z": 17,
+   "z": 16,
    "layer": "dynamic",
    "role": "awareness",
-   "opacity": 0.82,
-   "visibility": {
-    "binding": "blind_right",
-    "show_when_true": true
+   "opacity": 1.0,
+   "alpha_when": [
+    {
+     "when": {
+      "all": [
+       {
+        "any": [
+         {
+          "signal": "indicator_right",
+          "is_true": true
+         },
+         {
+          "signal": "hazards",
+          "is_true": true
+         }
+        ]
+       },
+       {
+        "signal": "blind_right",
+        "is_true": false
+       }
+      ]
+     },
+     "alpha": 1.0
+    },
+    {
+     "when": {
+      "always": true
+     },
+     "alpha": 0.0
+    }
+   ],
+   "environment_opacity": {
+    "day": 1.0,
+    "dawn": 0.62,
+    "dusk": 0.62,
+    "night": 0.45
    },
-   "visible_opacity": 0.82,
    "exempt_from_safe_area": true,
-   "exempt_reason": "bounded amber semantic awareness field",
+   "exempt_reason": "the zone is the peripheral band between the panel edge and its internal boundary; it never reaches the information"
+  },
+  {
+   "id": "awareness.right.amber",
+   "kind": "image",
+   "src": "assets/ui/horizon_v54_zone_right_amber.png",
+   "bounds": {
+    "x": 1702,
+    "y": 41,
+    "w": 168,
+    "h": 439
+   },
+   "z": 16,
+   "layer": "dynamic",
+   "role": "awareness",
+   "opacity": 1.0,
+   "alpha_when": [
+    {
+     "when": {
+      "all": [
+       {
+        "signal": "blind_right",
+        "is_true": true
+       },
+       {
+        "signal": "indicator_right",
+        "is_true": false
+       },
+       {
+        "signal": "hazards",
+        "is_true": false
+       }
+      ]
+     },
+     "alpha": 1.0
+    },
+    {
+     "when": {
+      "always": true
+     },
+     "alpha": 0.0
+    }
+   ],
+   "environment_opacity": {
+    "day": 1.0,
+    "dawn": 0.62,
+    "dusk": 0.62,
+    "night": 0.45
+   },
+   "exempt_from_safe_area": true,
+   "exempt_reason": "the zone is the peripheral band between the panel edge and its internal boundary; it never reaches the information"
+  },
+  {
+   "id": "awareness.right.red",
+   "kind": "image",
+   "src": "assets/ui/horizon_v54_zone_right_red.png",
+   "bounds": {
+    "x": 1702,
+    "y": 41,
+    "w": 168,
+    "h": 439
+   },
+   "z": 16,
+   "layer": "dynamic",
+   "role": "awareness",
+   "opacity": 1.0,
    "alpha_when": [
     {
      "when": {
@@ -337,40 +538,47 @@
     },
     {
      "when": {
-      "signal": "blind_right",
-      "is_true": true
-     },
-     "alpha": 0.6
-    },
-    {
-     "when": {
       "always": true
      },
      "alpha": 0.0
     }
-   ]
+   ],
+   "environment_opacity": {
+    "day": 1.0,
+    "dawn": 0.62,
+    "dusk": 0.62,
+    "night": 0.45
+   },
+   "exempt_from_safe_area": true,
+   "exempt_reason": "the zone is the peripheral band between the panel edge and its internal boundary; it never reaches the information"
   },
   {
-   "id": "blind.right.ghost",
+   "id": "awareness.right.ghost",
    "kind": "image",
-   "src": "assets/ui/horizon_v54_blind_ghost_right.png",
+   "src": "assets/ui/horizon_v54_ghost_right.png",
    "bounds": {
-    "x": 1184,
-    "y": 226,
-    "w": 132,
-    "h": 88
+    "x": 1140,
+    "y": 268,
+    "w": 168,
+    "h": 96
    },
-   "z": 18,
+   "z": 15,
    "layer": "dynamic",
    "role": "awareness",
-   "opacity": 0.92,
+   "opacity": 0.55,
    "visibility": {
     "binding": "blind_right",
     "show_when_true": true
    },
-   "visible_opacity": 0.92,
+   "visible_opacity": 0.55,
+   "environment_opacity": {
+    "day": 1.0,
+    "dawn": 0.62,
+    "dusk": 0.62,
+    "night": 0.45
+   },
    "exempt_from_safe_area": true,
-   "exempt_reason": "baked low-opacity adjacent vehicle silhouette",
+   "exempt_reason": "soft secondary proximity cue; no outline, and its opacity is below the side field's",
    "alpha_when": [
     {
      "when": {
@@ -393,14 +601,14 @@
        }
       ]
      },
-     "alpha": 1.0
+     "alpha": 0.72
     },
     {
      "when": {
       "signal": "blind_right",
       "is_true": true
      },
-     "alpha": 0.6
+     "alpha": 0.5
     },
     {
      "when": {
@@ -1038,10 +1246,10 @@
    "kind": "image",
    "src": "assets/ui/horizon_v5_wheel_low.png",
    "bounds": {
-    "x": 785,
-    "y": 203,
-    "w": 349,
-    "h": 145
+    "x": 774,
+    "y": 139,
+    "w": 373,
+    "h": 207
    },
    "z": 26,
    "layer": "dynamic",
@@ -1089,10 +1297,10 @@
    "kind": "image",
    "src": "assets/ui/horizon_v5_wheel_medium.png",
    "bounds": {
-    "x": 785,
-    "y": 203,
-    "w": 349,
-    "h": 145
+    "x": 774,
+    "y": 139,
+    "w": 373,
+    "h": 207
    },
    "z": 27,
    "layer": "dynamic",
@@ -1140,10 +1348,10 @@
    "kind": "image",
    "src": "assets/ui/horizon_v5_wheel_high.png",
    "bounds": {
-    "x": 785,
-    "y": 203,
-    "w": 349,
-    "h": 145
+    "x": 774,
+    "y": 139,
+    "w": 373,
+    "h": 207
    },
    "z": 28,
    "layer": "dynamic",

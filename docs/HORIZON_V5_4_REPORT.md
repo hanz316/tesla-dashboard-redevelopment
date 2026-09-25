@@ -28,24 +28,31 @@ Measured on the Mac host:
   Those combined footprints still differ and need further motion work.
 - The selected soft scrim is a single horizontal field, max alpha 36, with a
   two-level-per-pixel boundary and no central vehicle bubble.
-- Blind-zone evidence covers none/left/right/both and same-side indicator
-  combinations. Isolated overlay mirror error is zero, with no measured
-  overlap with the information safe zones. Full-composite changed counts
-  differ because the road illumination differs on each side.
+- The peripheral Side Awareness Zone replaced the rejected car-shaped outline.
+  Each side is one semantic field whose colour is selected by state: green
+  TURN ONLY, amber BLIND PRESENCE ONLY, red SIDE CONFLICT, plus a soft
+  secondary silhouette. All three colours share one alpha field exactly and
+  the two sides mirror with zero channel error, so the colour carries the
+  meaning and the geometry does not.
+- Awareness evidence covers none, either side, both sides, turn only, conflict
+  and hazards, measured on the layer alone. Information-band overlap is zero
+  in every state, and turn intent with no presence reading paints nothing.
 
-The blind-zone renderer consumes semantic `VehicleState` values only. The raw
+The awareness layer consumes semantic `VehicleState` values only. The raw
 `0x38` rear-left/rear-right candidates remain diagnostic fields and are not
-published as confirmed signals; live validation is still pending.
+published as confirmed signals; live validation is still pending. TURN ONLY is
+claimed only for a side the state has explicitly measured as clear, so the
+layer stays dark where presence is unknown rather than inventing a clear road.
 
 The host suite is green: `ctest --test-dir build` passes 29/29. This includes
-phase crop/alpha regression checks, blind-zone evidence checks, and the
+phase crop/alpha regression checks, awareness-zone evidence checks, and the
 existing V5.2 depth/material/motion gates. Mac measurements are not T113
 measurements; device performance and visual validation remain
 `UNKNOWN_UNTIL_DEVICE_TEST`.
 
 Evidence is in `assets/checkpoints/horizon_v54/metrics.json`, with full-size
-and half-size before/after frames, material crops, scale trials, and blind-zone
-state frames alongside it.
+and half-size before/after frames, material crops, scale trials, and
+awareness-zone state frames alongside it.
 
 ## Continuation audit — 2026-09-25
 
@@ -98,9 +105,14 @@ developer mode. C++ rendering now treats sides independently, so BOTH works.
 `HorizonRenderInput.now_ms` must use the same monotonic clock as signal stamps;
 production call-site integration remains pending.
 
-Host ghosts/local amber fields increase opacity from 0.6 to 1.0 for same-side
-indicator or hazard intent. Fresh pixel tests verify this effect in the
-awareness layer itself, not merely the extra turn-lamp pixels. No collision
+The peripheral zone is a state selection, not a tint: presence alone is amber,
+same-side turn intent over presence is red, turn intent over a confirmed clear
+side is green, and hazards alone are green on both sides. Fresh pixel tests
+verify the selection in the awareness layer itself, not merely the extra
+turn-lamp pixels: presence and conflict share 97.6 % of their support while
+their own pixels differ by up to 69 levels, an opposite-side indicator repaints
+the opposite side only (0 pixels on the present side), and UNKNOWN, stale,
+synthetic or unmeasured presence paints nothing at all. No collision
 probability is inferred. Raw `0x38` candidates remain diagnostic and
 **not live validated**. C++ semantic command output is tested, but its older
 artwork and the V5 Python artwork have not yet been unified.
@@ -147,9 +159,31 @@ render tests now fix the clock to avoid failures across minute boundaries.
 
 CI at `4322325` passed all 29 checks. The delivery message records the final
 exact-commit CI result, rather than substituting that earlier success.
-Added checks cover crop placement, premultiplied alpha, visibility, both blind
-sides, stale/synthetic suppression, semantic colors, source/JSON palette
-agreement, Mono full/half-size contrast and standstill motion curves.
+Added checks cover crop placement, premultiplied alpha, visibility, both
+awareness sides, stale/synthetic suppression, semantic colors, source/JSON
+palette agreement, Mono full/half-size contrast and standstill motion curves.
+
+### Awareness zone continuation — 2026-09-25
+
+The rejected outline was replaced by the peripheral Side Awareness Zone and
+the work was finished off against its own gates:
+
+- `bake_horizon_v54_awareness.py` bakes one alpha field per side in three
+  semantic colours plus a soft silhouette. The right side is the exact mirror
+  of the left; recomputing it from `width - cut` was one pixel off.
+- `apply_safe_area` now draws the left panel corner and mirrors it. Filling
+  both slanted corners with the polygon rasteriser made them differ by a pixel,
+  so every left/right symmetry measurement inherited a 13-level error.
+- The preview fixtures now carry `hazards`, which is part of the
+  `VehicleState` contract and which the zone reads; without it every hazard
+  condition was permanently unknown.
+- The evidence is measured on the awareness layer alone and reports the
+  information-band overlap, own-side and opposite-side pixels, suppression,
+  per-side mirror error and the shared-field overlap ratio.
+
+The layer still needs a live presence source: `0x38` is diagnostic only, and
+an unmeasured side deliberately shows nothing. Device validation remains
+`UNKNOWN_UNTIL_DEVICE_TEST`.
 
 Horizon overall remains **PARTIAL**. Mono has a corrected host palette
 checkpoint: background and text now change together and speed glyphs pass
