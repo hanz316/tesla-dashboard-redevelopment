@@ -10,8 +10,10 @@
         1920,
         480
       ],
-      "bright_pixels": 1622,
-      "neutral_mid_pixels": 0,
+      "speed_core_contrast": {
+        "full": 11.25,
+        "half": 12.91
+      },
       "output": "assets/checkpoints/v6_pages/mono/mono_day_normal.png"
     },
     {
@@ -21,8 +23,10 @@
         1920,
         480
       ],
-      "bright_pixels": 21030,
-      "neutral_mid_pixels": 1840,
+      "speed_core_contrast": {
+        "full": 16.42,
+        "half": 18.25
+      },
       "output": "assets/checkpoints/v6_pages/mono/mono_night_normal.png"
     },
     {
@@ -32,8 +36,10 @@
         1920,
         480
       ],
-      "bright_pixels": 2653,
-      "neutral_mid_pixels": 0,
+      "speed_core_contrast": {
+        "full": 11.25,
+        "half": 11.25
+      },
       "output": "assets/checkpoints/v6_pages/mono/mono_day_lost.png"
     },
     {
@@ -43,10 +49,13 @@
         1920,
         480
       ],
-      "bright_pixels": 1569,
-      "neutral_mid_pixels": 0,
+      "speed_core_contrast": {
+        "full": 11.25,
+        "half": 11.73
+      },
       "output": "assets/checkpoints/v6_pages/mono/mono_day_door.png"
     }
   ],
-  "status": "HOST_BASELINE_PASS"
+  "state_source": "DEVELOPER_FIXTURE",
+  "status": "HOST_PALETTE_CHECKPOINT_PASS"
 }

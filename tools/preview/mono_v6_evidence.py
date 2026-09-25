@@ -7,38 +7,52 @@ invalid VehicleState values visibly unknown.
 """
 
 import json
-import subprocess
-import sys
 from pathlib import Path
 
 from PIL import Image
+import numpy as np
+import scene_preview as preview
 
 
 ROOT = Path(__file__).resolve().parents[2]
 SCENE = ROOT / "scenes" / "v6_mono.scene"
 OUT = ROOT / "assets" / "checkpoints" / "v6_pages" / "mono"
-PREVIEW = ROOT / "tools" / "preview" / "scene_preview.py"
+
+def luminance(rgb):
+    rgb = np.asarray(rgb, dtype=float) / 255
+    linear = np.where(rgb <= .04045, rgb / 12.92, ((rgb + .055) / 1.055) ** 2.4)
+    return (linear * [.2126, .7152, .0722]).sum(axis=-1)
 
 
 def render(name, phase, state):
     OUT.mkdir(parents=True, exist_ok=True)
     prefix = OUT / name
-    command = [sys.executable, str(PREVIEW), "--scene", str(SCENE),
-               "--state", state, "--environment-phase", phase,
-               "--out", str(OUT), "--out-name", name,
-               "--allow-placeholder"]
-    subprocess.run(command, cwd=ROOT, check=True, stdout=subprocess.PIPE,
-                   stderr=subprocess.STDOUT, text=True)
+    scene = json.loads(SCENE.read_text())
+    for node in scene['nodes']:
+        if node.get('source') == 'clock':
+            node.pop('source')
+            node['text'] = '13:51'
+    environment = preview.environment_context({}, phase=phase)
+    preview.render(scene, None, preview.MOCK_STATES[state], str(prefix) + '.png',
+                   environment=environment)
     image = Image.open(str(prefix) + ".png").convert("RGB")
     half = image.resize((960, 240), Image.Resampling.LANCZOS)
     half.save(str(prefix) + "_half.png")
-    pixels = list(image.getdata())
-    bright = sum(1 for pixel in pixels if max(pixel) > 150)
-    unknown = sum(1 for pixel in pixels if 65 <= pixel[0] <= 145 and
-                  abs(pixel[0] - pixel[1]) < 18 and
-                  abs(pixel[1] - pixel[2]) < 18)
+    # Measure the speed glyph cores against the actual rendered background at
+    # both review sizes. A dark-on-dark regression must fail this checkpoint.
+    ratios = {}
+    for label, frame in [('full', image), ('half', half)]:
+        a = np.asarray(frame)
+        scale = frame.width / 1920
+        region = a[round(125*scale):round(280*scale), round(830*scale):round(1090*scale)]
+        bg = float(luminance(a[round(100*scale), round(960*scale)]))
+        values = luminance(region)
+        contrast = (np.maximum(values,bg)+.05)/(np.minimum(values,bg)+.05)
+        ratios[label] = round(float(np.percentile(contrast, 98)), 2)
+        if ratios[label] < 4.5:
+            raise AssertionError(f'{name} {label}: speed contrast {ratios[label]} < 4.5')
     return {"phase": phase, "state": state, "size": list(image.size),
-            "bright_pixels": bright, "neutral_mid_pixels": unknown,
+            "speed_core_contrast": ratios,
             "output": str(prefix.relative_to(ROOT)) + ".png"}
 
 
@@ -54,7 +68,8 @@ def main():
         "source": "VehicleState + shared EnvironmentTimeSystem palette",
         "device_validation": "UNKNOWN_UNTIL_DEVICE_TEST",
         "records": records,
-        "status": "HOST_BASELINE_PASS",
+        "state_source": "DEVELOPER_FIXTURE",
+        "status": "HOST_PALETTE_CHECKPOINT_PASS",
     }
     report_path = ROOT / "assets" / "checkpoints" / "v6_pages" / "mono_evidence.json"
     report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")

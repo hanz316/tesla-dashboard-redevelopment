@@ -6,10 +6,16 @@
   "phases": {
     "day": {
       "body_box": [
-        758,
-        128,
-        1150,
-        345
+        757,
+        127,
+        1152,
+        346
+      ],
+      "presented_body_box": [
+        739,
+        107,
+        1170,
+        346
       ],
       "alpha_pixels": 57590,
       "combined_layer_box": [
@@ -62,109 +68,109 @@
         "speed.value": {
           "full": {
             "ink_pixels": 2950,
-            "median_ratio": 3.23,
-            "p10_ratio": 3.13
+            "median_ratio": 3.53,
+            "p10_ratio": 3.41
           },
           "half": {
             "ink_pixels": 759,
-            "median_ratio": 3.26,
-            "p10_ratio": 2.35
+            "median_ratio": 3.56,
+            "p10_ratio": 2.52
           }
         },
         "energy.range": {
           "full": {
             "ink_pixels": 2118,
-            "median_ratio": 2.95,
-            "p10_ratio": 2.31
+            "median_ratio": 3.19,
+            "p10_ratio": 2.52
           },
           "half": {
             "ink_pixels": 558,
-            "median_ratio": 2.52,
-            "p10_ratio": 1.91
+            "median_ratio": 2.75,
+            "p10_ratio": 2.02
           }
         },
         "energy.soc": {
           "full": {
             "ink_pixels": 367,
-            "median_ratio": 3.04,
-            "p10_ratio": 2.65
+            "median_ratio": 3.24,
+            "p10_ratio": 2.8
           },
           "half": {
             "ink_pixels": 113,
-            "median_ratio": 2.63,
-            "p10_ratio": 2.03
+            "median_ratio": 2.77,
+            "p10_ratio": 2.13
           }
         },
         "energy.power": {
           "full": {
             "ink_pixels": 530,
-            "median_ratio": 3.18,
-            "p10_ratio": 2.71
+            "median_ratio": 3.4,
+            "p10_ratio": 2.88
           },
           "half": {
             "ink_pixels": 158,
-            "median_ratio": 2.75,
-            "p10_ratio": 2.03
+            "median_ratio": 2.9,
+            "p10_ratio": 2.11
           }
         },
         "speed.unit": {
           "full": {
             "ink_pixels": 341,
-            "median_ratio": 2.88,
-            "p10_ratio": 2.51
+            "median_ratio": 3.26,
+            "p10_ratio": 2.81
           },
           "half": {
             "ink_pixels": 108,
-            "median_ratio": 2.49,
-            "p10_ratio": 1.91
+            "median_ratio": 2.79,
+            "p10_ratio": 2.07
           }
         },
         "energy.range.label": {
           "full": {
-            "ink_pixels": 177,
-            "median_ratio": 2.48,
-            "p10_ratio": 2.06
+            "ink_pixels": 315,
+            "median_ratio": 3.21,
+            "p10_ratio": 2.82
           },
           "half": {
-            "ink_pixels": 50,
-            "median_ratio": 1.88,
-            "p10_ratio": 1.63
+            "ink_pixels": 111,
+            "median_ratio": 2.42,
+            "p10_ratio": 2.04
           }
         },
         "energy.soc.label": {
           "full": {
-            "ink_pixels": 92,
-            "median_ratio": 3.01,
-            "p10_ratio": 2.43
+            "ink_pixels": 178,
+            "median_ratio": 3.45,
+            "p10_ratio": 2.82
           },
           "half": {
-            "ink_pixels": 27,
-            "median_ratio": 2.17,
-            "p10_ratio": 1.9
+            "ink_pixels": 65,
+            "median_ratio": 2.52,
+            "p10_ratio": 2.13
           }
         },
         "energy.power.label": {
           "full": {
-            "ink_pixels": 174,
-            "median_ratio": 2.98,
-            "p10_ratio": 2.53
+            "ink_pixels": 313,
+            "median_ratio": 3.44,
+            "p10_ratio": 2.92
           },
           "half": {
-            "ink_pixels": 48,
-            "median_ratio": 2.09,
-            "p10_ratio": 1.9
+            "ink_pixels": 103,
+            "median_ratio": 2.59,
+            "p10_ratio": 2.15
           }
         },
         "climate.status": {
           "full": {
             "ink_pixels": 269,
-            "median_ratio": 3.24,
-            "p10_ratio": 2.7
+            "median_ratio": 3.67,
+            "p10_ratio": 2.99
           },
           "half": {
             "ink_pixels": 87,
-            "median_ratio": 2.41,
-            "p10_ratio": 2.06
+            "median_ratio": 2.65,
+            "p10_ratio": 2.24
           }
         }
       },
@@ -173,10 +179,16 @@
     },
     "night": {
       "body_box": [
-        758,
-        128,
-        1150,
-        345
+        757,
+        127,
+        1151,
+        346
+      ],
+      "presented_body_box": [
+        739,
+        107,
+        1168,
+        346
       ],
       "alpha_pixels": 57540,
       "combined_layer_box": [
@@ -288,38 +300,38 @@
         },
         "energy.range.label": {
           "full": {
-            "ink_pixels": 177,
-            "median_ratio": 5.82,
-            "p10_ratio": 4.17
+            "ink_pixels": 315,
+            "median_ratio": 11.77,
+            "p10_ratio": 8.61
           },
           "half": {
-            "ink_pixels": 50,
-            "median_ratio": 3.38,
-            "p10_ratio": 2.55
+            "ink_pixels": 111,
+            "median_ratio": 6.25,
+            "p10_ratio": 4.27
           }
         },
         "energy.soc.label": {
           "full": {
-            "ink_pixels": 92,
-            "median_ratio": 11.56,
-            "p10_ratio": 7.3
+            "ink_pixels": 178,
+            "median_ratio": 11.94,
+            "p10_ratio": 7.99
           },
           "half": {
-            "ink_pixels": 27,
-            "median_ratio": 5.35,
-            "p10_ratio": 4.04
+            "ink_pixels": 65,
+            "median_ratio": 6.22,
+            "p10_ratio": 4.31
           }
         },
         "energy.power.label": {
           "full": {
-            "ink_pixels": 174,
-            "median_ratio": 11.62,
-            "p10_ratio": 8.09
+            "ink_pixels": 313,
+            "median_ratio": 12.11,
+            "p10_ratio": 8.72
           },
           "half": {
-            "ink_pixels": 48,
-            "median_ratio": 5.15,
-            "p10_ratio": 4.07
+            "ink_pixels": 103,
+            "median_ratio": 6.83,
+            "p10_ratio": 4.49
           }
         },
         "climate.status": {
@@ -343,84 +355,84 @@
     "1.06": {
       "day": {
         "body_box": [
-          746,
-          115,
-          1162,
-          345
+          745,
+          114,
+          1164,
+          346
         ],
-        "body_width": 416,
+        "body_width": 419,
         "safe_zone_clearance": [
-          74,
-          86
+          73,
+          84
         ]
       },
       "night": {
         "body_box": [
-          746,
-          115,
-          1162,
-          345
+          745,
+          114,
+          1163,
+          346
         ],
-        "body_width": 416,
+        "body_width": 418,
         "safe_zone_clearance": [
-          74,
-          86
+          73,
+          85
         ]
       }
     },
     "1.09": {
       "day": {
         "body_box": [
-          740,
-          108,
-          1167,
-          345
+          739,
+          107,
+          1170,
+          346
         ],
-        "body_width": 427,
+        "body_width": 431,
         "safe_zone_clearance": [
-          68,
-          81
+          67,
+          78
         ]
       },
       "night": {
         "body_box": [
-          740,
-          108,
-          1167,
-          345
+          739,
+          107,
+          1168,
+          346
         ],
-        "body_width": 427,
+        "body_width": 429,
         "safe_zone_clearance": [
-          68,
-          81
+          67,
+          80
         ]
       }
     },
     "1.12": {
       "day": {
         "body_box": [
-          734,
-          102,
-          1173,
-          345
+          733,
+          101,
+          1175,
+          346
         ],
-        "body_width": 439,
+        "body_width": 442,
         "safe_zone_clearance": [
-          62,
-          75
+          61,
+          73
         ]
       },
       "night": {
         "body_box": [
-          734,
-          102,
-          1173,
-          345
+          733,
+          101,
+          1174,
+          346
         ],
-        "body_width": 439,
+        "body_width": 441,
         "safe_zone_clearance": [
-          62,
-          75
+          61,
+          74
         ]
       }
     }
@@ -434,10 +446,10 @@
       "indicator_attention": false
     },
     "left": {
-      "changed_pixels": 6934,
+      "changed_pixels": 6399,
       "combined_box": [
         604,
-        231,
+        232,
         736,
         308
       ],
@@ -446,9 +458,21 @@
       "indicator_attention": false
     },
     "right": {
-      "changed_pixels": 6935,
+      "changed_pixels": 6662,
       "combined_box": [
         1184,
+        232,
+        1316,
+        307
+      ],
+      "left_safe_zone_overlap_pixels": 0,
+      "right_safe_zone_overlap_pixels": 0,
+      "indicator_attention": false
+    },
+    "both": {
+      "changed_pixels": 13061,
+      "combined_box": [
+        604,
         232,
         1316,
         308
@@ -457,43 +481,34 @@
       "right_safe_zone_overlap_pixels": 0,
       "indicator_attention": false
     },
-    "both": {
-      "changed_pixels": 13869,
-      "combined_box": [
-        604,
-        231,
-        1316,
-        308
-      ],
-      "left_safe_zone_overlap_pixels": 0,
-      "right_safe_zone_overlap_pixels": 0,
-      "indicator_attention": false
-    },
     "left_indicator": {
-      "changed_pixels": 9169,
+      "changed_pixels": 9342,
       "combined_box": [
         604,
-        139,
-        1000,
-        376
+        108,
+        1074,
+        382
       ],
       "left_safe_zone_overlap_pixels": 0,
       "right_safe_zone_overlap_pixels": 0,
       "indicator_attention": true
     },
     "right_indicator": {
-      "changed_pixels": 9204,
+      "changed_pixels": 9590,
       "combined_box": [
-        781,
-        139,
+        742,
+        108,
         1316,
-        376
+        382
       ],
       "left_safe_zone_overlap_pixels": 0,
       "right_safe_zone_overlap_pixels": 0,
       "indicator_attention": true
     }
   },
-  "body_boxes_equal": true,
-  "selected_scale": 1.0
+  "body_boxes_equal": false,
+  "blind_symmetry_max_channel_error": 0,
+  "body_box_max_delta_px": 1,
+  "body_footprint_within_raster_tolerance": true,
+  "selected_scale": 1.09
 }

@@ -175,7 +175,7 @@
    "kind": "image",
    "src": "assets/ui/horizon_v54_blind_glow.png",
    "bounds": {
-    "x": 586,
+    "x": 580,
     "y": 164,
     "w": 180,
     "h": 220
@@ -190,7 +190,45 @@
    },
    "visible_opacity": 0.82,
    "exempt_from_safe_area": true,
-   "exempt_reason": "bounded amber semantic awareness field"
+   "exempt_reason": "bounded amber semantic awareness field",
+   "alpha_when": [
+    {
+     "when": {
+      "all": [
+       {
+        "signal": "blind_left",
+        "is_true": true
+       },
+       {
+        "any": [
+         {
+          "signal": "indicator_left",
+          "is_true": true
+         },
+         {
+          "signal": "hazards",
+          "is_true": true
+         }
+        ]
+       }
+      ]
+     },
+     "alpha": 1.0
+    },
+    {
+     "when": {
+      "signal": "blind_left",
+      "is_true": true
+     },
+     "alpha": 0.6
+    },
+    {
+     "when": {
+      "always": true
+     },
+     "alpha": 0.0
+    }
+   ]
   },
   {
    "id": "blind.left.ghost",
@@ -212,14 +250,52 @@
    },
    "visible_opacity": 0.92,
    "exempt_from_safe_area": true,
-   "exempt_reason": "baked low-opacity adjacent vehicle silhouette"
+   "exempt_reason": "baked low-opacity adjacent vehicle silhouette",
+   "alpha_when": [
+    {
+     "when": {
+      "all": [
+       {
+        "signal": "blind_left",
+        "is_true": true
+       },
+       {
+        "any": [
+         {
+          "signal": "indicator_left",
+          "is_true": true
+         },
+         {
+          "signal": "hazards",
+          "is_true": true
+         }
+        ]
+       }
+      ]
+     },
+     "alpha": 1.0
+    },
+    {
+     "when": {
+      "signal": "blind_left",
+      "is_true": true
+     },
+     "alpha": 0.6
+    },
+    {
+     "when": {
+      "always": true
+     },
+     "alpha": 0.0
+    }
+   ]
   },
   {
    "id": "blind.right.peripheral",
    "kind": "image",
    "src": "assets/ui/horizon_v54_blind_glow.png",
    "bounds": {
-    "x": 1166,
+    "x": 1160,
     "y": 164,
     "w": 180,
     "h": 220
@@ -234,7 +310,45 @@
    },
    "visible_opacity": 0.82,
    "exempt_from_safe_area": true,
-   "exempt_reason": "bounded amber semantic awareness field"
+   "exempt_reason": "bounded amber semantic awareness field",
+   "alpha_when": [
+    {
+     "when": {
+      "all": [
+       {
+        "signal": "blind_right",
+        "is_true": true
+       },
+       {
+        "any": [
+         {
+          "signal": "indicator_right",
+          "is_true": true
+         },
+         {
+          "signal": "hazards",
+          "is_true": true
+         }
+        ]
+       }
+      ]
+     },
+     "alpha": 1.0
+    },
+    {
+     "when": {
+      "signal": "blind_right",
+      "is_true": true
+     },
+     "alpha": 0.6
+    },
+    {
+     "when": {
+      "always": true
+     },
+     "alpha": 0.0
+    }
+   ]
   },
   {
    "id": "blind.right.ghost",
@@ -256,7 +370,45 @@
    },
    "visible_opacity": 0.92,
    "exempt_from_safe_area": true,
-   "exempt_reason": "baked low-opacity adjacent vehicle silhouette"
+   "exempt_reason": "baked low-opacity adjacent vehicle silhouette",
+   "alpha_when": [
+    {
+     "when": {
+      "all": [
+       {
+        "signal": "blind_right",
+        "is_true": true
+       },
+       {
+        "any": [
+         {
+          "signal": "indicator_right",
+          "is_true": true
+         },
+         {
+          "signal": "hazards",
+          "is_true": true
+         }
+        ]
+       }
+      ]
+     },
+     "alpha": 1.0
+    },
+    {
+     "when": {
+      "signal": "blind_right",
+      "is_true": true
+     },
+     "alpha": 0.6
+    },
+    {
+     "when": {
+      "always": true
+     },
+     "alpha": 0.0
+    }
+   ]
   },
   {
    "id": "speed.arc.glow",
@@ -376,7 +528,7 @@
    },
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -414,7 +566,7 @@
    "visible_opacity": 1.0,
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -452,7 +604,7 @@
    "visible_opacity": 1.0,
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -490,7 +642,7 @@
    "visible_opacity": 1.0,
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -528,7 +680,7 @@
    "visible_opacity": 1.0,
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -566,7 +718,7 @@
    "visible_opacity": 1.0,
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -682,7 +834,7 @@
    "exempt_reason": "the wake is a soft baked trail behind the car and is fully transparent at 0 km/h",
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -718,7 +870,7 @@
     "points": [
      [
       0,
-      0.06
+      0.0
      ],
      [
       30,
@@ -743,7 +895,7 @@
    "exempt_reason": "the lamp's own reflection on the wet road, drawn from the measured lamp pixels and only while that lamp is on",
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -779,7 +931,7 @@
     "points": [
      [
       0,
-      0.06
+      0.0
      ],
      [
       30,
@@ -804,7 +956,7 @@
    "exempt_reason": "the lamp's own reflection on the wet road, drawn from the measured lamp pixels and only while that lamp is on",
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -840,7 +992,7 @@
     "points": [
      [
       0,
-      0.06
+      0.0
      ],
      [
       30,
@@ -865,7 +1017,7 @@
    "exempt_reason": "the lamp's own reflection on the wet road, drawn from the measured lamp pixels and only while that lamp is on",
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -916,7 +1068,7 @@
    "exempt_reason": "the baked rotational blur of the wheels; transparent at 0 km/h",
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -967,7 +1119,7 @@
    "exempt_reason": "the baked rotational blur of the wheels; transparent at 0 km/h",
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -1018,7 +1170,7 @@
    "exempt_reason": "the baked rotational blur of the wheels; transparent at 0 km/h",
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -1427,7 +1579,7 @@
    "z": 40,
    "layer": "dynamic",
    "font_token": "LABEL",
-   "color_token": "muted_text",
+   "color_token": "on_road_label",
    "text": "RANGE",
    "role": "energy",
    "shadow": false

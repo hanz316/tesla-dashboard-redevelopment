@@ -36,7 +36,7 @@ def glow():
     canvas = Image.new("RGBA", (180, 220), (0, 0, 0, 0))
     pixels = np.zeros((220, 180, 4), dtype=np.uint8)
     yy, xx = np.mgrid[:220, :180]
-    distance = np.sqrt(((xx - 90) / 72.0) ** 2 + ((yy - 110) / 100.0) ** 2)
+    distance = np.sqrt(((xx - 89.5) / 72.0) ** 2 + ((yy - 109.5) / 100.0) ** 2)
     alpha = np.clip(1.0 - distance, 0.0, 1.0) ** 2 * 30.0
     pixels[:, :, :3] = (216, 166, 79)
     pixels[:, :, 3] = alpha.astype(np.uint8)

@@ -147,7 +147,7 @@
    "on_road_value": "#F2EDE6"
   },
   "day": {
-   "primary_text": "#293843",
+   "primary_text": "#23323D",
    "secondary_text": "#31434F",
    "muted_text": "#354956",
    "dim_text": "#333E48",
@@ -161,8 +161,8 @@
    "glass_bottom_shade": "#7C8A95",
    "rule": "#B9C8D2",
    "": "#D9E3EA",
-   "on_road_label": "#DCE6EB",
-   "on_road_value": "#E4ECF1"
+   "on_road_label": "#EDF3F7",
+   "on_road_value": "#EDF3F7"
   },
   "dusk": {
    "primary_text": "#F4E9DC",

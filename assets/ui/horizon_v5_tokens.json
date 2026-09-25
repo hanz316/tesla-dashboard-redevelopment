@@ -70,9 +70,9 @@
     "tracking": 1.0
    },
    "LABEL": {
-    "size": 17,
+    "size": 20,
     "role": "medium",
-    "tracking": 2.0
+    "tracking": 1.6
    }
   }
  },

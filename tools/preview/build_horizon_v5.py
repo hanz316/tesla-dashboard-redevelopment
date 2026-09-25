@@ -169,7 +169,7 @@ def motion_components(assets, vehicle_layers):
                             "h": box[3] - box[1]}, z=32, layer="dynamic",
                            role="motion", opacity=0.85,
                            crop_from={"binding": "speed", "anchor": "top",
-                                      "points": [[0, 0.06], [30, 0.32],
+                                      "points": [[0, 0.0], [30, 0.32],
                                                  [80, 0.68], [120, 1.0]]},
                            visibility={"binding": binding,
                                        "show_when_true": True},
@@ -200,12 +200,12 @@ def motion_components(assets, vehicle_layers):
 def blind_zone_components():
     """Bounded semantic awareness layer; protocol bits never reach this list."""
     nodes = []
-    for side, binding, x, flip in (
-            ("left", "blind_left", 604, False),
-            ("right", "blind_right", 1184, True)):
+    for side, binding, x in (
+            ("left", "blind_left", 604),
+            ("right", "blind_right", 1184)):
         source = f"assets/ui/horizon_v54_blind_ghost_{side}.png"
         nodes.append(image(f"blind.{side}.peripheral", "assets/ui/horizon_v54_blind_glow.png",
-                           {"x": x - 18, "y": 164, "w": 180, "h": 220}, z=17,
+                           {"x": x - 24, "y": 164, "w": 180, "h": 220}, z=17,
                            layer="dynamic", role="awareness", opacity=0.82,
                            visibility={"binding": binding, "show_when_true": True},
                            visible_opacity=0.82,
@@ -218,6 +218,14 @@ def blind_zone_components():
                            visible_opacity=0.92,
                            exempt_from_safe_area=True,
                            exempt_reason="baked low-opacity adjacent vehicle silhouette"))
+        for node in nodes[-2:]:
+            node["alpha_when"] = [
+                {"when": {"all": [
+                    {"signal": binding, "is_true": True},
+                    {"any": [{"signal": "indicator_" + side, "is_true": True},
+                             {"signal": "hazards", "is_true": True}]}]}, "alpha": 1.0},
+                {"when": {"signal": binding, "is_true": True}, "alpha": 0.6},
+                {"when": {"always": True}, "alpha": 0.0}]
     return nodes
 V2_LAYOUT = os.path.join(UI, "horizon_v2_layout.json")
 
@@ -354,7 +362,7 @@ def build_tokens(measurements, ui_assets):
             "TITLE": {"size": 58, "role": "medium", "tracking": -1.0},
             "BODY": {"size": 30, "role": "medium", "tracking": 0.6},
             "CAPTION": {"size": 22, "role": "medium", "tracking": 1.0},
-            "LABEL": {"size": 17, "role": "medium", "tracking": 2.0}}},
+            "LABEL": {"size": 20, "role": "medium", "tracking": 1.6}}},
         "spacing": {"zone_gap": 20, "stack_tight": 8, "stack_normal": 16,
                     "stack_loose": 34, "label_gap": 10},
         "radii": {"pill": 10, "bar": 6, "sign": 30, "capsule": 12},
@@ -584,7 +592,7 @@ def build_components(measurements, ui_assets, vehicle, alignment):
                            **{"binding": "range", "format": "{} km",
                               "invalid_text": "\u2014 km"}))
     components.append(text("energy.range.label", "range_label", "right",
-                           "LABEL", "muted_text", text="RANGE", z=40,
+                           "LABEL", "on_road_label", text="RANGE", z=40,
                            role="energy"))
     rule = box("range_rule")
     components.append(vector("energy.rule", "line",

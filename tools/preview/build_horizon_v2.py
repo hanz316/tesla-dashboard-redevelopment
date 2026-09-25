@@ -453,6 +453,8 @@ def image_node(component):
                  "alpha": visible_opacity},
                 {"when": {"signal": vis["binding"], "valid": False},
                  "alpha": 0.0}]
+    if "alpha_when" in component:
+        node["alpha_when"] = component["alpha_when"]
     return node
 
 

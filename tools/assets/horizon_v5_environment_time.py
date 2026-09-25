@@ -85,12 +85,10 @@ PALETTES = {
         "": "#D6CBC0",
     },
     "day": {
-        # Measured, not chosen: the first daylight palette scored 2.4:1 for the
-        # primary text and 1.8:1 for the rail against the rendered plate, so it
-        # was darkened until the contrast measurement passed (see
-        # horizon_v5_1_metrics.json -> daylight_contrast).
-        "primary_text": "#05090D", "secondary_text": "#0D151D",
-        "muted_text": "#18222A", "dim_text": "#333E48",
+        # Cool graphite on the lighter horizon, light ink on the road below.
+        # Keep this source in sync with the phase document used by previews.
+        "primary_text": "#23323D", "secondary_text": "#31434F",
+        "muted_text": "#354956", "dim_text": "#333E48",
         "accent": "#B7E6F5", "accent_bright": "#E4F6FD",
         "accent_dim": "#7E93A0", "rail_lit": "#B7E6F5",
         "glass_fill": "#E8EEF2", "glass_border": "#A9B6C0",
@@ -120,7 +118,7 @@ PALETTES = {
 ON_ROAD_COLOURS = {
     "night": ("#C3CDD7", "#E9EEF3"),
     "dawn": ("#D6CBC0", "#F2EDE6"),
-    "day": ("#C7D3DB", "#E4ECF1"),
+    "day": ("#EDF3F7", "#EDF3F7"),
     "dusk": ("#D9C9B6", "#F4E9DC"),
 }
 for _phase, (_label, _value) in ON_ROAD_COLOURS.items():

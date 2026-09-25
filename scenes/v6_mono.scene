@@ -53,7 +53,8 @@
       "size": 1,
       "align": "left",
       "color": "#04060A",
-      "text": ""
+      "text": "",
+      "shadow": false
     },
     {
       "id": "mono.baseline",
@@ -83,8 +84,9 @@
       "bind": "speed",
       "format": "{}",
       "invalid_text": "--",
-      "invalid_alpha": 0.45,
-      "tracking": -2
+      "invalid_alpha": 0.85,
+      "tracking": -2,
+      "shadow": false
     },
     {
       "id": "speed.unit",
@@ -99,7 +101,8 @@
       "font_role": "medium",
       "font": 26,
       "tracking": 3.0,
-      "text": "km/h"
+      "text": "km/h",
+      "shadow": false
     },
     {
       "id": "status.gear",
@@ -121,8 +124,9 @@
         "4": "D"
       },
       "invalid_text": "--",
-      "invalid_alpha": 0.55,
-      "tracking": 2.0
+      "invalid_alpha": 0.85,
+      "tracking": 2.0,
+      "shadow": false
     },
     {
       "id": "status.closures",
@@ -140,7 +144,8 @@
       "bind": "closures",
       "format": "{}",
       "invalid_text": "CLOSURES ?",
-      "invalid_alpha": 0.5
+      "invalid_alpha": 0.85,
+      "shadow": false
     },
     {
       "id": "lamp.left",
@@ -171,7 +176,8 @@
           "text": "",
           "valid": true
         }
-      ]
+      ],
+      "shadow": false
     },
     {
       "id": "lamp.right",
@@ -202,7 +208,8 @@
           "text": "",
           "valid": true
         }
-      ]
+      ],
+      "shadow": false
     },
     {
       "id": "lamp.headlight",
@@ -233,7 +240,8 @@
           "text": "",
           "valid": true
         }
-      ]
+      ],
+      "shadow": false
     },
     {
       "id": "lamp.brake",
@@ -264,7 +272,8 @@
           "text": "",
           "valid": true
         }
-      ]
+      ],
+      "shadow": false
     },
     {
       "id": "mono.clock",
@@ -279,7 +288,8 @@
       "font_role": "bold",
       "font": 34,
       "source": "clock",
-      "format": "%H:%M"
+      "format": "%H:%M",
+      "shadow": false
     },
     {
       "id": "mono.range",
@@ -296,7 +306,8 @@
       "bind": "range",
       "format": "{} km",
       "invalid_text": "-- km",
-      "invalid_alpha": 0.5
+      "invalid_alpha": 0.85,
+      "shadow": false
     },
     {
       "id": "warn.backdrop",
@@ -338,7 +349,8 @@
       "bind": "warning_text",
       "format": "{}",
       "invalid_text": "",
-      "invalid_alpha": 0.0
+      "invalid_alpha": 0.0,
+      "shadow": false
     },
     {
       "id": "uart.lost",
@@ -371,7 +383,17 @@
           "text": "",
           "valid": true
         }
-      ]
+      ],
+      "shadow": false
     }
-  ]
+  ],
+  "environment_tokens": {
+    "#04060A": "glass_fill",
+    "#080B10": "glass_fill",
+    "#E8EDF2": "primary_text",
+    "#C9D4DF": "secondary_text",
+    "#8A96A2": "muted_text",
+    "#5A646E": "dim_text",
+    "#171E25": "glass_border"
+  }
 }

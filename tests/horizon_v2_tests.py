@@ -48,8 +48,18 @@ def digest(path):
 
 
 def render(state, out_dir, name):
+    # Two runs can straddle a wall-clock minute on slower CI hosts. The test
+    # compares state rendering, so use one explicit clock fixture in both.
+    document = json.load(open(SCENE))
+    for node in document['nodes']:
+        if node.get('source') == 'clock':
+            node.pop('source')
+            node['text'] = '13:51'
+    fixture_scene = os.path.join(out_dir, 'clock_fixture.scene')
+    with open(fixture_scene, 'w') as handle:
+        json.dump(document, handle)
     result = subprocess.run(
-        [sys.executable, PREVIEW, "--scene", SCENE, "--state", state,
+        [sys.executable, PREVIEW, "--scene", fixture_scene, "--state", state,
          "--out", out_dir, "--out-name", name],
         capture_output=True, text=True)
     path = os.path.join(out_dir, name + ".png")

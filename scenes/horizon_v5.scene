@@ -60,7 +60,7 @@
    "type": "image",
    "z": 17,
    "layer": "dynamic",
-   "x": 586,
+   "x": 580,
    "y": 164,
    "width": 180,
    "height": 220,
@@ -69,15 +69,37 @@
    "alpha_when": [
     {
      "when": {
-      "signal": "blind_left",
-      "is_true": true
+      "all": [
+       {
+        "signal": "blind_left",
+        "is_true": true
+       },
+       {
+        "any": [
+         {
+          "signal": "indicator_left",
+          "is_true": true
+         },
+         {
+          "signal": "hazards",
+          "is_true": true
+         }
+        ]
+       }
+      ]
      },
-     "alpha": 0.82
+     "alpha": 1.0
     },
     {
      "when": {
       "signal": "blind_left",
-      "is_true": false
+      "is_true": true
+     },
+     "alpha": 0.6
+    },
+    {
+     "when": {
+      "always": true
      },
      "alpha": 0.0
     }
@@ -97,15 +119,37 @@
    "alpha_when": [
     {
      "when": {
-      "signal": "blind_left",
-      "is_true": true
+      "all": [
+       {
+        "signal": "blind_left",
+        "is_true": true
+       },
+       {
+        "any": [
+         {
+          "signal": "indicator_left",
+          "is_true": true
+         },
+         {
+          "signal": "hazards",
+          "is_true": true
+         }
+        ]
+       }
+      ]
      },
-     "alpha": 0.92
+     "alpha": 1.0
     },
     {
      "when": {
       "signal": "blind_left",
-      "is_true": false
+      "is_true": true
+     },
+     "alpha": 0.6
+    },
+    {
+     "when": {
+      "always": true
      },
      "alpha": 0.0
     }
@@ -116,7 +160,7 @@
    "type": "image",
    "z": 17,
    "layer": "dynamic",
-   "x": 1166,
+   "x": 1160,
    "y": 164,
    "width": 180,
    "height": 220,
@@ -125,15 +169,37 @@
    "alpha_when": [
     {
      "when": {
-      "signal": "blind_right",
-      "is_true": true
+      "all": [
+       {
+        "signal": "blind_right",
+        "is_true": true
+       },
+       {
+        "any": [
+         {
+          "signal": "indicator_right",
+          "is_true": true
+         },
+         {
+          "signal": "hazards",
+          "is_true": true
+         }
+        ]
+       }
+      ]
      },
-     "alpha": 0.82
+     "alpha": 1.0
     },
     {
      "when": {
       "signal": "blind_right",
-      "is_true": false
+      "is_true": true
+     },
+     "alpha": 0.6
+    },
+    {
+     "when": {
+      "always": true
      },
      "alpha": 0.0
     }
@@ -153,15 +219,37 @@
    "alpha_when": [
     {
      "when": {
-      "signal": "blind_right",
-      "is_true": true
+      "all": [
+       {
+        "signal": "blind_right",
+        "is_true": true
+       },
+       {
+        "any": [
+         {
+          "signal": "indicator_right",
+          "is_true": true
+         },
+         {
+          "signal": "hazards",
+          "is_true": true
+         }
+        ]
+       }
+      ]
      },
-     "alpha": 0.92
+     "alpha": 1.0
     },
     {
      "when": {
       "signal": "blind_right",
-      "is_true": false
+      "is_true": true
+     },
+     "alpha": 0.6
+    },
+    {
+     "when": {
+      "always": true
      },
      "alpha": 0.0
     }
@@ -264,7 +352,7 @@
    },
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -292,7 +380,7 @@
    "src": "assets/rendered/vehicle/horizon_v5/layer/running.png",
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -337,7 +425,7 @@
    "src": "assets/rendered/vehicle/horizon_v5/layer/brake.png",
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -382,7 +470,7 @@
    "src": "assets/rendered/vehicle/horizon_v5/layer/indicator_left.png",
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -427,7 +515,7 @@
    "src": "assets/rendered/vehicle/horizon_v5/layer/indicator_right.png",
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -472,7 +560,7 @@
    "src": "assets/rendered/vehicle/horizon_v5/layer/headlight.png",
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -594,7 +682,7 @@
    },
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -627,7 +715,7 @@
     "points": [
      [
       0,
-      0.06
+      0.0
      ],
      [
       30,
@@ -645,7 +733,7 @@
    },
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -694,7 +782,7 @@
     "points": [
      [
       0,
-      0.06
+      0.0
      ],
      [
       30,
@@ -712,7 +800,7 @@
    },
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -761,7 +849,7 @@
     "points": [
      [
       0,
-      0.06
+      0.0
      ],
      [
       30,
@@ -779,7 +867,7 @@
    },
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -841,7 +929,7 @@
    },
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -887,7 +975,7 @@
    },
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -933,7 +1021,7 @@
    },
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.0,
+    "scale": 1.09,
     "anchor": [
      954,
      345
@@ -1014,13 +1102,13 @@
    "layer": "static",
    "x": 314.8,
    "y": 318.6,
-   "size": 17,
-   "font": 17,
+   "size": 20,
+   "font": 20,
    "font_role": "medium",
    "shadow": false,
    "color_token": "muted_text",
    "bold": false,
-   "tracking": 2.0,
+   "tracking": 1.6,
    "align": "center",
    "color": "#8792A0",
    "text": "0"
@@ -1032,13 +1120,13 @@
    "layer": "static",
    "x": 542.0,
    "y": 224.5,
-   "size": 17,
-   "font": 17,
+   "size": 20,
+   "font": 20,
    "font_role": "medium",
    "shadow": false,
    "color_token": "muted_text",
    "bold": false,
-   "tracking": 2.0,
+   "tracking": 1.6,
    "align": "center",
    "color": "#8792A0",
    "text": "240"
@@ -1472,15 +1560,15 @@
    "layer": "dynamic",
    "x": 1433.3,
    "y": 179.6,
-   "size": 17,
-   "font": 17,
+   "size": 20,
+   "font": 20,
    "font_role": "medium",
    "shadow": false,
-   "color_token": "muted_text",
+   "color_token": "on_road_label",
    "bold": false,
-   "tracking": 2.0,
+   "tracking": 1.6,
    "align": "right",
-   "color": "#8792A0",
+   "color": "#C3CDD7",
    "text": "RANGE"
   },
   {
@@ -1555,13 +1643,13 @@
    "layer": "dynamic",
    "x": 1499.6,
    "y": 334.8,
-   "size": 17,
-   "font": 17,
+   "size": 20,
+   "font": 20,
    "font_role": "medium",
    "shadow": false,
    "color_token": "on_road_label",
    "bold": false,
-   "tracking": 2.0,
+   "tracking": 1.6,
    "align": "right",
    "color": "#C3CDD7",
    "text": "POWER"
@@ -1661,13 +1749,13 @@
    "layer": "dynamic",
    "x": 1617.7,
    "y": 264.2,
-   "size": 17,
-   "font": 17,
+   "size": 20,
+   "font": 20,
    "font_role": "medium",
    "shadow": false,
    "color_token": "on_road_label",
    "bold": false,
-   "tracking": 2.0,
+   "tracking": 1.6,
    "align": "left",
    "color": "#C3CDD7",
    "text": "SOC"

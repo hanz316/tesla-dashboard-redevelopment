@@ -359,7 +359,16 @@ def screen_mono():
                 format="{} km", invalid_text="-- km", invalid_alpha=0.5,
                 layer="dynamic"),
         ] + warning_layer()
+    for node in nodes:
+        if node.get("type") == "text":
+            node["shadow"] = False
+            if node.get("invalid_text"):
+                node["invalid_alpha"] = 0.85
     return {"id": "v6_mono", "name": "Mono", "name_zh": "单色极简",
+            "environment_tokens": {
+                INK: "glass_fill", "#080B10": "glass_fill",
+                PRIMARY: "primary_text", SECONDARY: "secondary_text",
+                MUTED: "muted_text", DIM: "dim_text", RAIL: "glass_border"},
             "function": "最省资源的一页：无渐变池、无弧线，只有速度、档位、"
                         "门状态与时间；作为低性能档与夜间备选",
             "data": ["speed", "gear", "closures", "range", "clock"],
@@ -769,6 +778,8 @@ def main():
             "nodes": screen["nodes"],
         }
         path = os.path.join(SCENES, f"{screen['id']}.scene")
+        if "environment_tokens" in screen:
+            scene["environment_tokens"] = screen["environment_tokens"]
         with open(path, "w") as fh:
             json.dump(scene, fh, indent=2)
             fh.write("\n")

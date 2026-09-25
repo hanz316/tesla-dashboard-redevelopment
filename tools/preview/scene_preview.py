@@ -583,6 +583,14 @@ MOCK_STATES.update({
 
 
 
+# STALE is an actual validity state, not a partially populated fresh fixture.
+MOCK_STATES['v5_stale'] = {
+    key: {'value': value, 'valid': True, 'stale': True}
+    for key, value in MOCK_STATES['v5_neutral'].items()
+    if key not in ('warning_active', 'warning_text')
+}
+MOCK_STATES['v5_stale'].update(warning_active=False, warning_text='')
+
 # ---------------------------------------------------------------- data model
 
 class Signal:
@@ -610,10 +618,10 @@ class State:
             # MCU SOC is known-untrusted; only an explicit trusted flag is true.
             return Signal(bool(self.raw.get("soc_trusted", False)), True)
         if path == "any_door_open":
-            v = any(bool(self.raw.get(k)) for k in
-                    ("door_fl", "door_fr", "door_rl", "door_rr",
-                     "frunk", "trunk"))
-            return Signal(v, "closures" in self.raw)
+            signals = [self.signal(k) for k in
+                       ('door_fl', 'door_fr', 'door_rl', 'door_rr', 'frunk', 'trunk')]
+            opened = any(s.valid and bool(s.value) for s in signals)
+            return Signal(opened, opened or all(s.valid for s in signals))
         if path == "closures_valid":
             return Signal("closures" in self.raw, True)
         if path in self.raw:
@@ -1454,11 +1462,9 @@ def apply_colour_map(node, mapping):
             colour = rule.get("color")
             if isinstance(colour, str) and colour.upper() in mapping:
                 copy = dict(node) if copy is None else copy
-                rules = list(copy.get(key, node.get(key)))
-                for item in rules:
-                    if item.get("color", "").upper() == colour.upper():
-                        item = dict(item)
-                        item["color"] = mapping[colour.upper()]
+                rules = [dict(item, color=mapping[colour.upper()])
+                         if item.get("color", "").upper() == colour.upper() else item
+                         for item in copy.get(key, node.get(key))]
                 copy[key] = rules
     return copy or node
 
@@ -1508,6 +1514,12 @@ def render(scene, provider, raw_state, out_path, t_norm=1.0,
     state = State(raw_state)
     environment = environment or {}
     colour_map = environment.get("colour_map") or {}
+    # Pages opt in with their own literal-to-semantic aliases. This includes
+    # the background, so graphite day ink cannot land on a night canvas.
+    colour_map = dict(colour_map)
+    for literal, token in scene.get("environment_tokens", {}).items():
+        if token in environment.get("palette", {}):
+            colour_map[literal.upper()] = environment["palette"][token]
     vehicle_override = environment.get("vehicle") or {}
     nodes = sorted(scene["nodes"], key=lambda n: n.get("z", 0))
     for node in nodes:
@@ -1718,23 +1730,6 @@ def environment_context(tokens, when=None, phase=None, blend=0.0,
         token = tokens.get("colors", {}).get(name)
         if isinstance(token, str):
             colour_map[token.upper()] = value
-    # The V6 page generator predates the Horizon token document and keeps its
-    # shared text/rail colours as literals.  These aliases let the same
-    # EnvironmentTimeSystem palette flow through Mono (and the other low-cost
-    # pages) without changing semantic amber/gold warning colours or the dark
-    # canvas itself.
-    page_aliases = {
-        "#E8EDF2": "primary_text",
-        "#C9D4DF": "secondary_text",
-        "#8A96A2": "muted_text",
-        "#5A646E": "dim_text",
-        "#171E25": "rule",
-        "#1A222B": "rule",
-    }
-    for literal, name in page_aliases.items():
-        value = palette.get(name)
-        if isinstance(value, str):
-            colour_map[literal] = value
     def layers_for(phase):
         suffix = "" if phase == "night" else "_" + phase
         manifest = os.path.join(root, "assets", "rendered", "vehicle",

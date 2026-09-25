@@ -118,20 +118,16 @@ def main():
         car.save(OUT/f'after_vehicle_{phase}.png')
         pair(OUT/f'before_vehicle_{phase}.png',OUT/f'after_vehicle_{phase}.png',OUT/f'vehicle_before_after_{phase}.png')
         body = car.getchannel('A').getbbox()
-        # The alpha silhouette can gain or lose a one-pixel denoised edge
-        # between environment passes. Geometry equality is measured from the
-        # shared frozen camera solve; alpha footprint is reported separately.
-        framing_path = ROOT/'assets/checkpoints/horizon_v54'/'daylight_render.json'
-        if framing_path.exists():
-            framing = json.loads(framing_path.read_text()).get('car_framing', {})
-            projected = framing.get('projected_box_px')
-            if projected:
-                body = tuple(round(value) for value in projected)
+        # Measure each phase independently. Reusing DAY's camera report for
+        # NIGHT would make equality tautological and conceal a scale defect.
         layer = env['vehicle']['base']
         rgba = Image.open(layer['source']).convert('RGBA')
         tight = rgba.getchannel('A').getbbox()
         global_box = [tight[i]+layer['offset'][i%2] for i in range(4)]
-        entry = {'body_box':list(body),'alpha_pixels':int((np.asarray(car)[:,:,3]>0).sum()),
+        presentation = json.loads((ROOT/'assets/ui/horizon_v54_presentation.json').read_text())
+        px,py,pw,ph = preview.presentation_bounds(body[0],body[1],body[2]-body[0],body[3]-body[1],presentation)
+        entry = {'body_box':list(body), 'presented_body_box':[px,py,px+pw,py+ph],
+                 'alpha_pixels':int((np.asarray(car)[:,:,3]>0).sum()),
                  'combined_layer_box':global_box,'material_classes':material_stats(phase),
                  'contrast':contrast_stats(scene,env,state),
                  'plate_sha256':hashlib.sha256(plate.read_bytes()).hexdigest(),
@@ -169,6 +165,19 @@ def main():
             'right_safe_zone_overlap_pixels': int(changed[:, 1330:1720].sum()),
             'indicator_attention': name in ('left_indicator','right_indicator')}
     report['body_boxes_equal'] = report['phases']['day']['body_box']==report['phases']['night']['body_box']
+    # Assess overlay symmetry on a common black backing; the daylight plate
+    # has different radiance on each side and biases thresholded changed counts.
+    blind_scene = dict(scene, nodes=[n for n in scene['nodes'] if n['id'].startswith('blind.')])
+    left_path = frame(blind_scene, {}, {'blind_left': True}, 'blind_isolated_left')
+    right_path = frame(blind_scene, {}, {'blind_right': True}, 'blind_isolated_right')
+    empty_path = frame(blind_scene, {}, {}, 'blind_isolated_none')
+    backing = np.asarray(Image.open(empty_path)).astype(int)
+    left_pixels = np.asarray(Image.open(left_path)).astype(int) - backing
+    right_pixels = (np.asarray(Image.open(right_path)).astype(int) - backing)[:, ::-1]
+    report['blind_symmetry_max_channel_error'] = int(np.abs(left_pixels-right_pixels).max())
+    report['body_box_max_delta_px'] = max(abs(a-b) for a,b in zip(
+        report['phases']['day']['body_box'], report['phases']['night']['body_box']))
+    report['body_footprint_within_raster_tolerance'] = report['body_box_max_delta_px'] <= 1
     report['selected_scale'] = json.loads((ROOT/'assets/ui/horizon_v54_presentation.json').read_text())['scale']
     (OUT/'metrics.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps({key:value for key,value in report.items() if key!='phases'},indent=2))
