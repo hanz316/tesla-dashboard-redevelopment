@@ -117,6 +117,21 @@ class PhaseCompositingTests(unittest.TestCase):
                     if key in node:
                         self.assertEqual(preview.points_interp(node[key]['points'],0),0,node['id'])
 
+    def test_font_fallback_preserves_requested_display_size(self):
+        from unittest.mock import patch
+        from PIL import ImageFont
+        original = ImageFont.truetype
+        def missing_system_font(font, *args, **kwargs):
+            # The bundled fallback is a BytesIO font; system paths are absent.
+            if isinstance(font, (str, Path)):
+                raise OSError('no system font in isolated fixture')
+            return original(font, *args, **kwargs)
+        preview._FONT_CACHE.clear()
+        with patch.object(ImageFont, 'truetype', side_effect=missing_system_font):
+            font = preview.load_font(196, role='bold')
+            self.assertGreater(font.getbbox('88')[2], 150)
+        preview._FONT_CACHE.clear()
+
 
 if __name__ == '__main__':
     unittest.main()

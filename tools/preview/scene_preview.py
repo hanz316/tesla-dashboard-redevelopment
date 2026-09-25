@@ -736,6 +736,9 @@ def load_font(size, bold=False, role=None):
         candidates.append(FONT_ROLES[role])
     candidates += [((FONT_BOLD if bold else FONT_REG), 0)]
     candidates.append((FALLBACK_FONT, 0))
+    linux_weight = '-Bold' if bold or role in ('bold', 'display', 'display_condensed') else ''
+    candidates.append((f'/usr/share/fonts/truetype/dejavu/DejaVuSans{linux_weight}.ttf', 0))
+    candidates.append((f'/usr/share/fonts/truetype/liberation2/LiberationSans{"-Bold" if linux_weight else "-Regular"}.ttf', 0))
     for path, index in candidates:
         try:
             font = ImageFont.truetype(path, size, index=index)
@@ -743,7 +746,9 @@ def load_font(size, bold=False, role=None):
             return font
         except Exception:
             continue
-    font = ImageFont.load_default()
+    # Pillow's scalable bundled fallback must retain the requested size.
+    # Omitting it silently turns a 196 px speed numeral into tiny default text.
+    font = ImageFont.load_default(size=size)
     _FONT_CACHE[key] = font
     return font
 
