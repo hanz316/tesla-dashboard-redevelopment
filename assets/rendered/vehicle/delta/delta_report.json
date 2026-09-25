@@ -1,0 +1,3122 @@
+{
+ "schema": "vehicle-delta-layers v1",
+ "base": "assets/rendered/vehicle/base/000.png",
+ "threshold": 8,
+ "why": "Each frame of a state render is the whole car. A layer that is only what the state changes lets several states be composed without any of them repainting another panel to closed.",
+ "groups": {
+  "brake_on": {
+   "source": "assets/rendered/vehicle/brake_on",
+   "frames": 1,
+   "entries": [
+    {
+     "frame": "000.png",
+     "layer": "assets/rendered/vehicle/delta/brake_on/000.png",
+     "pixels": 190,
+     "added": 0,
+     "changed": 190,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      53,
+      128,
+      136,
+      164
+     ],
+     "coverage": 0.0079,
+     "reconstruction_error_pixels": 0
+    }
+   ]
+  },
+  "door_fl": {
+   "source": "assets/rendered/vehicle/door_fl",
+   "frames": 16,
+   "entries": [
+    {
+     "frame": "000.png",
+     "layer": "assets/rendered/vehicle/delta/door_fl/000.png",
+     "pixels": 190,
+     "added": 0,
+     "changed": 190,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0079,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "001.png",
+     "layer": "assets/rendered/vehicle/delta/door_fl/001.png",
+     "pixels": 190,
+     "added": 0,
+     "changed": 190,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0079,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "002.png",
+     "layer": "assets/rendered/vehicle/delta/door_fl/002.png",
+     "pixels": 190,
+     "added": 0,
+     "changed": 190,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0079,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "003.png",
+     "layer": "assets/rendered/vehicle/delta/door_fl/003.png",
+     "pixels": 191,
+     "added": 0,
+     "changed": 191,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      69,
+      135,
+      163
+     ],
+     "coverage": 0.0079,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "004.png",
+     "layer": "assets/rendered/vehicle/delta/door_fl/004.png",
+     "pixels": 235,
+     "added": 18,
+     "changed": 217,
+     "added_pixels": 18,
+     "added_total": 18,
+     "erased": 0,
+     "bbox": [
+      55,
+      64,
+      147,
+      163
+     ],
+     "coverage": 0.0097,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "005.png",
+     "layer": "assets/rendered/vehicle/delta/door_fl/005.png",
+     "pixels": 323,
+     "added": 90,
+     "changed": 233,
+     "added_pixels": 90,
+     "added_total": 90,
+     "erased": 0,
+     "bbox": [
+      55,
+      61,
+      154,
+      163
+     ],
+     "coverage": 0.0134,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "006.png",
+     "layer": "assets/rendered/vehicle/delta/door_fl/006.png",
+     "pixels": 467,
+     "added": 221,
+     "changed": 246,
+     "added_pixels": 221,
+     "added_total": 221,
+     "erased": 0,
+     "bbox": [
+      55,
+      61,
+      155,
+      163
+     ],
+     "coverage": 0.0194,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "007.png",
+     "layer": "assets/rendered/vehicle/delta/door_fl/007.png",
+     "pixels": 708,
+     "added": 446,
+     "changed": 262,
+     "added_pixels": 446,
+     "added_total": 446,
+     "erased": 0,
+     "bbox": [
+      55,
+      58,
+      165,
+      163
+     ],
+     "coverage": 0.0294,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "008.png",
+     "layer": "assets/rendered/vehicle/delta/door_fl/008.png",
+     "pixels": 1035,
+     "added": 761,
+     "changed": 274,
+     "added_pixels": 761,
+     "added_total": 761,
+     "erased": 0,
+     "bbox": [
+      55,
+      55,
+      165,
+      163
+     ],
+     "coverage": 0.0429,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "009.png",
+     "layer": "assets/rendered/vehicle/delta/door_fl/009.png",
+     "pixels": 1279,
+     "added": 1000,
+     "changed": 279,
+     "added_pixels": 1000,
+     "added_total": 1000,
+     "erased": 0,
+     "bbox": [
+      55,
+      52,
+      165,
+      163
+     ],
+     "coverage": 0.0531,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "010.png",
+     "layer": "assets/rendered/vehicle/delta/door_fl/010.png",
+     "pixels": 1423,
+     "added": 1143,
+     "changed": 280,
+     "added_pixels": 1143,
+     "added_total": 1143,
+     "erased": 0,
+     "bbox": [
+      55,
+      49,
+      165,
+      163
+     ],
+     "coverage": 0.059,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "011.png",
+     "layer": "assets/rendered/vehicle/delta/door_fl/011.png",
+     "pixels": 1509,
+     "added": 1230,
+     "changed": 279,
+     "added_pixels": 1230,
+     "added_total": 1230,
+     "erased": 0,
+     "bbox": [
+      55,
+      47,
+      165,
+      163
+     ],
+     "coverage": 0.0626,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "012.png",
+     "layer": "assets/rendered/vehicle/delta/door_fl/012.png",
+     "pixels": 1542,
+     "added": 1263,
+     "changed": 279,
+     "added_pixels": 1263,
+     "added_total": 1263,
+     "erased": 0,
+     "bbox": [
+      55,
+      46,
+      165,
+      163
+     ],
+     "coverage": 0.064,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "013.png",
+     "layer": "assets/rendered/vehicle/delta/door_fl/013.png",
+     "pixels": 1567,
+     "added": 1287,
+     "changed": 280,
+     "added_pixels": 1287,
+     "added_total": 1287,
+     "erased": 0,
+     "bbox": [
+      55,
+      45,
+      165,
+      163
+     ],
+     "coverage": 0.065,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "014.png",
+     "layer": "assets/rendered/vehicle/delta/door_fl/014.png",
+     "pixels": 1577,
+     "added": 1296,
+     "changed": 281,
+     "added_pixels": 1296,
+     "added_total": 1296,
+     "erased": 0,
+     "bbox": [
+      55,
+      45,
+      165,
+      163
+     ],
+     "coverage": 0.0654,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "015.png",
+     "layer": "assets/rendered/vehicle/delta/door_fl/015.png",
+     "pixels": 1575,
+     "added": 1295,
+     "changed": 280,
+     "added_pixels": 1295,
+     "added_total": 1295,
+     "erased": 0,
+     "bbox": [
+      55,
+      45,
+      165,
+      163
+     ],
+     "coverage": 0.0653,
+     "reconstruction_error_pixels": 0
+    }
+   ]
+  },
+  "door_fr": {
+   "source": "assets/rendered/vehicle/door_fr",
+   "frames": 16,
+   "entries": [
+    {
+     "frame": "000.png",
+     "layer": "assets/rendered/vehicle/delta/door_fr/000.png",
+     "pixels": 190,
+     "added": 0,
+     "changed": 190,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0079,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "001.png",
+     "layer": "assets/rendered/vehicle/delta/door_fr/001.png",
+     "pixels": 215,
+     "added": 0,
+     "changed": 215,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      89,
+      251,
+      163
+     ],
+     "coverage": 0.0089,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "002.png",
+     "layer": "assets/rendered/vehicle/delta/door_fr/002.png",
+     "pixels": 699,
+     "added": 0,
+     "changed": 699,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      88,
+      259,
+      163
+     ],
+     "coverage": 0.029,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "003.png",
+     "layer": "assets/rendered/vehicle/delta/door_fr/003.png",
+     "pixels": 1230,
+     "added": 0,
+     "changed": 1230,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      88,
+      259,
+      163
+     ],
+     "coverage": 0.051,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "004.png",
+     "layer": "assets/rendered/vehicle/delta/door_fr/004.png",
+     "pixels": 1981,
+     "added": 0,
+     "changed": 1981,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      88,
+      261,
+      163
+     ],
+     "coverage": 0.0822,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "005.png",
+     "layer": "assets/rendered/vehicle/delta/door_fr/005.png",
+     "pixels": 3127,
+     "added": 30,
+     "changed": 3097,
+     "added_pixels": 30,
+     "added_total": 30,
+     "erased": 0,
+     "bbox": [
+      55,
+      88,
+      266,
+      163
+     ],
+     "coverage": 0.1297,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "006.png",
+     "layer": "assets/rendered/vehicle/delta/door_fr/006.png",
+     "pixels": 3435,
+     "added": 87,
+     "changed": 3348,
+     "added_pixels": 87,
+     "added_total": 87,
+     "erased": 0,
+     "bbox": [
+      55,
+      88,
+      297,
+      180
+     ],
+     "coverage": 0.1425,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "007.png",
+     "layer": "assets/rendered/vehicle/delta/door_fr/007.png",
+     "pixels": 3831,
+     "added": 146,
+     "changed": 3685,
+     "added_pixels": 146,
+     "added_total": 146,
+     "erased": 0,
+     "bbox": [
+      55,
+      88,
+      297,
+      163
+     ],
+     "coverage": 0.1589,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "008.png",
+     "layer": "assets/rendered/vehicle/delta/door_fr/008.png",
+     "pixels": 4210,
+     "added": 195,
+     "changed": 4015,
+     "added_pixels": 195,
+     "added_total": 195,
+     "erased": 0,
+     "bbox": [
+      53,
+      88,
+      298,
+      190
+     ],
+     "coverage": 0.1747,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "009.png",
+     "layer": "assets/rendered/vehicle/delta/door_fr/009.png",
+     "pixels": 4283,
+     "added": 226,
+     "changed": 4057,
+     "added_pixels": 226,
+     "added_total": 226,
+     "erased": 0,
+     "bbox": [
+      53,
+      88,
+      299,
+      174
+     ],
+     "coverage": 0.1777,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "010.png",
+     "layer": "assets/rendered/vehicle/delta/door_fr/010.png",
+     "pixels": 4427,
+     "added": 292,
+     "changed": 4135,
+     "added_pixels": 292,
+     "added_total": 292,
+     "erased": 0,
+     "bbox": [
+      53,
+      88,
+      299,
+      175
+     ],
+     "coverage": 0.1837,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "011.png",
+     "layer": "assets/rendered/vehicle/delta/door_fr/011.png",
+     "pixels": 4519,
+     "added": 325,
+     "changed": 4194,
+     "added_pixels": 325,
+     "added_total": 325,
+     "erased": 0,
+     "bbox": [
+      53,
+      88,
+      299,
+      175
+     ],
+     "coverage": 0.1875,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "012.png",
+     "layer": "assets/rendered/vehicle/delta/door_fr/012.png",
+     "pixels": 4590,
+     "added": 354,
+     "changed": 4236,
+     "added_pixels": 354,
+     "added_total": 354,
+     "erased": 0,
+     "bbox": [
+      53,
+      88,
+      299,
+      174
+     ],
+     "coverage": 0.1904,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "013.png",
+     "layer": "assets/rendered/vehicle/delta/door_fr/013.png",
+     "pixels": 4622,
+     "added": 359,
+     "changed": 4263,
+     "added_pixels": 359,
+     "added_total": 359,
+     "erased": 0,
+     "bbox": [
+      53,
+      88,
+      299,
+      174
+     ],
+     "coverage": 0.1918,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "014.png",
+     "layer": "assets/rendered/vehicle/delta/door_fr/014.png",
+     "pixels": 4635,
+     "added": 364,
+     "changed": 4271,
+     "added_pixels": 364,
+     "added_total": 364,
+     "erased": 0,
+     "bbox": [
+      53,
+      88,
+      299,
+      174
+     ],
+     "coverage": 0.1923,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "015.png",
+     "layer": "assets/rendered/vehicle/delta/door_fr/015.png",
+     "pixels": 4641,
+     "added": 364,
+     "changed": 4277,
+     "added_pixels": 364,
+     "added_total": 364,
+     "erased": 0,
+     "bbox": [
+      53,
+      88,
+      299,
+      174
+     ],
+     "coverage": 0.1925,
+     "reconstruction_error_pixels": 0
+    }
+   ]
+  },
+  "door_rl": {
+   "source": "assets/rendered/vehicle/door_rl",
+   "frames": 16,
+   "entries": [
+    {
+     "frame": "000.png",
+     "layer": "assets/rendered/vehicle/delta/door_rl/000.png",
+     "pixels": 190,
+     "added": 0,
+     "changed": 190,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0079,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "001.png",
+     "layer": "assets/rendered/vehicle/delta/door_rl/001.png",
+     "pixels": 190,
+     "added": 0,
+     "changed": 190,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0079,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "002.png",
+     "layer": "assets/rendered/vehicle/delta/door_rl/002.png",
+     "pixels": 190,
+     "added": 0,
+     "changed": 190,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0079,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "003.png",
+     "layer": "assets/rendered/vehicle/delta/door_rl/003.png",
+     "pixels": 192,
+     "added": 1,
+     "changed": 191,
+     "added_pixels": 1,
+     "added_total": 1,
+     "erased": 0,
+     "bbox": [
+      55,
+      92,
+      135,
+      163
+     ],
+     "coverage": 0.008,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "004.png",
+     "layer": "assets/rendered/vehicle/delta/door_rl/004.png",
+     "pixels": 283,
+     "added": 39,
+     "changed": 244,
+     "added_pixels": 39,
+     "added_total": 39,
+     "erased": 0,
+     "bbox": [
+      55,
+      74,
+      135,
+      163
+     ],
+     "coverage": 0.0117,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "005.png",
+     "layer": "assets/rendered/vehicle/delta/door_rl/005.png",
+     "pixels": 426,
+     "added": 153,
+     "changed": 273,
+     "added_pixels": 153,
+     "added_total": 153,
+     "erased": 0,
+     "bbox": [
+      53,
+      72,
+      135,
+      163
+     ],
+     "coverage": 0.0177,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "006.png",
+     "layer": "assets/rendered/vehicle/delta/door_rl/006.png",
+     "pixels": 660,
+     "added": 376,
+     "changed": 284,
+     "added_pixels": 376,
+     "added_total": 376,
+     "erased": 0,
+     "bbox": [
+      55,
+      66,
+      140,
+      163
+     ],
+     "coverage": 0.0274,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "007.png",
+     "layer": "assets/rendered/vehicle/delta/door_rl/007.png",
+     "pixels": 948,
+     "added": 660,
+     "changed": 288,
+     "added_pixels": 660,
+     "added_total": 660,
+     "erased": 0,
+     "bbox": [
+      55,
+      72,
+      135,
+      163
+     ],
+     "coverage": 0.0393,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "008.png",
+     "layer": "assets/rendered/vehicle/delta/door_rl/008.png",
+     "pixels": 1272,
+     "added": 969,
+     "changed": 303,
+     "added_pixels": 969,
+     "added_total": 969,
+     "erased": 0,
+     "bbox": [
+      55,
+      72,
+      135,
+      163
+     ],
+     "coverage": 0.0528,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "009.png",
+     "layer": "assets/rendered/vehicle/delta/door_rl/009.png",
+     "pixels": 1465,
+     "added": 1160,
+     "changed": 305,
+     "added_pixels": 1160,
+     "added_total": 1160,
+     "erased": 0,
+     "bbox": [
+      55,
+      71,
+      135,
+      163
+     ],
+     "coverage": 0.0608,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "010.png",
+     "layer": "assets/rendered/vehicle/delta/door_rl/010.png",
+     "pixels": 1571,
+     "added": 1262,
+     "changed": 309,
+     "added_pixels": 1262,
+     "added_total": 1262,
+     "erased": 0,
+     "bbox": [
+      55,
+      70,
+      135,
+      163
+     ],
+     "coverage": 0.0652,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "011.png",
+     "layer": "assets/rendered/vehicle/delta/door_rl/011.png",
+     "pixels": 1620,
+     "added": 1316,
+     "changed": 304,
+     "added_pixels": 1316,
+     "added_total": 1316,
+     "erased": 0,
+     "bbox": [
+      55,
+      70,
+      135,
+      163
+     ],
+     "coverage": 0.0672,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "012.png",
+     "layer": "assets/rendered/vehicle/delta/door_rl/012.png",
+     "pixels": 1642,
+     "added": 1340,
+     "changed": 302,
+     "added_pixels": 1340,
+     "added_total": 1340,
+     "erased": 0,
+     "bbox": [
+      53,
+      70,
+      135,
+      163
+     ],
+     "coverage": 0.0681,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "013.png",
+     "layer": "assets/rendered/vehicle/delta/door_rl/013.png",
+     "pixels": 1649,
+     "added": 1349,
+     "changed": 300,
+     "added_pixels": 1349,
+     "added_total": 1349,
+     "erased": 0,
+     "bbox": [
+      53,
+      70,
+      135,
+      163
+     ],
+     "coverage": 0.0684,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "014.png",
+     "layer": "assets/rendered/vehicle/delta/door_rl/014.png",
+     "pixels": 1652,
+     "added": 1354,
+     "changed": 298,
+     "added_pixels": 1354,
+     "added_total": 1354,
+     "erased": 0,
+     "bbox": [
+      53,
+      70,
+      135,
+      163
+     ],
+     "coverage": 0.0685,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "015.png",
+     "layer": "assets/rendered/vehicle/delta/door_rl/015.png",
+     "pixels": 1652,
+     "added": 1354,
+     "changed": 298,
+     "added_pixels": 1354,
+     "added_total": 1354,
+     "erased": 0,
+     "bbox": [
+      53,
+      70,
+      135,
+      163
+     ],
+     "coverage": 0.0685,
+     "reconstruction_error_pixels": 0
+    }
+   ]
+  },
+  "door_rr": {
+   "source": "assets/rendered/vehicle/door_rr",
+   "frames": 16,
+   "entries": [
+    {
+     "frame": "000.png",
+     "layer": "assets/rendered/vehicle/delta/door_rr/000.png",
+     "pixels": 190,
+     "added": 0,
+     "changed": 190,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0079,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "001.png",
+     "layer": "assets/rendered/vehicle/delta/door_rr/001.png",
+     "pixels": 258,
+     "added": 0,
+     "changed": 258,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      96,
+      234,
+      163
+     ],
+     "coverage": 0.0107,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "002.png",
+     "layer": "assets/rendered/vehicle/delta/door_rr/002.png",
+     "pixels": 621,
+     "added": 0,
+     "changed": 621,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      96,
+      236,
+      163
+     ],
+     "coverage": 0.0258,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "003.png",
+     "layer": "assets/rendered/vehicle/delta/door_rr/003.png",
+     "pixels": 1113,
+     "added": 0,
+     "changed": 1113,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      95,
+      236,
+      180
+     ],
+     "coverage": 0.0462,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "004.png",
+     "layer": "assets/rendered/vehicle/delta/door_rr/004.png",
+     "pixels": 1490,
+     "added": 0,
+     "changed": 1490,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      96,
+      236,
+      180
+     ],
+     "coverage": 0.0618,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "005.png",
+     "layer": "assets/rendered/vehicle/delta/door_rr/005.png",
+     "pixels": 2453,
+     "added": 0,
+     "changed": 2453,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      95,
+      237,
+      180
+     ],
+     "coverage": 0.1018,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "006.png",
+     "layer": "assets/rendered/vehicle/delta/door_rr/006.png",
+     "pixels": 3023,
+     "added": 1,
+     "changed": 3022,
+     "added_pixels": 1,
+     "added_total": 1,
+     "erased": 0,
+     "bbox": [
+      55,
+      96,
+      237,
+      191
+     ],
+     "coverage": 0.1254,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "007.png",
+     "layer": "assets/rendered/vehicle/delta/door_rr/007.png",
+     "pixels": 3271,
+     "added": 17,
+     "changed": 3254,
+     "added_pixels": 17,
+     "added_total": 17,
+     "erased": 0,
+     "bbox": [
+      55,
+      93,
+      240,
+      192
+     ],
+     "coverage": 0.1357,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "008.png",
+     "layer": "assets/rendered/vehicle/delta/door_rr/008.png",
+     "pixels": 3469,
+     "added": 30,
+     "changed": 3439,
+     "added_pixels": 30,
+     "added_total": 30,
+     "erased": 0,
+     "bbox": [
+      55,
+      93,
+      297,
+      192
+     ],
+     "coverage": 0.1439,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "009.png",
+     "layer": "assets/rendered/vehicle/delta/door_rr/009.png",
+     "pixels": 3554,
+     "added": 48,
+     "changed": 3506,
+     "added_pixels": 48,
+     "added_total": 48,
+     "erased": 0,
+     "bbox": [
+      55,
+      93,
+      297,
+      192
+     ],
+     "coverage": 0.1475,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "010.png",
+     "layer": "assets/rendered/vehicle/delta/door_rr/010.png",
+     "pixels": 3670,
+     "added": 78,
+     "changed": 3592,
+     "added_pixels": 78,
+     "added_total": 78,
+     "erased": 0,
+     "bbox": [
+      55,
+      93,
+      297,
+      192
+     ],
+     "coverage": 0.1523,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "011.png",
+     "layer": "assets/rendered/vehicle/delta/door_rr/011.png",
+     "pixels": 3760,
+     "added": 102,
+     "changed": 3658,
+     "added_pixels": 102,
+     "added_total": 102,
+     "erased": 0,
+     "bbox": [
+      53,
+      93,
+      297,
+      193
+     ],
+     "coverage": 0.156,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "012.png",
+     "layer": "assets/rendered/vehicle/delta/door_rr/012.png",
+     "pixels": 3807,
+     "added": 124,
+     "changed": 3683,
+     "added_pixels": 124,
+     "added_total": 124,
+     "erased": 0,
+     "bbox": [
+      53,
+      93,
+      297,
+      192
+     ],
+     "coverage": 0.1579,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "013.png",
+     "layer": "assets/rendered/vehicle/delta/door_rr/013.png",
+     "pixels": 3834,
+     "added": 136,
+     "changed": 3698,
+     "added_pixels": 136,
+     "added_total": 136,
+     "erased": 0,
+     "bbox": [
+      53,
+      93,
+      297,
+      193
+     ],
+     "coverage": 0.1591,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "014.png",
+     "layer": "assets/rendered/vehicle/delta/door_rr/014.png",
+     "pixels": 3846,
+     "added": 136,
+     "changed": 3710,
+     "added_pixels": 136,
+     "added_total": 136,
+     "erased": 0,
+     "bbox": [
+      53,
+      93,
+      297,
+      192
+     ],
+     "coverage": 0.1596,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "015.png",
+     "layer": "assets/rendered/vehicle/delta/door_rr/015.png",
+     "pixels": 3844,
+     "added": 138,
+     "changed": 3706,
+     "added_pixels": 138,
+     "added_total": 138,
+     "erased": 0,
+     "bbox": [
+      53,
+      93,
+      297,
+      192
+     ],
+     "coverage": 0.1595,
+     "reconstruction_error_pixels": 0
+    }
+   ]
+  },
+  "frunk": {
+   "source": "assets/rendered/vehicle/frunk",
+   "frames": 14,
+   "entries": [
+    {
+     "frame": "000.png",
+     "layer": "assets/rendered/vehicle/delta/frunk/000.png",
+     "pixels": 190,
+     "added": 0,
+     "changed": 190,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0079,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "001.png",
+     "layer": "assets/rendered/vehicle/delta/frunk/001.png",
+     "pixels": 199,
+     "added": 1,
+     "changed": 198,
+     "added_pixels": 1,
+     "added_total": 1,
+     "erased": 0,
+     "bbox": [
+      55,
+      63,
+      282,
+      163
+     ],
+     "coverage": 0.0083,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "002.png",
+     "layer": "assets/rendered/vehicle/delta/frunk/002.png",
+     "pixels": 318,
+     "added": 32,
+     "changed": 286,
+     "added_pixels": 32,
+     "added_total": 32,
+     "erased": 0,
+     "bbox": [
+      55,
+      61,
+      288,
+      163
+     ],
+     "coverage": 0.0132,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "003.png",
+     "layer": "assets/rendered/vehicle/delta/frunk/003.png",
+     "pixels": 584,
+     "added": 134,
+     "changed": 450,
+     "added_pixels": 134,
+     "added_total": 134,
+     "erased": 0,
+     "bbox": [
+      55,
+      58,
+      289,
+      163
+     ],
+     "coverage": 0.0242,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "004.png",
+     "layer": "assets/rendered/vehicle/delta/frunk/004.png",
+     "pixels": 1021,
+     "added": 363,
+     "changed": 658,
+     "added_pixels": 363,
+     "added_total": 363,
+     "erased": 0,
+     "bbox": [
+      55,
+      56,
+      289,
+      163
+     ],
+     "coverage": 0.0424,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "005.png",
+     "layer": "assets/rendered/vehicle/delta/frunk/005.png",
+     "pixels": 2370,
+     "added": 725,
+     "changed": 1645,
+     "added_pixels": 725,
+     "added_total": 725,
+     "erased": 0,
+     "bbox": [
+      55,
+      52,
+      290,
+      163
+     ],
+     "coverage": 0.0983,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "006.png",
+     "layer": "assets/rendered/vehicle/delta/frunk/006.png",
+     "pixels": 2983,
+     "added": 1255,
+     "changed": 1728,
+     "added_pixels": 1255,
+     "added_total": 1255,
+     "erased": 0,
+     "bbox": [
+      55,
+      46,
+      290,
+      163
+     ],
+     "coverage": 0.1238,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "007.png",
+     "layer": "assets/rendered/vehicle/delta/frunk/007.png",
+     "pixels": 3667,
+     "added": 1862,
+     "changed": 1805,
+     "added_pixels": 1862,
+     "added_total": 1862,
+     "erased": 0,
+     "bbox": [
+      55,
+      36,
+      289,
+      163
+     ],
+     "coverage": 0.1521,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "008.png",
+     "layer": "assets/rendered/vehicle/delta/frunk/008.png",
+     "pixels": 4107,
+     "added": 2255,
+     "changed": 1852,
+     "added_pixels": 2255,
+     "added_total": 2255,
+     "erased": 0,
+     "bbox": [
+      55,
+      29,
+      289,
+      163
+     ],
+     "coverage": 0.1704,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "009.png",
+     "layer": "assets/rendered/vehicle/delta/frunk/009.png",
+     "pixels": 4380,
+     "added": 2489,
+     "changed": 1891,
+     "added_pixels": 2489,
+     "added_total": 2489,
+     "erased": 0,
+     "bbox": [
+      55,
+      25,
+      289,
+      163
+     ],
+     "coverage": 0.1817,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "010.png",
+     "layer": "assets/rendered/vehicle/delta/frunk/010.png",
+     "pixels": 4525,
+     "added": 2618,
+     "changed": 1907,
+     "added_pixels": 2618,
+     "added_total": 2618,
+     "erased": 0,
+     "bbox": [
+      55,
+      23,
+      289,
+      163
+     ],
+     "coverage": 0.1877,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "011.png",
+     "layer": "assets/rendered/vehicle/delta/frunk/011.png",
+     "pixels": 4604,
+     "added": 2691,
+     "changed": 1913,
+     "added_pixels": 2691,
+     "added_total": 2691,
+     "erased": 0,
+     "bbox": [
+      55,
+      21,
+      301,
+      163
+     ],
+     "coverage": 0.191,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "012.png",
+     "layer": "assets/rendered/vehicle/delta/frunk/012.png",
+     "pixels": 4623,
+     "added": 2705,
+     "changed": 1918,
+     "added_pixels": 2705,
+     "added_total": 2705,
+     "erased": 0,
+     "bbox": [
+      55,
+      21,
+      289,
+      163
+     ],
+     "coverage": 0.1918,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "013.png",
+     "layer": "assets/rendered/vehicle/delta/frunk/013.png",
+     "pixels": 4626,
+     "added": 2708,
+     "changed": 1918,
+     "added_pixels": 2708,
+     "added_total": 2708,
+     "erased": 0,
+     "bbox": [
+      55,
+      21,
+      289,
+      163
+     ],
+     "coverage": 0.1919,
+     "reconstruction_error_pixels": 0
+    }
+   ]
+  },
+  "hazard": {
+   "source": "assets/rendered/vehicle/hazard",
+   "frames": 12,
+   "entries": [
+    {
+     "frame": "000.png",
+     "layer": "assets/rendered/vehicle/delta/hazard/000.png",
+     "pixels": 190,
+     "added": 0,
+     "changed": 190,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0079,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "001.png",
+     "layer": "assets/rendered/vehicle/delta/hazard/001.png",
+     "pixels": 190,
+     "added": 0,
+     "changed": 190,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0079,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "002.png",
+     "layer": "assets/rendered/vehicle/delta/hazard/002.png",
+     "pixels": 190,
+     "added": 0,
+     "changed": 190,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0079,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "003.png",
+     "layer": "assets/rendered/vehicle/delta/hazard/003.png",
+     "pixels": 190,
+     "added": 0,
+     "changed": 190,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0079,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "004.png",
+     "layer": "assets/rendered/vehicle/delta/hazard/004.png",
+     "pixels": 190,
+     "added": 0,
+     "changed": 190,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0079,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "005.png",
+     "layer": "assets/rendered/vehicle/delta/hazard/005.png",
+     "pixels": 190,
+     "added": 0,
+     "changed": 190,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0079,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "006.png",
+     "layer": "assets/rendered/vehicle/delta/hazard/006.png",
+     "pixels": 0,
+     "added": 0,
+     "changed": 0,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": null,
+     "coverage": 0.0,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "007.png",
+     "layer": "assets/rendered/vehicle/delta/hazard/007.png",
+     "pixels": 0,
+     "added": 0,
+     "changed": 0,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": null,
+     "coverage": 0.0,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "008.png",
+     "layer": "assets/rendered/vehicle/delta/hazard/008.png",
+     "pixels": 0,
+     "added": 0,
+     "changed": 0,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": null,
+     "coverage": 0.0,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "009.png",
+     "layer": "assets/rendered/vehicle/delta/hazard/009.png",
+     "pixels": 0,
+     "added": 0,
+     "changed": 0,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": null,
+     "coverage": 0.0,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "010.png",
+     "layer": "assets/rendered/vehicle/delta/hazard/010.png",
+     "pixels": 0,
+     "added": 0,
+     "changed": 0,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": null,
+     "coverage": 0.0,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "011.png",
+     "layer": "assets/rendered/vehicle/delta/hazard/011.png",
+     "pixels": 0,
+     "added": 0,
+     "changed": 0,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": null,
+     "coverage": 0.0,
+     "reconstruction_error_pixels": 0
+    }
+   ]
+  },
+  "headlight_on": {
+   "source": "assets/rendered/vehicle/headlight_on",
+   "frames": 1,
+   "entries": [
+    {
+     "frame": "000.png",
+     "layer": "assets/rendered/vehicle/delta/headlight_on/000.png",
+     "pixels": 313,
+     "added": 0,
+     "changed": 313,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      57,
+      303,
+      163
+     ],
+     "coverage": 0.013,
+     "reconstruction_error_pixels": 0
+    }
+   ]
+  },
+  "indicator_left": {
+   "source": "assets/rendered/vehicle/indicator_left",
+   "frames": 12,
+   "entries": [
+    {
+     "frame": "000.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_left/000.png",
+     "pixels": 158,
+     "added": 0,
+     "changed": 158,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0066,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "001.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_left/001.png",
+     "pixels": 158,
+     "added": 0,
+     "changed": 158,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0066,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "002.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_left/002.png",
+     "pixels": 158,
+     "added": 0,
+     "changed": 158,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0066,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "003.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_left/003.png",
+     "pixels": 158,
+     "added": 0,
+     "changed": 158,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0066,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "004.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_left/004.png",
+     "pixels": 158,
+     "added": 0,
+     "changed": 158,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0066,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "005.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_left/005.png",
+     "pixels": 158,
+     "added": 0,
+     "changed": 158,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0066,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "006.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_left/006.png",
+     "pixels": 0,
+     "added": 0,
+     "changed": 0,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": null,
+     "coverage": 0.0,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "007.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_left/007.png",
+     "pixels": 0,
+     "added": 0,
+     "changed": 0,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": null,
+     "coverage": 0.0,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "008.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_left/008.png",
+     "pixels": 0,
+     "added": 0,
+     "changed": 0,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": null,
+     "coverage": 0.0,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "009.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_left/009.png",
+     "pixels": 0,
+     "added": 0,
+     "changed": 0,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": null,
+     "coverage": 0.0,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "010.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_left/010.png",
+     "pixels": 0,
+     "added": 0,
+     "changed": 0,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": null,
+     "coverage": 0.0,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "011.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_left/011.png",
+     "pixels": 0,
+     "added": 0,
+     "changed": 0,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": null,
+     "coverage": 0.0,
+     "reconstruction_error_pixels": 0
+    }
+   ]
+  },
+  "indicator_right": {
+   "source": "assets/rendered/vehicle/indicator_right",
+   "frames": 12,
+   "entries": [
+    {
+     "frame": "000.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_right/000.png",
+     "pixels": 170,
+     "added": 0,
+     "changed": 170,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0071,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "001.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_right/001.png",
+     "pixels": 170,
+     "added": 0,
+     "changed": 170,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0071,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "002.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_right/002.png",
+     "pixels": 170,
+     "added": 0,
+     "changed": 170,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0071,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "003.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_right/003.png",
+     "pixels": 170,
+     "added": 0,
+     "changed": 170,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0071,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "004.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_right/004.png",
+     "pixels": 170,
+     "added": 0,
+     "changed": 170,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0071,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "005.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_right/005.png",
+     "pixels": 170,
+     "added": 0,
+     "changed": 170,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0071,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "006.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_right/006.png",
+     "pixels": 0,
+     "added": 0,
+     "changed": 0,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": null,
+     "coverage": 0.0,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "007.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_right/007.png",
+     "pixels": 0,
+     "added": 0,
+     "changed": 0,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": null,
+     "coverage": 0.0,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "008.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_right/008.png",
+     "pixels": 0,
+     "added": 0,
+     "changed": 0,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": null,
+     "coverage": 0.0,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "009.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_right/009.png",
+     "pixels": 0,
+     "added": 0,
+     "changed": 0,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": null,
+     "coverage": 0.0,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "010.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_right/010.png",
+     "pixels": 0,
+     "added": 0,
+     "changed": 0,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": null,
+     "coverage": 0.0,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "011.png",
+     "layer": "assets/rendered/vehicle/delta/indicator_right/011.png",
+     "pixels": 0,
+     "added": 0,
+     "changed": 0,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": null,
+     "coverage": 0.0,
+     "reconstruction_error_pixels": 0
+    }
+   ]
+  },
+  "running_on": {
+   "source": "assets/rendered/vehicle/running_on",
+   "frames": 1,
+   "entries": [
+    {
+     "frame": "000.png",
+     "layer": "assets/rendered/vehicle/delta/running_on/000.png",
+     "pixels": 189,
+     "added": 0,
+     "changed": 189,
+     "added_pixels": 0,
+     "added_total": 0,
+     "erased": 0,
+     "bbox": [
+      55,
+      128,
+      135,
+      163
+     ],
+     "coverage": 0.0078,
+     "reconstruction_error_pixels": 0
+    }
+   ]
+  },
+  "trunk": {
+   "source": "assets/rendered/vehicle/trunk",
+   "frames": 14,
+   "entries": [
+    {
+     "frame": "000.png",
+     "layer": "assets/rendered/vehicle/delta/trunk/000.png",
+     "pixels": 1400,
+     "added": 103,
+     "changed": 1297,
+     "added_pixels": 103,
+     "added_total": 103,
+     "erased": 26,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.0581,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "001.png",
+     "layer": "assets/rendered/vehicle/delta/trunk/001.png",
+     "pixels": 1419,
+     "added": 103,
+     "changed": 1316,
+     "added_pixels": 103,
+     "added_total": 103,
+     "erased": 26,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.0589,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "002.png",
+     "layer": "assets/rendered/vehicle/delta/trunk/002.png",
+     "pixels": 1905,
+     "added": 103,
+     "changed": 1802,
+     "added_pixels": 103,
+     "added_total": 103,
+     "erased": 26,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.079,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "003.png",
+     "layer": "assets/rendered/vehicle/delta/trunk/003.png",
+     "pixels": 2590,
+     "added": 109,
+     "changed": 2481,
+     "added_pixels": 109,
+     "added_total": 109,
+     "erased": 25,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.1075,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "004.png",
+     "layer": "assets/rendered/vehicle/delta/trunk/004.png",
+     "pixels": 3466,
+     "added": 136,
+     "changed": 3330,
+     "added_pixels": 136,
+     "added_total": 136,
+     "erased": 25,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.1438,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "005.png",
+     "layer": "assets/rendered/vehicle/delta/trunk/005.png",
+     "pixels": 4176,
+     "added": 209,
+     "changed": 3967,
+     "added_pixels": 209,
+     "added_total": 209,
+     "erased": 25,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.1733,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "006.png",
+     "layer": "assets/rendered/vehicle/delta/trunk/006.png",
+     "pixels": 4479,
+     "added": 343,
+     "changed": 4136,
+     "added_pixels": 343,
+     "added_total": 343,
+     "erased": 25,
+     "bbox": [
+      49,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.1858,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "007.png",
+     "layer": "assets/rendered/vehicle/delta/trunk/007.png",
+     "pixels": 5116,
+     "added": 504,
+     "changed": 4612,
+     "added_pixels": 504,
+     "added_total": 504,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2123,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "008.png",
+     "layer": "assets/rendered/vehicle/delta/trunk/008.png",
+     "pixels": 5422,
+     "added": 622,
+     "changed": 4800,
+     "added_pixels": 622,
+     "added_total": 622,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.225,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "009.png",
+     "layer": "assets/rendered/vehicle/delta/trunk/009.png",
+     "pixels": 5696,
+     "added": 703,
+     "changed": 4993,
+     "added_pixels": 703,
+     "added_total": 703,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2363,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "010.png",
+     "layer": "assets/rendered/vehicle/delta/trunk/010.png",
+     "pixels": 5789,
+     "added": 748,
+     "changed": 5041,
+     "added_pixels": 748,
+     "added_total": 748,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2402,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "011.png",
+     "layer": "assets/rendered/vehicle/delta/trunk/011.png",
+     "pixels": 5804,
+     "added": 774,
+     "changed": 5030,
+     "added_pixels": 774,
+     "added_total": 774,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2408,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "012.png",
+     "layer": "assets/rendered/vehicle/delta/trunk/012.png",
+     "pixels": 5821,
+     "added": 776,
+     "changed": 5045,
+     "added_pixels": 776,
+     "added_total": 776,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2415,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "013.png",
+     "layer": "assets/rendered/vehicle/delta/trunk/013.png",
+     "pixels": 5816,
+     "added": 777,
+     "changed": 5039,
+     "added_pixels": 777,
+     "added_total": 777,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2413,
+     "reconstruction_error_pixels": 0
+    }
+   ]
+  },
+  "trunk_ind_both": {
+   "source": "assets/rendered/vehicle/trunk/ind_both",
+   "frames": 14,
+   "entries": [
+    {
+     "frame": "000.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_both/000.png",
+     "pixels": 1470,
+     "added": 103,
+     "changed": 1367,
+     "added_pixels": 103,
+     "added_total": 103,
+     "erased": 26,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.061,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "001.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_both/001.png",
+     "pixels": 1483,
+     "added": 103,
+     "changed": 1380,
+     "added_pixels": 103,
+     "added_total": 103,
+     "erased": 26,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.0615,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "002.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_both/002.png",
+     "pixels": 1942,
+     "added": 103,
+     "changed": 1839,
+     "added_pixels": 103,
+     "added_total": 103,
+     "erased": 26,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.0806,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "003.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_both/003.png",
+     "pixels": 2598,
+     "added": 109,
+     "changed": 2489,
+     "added_pixels": 109,
+     "added_total": 109,
+     "erased": 25,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.1078,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "004.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_both/004.png",
+     "pixels": 3467,
+     "added": 136,
+     "changed": 3331,
+     "added_pixels": 136,
+     "added_total": 136,
+     "erased": 25,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.1438,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "005.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_both/005.png",
+     "pixels": 4173,
+     "added": 209,
+     "changed": 3964,
+     "added_pixels": 209,
+     "added_total": 209,
+     "erased": 25,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.1731,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "006.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_both/006.png",
+     "pixels": 4469,
+     "added": 343,
+     "changed": 4126,
+     "added_pixels": 343,
+     "added_total": 343,
+     "erased": 25,
+     "bbox": [
+      49,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.1854,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "007.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_both/007.png",
+     "pixels": 5113,
+     "added": 504,
+     "changed": 4609,
+     "added_pixels": 504,
+     "added_total": 504,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2121,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "008.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_both/008.png",
+     "pixels": 5417,
+     "added": 622,
+     "changed": 4795,
+     "added_pixels": 622,
+     "added_total": 622,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2247,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "009.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_both/009.png",
+     "pixels": 5690,
+     "added": 703,
+     "changed": 4987,
+     "added_pixels": 703,
+     "added_total": 703,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2361,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "010.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_both/010.png",
+     "pixels": 5778,
+     "added": 748,
+     "changed": 5030,
+     "added_pixels": 748,
+     "added_total": 748,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2397,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "011.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_both/011.png",
+     "pixels": 5802,
+     "added": 774,
+     "changed": 5028,
+     "added_pixels": 774,
+     "added_total": 774,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2407,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "012.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_both/012.png",
+     "pixels": 5811,
+     "added": 776,
+     "changed": 5035,
+     "added_pixels": 776,
+     "added_total": 776,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2411,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "013.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_both/013.png",
+     "pixels": 5810,
+     "added": 777,
+     "changed": 5033,
+     "added_pixels": 777,
+     "added_total": 777,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.241,
+     "reconstruction_error_pixels": 0
+    }
+   ]
+  },
+  "trunk_ind_left": {
+   "source": "assets/rendered/vehicle/trunk/ind_left",
+   "frames": 14,
+   "entries": [
+    {
+     "frame": "000.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_left/000.png",
+     "pixels": 1424,
+     "added": 103,
+     "changed": 1321,
+     "added_pixels": 103,
+     "added_total": 103,
+     "erased": 26,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.0591,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "001.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_left/001.png",
+     "pixels": 1448,
+     "added": 103,
+     "changed": 1345,
+     "added_pixels": 103,
+     "added_total": 103,
+     "erased": 26,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.0601,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "002.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_left/002.png",
+     "pixels": 1920,
+     "added": 103,
+     "changed": 1817,
+     "added_pixels": 103,
+     "added_total": 103,
+     "erased": 26,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.0797,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "003.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_left/003.png",
+     "pixels": 2588,
+     "added": 109,
+     "changed": 2479,
+     "added_pixels": 109,
+     "added_total": 109,
+     "erased": 25,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.1074,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "004.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_left/004.png",
+     "pixels": 3463,
+     "added": 136,
+     "changed": 3327,
+     "added_pixels": 136,
+     "added_total": 136,
+     "erased": 25,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.1437,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "005.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_left/005.png",
+     "pixels": 4166,
+     "added": 209,
+     "changed": 3957,
+     "added_pixels": 209,
+     "added_total": 209,
+     "erased": 25,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.1728,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "006.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_left/006.png",
+     "pixels": 4468,
+     "added": 343,
+     "changed": 4125,
+     "added_pixels": 343,
+     "added_total": 343,
+     "erased": 25,
+     "bbox": [
+      49,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.1854,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "007.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_left/007.png",
+     "pixels": 5108,
+     "added": 504,
+     "changed": 4604,
+     "added_pixels": 504,
+     "added_total": 504,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2119,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "008.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_left/008.png",
+     "pixels": 5418,
+     "added": 622,
+     "changed": 4796,
+     "added_pixels": 622,
+     "added_total": 622,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2248,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "009.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_left/009.png",
+     "pixels": 5686,
+     "added": 703,
+     "changed": 4983,
+     "added_pixels": 703,
+     "added_total": 703,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2359,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "010.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_left/010.png",
+     "pixels": 5775,
+     "added": 748,
+     "changed": 5027,
+     "added_pixels": 748,
+     "added_total": 748,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2396,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "011.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_left/011.png",
+     "pixels": 5797,
+     "added": 774,
+     "changed": 5023,
+     "added_pixels": 774,
+     "added_total": 774,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2405,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "012.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_left/012.png",
+     "pixels": 5807,
+     "added": 776,
+     "changed": 5031,
+     "added_pixels": 776,
+     "added_total": 776,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2409,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "013.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_left/013.png",
+     "pixels": 5811,
+     "added": 777,
+     "changed": 5034,
+     "added_pixels": 777,
+     "added_total": 777,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2411,
+     "reconstruction_error_pixels": 0
+    }
+   ]
+  },
+  "trunk_ind_right": {
+   "source": "assets/rendered/vehicle/trunk/ind_right",
+   "frames": 14,
+   "entries": [
+    {
+     "frame": "000.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_right/000.png",
+     "pixels": 1441,
+     "added": 103,
+     "changed": 1338,
+     "added_pixels": 103,
+     "added_total": 103,
+     "erased": 26,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.0598,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "001.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_right/001.png",
+     "pixels": 1456,
+     "added": 103,
+     "changed": 1353,
+     "added_pixels": 103,
+     "added_total": 103,
+     "erased": 26,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.0604,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "002.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_right/002.png",
+     "pixels": 1920,
+     "added": 103,
+     "changed": 1817,
+     "added_pixels": 103,
+     "added_total": 103,
+     "erased": 26,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.0797,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "003.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_right/003.png",
+     "pixels": 2598,
+     "added": 109,
+     "changed": 2489,
+     "added_pixels": 109,
+     "added_total": 109,
+     "erased": 25,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.1078,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "004.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_right/004.png",
+     "pixels": 3465,
+     "added": 136,
+     "changed": 3329,
+     "added_pixels": 136,
+     "added_total": 136,
+     "erased": 25,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.1438,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "005.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_right/005.png",
+     "pixels": 4174,
+     "added": 209,
+     "changed": 3965,
+     "added_pixels": 209,
+     "added_total": 209,
+     "erased": 25,
+     "bbox": [
+      51,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.1732,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "006.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_right/006.png",
+     "pixels": 4468,
+     "added": 343,
+     "changed": 4125,
+     "added_pixels": 343,
+     "added_total": 343,
+     "erased": 25,
+     "bbox": [
+      49,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.1854,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "007.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_right/007.png",
+     "pixels": 5114,
+     "added": 504,
+     "changed": 4610,
+     "added_pixels": 504,
+     "added_total": 504,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2122,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "008.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_right/008.png",
+     "pixels": 5416,
+     "added": 622,
+     "changed": 4794,
+     "added_pixels": 622,
+     "added_total": 622,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2247,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "009.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_right/009.png",
+     "pixels": 5688,
+     "added": 703,
+     "changed": 4985,
+     "added_pixels": 703,
+     "added_total": 703,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.236,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "010.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_right/010.png",
+     "pixels": 5783,
+     "added": 748,
+     "changed": 5035,
+     "added_pixels": 748,
+     "added_total": 748,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2399,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "011.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_right/011.png",
+     "pixels": 5801,
+     "added": 774,
+     "changed": 5027,
+     "added_pixels": 774,
+     "added_total": 774,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2407,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "012.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_right/012.png",
+     "pixels": 5815,
+     "added": 776,
+     "changed": 5039,
+     "added_pixels": 776,
+     "added_total": 776,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2413,
+     "reconstruction_error_pixels": 0
+    },
+    {
+     "frame": "013.png",
+     "layer": "assets/rendered/vehicle/delta/trunk_ind_right/013.png",
+     "pixels": 5814,
+     "added": 777,
+     "changed": 5037,
+     "added_pixels": 777,
+     "added_total": 777,
+     "erased": 26,
+     "bbox": [
+      48,
+      57,
+      306,
+      198
+     ],
+     "coverage": 0.2412,
+     "reconstruction_error_pixels": 0
+    }
+   ]
+  }
+ }
+}

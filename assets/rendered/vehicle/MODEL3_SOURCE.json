@@ -1,0 +1,9 @@
+{
+  "source": "MODEL_A_PRODUCTION_MASTER",
+  "taillight_geometry_version": "surface-offset-cavity-lightguide-v3",
+  "builder": "tools/blender/build_vehicle_state_assets.py",
+  "canvas": [
+    356,
+    236
+  ]
+}

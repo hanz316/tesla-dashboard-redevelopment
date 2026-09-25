@@ -214,8 +214,15 @@ if(BUILD_HOST_TOOLS)
                  COMMAND "${PYTHON3_EXECUTABLE}"
                          "${CMAKE_CURRENT_SOURCE_DIR}/tests/horizon_v5_2_tests.py")
     else()
-        message(WARNING "python3 not found: taillight guide regression tests disabled")
+        message(FATAL_ERROR "python3 is required for host regression tests")
     endif()
+    # C++ checks use assert; Release must not compile them out.
+    get_property(_host_targets DIRECTORY PROPERTY BUILDSYSTEM_TARGETS)
+    foreach(_target IN LISTS _host_targets)
+        if(_target MATCHES "_tests$")
+            target_compile_options(${_target} PRIVATE -UNDEBUG)
+        endif()
+    endforeach()
 endif()
 
 if(BUILD_FLYTHINGS_DEVICE)
