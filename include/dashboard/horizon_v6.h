@@ -4,6 +4,7 @@
 #include "dashboard/render_model_v6.h"
 #include "dashboard/ui_framework_v6.h"
 #include "dashboard/v6_cockpit.h"
+#include "dashboard/vehicle_awareness.h"
 
 #include <cstdint>
 
@@ -26,6 +27,8 @@ struct HorizonRenderInput {
     std::uint32_t dt_ms{33};
     bool developer_mode{false};
     bool simulation_mode{false};
+    // Monotonic time in the same domain as VehicleState timestamps.
+    std::uint64_t now_ms{0};
 };
 
 class HorizonRendererV6 {

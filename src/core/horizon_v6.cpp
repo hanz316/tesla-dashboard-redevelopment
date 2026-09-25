@@ -306,9 +306,21 @@ RenderFrameV6 HorizonRendererV6::buildFrame(const HorizonRenderInput& input) {
     const float ap_target = scene.mode == HorizonMode::ApActive ? 1.0F
                            : scene.mode == HorizonMode::ApAvailable ? 0.38F : 0.0F;
     const float ap = motion_.update(ap_corridor_, ap_target, input.dt_ms, 380, MotionPriority::Page);
-    const float left = motion_.update(blind_left_, scene.mode == HorizonMode::LeftBlindSpot ? 1.0F : 0.0F,
+    const auto awareness = projectVehicleAwareness(vehicle, input.now_ms,
+                                                   FreshnessPolicy{}, input.developer_mode);
+    // Left/right are independent; a single mutually-exclusive scene mode
+    // cannot represent both. Unknown/stale data must stop indicating presence.
+    if (!awareness.left.present) blind_left_ = MotionValue{};
+    if (!awareness.right.present) blind_right_ = MotionValue{};
+    const float left_target = awareness.left.present
+        ? (awareness.left.indicator_attention ? 1.0F : 0.6F) : 0.0F;
+    const float right_target = awareness.right.present
+        ? (awareness.right.indicator_attention ? 1.0F : 0.6F) : 0.0F;
+    scene.surrounding.left = awareness.left.present;
+    scene.surrounding.right = awareness.right.present;
+    const float left = motion_.update(blind_left_, left_target,
                                       input.dt_ms, 220, MotionPriority::Warning);
-    const float right = motion_.update(blind_right_, scene.mode == HorizonMode::RightBlindSpot ? 1.0F : 0.0F,
+    const float right = motion_.update(blind_right_, right_target,
                                        input.dt_ms, 220, MotionPriority::Warning);
     const float lights = motion_.update(vehicle_light_,
         scene.vehicle.headlights || scene.vehicle.brake_lights || scene.vehicle.left_indicator || scene.vehicle.right_indicator

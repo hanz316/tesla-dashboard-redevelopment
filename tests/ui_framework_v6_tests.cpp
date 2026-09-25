@@ -27,6 +27,29 @@ int main() {
     WarningManager warnings;
 
     {
+        VehicleState state;
+        ProductStateV6 product;
+        HorizonRendererV6 renderer(MotionQuality::Off);
+        state.blind_spot_left.update(true, 1000, SignalSource::Commander,
+                                    SignalQuality::Confirmed, Unit::None);
+        state.blind_spot_right = state.blind_spot_left;
+        auto frame = renderer.buildFrame({&state, &product, 33, false, false, 1000});
+        assert(hasCommand(frame, "horizon.blind_left"));
+        assert(hasCommand(frame, "horizon.blind_right"));
+        state.blind_spot_left.stale = true;
+        state.blind_spot_right.source = SignalSource::Simulation;
+        frame = renderer.buildFrame({&state, &product, 33, false, false, 1000});
+        assert(!hasCommand(frame, "horizon.blind_left"));
+        assert(!hasCommand(frame, "horizon.blind_right"));
+        assert(!hasCommand(frame, "horizon.surround.left"));
+        assert(!hasCommand(frame, "horizon.surround.right"));
+        frame = renderer.buildFrame({&state, &product, 33, true, true, 1000});
+        assert(hasCommand(frame, "horizon.blind_right"));
+        frame = renderer.buildFrame({&state, &product, 33, true, true, 10000});
+        assert(!hasCommand(frame, "horizon.blind_right"));
+    }
+
+    {
         PageManagerV6 pages;
         pages.request(DashboardPageV6::Pulse);
         pages.update(100, MotionQuality::Full);
