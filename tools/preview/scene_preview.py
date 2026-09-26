@@ -1900,13 +1900,28 @@ def environment_context(tokens, when=None, phase=None, blend=0.0,
     def vehicle_stack(phase):
         """One weighted stack per lighting state: the yaw pair for this phase."""
         stack = {}
-        lower_layers = layers_for(phase, lower)
-        upper_layers = layers_for(phase, upper) if upper > lower else {}
+        # A phase whose yaw variants are only partly baked must still render:
+        # clamp to the angles this phase actually has instead of dropping the
+        # vehicle. The evidence records which phases are complete.
+        available = [angle for angle in ladder if layers_for(phase, angle)]
+        if not available:
+            return {}
+        below = [angle for angle in available if angle <= yaw_deg]
+        phase_lower = max(below) if below else min(available)
+        above = [angle for angle in available if angle > phase_lower]
+        phase_upper = min(above) if above else phase_lower
+        phase_fraction = 0.0
+        if phase_upper > phase_lower:
+            phase_fraction = max(0.0, min(1.0, (yaw_deg - phase_lower)
+                                          / (phase_upper - phase_lower)))
+        lower_layers = layers_for(phase, phase_lower)
+        upper_layers = (layers_for(phase, phase_upper)
+                        if phase_upper > phase_lower else {})
         for state, entry in lower_layers.items():
-            pair = [(entry, 1.0 - yaw_fraction)]
+            pair = [(entry, 1.0 - phase_fraction)]
             other = upper_layers.get(state)
             if other:
-                pair.append((other, yaw_fraction))
+                pair.append((other, phase_fraction))
             stack[state] = pair
         return stack
 

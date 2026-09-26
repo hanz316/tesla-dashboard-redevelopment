@@ -25,9 +25,12 @@ def world(scene):
     remap.inputs['From Max'].default_value = -1
     tree.links.new(xyz.outputs['Z'], remap.inputs['Value'])
     ramp = tree.nodes.new('ShaderNodeValToRGB')
-    stops = [(0, (.025,.031,.040,1)), (.48,(.12,.15,.18,1)),
-             (.5,(.73,.75,.73,1)), (.55,(.48,.59,.70,1)),
-             (.65,(.27,.40,.57,1)), (1,(.52,.64,.77,1))]
+    # Measured complaint: "flat grey atmosphere". The horizon band stays warm
+    # and the zenith is a deeper blue, so the sky itself carries a gradient the
+    # car can reflect; the previous ramp was nearly one value across the sky.
+    stops = [(0, (.022,.028,.036,1)), (.48,(.11,.14,.17,1)),
+             (.5,(.82,.82,.78,1)), (.55,(.44,.56,.70,1)),
+             (.65,(.22,.34,.52,1)), (1,(.40,.54,.72,1))]
     ramp.color_ramp.elements.remove(ramp.color_ramp.elements[1])
     ramp.color_ramp.elements[0].position, ramp.color_ramp.elements[0].color = stops[0]
     for pos, col in stops[1:]:
@@ -52,8 +55,11 @@ def asphalt(plane):
     shader.inputs['Specular IOR Level'].default_value = .3
     for node in tree.nodes:
         if node.type == 'BUMP':
-            node.inputs['Distance'].default_value = .006
-            node.inputs['Strength'].default_value = .18
+            # Measured complaint: "the road looks synthetic". A flat fill reads
+            # as synthetic however smooth it is, so the metre-scale relief is
+            # stronger here than in the night pass.
+            node.inputs['Distance'].default_value = .012
+            node.inputs['Strength'].default_value = .28
 
 
 def terrain(scene, spec, place, frame):
@@ -67,9 +73,9 @@ def terrain(scene, spec, place, frame):
                 t = col / (columns-1)
                 u = (t-.5)*layer['width']
                 crest = (.5+.24*math.sin(t*math.pi*layer['freq']+layer['phase'])
-                         +.10*math.sin(t*math.pi*19+index)
-                         +.045*math.sin(t*math.pi*57+index*2)
-                         +.018*math.sin(t*math.pi*123))
+                         +.16*math.sin(t*math.pi*19+index)
+                         +.075*math.sin(t*math.pi*57+index*2)
+                         +.032*math.sin(t*math.pi*123))
                 slope = math.sin(math.pi*depth) ** 1.3
                 folds = .88+.12*math.sin(t*90+depth*15)
                 z = max(0,layer['height']*crest*slope*folds)
@@ -97,14 +103,17 @@ def terrain(scene, spec, place, frame):
         tex.inputs['Detail'].default_value = 5
         ramp = tree.nodes.new('ShaderNodeValToRGB')
         base = layer['colour']
-        ramp.color_ramp.elements[0].color = tuple(c*.62 for c in base[:3])+(1,)
+        # Measured complaint: "low cinematic depth" - the ridge line carried a
+        # 3.35 level edge. More albedo contrast inside each layer plus a sharper
+        # crest gives the silhouette something to read.
+        ramp.color_ramp.elements[0].color = tuple(c*.45 for c in base[:3])+(1,)
         ramp.color_ramp.elements[1].color = base
         tree.links.new(tex.outputs['Fac'],ramp.inputs[0])
         tree.links.new(ramp.outputs[0],shader.inputs['Base Color'])
         # Aerial perspective gets weaker towards the foreground. Unlike the
         # old phase merge this haze is not erased by ridge_emit_scale=0.
         shader.inputs['Emission Color'].default_value = (.43,.52,.59,1)
-        shader.inputs['Emission Strength'].default_value = (.34,.18,.075)[index]
+        shader.inputs['Emission Strength'].default_value = (.30,.16,.06)[index]
         obj.data.materials.append(mat)
         made.append(obj)
     return made
@@ -120,13 +129,13 @@ def materials():
             continue
         values = {}
         if mat.name.startswith('M_Paint'):
-            values = {'Metallic':.85,'Roughness':.24,'Coat Weight':.45,
-                      'Coat Roughness':.12}
+            values = {'Metallic':.85,'Roughness':.20,'Coat Weight':.58,
+                      'Coat Roughness':.10}
         elif mat.name.startswith('M_Glass'):
             values = {'Base Color':(.008,.015,.021,1),'Roughness':.12,
                       'Specular IOR Level':.32,'Transmission Weight':.03,'IOR':1.45}
         elif mat.name.startswith('M_Tire'):
-            values = {'Base Color':(.006,.007,.009,1),'Roughness':.91,
+            values = {'Base Color':(.004,.005,.006,1),'Roughness':.91,
                       'Specular IOR Level':.18}
         elif mat.name.startswith('M_Wheel'):
             values = {'Metallic':.88,'Roughness':.3}

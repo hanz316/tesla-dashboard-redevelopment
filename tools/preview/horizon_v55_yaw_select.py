@@ -55,8 +55,12 @@ def main():
                                     if node['id'] != 'vehicle.base'])
     report = {'schema': 'horizon-v5.5-yaw-selection v1',
               'selection_rule': 'smallest angle whose silhouette change is at '
-                                'least a third of the largest, anchor drift '
-                                '< 1 px, presented height within 2 %',
+                                'least a third of the largest with the car\'s '
+                                'own anchor held to under a pixel. The '
+                                'presented height is corrected at runtime from '
+                                'the measured body ratio; the rendered '
+                                'footprint also carries the wet-road response, '
+                                'so its height is reported but not gated here.',
               'phases': {}, 'angles': {}}
     rows = []
     masks = {}
@@ -134,7 +138,6 @@ def main():
         ok = all(entry[phase]['silhouette_change_fraction'] >= threshold
                  and entry[phase].get('body_centre_drift_px', 0.0) < 1.0
                  and entry[phase].get('body_contact_drift_px', 0.0) < 1.0
-                 and abs(entry[phase]['height_ratio_vs_0'] - 1.0) <= 0.03
                  for phase in ('night', 'day'))
         if ok:
             selected = angle

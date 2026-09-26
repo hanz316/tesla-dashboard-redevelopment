@@ -58,11 +58,12 @@ CHANNELS = {
 # Selected from the measured sweep, not asserted: +4/+7/+10/+13/+16 were
 # rendered (assets/checkpoints/horizon_v55/horizon_v55_chase_yaw_sweep.png) and
 # measured (horizon_v55_yaw_selection.json). The automatic rule - the smallest
-# angle clearing a third of the largest silhouette change with the anchor and
-# the presented height intact - picks 7 deg; the review also requires 80 km/h to
-# be clearly rear-three-quarter (0.68 of the maximum), which the sweep shows
-# needs a maximum of 10 deg. 10 deg is therefore the production value, and its
-# body-anchor drift is measured at 0.0 px at every baked angle.
+# angle clearing a third of the largest silhouette change with the car's own
+# anchor held to under a pixel - picks 4 deg; the review also requires 80 km/h to
+# be clearly rear-three-quarter (0.68 of the maximum), and the sheet shows that
+# only becomes true from about 7 deg at that speed, which needs a maximum of
+# 10 deg. 10 deg is therefore the production value, and its body-anchor drift is
+# measured at 0.0 px at every baked angle.
 CHASE_YAW_MAX_DEG = 10.0
 
 # The screen motion vector: every effect that has to agree about which way the

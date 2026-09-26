@@ -226,10 +226,10 @@
      "body_width_px": 430,
      "body_height_px": 238,
      "footprint_box": [
-      653,
-      108,
-      1204,
-      446
+      652,
+      107,
+      1205,
+      459
      ],
      "speed_zone_clearance_px": 67,
      "energy_zone_clearance_px": 511,
@@ -262,7 +262,7 @@
    "phase_body_box_max_delta_px": 0,
    "phase_width_delta_px": 0,
    "phase_height_delta_px": 0,
-   "phase_footprint_max_delta_px": 85
+   "phase_footprint_max_delta_px": 86
   },
   "+4%": {
    "scale": 1.1336,
@@ -278,10 +278,10 @@
      "body_width_px": 446,
      "body_height_px": 247,
      "footprint_box": [
-      645,
+      640,
       96,
       1216,
-      455
+      464
      ],
      "speed_zone_clearance_px": 59,
      "energy_zone_clearance_px": 503,
@@ -314,7 +314,7 @@
    "phase_body_box_max_delta_px": 0,
    "phase_width_delta_px": 0,
    "phase_height_delta_px": 0,
-   "phase_footprint_max_delta_px": 84
+   "phase_footprint_max_delta_px": 89
   },
   "+7%": {
    "scale": 1.1663,
@@ -330,10 +330,10 @@
      "body_width_px": 460,
      "body_height_px": 254,
      "footprint_box": [
-      636,
+      631,
       89,
-      1223,
-      456
+      1224,
+      467
      ],
      "speed_zone_clearance_px": 52,
      "energy_zone_clearance_px": 496,
@@ -366,7 +366,7 @@
    "phase_body_box_max_delta_px": 0,
    "phase_width_delta_px": 0,
    "phase_height_delta_px": 0,
-   "phase_footprint_max_delta_px": 87
+   "phase_footprint_max_delta_px": 92
   },
   "+10%": {
    "scale": 1.199,
@@ -382,10 +382,10 @@
      "body_width_px": 472,
      "body_height_px": 261,
      "footprint_box": [
-      626,
+      622,
       82,
-      1230,
-      458
+      1232,
+      471
      ],
      "speed_zone_clearance_px": 46,
      "energy_zone_clearance_px": 490,
@@ -418,7 +418,7 @@
    "phase_body_box_max_delta_px": 0,
    "phase_width_delta_px": 0,
    "phase_height_delta_px": 0,
-   "phase_footprint_max_delta_px": 92
+   "phase_footprint_max_delta_px": 96
   }
  },
  "awareness": {
@@ -694,13 +694,13 @@
  "day_night": {
   "day_0": {
    "vehicle_box": [
-    626,
+    622,
     82,
-    1230,
-    458
+    1232,
+    471
    ],
-   "footprint_width_px": 604,
-   "footprint_height_px": 376,
+   "footprint_width_px": 610,
+   "footprint_height_px": 389,
    "body_box": [
     718,
     85,
@@ -781,7 +781,7 @@
     "layers": 7
    },
    "yaw0_day": {
-    "decoded_rgba_bytes": 5819440,
+    "decoded_rgba_bytes": 5879692,
     "layers": 7
    },
    "yaw4_night": {

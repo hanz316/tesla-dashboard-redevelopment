@@ -41,11 +41,12 @@ Two things follow from that table.
 
 `+4/+7/+10/+13/+16` were rendered for both night and day
 (`horizon_v55_chase_yaw_sweep.png`). The automatic rule — the smallest angle
-clearing a third of the largest silhouette change with the anchor and the
-presented height intact — selects **+7°**. The review also requires 80 km/h to be
-clearly rear-three-quarter, and the curve reaches 0.68 of the maximum at 80 km/h;
-that needs a maximum of **+10°**, which is the production value
-(`CHASE_YAW_MAX_DEG`). Both numbers are in
+clearing a third of the largest silhouette change with the car's own anchor held
+to under a pixel — selects **+4°**, which is honest but visually timid: at
+80 km/h the curve only reaches 0.68 of the maximum, and the sheet shows that a
+rear-three-quarter read at that speed needs about 7° *at 80 km/h*, i.e. a
+maximum of **+10°**. The production value is therefore `CHASE_YAW_MAX_DEG = 10`
+`°`. Both numbers are in
 `assets/checkpoints/horizon_v55/horizon_v55_yaw_selection.json`; the choice is
 documented, not silent.
 
@@ -123,6 +124,39 @@ lands below the ground contact line (7 426/7 150/7 272/7 271 pixels: the rear
 pixels are the lamp and the response is the road plane, with no new wide blob).
 Brake-under-chase composition is `horizon_v55_brake_motion.png`.
 
+## 8b. DAY, measured before and after this round's light touch
+
+The review named five complaints about DAY. Each is a number now, measured by
+`tools/preview/horizon_v55_day_metrics.py`:
+
+| measurement | before | after | target |
+|---|---|---|---|
+| terrain column range | 94.21 | 107.61 | depth |
+| strongest terrain edge | 79.40 | 92.97 | depth |
+| terrain edge p95 | 6.21 | 7.07 | ridge texture |
+| road mean level | 110.53 | 104.33 | darker than the car |
+| road row variation | 1.79 | 1.87 | "not a flat fill" |
+| road detail energy (brightness-relative) | 2.28 | 2.39 | texture |
+| visible sky gradient | — | 5.53 | ≥ 25 |
+| car outline vs background | — | 4.28 | separation |
+| paint vs surrounding ground | — | ~39 | separation |
+
+What changed: a deeper zenith and a compressed horizon glow in the day world
+ramp, sharper ridge crests with more albedo contrast and slightly less haze on
+the far ridge, stronger metre-scale road relief, a brighter paint coat, a
+darker tyre, and a stronger day contact response (reflection alpha 0.26 → 0.40).
+
+What did **not** improve: the *visible* sky gradient. The camera only sees a few
+degrees of elevation above the horizon, so almost the whole visible sky is
+spanned by a narrow slice of the world ramp; the measured gradient is 5.5 levels.
+The fix — compressing the horizon stops so that slice carries the gradient — was
+written, measured as unshipped, and reverted so that the committed code matches
+the committed renders. It is the first task of the next DAY pass, and it needs
+the day plate *and* the day car passes re-rendered together.
+
+DAY therefore remains **PARTIAL**: the depth and the ground improved measurably,
+the sky and the overall "premium OEM" impression did not.
+
 ## 8. Performance inventory (not measured RSS)
 
 | item | decoded RGBA |
@@ -149,10 +183,10 @@ as RAM anywhere in this report. Device performance remains
 | Vehicle scale contract DAY/NIGHT | **PASS (host, measured)** |
 | Awareness semantics under chase | **PASS (host, measured)** |
 | UI fixed in screen space | **PASS (host, measured)** |
-| Chase yaw variants for DAWN and DUSK | **NOT_IMPLEMENTED** (runtime falls back to the accepted presentation for those phases) |
+| Chase yaw variants for DAWN and DUSK | **PASS** (baked for +4/+7/+10; the runtime clamps to the angles a phase actually has, so a partly baked phase renders instead of dropping the vehicle) |
 | Awareness fades / conflict attack timing | **TOKENS DECLARED, NOT_IMPLEMENTED** in the host previewer |
 | Acceleration / regen environment response | **NOT_IMPLEMENTED** (the propulsion/regen sign convention of `battery_power` is not confirmed) |
-| DAY visual quality | **PARTIAL** — unchanged this round, by instruction |
+| DAY visual quality | **PARTIAL** — depth and ground measured better, visible sky gradient still 5.5 levels, see §8b |
 | DI/T113 performance, device visual validation | **UNKNOWN_UNTIL_DEVICE_TEST** |
 
 Green CI is not visual completion, and no device claim is made here.

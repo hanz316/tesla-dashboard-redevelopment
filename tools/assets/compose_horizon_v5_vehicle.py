@@ -239,7 +239,11 @@ def main():
                  "falloff": 2.0, "ripple": 0.22},
         "dusk": {"squash": 0.52, "blur": 8.0, "alpha": 0.32,
                  "falloff": 2.1, "ripple": 0.26},
-        "day": {"squash": 0.56, "blur": 8.0, "alpha": 0.26,
+        # Measured complaint: "vehicle/background tonal similarity" - in
+        # daylight the car and the road behind it were 4.3 levels apart. A
+        # stronger, less squashed contact response separates the car from the
+        # ground the way a real daytime shot does.
+        "day": {"squash": 0.62, "blur": 8.0, "alpha": 0.40,
                 "falloff": 2.1, "ripple": 0.24},
     }
     reflection_spec = {

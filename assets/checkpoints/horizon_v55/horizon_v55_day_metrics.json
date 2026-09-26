@@ -1,0 +1,51 @@
+{
+ "schema": "horizon-v5.5-day-metrics v1",
+ "measurement_platform": "MAC MEASURED",
+ "plate": "assets/ui/horizon_v5_background_day.png",
+ "why": "five named complaints, five measurements",
+ "atmosphere": {
+  "skyline_row": 168,
+  "first_terrain_row": 84,
+  "sky_top_level": 180.39,
+  "sky_at_horizon_level": 185.92,
+  "sky_gradient_levels": 5.53,
+  "terrain_column_range_levels": 107.61,
+  "strongest_terrain_edge_levels": 92.97,
+  "terrain_edge_p95_levels": 7.07
+ },
+ "road": {
+  "mean_level": 104.33,
+  "row_std_levels": 1.87,
+  "detail_energy": 2.49,
+  "detail_energy_relative": 2.387
+ },
+ "car": {
+  "pixels": 82555,
+  "mean_level": 103.39,
+  "background_ring_mean_level": 99.11,
+  "separation_levels": 4.28,
+  "outline_contrast_mean_levels": 4.28,
+  "outline_contrast_p20_levels": null,
+  "measured_on": "assets/checkpoints/horizon_v55/frames/chase_day_000.png"
+ },
+ "material_classes": {
+  "paint": {
+   "pixels": 30133,
+   "mean_level": 138.58
+  },
+  "glass": {
+   "pixels": 18194,
+   "mean_level": 68.04
+  },
+  "tyre": {
+   "pixels": 1713,
+   "mean_level": 19.13
+  },
+  "rim": {
+   "pixels": 2148,
+   "mean_level": 52.49
+  },
+  "glass_minus_paint": -70.54,
+  "rim_minus_tyre": 33.36
+ }
+}
