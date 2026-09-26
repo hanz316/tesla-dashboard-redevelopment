@@ -1496,24 +1496,42 @@ def blend_vehicle_layers(first, second, fraction):
     stretching one crop to another changes the car itself. Neither is a light
     transition. Inputs retain their measured placement on the 1920x480 canvas.
     """
+    fraction = max(0.0, min(1.0, float(fraction)))
+    return blend_vehicle_stack([(first, 1.0 - fraction), (second, fraction)])
+
+
+def blend_vehicle_stack(stack):
+    """Weighted blend of aligned vehicle crops.
+
+    `stack` is an iterable of (entry, weight) pairs, where an entry is a layer
+    manifest record with `source`, `offset` and `size`. The vehicle is selected
+    in two dimensions - the environment phase and the chase-camera yaw - so the
+    blend has to accept more than two inputs while keeping the alignment rule
+    that made the phase crossfade safe: pad into the bounded union, premultiply,
+    weight, then unpremultiply.
+    """
     import numpy as np
-    entries = (first, second)
-    x0 = min(e["offset"][0] for e in entries)
-    y0 = min(e["offset"][1] for e in entries)
-    x1 = max(e["offset"][0] + e["size"][0] for e in entries)
-    y1 = max(e["offset"][1] + e["size"][1] for e in entries)
-    arrays = []
-    for entry in entries:
-        layer = Image.open(entry["source"]).convert("RGBA")
+    entries = [(entry, max(0.0, float(weight))) for entry, weight in stack]
+    weights = [weight for _entry, weight in entries]
+    total = sum(weights)
+    if total <= 0.0:
+        raise ValueError("vehicle stack has no weight")
+    weights = [weight / total for weight in weights]
+    x0 = min(e["offset"][0] for e, _w in entries)
+    y0 = min(e["offset"][1] for e, _w in entries)
+    x1 = max(e["offset"][0] + e["size"][0] for e, _w in entries)
+    y1 = max(e["offset"][1] + e["size"][1] for e, _w in entries)
+    mixed = None
+    for (entry, _weight), weight in zip(entries, weights):
+        layer = entry.get("_image") or Image.open(entry["source"]).convert("RGBA")
         if list(layer.size) != entry["size"]:
             raise ValueError("vehicle crop size disagrees with manifest")
         aligned = Image.new("RGBA", (x1-x0, y1-y0))
         aligned.paste(layer, (entry["offset"][0]-x0, entry["offset"][1]-y0))
         array = np.asarray(aligned).astype(np.float32) / 255.0
         array[:, :, :3] *= array[:, :, 3:4]
-        arrays.append(array)
-    fraction = max(0.0, min(1.0, fraction))
-    mixed = arrays[0] * (1-fraction) + arrays[1] * fraction
+        contribution = array * weight
+        mixed = contribution if mixed is None else mixed + contribution
     mixed[:, :, :3] /= np.maximum(mixed[:, :, 3:4], 1e-8)
     return Image.fromarray(np.clip(mixed * 255 + 0.5, 0, 255).astype("uint8"),
                            "RGBA"), (x0, y0)
@@ -1559,22 +1577,79 @@ def render(scene, provider, raw_state, out_path, t_norm=1.0,
             # A baked bitmap addressed by repository path (environment plate,
             # cluster glow, vehicle layer) or through the vehicle manifest.
             plate = environment.get("plate")
+            environment_layer = None
             if node.get("id") == "env.plate" and plate:
-                # Environment crossfade: the current plate, then the next one
+                environment_layer = (plate, environment.get("next_plate"))
+            elif node.get("id") == "env.ground" and environment.get("ground"):
+                # Near-ground parallax: the plate stays where it is (the far
+                # layer moves by nothing) and this band, cut below the horizon
+                # from the same plate, translates along the screen motion
+                # vector. The difference between the two is the parallax.
+                environment_layer = (environment["ground"],
+                                     environment.get("next_ground"))
+            if environment_layer:
+                # Environment crossfade: the current layer, then the next one
                 # over it at the blend factor. Two bitmaps, no re-render.
+                current, following = environment_layer
                 blend = float(environment.get("blend", 0.0))
-                next_plate = environment.get("next_plate")
-                paste_scaled_alpha(img, plate, node.get("x", 0), node.get("y", 0),
-                                   node.get("width", 0), node.get("height", 0),
-                                   1.0)
-                if next_plate and blend > 0.0:
-                    paste_scaled_alpha(img, next_plate, node.get("x", 0),
-                                       node.get("y", 0), node.get("width", 0),
-                                       node.get("height", 0), blend)
+                x = node.get("x", 0)
+                y = node.get("y", 0)
+                width = node.get("width", 0)
+                height = node.get("height", 0)
+                if "offset_from" in node:
+                    spec = node["offset_from"]
+                    value = binding_value(spec, state)
+                    if value is not None:
+                        y += points_interp(spec["points"], value) \
+                            * spec.get("scale", 1.0)
+                paste_scaled_alpha(img, current, x, y, width, height, 1.0)
+                if following and blend > 0.0:
+                    paste_scaled_alpha(img, following, x, y, width, height,
+                                       blend)
                 continue
             if node.get("id", "").startswith("vehicle."):
                 state_name = node["id"][len("vehicle."):]
                 phase_layer = vehicle_override.get(state_name)
+                current_stack = (environment.get("vehicle_stack") or {}).get(
+                    state_name)
+                next_stack = (environment.get("next_vehicle_stack") or {}).get(
+                    state_name)
+                if current_stack:
+                    # Phase and chase yaw are separate dimensions: each side of
+                    # the phase crossfade is first blended across yaw, then the
+                    # two results are blended by the environment fraction.
+                    alpha = node.get("opacity", 1.0) * alpha_when(node, state)
+                    if alpha > 0:
+                        source, origin = blend_vehicle_stack(current_stack)
+                        following = next_stack or current_stack
+                        if following is not current_stack:
+                            next_image, next_origin = blend_vehicle_stack(
+                                following)
+                            source, origin = blend_vehicle_stack([
+                                ({"source": None, "_image": source,
+                                  "offset": list(origin),
+                                  "size": list(source.size)}, 1.0 - float(
+                                      environment.get("blend", 0.0))),
+                                ({"source": None, "_image": next_image,
+                                  "offset": list(next_origin),
+                                  "size": list(next_image.size)},
+                                 float(environment.get("blend", 0.0)))])
+                        presentation = dict(node.get("presentation") or {})
+                        yaw_scale = float(
+                            environment.get("vehicle_yaw_scale") or 1.0)
+                        if yaw_scale != 1.0:
+                            presentation["scale"] = (
+                                presentation.get("scale", 1.0) * yaw_scale)
+                        x, y, w, h = presentation_bounds(
+                            *origin, *source.size, presentation)
+                        if (w, h) != source.size:
+                            source = source.resize((w, h),
+                                                   Image.Resampling.LANCZOS)
+                        if alpha < 1:
+                            source.putalpha(source.getchannel("A").point(
+                                lambda value: round(value * alpha)))
+                        img.alpha_composite(source, (x, y))
+                    continue
                 if phase_layer:
                     # Crops have phase-specific margins, never phase-specific
                     # body scale. Preserve the manifest's canvas coordinates.
@@ -1719,8 +1794,39 @@ def two_plate_weights(weights):
     return first, second, float(second_weight / total)
 
 
+def chase_yaw_variants(root):
+    """Baked chase yaw magnitudes, ascending, excluding the accepted 0 deg."""
+    directory = os.path.join(root, "assets", "rendered", "vehicle",
+                             "horizon_v5", "chase")
+    if not os.path.isdir(directory):
+        return []
+    angles = []
+    for name in sorted(os.listdir(directory)):
+        if not name.startswith("yaw"):
+            continue
+        try:
+            angles.append(float(int(name[3:])))
+        except ValueError:
+            continue
+    return sorted(angles)
+
+
+def vehicle_manifest_path(root, phase, yaw=0.0):
+    """Where one (phase, yaw) vehicle layer set is described."""
+    if float(yaw) <= 0.0:
+        # The accepted checkpoint: the night set carries no phase suffix, the
+        # other phases do.
+        name = "horizon_v5_vehicle" + ("" if phase == "night" else "_" + phase)
+        return os.path.join(root, "assets", "rendered", "vehicle",
+                            "horizon_v5", name + ".json")
+    # Chase variants are always named by phase, night included.
+    return os.path.join(root, "assets", "rendered", "vehicle", "horizon_v5",
+                        "chase", f"yaw{int(round(float(yaw))):02d}",
+                        f"horizon_v5_vehicle_{phase}.json")
+
+
 def environment_context(tokens, when=None, phase=None, blend=0.0,
-                        repo_root=None):
+                        repo_root=None, speed=0.0, yaw_override=None):
     """What the renderer needs to show a particular moment of the day."""
     root = repo_root or REPO_ROOT
     document_path = os.path.join(root, "assets", "ui",
@@ -1745,15 +1851,18 @@ def environment_context(tokens, when=None, phase=None, blend=0.0,
         palette = document["palettes"][first]
         darkness = 1.0 if first == "night" else 0.35
     plates = document["plates"]
+    def ground_band(phase):
+        name = ("horizon_v5_ground.png" if phase == "night"
+                else f"horizon_v5_ground_{phase}.png")
+        path = os.path.join(root, "assets", "ui", name)
+        return path if os.path.isfile(path) else None
     colour_map = {}
     for name, value in palette.items():
         token = tokens.get("colors", {}).get(name)
         if isinstance(token, str):
             colour_map[token.upper()] = value
-    def layers_for(phase):
-        suffix = "" if phase == "night" else "_" + phase
-        manifest = os.path.join(root, "assets", "rendered", "vehicle",
-                                "horizon_v5", "horizon_v5_vehicle" + suffix + ".json")
+    def layers_for(phase, yaw=0.0):
+        manifest = vehicle_manifest_path(root, phase, yaw)
         if not os.path.isfile(manifest):
             return {}
         with open(manifest) as handle:
@@ -1762,11 +1871,71 @@ def environment_context(tokens, when=None, phase=None, blend=0.0,
                 for key, entry in entries.items()
                 if os.path.isfile(os.path.join(root, entry["source"]))}
 
+    # The chase camera is a layered asset dimension: the runtime blends the two
+    # baked angles that bracket the speed, and falls back to the accepted
+    # presentation for any phase whose yaw variants are not baked yet.
+    sys.path.insert(0, os.path.join(root, "tools", "assets"))
+    try:
+        import horizon_v5_motion as motion_module
+        yaw_deg = motion_module.screen_motion_vector(speed)["chase_yaw_deg"]
+    except ImportError:  # pragma: no cover - only when the module is absent
+        yaw_deg = 0.0
+    if yaw_override is not None:
+        # Evidence only: the yaw sweep renders every baked angle at a standstill
+        # so the angles can be compared without the speed curve confounding it.
+        yaw_deg = float(yaw_override)
+    baked_yaws = chase_yaw_variants(root)
+    ladder = [0.0] + [angle for angle in baked_yaws if angle > 0.0]
+    lower, upper, yaw_fraction = 0.0, 0.0, 0.0
+    for index, angle in enumerate(ladder):
+        if yaw_deg >= angle:
+            lower = angle
+            upper = ladder[index + 1] if index + 1 < len(ladder) else angle
+    if upper > lower:
+        yaw_fraction = (yaw_deg - lower) / (upper - lower)
+        yaw_fraction = max(0.0, min(1.0, yaw_fraction))
+    else:
+        upper = lower
+
+    def vehicle_stack(phase):
+        """One weighted stack per lighting state: the yaw pair for this phase."""
+        stack = {}
+        lower_layers = layers_for(phase, lower)
+        upper_layers = layers_for(phase, upper) if upper > lower else {}
+        for state, entry in lower_layers.items():
+            pair = [(entry, 1.0 - yaw_fraction)]
+            other = upper_layers.get(state)
+            if other:
+                pair.append((other, yaw_fraction))
+            stack[state] = pair
+        return stack
+
+    # The framing solver pins the projected width, so an orbit towards the rear
+    # foreshortens: the measured height grows and the car would pump. The baked
+    # ratio turns that into a constant presented size while the projected shape
+    # still changes with the view.
+    yaw_scale = 1.0
+    boxes_path = os.path.join(root, "assets", "checkpoints", "horizon_v5",
+                              "horizon_v55_chase_boxes.json")
+    if os.path.isfile(boxes_path):
+        try:
+            table = json.load(open(boxes_path))["phases"].get(first) or {}
+            standstill = (table.get("0") or {}).get("height")
+            low = (table.get(f"{lower:g}") or {}).get("height")
+            high = (table.get(f"{upper:g}") or {}).get("height")
+            if standstill and low and high:
+                height = low * (1.0 - yaw_fraction) + high * yaw_fraction
+                yaw_scale = float(standstill) / float(height)
+        except (ValueError, KeyError, TypeError):
+            yaw_scale = 1.0
+
     vehicle = layers_for(first)
     next_vehicle = layers_for(second) if second != first else {}
     return {
         "plate": plates[first],
         "next_plate": plates.get(second) if second != first else None,
+        "ground": ground_band(first),
+        "next_ground": ground_band(second) if second != first else None,
         "blend": blend if blend else fraction,
         "phase": first, "next_phase": second,
         "darkness": darkness,
@@ -1774,6 +1943,13 @@ def environment_context(tokens, when=None, phase=None, blend=0.0,
         "palette": palette,
         "vehicle": vehicle,
         "next_vehicle": next_vehicle,
+        "vehicle_stack": vehicle_stack(first),
+        "next_vehicle_stack": (vehicle_stack(second)
+                               if second != first else None),
+        "chase_yaw_deg": round(yaw_deg, 3),
+        "chase_yaw_baked": baked_yaws,
+        "chase_yaw_pair": [lower, upper, round(yaw_fraction, 4)],
+        "vehicle_yaw_scale": round(yaw_scale, 5),
     }
 
 

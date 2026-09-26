@@ -1,0 +1,426 @@
+{
+ "schema": "horizon-v5.5-chase-render v1",
+ "measurement_platform": "MAC MEASURED",
+ "device": "UNKNOWN_UNTIL_DEVICE_TEST",
+ "blender": "Applications/Blender.app/Contents/MacOS/Blender",
+ "master": "assets/source/blender/model_a_material_candidate.blend",
+ "samples": 96,
+ "states": [
+  "base",
+  "running",
+  "brake",
+  "headlight",
+  "indicator_left",
+  "indicator_right",
+  "hazard"
+ ],
+ "sign_convention": "the baked --yaw-deg is negative: the camera orbits towards the car's rear. The runtime quotes the magnitude.",
+ "variants": {
+  "yaw4_night": {
+   "yaw_deg": -4.0,
+   "phase": "night",
+   "samples": 96,
+   "car_framing": {
+    "ortho_scale": 18.579103469848633,
+    "shift_x": 0.004003407433629036,
+    "shift_y": -0.012450985610485077,
+    "projected_box_px": [
+     757.7,
+     117.8,
+     1150.3,
+     345.0
+    ],
+    "projected_width_px": 392.5,
+    "projected_centre_x_px": 954.0,
+    "projected_contact_y_px": 345.0,
+    "target": {
+     "content_box": [
+      240,
+      0,
+      1440,
+      480
+     ],
+     "content_scale": 0.6629834254143646,
+     "car_visible_width_px": 392.5,
+     "car_centre_x_px": 954.0,
+     "car_ground_contact_y_px": 345.0,
+     "horizon_row_px": 167.0
+    }
+   },
+   "timings_s": {
+    "road_no_car": 25.7,
+    "state_base": 61.7,
+    "state_running": 47.2,
+    "state_brake": 51.5,
+    "state_headlight": 52.7,
+    "state_indicator_left": 45.4,
+    "state_indicator_right": 42.6,
+    "state_hazard": 44.1
+   },
+   "layer_manifest": "assets/rendered/vehicle/horizon_v5/chase/yaw04/horizon_v5_vehicle_night.json"
+  },
+  "yaw4_day": {
+   "yaw_deg": -4.0,
+   "phase": "day",
+   "samples": 96,
+   "car_framing": {
+    "ortho_scale": 18.579103469848633,
+    "shift_x": 0.004003407433629036,
+    "shift_y": -0.012450985610485077,
+    "projected_box_px": [
+     757.7,
+     117.8,
+     1150.3,
+     345.0
+    ],
+    "projected_width_px": 392.5,
+    "projected_centre_x_px": 954.0,
+    "projected_contact_y_px": 345.0,
+    "target": {
+     "content_box": [
+      240,
+      0,
+      1440,
+      480
+     ],
+     "content_scale": 0.6629834254143646,
+     "car_visible_width_px": 392.5,
+     "car_centre_x_px": 954.0,
+     "car_ground_contact_y_px": 345.0,
+     "horizon_row_px": 167.0
+    }
+   },
+   "timings_s": {
+    "road_no_car": 28.9,
+    "state_base": 67.8,
+    "state_running": 34.5,
+    "state_brake": 34.8,
+    "state_headlight": 36.8,
+    "state_indicator_left": 39.5,
+    "state_indicator_right": 42.2,
+    "state_hazard": 45.4
+   },
+   "layer_manifest": "assets/rendered/vehicle/horizon_v5/chase/yaw04/horizon_v5_vehicle_day.json"
+  },
+  "yaw7_night": {
+   "yaw_deg": -7.0,
+   "phase": "night",
+   "samples": 96,
+   "car_framing": {
+    "ortho_scale": 17.968721389770508,
+    "shift_x": 0.004127459600567818,
+    "shift_y": -0.01501870434731245,
+    "projected_box_px": [
+     757.7,
+     108.6,
+     1150.3,
+     345.0
+    ],
+    "projected_width_px": 392.5,
+    "projected_centre_x_px": 954.0,
+    "projected_contact_y_px": 345.0,
+    "target": {
+     "content_box": [
+      240,
+      0,
+      1440,
+      480
+     ],
+     "content_scale": 0.6629834254143646,
+     "car_visible_width_px": 392.5,
+     "car_centre_x_px": 954.0,
+     "car_ground_contact_y_px": 345.0,
+     "horizon_row_px": 167.0
+    }
+   },
+   "timings_s": {
+    "road_no_car": 39.1,
+    "state_base": 72.7,
+    "state_running": 39.7,
+    "state_brake": 40.8,
+    "state_headlight": 40.5,
+    "state_indicator_left": 38.9,
+    "state_indicator_right": 38.6,
+    "state_hazard": 39.3
+   },
+   "layer_manifest": "assets/rendered/vehicle/horizon_v5/chase/yaw07/horizon_v5_vehicle_night.json"
+  },
+  "yaw7_day": {
+   "yaw_deg": -7.0,
+   "phase": "day",
+   "samples": 96,
+   "car_framing": {
+    "ortho_scale": 17.968721389770508,
+    "shift_x": 0.004127459600567818,
+    "shift_y": -0.01501870434731245,
+    "projected_box_px": [
+     757.7,
+     108.6,
+     1150.3,
+     345.0
+    ],
+    "projected_width_px": 392.5,
+    "projected_centre_x_px": 954.0,
+    "projected_contact_y_px": 345.0,
+    "target": {
+     "content_box": [
+      240,
+      0,
+      1440,
+      480
+     ],
+     "content_scale": 0.6629834254143646,
+     "car_visible_width_px": 392.5,
+     "car_centre_x_px": 954.0,
+     "car_ground_contact_y_px": 345.0,
+     "horizon_row_px": 167.0
+    }
+   },
+   "timings_s": {
+    "road_no_car": 25.1,
+    "state_base": 64.3,
+    "state_running": 37.5,
+    "state_brake": 39.2,
+    "state_headlight": 36.0,
+    "state_indicator_left": 33.9,
+    "state_indicator_right": 33.7,
+    "state_hazard": 34.0
+   },
+   "layer_manifest": "assets/rendered/vehicle/horizon_v5/chase/yaw07/horizon_v5_vehicle_day.json"
+  },
+  "yaw10_night": {
+   "yaw_deg": -10.0,
+   "phase": "night",
+   "samples": 96,
+   "car_framing": {
+    "ortho_scale": 17.327619552612305,
+    "shift_x": 0.004306154325604439,
+    "shift_y": -0.018190858885645866,
+    "projected_box_px": [
+     757.7,
+     97.9,
+     1150.3,
+     345.0
+    ],
+    "projected_width_px": 392.5,
+    "projected_centre_x_px": 954.0,
+    "projected_contact_y_px": 345.0,
+    "target": {
+     "content_box": [
+      240,
+      0,
+      1440,
+      480
+     ],
+     "content_scale": 0.6629834254143646,
+     "car_visible_width_px": 392.5,
+     "car_centre_x_px": 954.0,
+     "car_ground_contact_y_px": 345.0,
+     "horizon_row_px": 167.0
+    }
+   },
+   "timings_s": {
+    "road_no_car": 27.5,
+    "state_base": 65.0,
+    "state_running": 40.6,
+    "state_brake": 39.1,
+    "state_headlight": 38.1,
+    "state_indicator_left": 39.5,
+    "state_indicator_right": 38.2,
+    "state_hazard": 37.9
+   },
+   "layer_manifest": "assets/rendered/vehicle/horizon_v5/chase/yaw10/horizon_v5_vehicle_night.json"
+  },
+  "yaw10_day": {
+   "yaw_deg": -10.0,
+   "phase": "day",
+   "samples": 96,
+   "car_framing": {
+    "ortho_scale": 17.327619552612305,
+    "shift_x": 0.004306154325604439,
+    "shift_y": -0.018190858885645866,
+    "projected_box_px": [
+     757.7,
+     97.9,
+     1150.3,
+     345.0
+    ],
+    "projected_width_px": 392.5,
+    "projected_centre_x_px": 954.0,
+    "projected_contact_y_px": 345.0,
+    "target": {
+     "content_box": [
+      240,
+      0,
+      1440,
+      480
+     ],
+     "content_scale": 0.6629834254143646,
+     "car_visible_width_px": 392.5,
+     "car_centre_x_px": 954.0,
+     "car_ground_contact_y_px": 345.0,
+     "horizon_row_px": 167.0
+    }
+   },
+   "timings_s": {
+    "road_no_car": 24.4,
+    "state_base": 63.9,
+    "state_running": 39.6,
+    "state_brake": 37.2,
+    "state_headlight": 36.5,
+    "state_indicator_left": 36.5,
+    "state_indicator_right": 36.7,
+    "state_hazard": 36.9
+   },
+   "layer_manifest": "assets/rendered/vehicle/horizon_v5/chase/yaw10/horizon_v5_vehicle_day.json"
+  },
+  "yaw13_night": {
+   "yaw_deg": -13.0,
+   "phase": "night",
+   "samples": 96,
+   "car_framing": {
+    "ortho_scale": 16.65467071533203,
+    "shift_x": 0.004493178799748421,
+    "shift_y": -0.021642062813043594,
+    "projected_box_px": [
+     757.8,
+     86.4,
+     1150.3,
+     345.0
+    ],
+    "projected_width_px": 392.5,
+    "projected_centre_x_px": 954.0,
+    "projected_contact_y_px": 345.0,
+    "target": {
+     "content_box": [
+      240,
+      0,
+      1440,
+      480
+     ],
+     "content_scale": 0.6629834254143646,
+     "car_visible_width_px": 392.5,
+     "car_centre_x_px": 954.0,
+     "car_ground_contact_y_px": 345.0,
+     "horizon_row_px": 167.0
+    }
+   },
+   "timings_s": {
+    "road_no_car": 33.9,
+    "state_base": 84.1
+   },
+   "layer_manifest": "assets/rendered/vehicle/horizon_v5/chase/yaw13/horizon_v5_vehicle_night.json"
+  },
+  "yaw13_day": {
+   "yaw_deg": -13.0,
+   "phase": "day",
+   "samples": 96,
+   "car_framing": {
+    "ortho_scale": 16.65467071533203,
+    "shift_x": 0.004493178799748421,
+    "shift_y": -0.021642062813043594,
+    "projected_box_px": [
+     757.8,
+     86.4,
+     1150.3,
+     345.0
+    ],
+    "projected_width_px": 392.5,
+    "projected_centre_x_px": 954.0,
+    "projected_contact_y_px": 345.0,
+    "target": {
+     "content_box": [
+      240,
+      0,
+      1440,
+      480
+     ],
+     "content_scale": 0.6629834254143646,
+     "car_visible_width_px": 392.5,
+     "car_centre_x_px": 954.0,
+     "car_ground_contact_y_px": 345.0,
+     "horizon_row_px": 167.0
+    }
+   },
+   "timings_s": {
+    "road_no_car": 29.9,
+    "state_base": 73.3
+   },
+   "layer_manifest": "assets/rendered/vehicle/horizon_v5/chase/yaw13/horizon_v5_vehicle_day.json"
+  },
+  "yaw16_night": {
+   "yaw_deg": -16.0,
+   "phase": "night",
+   "samples": 96,
+   "car_framing": {
+    "ortho_scale": 15.94882869720459,
+    "shift_x": 0.004621567204594612,
+    "shift_y": -0.0254246573895216,
+    "projected_box_px": [
+     757.7,
+     73.9,
+     1150.2,
+     345.0
+    ],
+    "projected_width_px": 392.5,
+    "projected_centre_x_px": 954.0,
+    "projected_contact_y_px": 345.0,
+    "target": {
+     "content_box": [
+      240,
+      0,
+      1440,
+      480
+     ],
+     "content_scale": 0.6629834254143646,
+     "car_visible_width_px": 392.5,
+     "car_centre_x_px": 954.0,
+     "car_ground_contact_y_px": 345.0,
+     "horizon_row_px": 167.0
+    }
+   },
+   "timings_s": {
+    "road_no_car": 34.1,
+    "state_base": 87.2
+   },
+   "layer_manifest": "assets/rendered/vehicle/horizon_v5/chase/yaw16/horizon_v5_vehicle_night.json"
+  },
+  "yaw16_day": {
+   "yaw_deg": -16.0,
+   "phase": "day",
+   "samples": 96,
+   "car_framing": {
+    "ortho_scale": 15.94882869720459,
+    "shift_x": 0.004621567204594612,
+    "shift_y": -0.0254246573895216,
+    "projected_box_px": [
+     757.7,
+     73.9,
+     1150.2,
+     345.0
+    ],
+    "projected_width_px": 392.5,
+    "projected_centre_x_px": 954.0,
+    "projected_contact_y_px": 345.0,
+    "target": {
+     "content_box": [
+      240,
+      0,
+      1440,
+      480
+     ],
+     "content_scale": 0.6629834254143646,
+     "car_visible_width_px": 392.5,
+     "car_centre_x_px": 954.0,
+     "car_ground_contact_y_px": 345.0,
+     "horizon_row_px": 167.0
+    }
+   },
+   "timings_s": {
+    "road_no_car": 31.9,
+    "state_base": 77.9
+   },
+   "layer_manifest": "assets/rendered/vehicle/horizon_v5/chase/yaw16/horizon_v5_vehicle_day.json"
+  }
+ }
+}

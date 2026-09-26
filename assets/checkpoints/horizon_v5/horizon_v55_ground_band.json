@@ -1,0 +1,81 @@
+{
+ "schema": "horizon-v5.5-ground-band v1",
+ "why": "the near ground moves, the distance does not; the difference between the two layers is the parallax",
+ "horizon_row": 167,
+ "band_top": 173,
+ "feather": 22,
+ "phases": {
+  "night": {
+   "source": "assets/ui/horizon_v5_background.png",
+   "file": "assets/ui/horizon_v5_ground.png",
+   "box": [
+    0,
+    173,
+    1920,
+    480
+   ],
+   "band_top": 173,
+   "band_height_px": 307,
+   "band_size": [
+    1920,
+    307
+   ],
+   "alpha_pixels": 587520,
+   "decoded_rgba_bytes": 2357760
+  },
+  "day": {
+   "source": "assets/ui/horizon_v5_background_day.png",
+   "file": "assets/ui/horizon_v5_ground_day.png",
+   "box": [
+    0,
+    173,
+    1920,
+    480
+   ],
+   "band_top": 173,
+   "band_height_px": 307,
+   "band_size": [
+    1920,
+    307
+   ],
+   "alpha_pixels": 587520,
+   "decoded_rgba_bytes": 2357760
+  },
+  "dawn": {
+   "source": "assets/ui/horizon_v5_background_dawn.png",
+   "file": "assets/ui/horizon_v5_ground_dawn.png",
+   "box": [
+    0,
+    173,
+    1920,
+    480
+   ],
+   "band_top": 173,
+   "band_height_px": 307,
+   "band_size": [
+    1920,
+    307
+   ],
+   "alpha_pixels": 587520,
+   "decoded_rgba_bytes": 2357760
+  },
+  "dusk": {
+   "source": "assets/ui/horizon_v5_background_dusk.png",
+   "file": "assets/ui/horizon_v5_ground_dusk.png",
+   "box": [
+    0,
+    173,
+    1920,
+    480
+   ],
+   "band_top": 173,
+   "band_height_px": 307,
+   "band_size": [
+    1920,
+    307
+   ],
+   "alpha_pixels": 587520,
+   "decoded_rgba_bytes": 2357760
+  }
+ }
+}

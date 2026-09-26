@@ -170,6 +170,11 @@ blender -b -P tools/blender/build_horizon_v5_environment.py -- \
 python3 tools/assets/compose_horizon_v5_vehicle.py  # 合成车辆层
 python3 tools/assets/bake_horizon_v5_ui.py          # 弧辉光 / 轨道
 python3 tools/preview/build_horizon_v5.py           # 布局 -> 场景
+python3 tools/assets/bake_horizon_v55_ground_band.py  # 地面带（视差层）
+python3 tools/assets/bake_horizon_v55_chase.py        # chase yaw 车辆通道（Blender）
+python3 tools/assets/measure_horizon_v55_chase_boxes.py  # 各 yaw 的车高补偿
+python3 tools/preview/horizon_v55_yaw_select.py       # 角度测量与选择
+python3 tools/preview/horizon_v55_chase_evidence.py   # V5.5 六张证据 + 指标
 python3 tools/preview/horizon_v5_evidence.py        # A/B/C/D 四件交付物
 python3 tools/preview/horizon_v2_layout_qa.py --layout assets/ui/horizon_v5_layout.json \
     --scene scenes/horizon_v5.scene --tokens assets/ui/horizon_v5_tokens.json

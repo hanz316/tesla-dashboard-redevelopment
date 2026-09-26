@@ -213,6 +213,12 @@ if(BUILD_HOST_TOOLS)
         add_test(NAME dashboard_horizon_v5_2_tests
                  COMMAND "${PYTHON3_EXECUTABLE}"
                          "${CMAKE_CURRENT_SOURCE_DIR}/tests/horizon_v5_2_tests.py")
+        # V5.5 gates the chase camera and the shared screen motion vector: the
+        # view drifts with speed, the car keeps its anchor and size, and the
+        # awareness layer keeps its meaning at speed.
+        add_test(NAME dashboard_horizon_v55_motion_tests
+                 COMMAND "${PYTHON3_EXECUTABLE}"
+                         "${CMAKE_CURRENT_SOURCE_DIR}/tests/horizon_v55_motion_tests.py")
     else()
         message(FATAL_ERROR "python3 is required for host regression tests")
     endif()

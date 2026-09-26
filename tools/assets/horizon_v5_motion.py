@@ -47,7 +47,33 @@ CHANNELS = {
     # actually moving: 0 km/h must show no airflow at all.
     "aero_wake_level": [0.0, 0.05, 0.45, 1.0],
     "micro_motion_level": [0.0, 0.30, 0.60, 1.0],
+    # The chase camera is a camera behaviour, not a decoration: it starts at the
+    # accepted V5.4 presentation and orbits towards the car's rear as speed
+    # rises. The anchor at 30 km/h is small on purpose - the view must be
+    # almost unchanged at city speed and only become obvious on a highway.
+    "chase_yaw_level": [0.0, 0.18, 0.68, 1.0],
 }
+
+# Chase camera maximum, in degrees of camera orbit towards the car's rear.
+# Selected from the measured sweep, not asserted: +4/+7/+10/+13/+16 were
+# rendered (assets/checkpoints/horizon_v55/horizon_v55_chase_yaw_sweep.png) and
+# measured (horizon_v55_yaw_selection.json). The automatic rule - the smallest
+# angle clearing a third of the largest silhouette change with the anchor and
+# the presented height intact - picks 7 deg; the review also requires 80 km/h to
+# be clearly rear-three-quarter (0.68 of the maximum), which the sweep shows
+# needs a maximum of 10 deg. 10 deg is therefore the production value, and its
+# body-anchor drift is measured at 0.0 px at every baked angle.
+CHASE_YAW_MAX_DEG = 10.0
+
+# The screen motion vector: every effect that has to agree about which way the
+# world is moving reads these, so the car, the road, the reflection and the wake
+# can never point in different directions. The car travels away from the
+# camera, so road-level detail travels towards the viewer: +y on screen.
+SCREEN_MOTION_AXIS = (0.0, 1.0)
+ENVIRONMENT_PARALLAX_FAR_PX = 1.0
+ENVIRONMENT_PARALLAX_NEAR_PX = 7.0
+WAKE_TRAIL_PX = 18.0
+REFLECTION_STRETCH_MAX = 0.12
 
 # Bounded, in pixels. The body never floats or bounces: 2 px at 120 km/h.
 MICRO_MOTION_AMPLITUDE_PX = 2.0
@@ -89,6 +115,38 @@ def channel(name, speed):
     return values[-1]
 
 
+def screen_motion_vector(speed):
+    """The one vector every motion effect is derived from.
+
+    Direction is shared, magnitude is shared, and every component is exactly
+    zero at a standstill: road flow, wake, reflection stretch and environment
+    parallax cannot disagree about which way the world is moving because they
+    are all reads of this structure.
+    """
+    intensity = smoothstep(0.0, 120.0, float(speed))
+    yaw = channel("chase_yaw_level", speed) * CHASE_YAW_MAX_DEG
+    return {
+        "speed": float(speed),
+        "intensity": round(intensity, 4),
+        "screen_axis": list(SCREEN_MOTION_AXIS),
+        "why": "the car travels away from the camera, so the road travels "
+               "towards the viewer along +y; the wake trails the other way",
+        "chase_yaw_deg": round(yaw, 3),
+        "camera_azimuth_deg": round(-yaw, 3),
+        "road_flow_offset_px": round(
+            channel("road_flow_level", speed) * ROAD_FLOW_PX_PER_LEVEL, 2),
+        "wake_trail_px": round(
+            channel("aero_wake_level", speed) * WAKE_TRAIL_PX, 2),
+        "reflection_stretch": round(
+            channel("road_flow_level", speed) * REFLECTION_STRETCH_MAX, 4),
+        "environment_parallax_px": {
+            "far": round(intensity * ENVIRONMENT_PARALLAX_FAR_PX, 2),
+            "near": round(intensity * ENVIRONMENT_PARALLAX_NEAR_PX, 2)},
+        "wheel_motion_level": round(channel("wheel_motion_level", speed), 4),
+        "wet_streak_level": round(channel("wet_streak_level", speed), 4),
+    }
+
+
 def levels(speed):
     """Every motion level for one speed, plus the derived offsets."""
     wheel = channel("wheel_motion_level", speed)
@@ -112,6 +170,10 @@ def levels(speed):
         "aero_wake_level": round(channel("aero_wake_level", speed), 4),
         "micro_motion_level": round(micro, 4),
         "micro_motion_amplitude_px": round(micro * MICRO_MOTION_AMPLITUDE_PX, 3),
+        "chase_yaw_level": round(channel("chase_yaw_level", speed), 4),
+        "chase_yaw_deg": round(channel("chase_yaw_level", speed)
+                               * CHASE_YAW_MAX_DEG, 3),
+        "screen_motion": screen_motion_vector(speed),
         "motion_factor": round(smoothstep(0.0, 120.0, speed), 4),
     }
 
@@ -159,6 +221,19 @@ def definition():
         "road_flow": {"px_per_level": ROAD_FLOW_PX_PER_LEVEL,
                       "why": "the streak texture only translates and wraps; the "
                              "device never blurs or synthesises anything"},
+        "screen_motion_vector": {
+            "axis": list(SCREEN_MOTION_AXIS),
+            "why": "one direction and one magnitude for the camera yaw, the "
+                   "road flow, the wake, the reflection stretch and the "
+                   "environment parallax, so they cannot disagree",
+            "components": {
+                "camera_yaw_deg": CHASE_YAW_MAX_DEG,
+                "environment_parallax_far_px": ENVIRONMENT_PARALLAX_FAR_PX,
+                "environment_parallax_near_px": ENVIRONMENT_PARALLAX_NEAR_PX,
+                "wake_trail_px": WAKE_TRAIL_PX,
+                "reflection_stretch": REFLECTION_STRETCH_MAX},
+            "axis_convention": "the car travels away from the camera, so road "
+                               "level detail travels towards the viewer (+y)"},
         "levels_at_speeds": steps,
     }
 

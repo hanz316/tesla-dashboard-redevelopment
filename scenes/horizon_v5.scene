@@ -56,6 +56,39 @@
    "src": "assets/ui/horizon_v5_background.png"
   },
   {
+   "id": "env.ground",
+   "type": "image",
+   "z": 1,
+   "layer": "static",
+   "x": 0,
+   "y": 173,
+   "width": 1920,
+   "height": 307,
+   "src": "assets/ui/horizon_v5_ground.png",
+   "offset_from": {
+    "binding": "speed",
+    "points": [
+     [
+      0.0,
+      0.0
+     ],
+     [
+      30.0,
+      1.09
+     ],
+     [
+      80.0,
+      5.19
+     ],
+     [
+      120.0,
+      7.0
+     ]
+    ],
+    "scale": 1.0
+   }
+  },
+  {
    "id": "awareness.left.green",
    "type": "image",
    "z": 16,
@@ -203,7 +236,7 @@
    "type": "image",
    "z": 15,
    "layer": "dynamic",
-   "x": 612,
+   "x": 572,
    "y": 268,
    "width": 168,
    "height": 96,
@@ -402,7 +435,7 @@
    "type": "image",
    "z": 15,
    "layer": "dynamic",
-   "x": 1140,
+   "x": 1180,
    "y": 268,
    "width": 168,
    "height": 96,
@@ -550,7 +583,7 @@
    },
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.09,
+    "scale": 1.199,
     "anchor": [
      954,
      345
@@ -560,10 +593,30 @@
      1248
     ],
     "scale_trials": [
-     1.06,
-     1.09,
-     1.12
-    ]
+     1.199,
+     1.247,
+     1.283,
+     1.319
+    ],
+    "selection": {
+     "why": "the review asked for the largest presentation that still clears every information zone; the measured trials were the accepted size, +4 %, +7 % and +10 %, and +10 % won",
+     "measured_at_plus_10": {
+      "body_box_px": [
+       723,
+       84,
+       1195,
+       345
+      ],
+      "speed_zone_clearance_px": 46,
+      "energy_zone_clearance_px": 490,
+      "navigation_clearance_px": 32,
+      "trapezoid_mask_clearance_px": 649,
+      "bottom_clearance_px": 134,
+      "day_night_body_box_delta_px": 0
+     },
+     "opening_panel_headroom": "the frozen V2 door/frunk/trunk assets do not extend the measured silhouette box (24103 alpha pixels in base, door_fl and door_rl alike), so an open panel is not expected to consume the inbound clearance; the V5-resolution version of those animations is NOT_IMPLEMENTED",
+     "evidence": "assets/checkpoints/horizon_v55/horizon_v55_chase_metrics.json"
+    }
    }
   },
   {
@@ -578,7 +631,7 @@
    "src": "assets/rendered/vehicle/horizon_v5/layer/running.png",
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.09,
+    "scale": 1.199,
     "anchor": [
      954,
      345
@@ -588,10 +641,30 @@
      1248
     ],
     "scale_trials": [
-     1.06,
-     1.09,
-     1.12
-    ]
+     1.199,
+     1.247,
+     1.283,
+     1.319
+    ],
+    "selection": {
+     "why": "the review asked for the largest presentation that still clears every information zone; the measured trials were the accepted size, +4 %, +7 % and +10 %, and +10 % won",
+     "measured_at_plus_10": {
+      "body_box_px": [
+       723,
+       84,
+       1195,
+       345
+      ],
+      "speed_zone_clearance_px": 46,
+      "energy_zone_clearance_px": 490,
+      "navigation_clearance_px": 32,
+      "trapezoid_mask_clearance_px": 649,
+      "bottom_clearance_px": 134,
+      "day_night_body_box_delta_px": 0
+     },
+     "opening_panel_headroom": "the frozen V2 door/frunk/trunk assets do not extend the measured silhouette box (24103 alpha pixels in base, door_fl and door_rl alike), so an open panel is not expected to consume the inbound clearance; the V5-resolution version of those animations is NOT_IMPLEMENTED",
+     "evidence": "assets/checkpoints/horizon_v55/horizon_v55_chase_metrics.json"
+    }
    },
    "opacity": 1.0,
    "alpha_when": [
@@ -623,7 +696,7 @@
    "src": "assets/rendered/vehicle/horizon_v5/layer/brake.png",
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.09,
+    "scale": 1.199,
     "anchor": [
      954,
      345
@@ -633,10 +706,30 @@
      1248
     ],
     "scale_trials": [
-     1.06,
-     1.09,
-     1.12
-    ]
+     1.199,
+     1.247,
+     1.283,
+     1.319
+    ],
+    "selection": {
+     "why": "the review asked for the largest presentation that still clears every information zone; the measured trials were the accepted size, +4 %, +7 % and +10 %, and +10 % won",
+     "measured_at_plus_10": {
+      "body_box_px": [
+       723,
+       84,
+       1195,
+       345
+      ],
+      "speed_zone_clearance_px": 46,
+      "energy_zone_clearance_px": 490,
+      "navigation_clearance_px": 32,
+      "trapezoid_mask_clearance_px": 649,
+      "bottom_clearance_px": 134,
+      "day_night_body_box_delta_px": 0
+     },
+     "opening_panel_headroom": "the frozen V2 door/frunk/trunk assets do not extend the measured silhouette box (24103 alpha pixels in base, door_fl and door_rl alike), so an open panel is not expected to consume the inbound clearance; the V5-resolution version of those animations is NOT_IMPLEMENTED",
+     "evidence": "assets/checkpoints/horizon_v55/horizon_v55_chase_metrics.json"
+    }
    },
    "opacity": 1.0,
    "alpha_when": [
@@ -668,7 +761,7 @@
    "src": "assets/rendered/vehicle/horizon_v5/layer/indicator_left.png",
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.09,
+    "scale": 1.199,
     "anchor": [
      954,
      345
@@ -678,10 +771,30 @@
      1248
     ],
     "scale_trials": [
-     1.06,
-     1.09,
-     1.12
-    ]
+     1.199,
+     1.247,
+     1.283,
+     1.319
+    ],
+    "selection": {
+     "why": "the review asked for the largest presentation that still clears every information zone; the measured trials were the accepted size, +4 %, +7 % and +10 %, and +10 % won",
+     "measured_at_plus_10": {
+      "body_box_px": [
+       723,
+       84,
+       1195,
+       345
+      ],
+      "speed_zone_clearance_px": 46,
+      "energy_zone_clearance_px": 490,
+      "navigation_clearance_px": 32,
+      "trapezoid_mask_clearance_px": 649,
+      "bottom_clearance_px": 134,
+      "day_night_body_box_delta_px": 0
+     },
+     "opening_panel_headroom": "the frozen V2 door/frunk/trunk assets do not extend the measured silhouette box (24103 alpha pixels in base, door_fl and door_rl alike), so an open panel is not expected to consume the inbound clearance; the V5-resolution version of those animations is NOT_IMPLEMENTED",
+     "evidence": "assets/checkpoints/horizon_v55/horizon_v55_chase_metrics.json"
+    }
    },
    "opacity": 1.0,
    "alpha_when": [
@@ -713,7 +826,7 @@
    "src": "assets/rendered/vehicle/horizon_v5/layer/indicator_right.png",
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.09,
+    "scale": 1.199,
     "anchor": [
      954,
      345
@@ -723,10 +836,30 @@
      1248
     ],
     "scale_trials": [
-     1.06,
-     1.09,
-     1.12
-    ]
+     1.199,
+     1.247,
+     1.283,
+     1.319
+    ],
+    "selection": {
+     "why": "the review asked for the largest presentation that still clears every information zone; the measured trials were the accepted size, +4 %, +7 % and +10 %, and +10 % won",
+     "measured_at_plus_10": {
+      "body_box_px": [
+       723,
+       84,
+       1195,
+       345
+      ],
+      "speed_zone_clearance_px": 46,
+      "energy_zone_clearance_px": 490,
+      "navigation_clearance_px": 32,
+      "trapezoid_mask_clearance_px": 649,
+      "bottom_clearance_px": 134,
+      "day_night_body_box_delta_px": 0
+     },
+     "opening_panel_headroom": "the frozen V2 door/frunk/trunk assets do not extend the measured silhouette box (24103 alpha pixels in base, door_fl and door_rl alike), so an open panel is not expected to consume the inbound clearance; the V5-resolution version of those animations is NOT_IMPLEMENTED",
+     "evidence": "assets/checkpoints/horizon_v55/horizon_v55_chase_metrics.json"
+    }
    },
    "opacity": 1.0,
    "alpha_when": [
@@ -758,7 +891,7 @@
    "src": "assets/rendered/vehicle/horizon_v5/layer/headlight.png",
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.09,
+    "scale": 1.199,
     "anchor": [
      954,
      345
@@ -768,10 +901,30 @@
      1248
     ],
     "scale_trials": [
-     1.06,
-     1.09,
-     1.12
-    ]
+     1.199,
+     1.247,
+     1.283,
+     1.319
+    ],
+    "selection": {
+     "why": "the review asked for the largest presentation that still clears every information zone; the measured trials were the accepted size, +4 %, +7 % and +10 %, and +10 % won",
+     "measured_at_plus_10": {
+      "body_box_px": [
+       723,
+       84,
+       1195,
+       345
+      ],
+      "speed_zone_clearance_px": 46,
+      "energy_zone_clearance_px": 490,
+      "navigation_clearance_px": 32,
+      "trapezoid_mask_clearance_px": 649,
+      "bottom_clearance_px": 134,
+      "day_night_body_box_delta_px": 0
+     },
+     "opening_panel_headroom": "the frozen V2 door/frunk/trunk assets do not extend the measured silhouette box (24103 alpha pixels in base, door_fl and door_rl alike), so an open panel is not expected to consume the inbound clearance; the V5-resolution version of those animations is NOT_IMPLEMENTED",
+     "evidence": "assets/checkpoints/horizon_v55/horizon_v55_chase_metrics.json"
+    }
    },
    "opacity": 1.0,
    "alpha_when": [
@@ -880,7 +1033,7 @@
    },
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.09,
+    "scale": 1.199,
     "anchor": [
      954,
      345
@@ -890,10 +1043,30 @@
      1248
     ],
     "scale_trials": [
-     1.06,
-     1.09,
-     1.12
-    ]
+     1.199,
+     1.247,
+     1.283,
+     1.319
+    ],
+    "selection": {
+     "why": "the review asked for the largest presentation that still clears every information zone; the measured trials were the accepted size, +4 %, +7 % and +10 %, and +10 % won",
+     "measured_at_plus_10": {
+      "body_box_px": [
+       723,
+       84,
+       1195,
+       345
+      ],
+      "speed_zone_clearance_px": 46,
+      "energy_zone_clearance_px": 490,
+      "navigation_clearance_px": 32,
+      "trapezoid_mask_clearance_px": 649,
+      "bottom_clearance_px": 134,
+      "day_night_body_box_delta_px": 0
+     },
+     "opening_panel_headroom": "the frozen V2 door/frunk/trunk assets do not extend the measured silhouette box (24103 alpha pixels in base, door_fl and door_rl alike), so an open panel is not expected to consume the inbound clearance; the V5-resolution version of those animations is NOT_IMPLEMENTED",
+     "evidence": "assets/checkpoints/horizon_v55/horizon_v55_chase_metrics.json"
+    }
    },
    "opacity": 0.9
   },
@@ -931,7 +1104,7 @@
    },
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.09,
+    "scale": 1.199,
     "anchor": [
      954,
      345
@@ -941,10 +1114,30 @@
      1248
     ],
     "scale_trials": [
-     1.06,
-     1.09,
-     1.12
-    ]
+     1.199,
+     1.247,
+     1.283,
+     1.319
+    ],
+    "selection": {
+     "why": "the review asked for the largest presentation that still clears every information zone; the measured trials were the accepted size, +4 %, +7 % and +10 %, and +10 % won",
+     "measured_at_plus_10": {
+      "body_box_px": [
+       723,
+       84,
+       1195,
+       345
+      ],
+      "speed_zone_clearance_px": 46,
+      "energy_zone_clearance_px": 490,
+      "navigation_clearance_px": 32,
+      "trapezoid_mask_clearance_px": 649,
+      "bottom_clearance_px": 134,
+      "day_night_body_box_delta_px": 0
+     },
+     "opening_panel_headroom": "the frozen V2 door/frunk/trunk assets do not extend the measured silhouette box (24103 alpha pixels in base, door_fl and door_rl alike), so an open panel is not expected to consume the inbound clearance; the V5-resolution version of those animations is NOT_IMPLEMENTED",
+     "evidence": "assets/checkpoints/horizon_v55/horizon_v55_chase_metrics.json"
+    }
    },
    "opacity": 1.0,
    "alpha_when": [
@@ -998,7 +1191,7 @@
    },
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.09,
+    "scale": 1.199,
     "anchor": [
      954,
      345
@@ -1008,10 +1201,30 @@
      1248
     ],
     "scale_trials": [
-     1.06,
-     1.09,
-     1.12
-    ]
+     1.199,
+     1.247,
+     1.283,
+     1.319
+    ],
+    "selection": {
+     "why": "the review asked for the largest presentation that still clears every information zone; the measured trials were the accepted size, +4 %, +7 % and +10 %, and +10 % won",
+     "measured_at_plus_10": {
+      "body_box_px": [
+       723,
+       84,
+       1195,
+       345
+      ],
+      "speed_zone_clearance_px": 46,
+      "energy_zone_clearance_px": 490,
+      "navigation_clearance_px": 32,
+      "trapezoid_mask_clearance_px": 649,
+      "bottom_clearance_px": 134,
+      "day_night_body_box_delta_px": 0
+     },
+     "opening_panel_headroom": "the frozen V2 door/frunk/trunk assets do not extend the measured silhouette box (24103 alpha pixels in base, door_fl and door_rl alike), so an open panel is not expected to consume the inbound clearance; the V5-resolution version of those animations is NOT_IMPLEMENTED",
+     "evidence": "assets/checkpoints/horizon_v55/horizon_v55_chase_metrics.json"
+    }
    },
    "opacity": 1.0,
    "alpha_when": [
@@ -1065,7 +1278,7 @@
    },
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.09,
+    "scale": 1.199,
     "anchor": [
      954,
      345
@@ -1075,10 +1288,30 @@
      1248
     ],
     "scale_trials": [
-     1.06,
-     1.09,
-     1.12
-    ]
+     1.199,
+     1.247,
+     1.283,
+     1.319
+    ],
+    "selection": {
+     "why": "the review asked for the largest presentation that still clears every information zone; the measured trials were the accepted size, +4 %, +7 % and +10 %, and +10 % won",
+     "measured_at_plus_10": {
+      "body_box_px": [
+       723,
+       84,
+       1195,
+       345
+      ],
+      "speed_zone_clearance_px": 46,
+      "energy_zone_clearance_px": 490,
+      "navigation_clearance_px": 32,
+      "trapezoid_mask_clearance_px": 649,
+      "bottom_clearance_px": 134,
+      "day_night_body_box_delta_px": 0
+     },
+     "opening_panel_headroom": "the frozen V2 door/frunk/trunk assets do not extend the measured silhouette box (24103 alpha pixels in base, door_fl and door_rl alike), so an open panel is not expected to consume the inbound clearance; the V5-resolution version of those animations is NOT_IMPLEMENTED",
+     "evidence": "assets/checkpoints/horizon_v55/horizon_v55_chase_metrics.json"
+    }
    },
    "opacity": 1.0,
    "alpha_when": [
@@ -1127,7 +1360,7 @@
    },
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.09,
+    "scale": 1.199,
     "anchor": [
      954,
      345
@@ -1137,10 +1370,30 @@
      1248
     ],
     "scale_trials": [
-     1.06,
-     1.09,
-     1.12
-    ]
+     1.199,
+     1.247,
+     1.283,
+     1.319
+    ],
+    "selection": {
+     "why": "the review asked for the largest presentation that still clears every information zone; the measured trials were the accepted size, +4 %, +7 % and +10 %, and +10 % won",
+     "measured_at_plus_10": {
+      "body_box_px": [
+       723,
+       84,
+       1195,
+       345
+      ],
+      "speed_zone_clearance_px": 46,
+      "energy_zone_clearance_px": 490,
+      "navigation_clearance_px": 32,
+      "trapezoid_mask_clearance_px": 649,
+      "bottom_clearance_px": 134,
+      "day_night_body_box_delta_px": 0
+     },
+     "opening_panel_headroom": "the frozen V2 door/frunk/trunk assets do not extend the measured silhouette box (24103 alpha pixels in base, door_fl and door_rl alike), so an open panel is not expected to consume the inbound clearance; the V5-resolution version of those animations is NOT_IMPLEMENTED",
+     "evidence": "assets/checkpoints/horizon_v55/horizon_v55_chase_metrics.json"
+    }
    },
    "opacity": 1.0
   },
@@ -1173,7 +1426,7 @@
    },
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.09,
+    "scale": 1.199,
     "anchor": [
      954,
      345
@@ -1183,10 +1436,30 @@
      1248
     ],
     "scale_trials": [
-     1.06,
-     1.09,
-     1.12
-    ]
+     1.199,
+     1.247,
+     1.283,
+     1.319
+    ],
+    "selection": {
+     "why": "the review asked for the largest presentation that still clears every information zone; the measured trials were the accepted size, +4 %, +7 % and +10 %, and +10 % won",
+     "measured_at_plus_10": {
+      "body_box_px": [
+       723,
+       84,
+       1195,
+       345
+      ],
+      "speed_zone_clearance_px": 46,
+      "energy_zone_clearance_px": 490,
+      "navigation_clearance_px": 32,
+      "trapezoid_mask_clearance_px": 649,
+      "bottom_clearance_px": 134,
+      "day_night_body_box_delta_px": 0
+     },
+     "opening_panel_headroom": "the frozen V2 door/frunk/trunk assets do not extend the measured silhouette box (24103 alpha pixels in base, door_fl and door_rl alike), so an open panel is not expected to consume the inbound clearance; the V5-resolution version of those animations is NOT_IMPLEMENTED",
+     "evidence": "assets/checkpoints/horizon_v55/horizon_v55_chase_metrics.json"
+    }
    },
    "opacity": 1.0
   },
@@ -1219,7 +1492,7 @@
    },
    "presentation": {
     "schema": "horizon-presentation v1",
-    "scale": 1.09,
+    "scale": 1.199,
     "anchor": [
      954,
      345
@@ -1229,10 +1502,30 @@
      1248
     ],
     "scale_trials": [
-     1.06,
-     1.09,
-     1.12
-    ]
+     1.199,
+     1.247,
+     1.283,
+     1.319
+    ],
+    "selection": {
+     "why": "the review asked for the largest presentation that still clears every information zone; the measured trials were the accepted size, +4 %, +7 % and +10 %, and +10 % won",
+     "measured_at_plus_10": {
+      "body_box_px": [
+       723,
+       84,
+       1195,
+       345
+      ],
+      "speed_zone_clearance_px": 46,
+      "energy_zone_clearance_px": 490,
+      "navigation_clearance_px": 32,
+      "trapezoid_mask_clearance_px": 649,
+      "bottom_clearance_px": 134,
+      "day_night_body_box_delta_px": 0
+     },
+     "opening_panel_headroom": "the frozen V2 door/frunk/trunk assets do not extend the measured silhouette box (24103 alpha pixels in base, door_fl and door_rl alike), so an open panel is not expected to consume the inbound clearance; the V5-resolution version of those animations is NOT_IMPLEMENTED",
+     "evidence": "assets/checkpoints/horizon_v55/horizon_v55_chase_metrics.json"
+    }
    },
    "opacity": 1.0
   },

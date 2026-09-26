@@ -1,0 +1,868 @@
+{
+ "schema": "horizon-v5.5-chase-evidence v1",
+ "measurement_platform": "MAC MEASURED",
+ "device": "UNKNOWN_UNTIL_DEVICE_TEST",
+ "state_source": "DEVELOPER_FIXTURE",
+ "motion": {
+  "0": {
+   "chase_yaw_deg": 0.0,
+   "changed_pixels": 0,
+   "changed_in_wheel_band": 0,
+   "changed_in_wake_box": 0,
+   "changed_in_road_band": 0,
+   "measured_ground_shift_px": 0,
+   "measured_band_shift_px": 0,
+   "declared_parallax_near_px": 0.0,
+   "declared_road_flow_px": 0.0,
+   "reflection_stretch": 0.0
+  },
+  "10": {
+   "chase_yaw_deg": 0.467,
+   "changed_pixels": 32674,
+   "changed_in_wheel_band": 17361,
+   "changed_in_wake_box": 1196,
+   "changed_in_road_band": 17683,
+   "measured_ground_shift_px": 0,
+   "measured_band_shift_px": 0,
+   "declared_parallax_near_px": 0.14,
+   "declared_road_flow_px": 14.78,
+   "reflection_stretch": 0.0093
+  },
+  "30": {
+   "chase_yaw_deg": 1.8,
+   "changed_pixels": 64031,
+   "changed_in_wheel_band": 33356,
+   "changed_in_wake_box": 6274,
+   "changed_in_road_band": 47815,
+   "measured_ground_shift_px": 3,
+   "measured_band_shift_px": 3,
+   "declared_parallax_near_px": 1.09,
+   "declared_road_flow_px": 57.0,
+   "reflection_stretch": 0.036
+  },
+  "60": {
+   "chase_yaw_deg": 5.04,
+   "changed_pixels": 94446,
+   "changed_in_wheel_band": 47025,
+   "changed_in_wake_box": 12126,
+   "changed_in_road_band": 76720,
+   "measured_ground_shift_px": 4,
+   "measured_band_shift_px": 4,
+   "declared_parallax_near_px": 3.5,
+   "declared_road_flow_px": 112.4,
+   "reflection_stretch": 0.071
+  },
+  "80": {
+   "chase_yaw_deg": 6.8,
+   "changed_pixels": 102054,
+   "changed_in_wheel_band": 51371,
+   "changed_in_wake_box": 14078,
+   "changed_in_road_band": 85017,
+   "measured_ground_shift_px": 6,
+   "measured_band_shift_px": 6,
+   "declared_parallax_near_px": 5.19,
+   "declared_road_flow_px": 142.5,
+   "reflection_stretch": 0.09
+  },
+  "120": {
+   "chase_yaw_deg": 10.0,
+   "changed_pixels": 109939,
+   "changed_in_wheel_band": 56271,
+   "changed_in_wake_box": 15781,
+   "changed_in_road_band": 92137,
+   "measured_ground_shift_px": 5,
+   "measured_band_shift_px": 5,
+   "declared_parallax_near_px": 7.0,
+   "declared_road_flow_px": 190.0,
+   "reflection_stretch": 0.12
+  }
+ },
+ "yaw_sweep": {
+  "0": {
+   "yaw_deg": 0.0,
+   "vehicle_box": [
+    718,
+    84,
+    1190,
+    480
+   ],
+   "vehicle_pixels": 141118,
+   "body_box": [
+    718,
+    85,
+    1190,
+    346
+   ],
+   "box_width_px": 472,
+   "box_height_px": 396,
+   "anchor_centre_x_px": 954.0,
+   "anchor_contact_y_px": 480,
+   "box_centre_drift_px": 0.0,
+   "box_height_ratio_vs_0": 1.0
+  },
+  "4": {
+   "yaw_deg": 4.0,
+   "vehicle_box": [
+    727,
+    84,
+    1181,
+    480
+   ],
+   "vehicle_pixels": 132468,
+   "body_box": [
+    718,
+    72,
+    1190,
+    346
+   ],
+   "box_width_px": 454,
+   "box_height_px": 396,
+   "anchor_centre_x_px": 954.0,
+   "anchor_contact_y_px": 480,
+   "box_centre_drift_px": 0.0,
+   "box_height_ratio_vs_0": 1.0
+  },
+  "7": {
+   "yaw_deg": 7.0,
+   "vehicle_box": [
+    729,
+    83,
+    1171,
+    480
+   ],
+   "vehicle_pixels": 126265,
+   "body_box": [
+    718,
+    61,
+    1190,
+    346
+   ],
+   "box_width_px": 442,
+   "box_height_px": 397,
+   "anchor_centre_x_px": 950.0,
+   "anchor_contact_y_px": 480,
+   "box_centre_drift_px": 4.0,
+   "box_height_ratio_vs_0": 1.0025
+  },
+  "10": {
+   "yaw_deg": 10.0,
+   "vehicle_box": [
+    731,
+    84,
+    1162,
+    480
+   ],
+   "vehicle_pixels": 119345,
+   "body_box": [
+    718,
+    48,
+    1190,
+    346
+   ],
+   "box_width_px": 431,
+   "box_height_px": 396,
+   "anchor_centre_x_px": 946.5,
+   "anchor_contact_y_px": 480,
+   "box_centre_drift_px": 7.5,
+   "box_height_ratio_vs_0": 1.0
+  },
+  "13": {
+   "yaw_deg": 13.0,
+   "vehicle_box": [
+    717,
+    84,
+    1190,
+    480
+   ],
+   "vehicle_pixels": 140651,
+   "body_box": [
+    718,
+    34,
+    1190,
+    346
+   ],
+   "box_width_px": 473,
+   "box_height_px": 396,
+   "anchor_centre_x_px": 953.5,
+   "anchor_contact_y_px": 480,
+   "box_centre_drift_px": 0.5,
+   "box_height_ratio_vs_0": 1.0
+  },
+  "16": {
+   "yaw_deg": 16.0,
+   "vehicle_box": [
+    717,
+    84,
+    1190,
+    480
+   ],
+   "vehicle_pixels": 139938,
+   "body_box": [
+    718,
+    19,
+    1190,
+    346
+   ],
+   "box_width_px": 473,
+   "box_height_px": 396,
+   "anchor_centre_x_px": 953.5,
+   "anchor_contact_y_px": 480,
+   "box_centre_drift_px": 0.5,
+   "box_height_ratio_vs_0": 1.0
+  }
+ },
+ "scale_trials": {
+  "current": {
+   "scale": 1.09,
+   "selected": false,
+   "phases": {
+    "day": {
+     "body_box": [
+      739,
+      108,
+      1169,
+      346
+     ],
+     "body_width_px": 430,
+     "body_height_px": 238,
+     "footprint_box": [
+      653,
+      108,
+      1204,
+      446
+     ],
+     "speed_zone_clearance_px": 67,
+     "energy_zone_clearance_px": 511,
+     "navigation_clearance_px": 54.900000000000006,
+     "trapezoid_mask_clearance_px": 669.9,
+     "bottom_clearance_px": 134
+    },
+    "night": {
+     "body_box": [
+      739,
+      108,
+      1169,
+      346
+     ],
+     "body_width_px": 430,
+     "body_height_px": 238,
+     "footprint_box": [
+      738,
+      107,
+      1169,
+      477
+     ],
+     "speed_zone_clearance_px": 67,
+     "energy_zone_clearance_px": 511,
+     "navigation_clearance_px": 54.900000000000006,
+     "trapezoid_mask_clearance_px": 669.9,
+     "bottom_clearance_px": 134
+    }
+   },
+   "phase_body_box_max_delta_px": 0,
+   "phase_width_delta_px": 0,
+   "phase_height_delta_px": 0,
+   "phase_footprint_max_delta_px": 85
+  },
+  "+4%": {
+   "scale": 1.1336,
+   "selected": false,
+   "phases": {
+    "day": {
+     "body_box": [
+      731,
+      99,
+      1177,
+      346
+     ],
+     "body_width_px": 446,
+     "body_height_px": 247,
+     "footprint_box": [
+      645,
+      96,
+      1216,
+      455
+     ],
+     "speed_zone_clearance_px": 59,
+     "energy_zone_clearance_px": 503,
+     "navigation_clearance_px": 45.900000000000006,
+     "trapezoid_mask_clearance_px": 661.9,
+     "bottom_clearance_px": 134
+    },
+    "night": {
+     "body_box": [
+      731,
+      99,
+      1177,
+      346
+     ],
+     "body_width_px": 446,
+     "body_height_px": 247,
+     "footprint_box": [
+      729,
+      97,
+      1178,
+      480
+     ],
+     "speed_zone_clearance_px": 59,
+     "energy_zone_clearance_px": 503,
+     "navigation_clearance_px": 45.900000000000006,
+     "trapezoid_mask_clearance_px": 661.9,
+     "bottom_clearance_px": 134
+    }
+   },
+   "phase_body_box_max_delta_px": 0,
+   "phase_width_delta_px": 0,
+   "phase_height_delta_px": 0,
+   "phase_footprint_max_delta_px": 84
+  },
+  "+7%": {
+   "scale": 1.1663,
+   "selected": false,
+   "phases": {
+    "day": {
+     "body_box": [
+      724,
+      92,
+      1184,
+      346
+     ],
+     "body_width_px": 460,
+     "body_height_px": 254,
+     "footprint_box": [
+      636,
+      89,
+      1223,
+      456
+     ],
+     "speed_zone_clearance_px": 52,
+     "energy_zone_clearance_px": 496,
+     "navigation_clearance_px": 38.900000000000006,
+     "trapezoid_mask_clearance_px": 654.9,
+     "bottom_clearance_px": 134
+    },
+    "night": {
+     "body_box": [
+      724,
+      92,
+      1184,
+      346
+     ],
+     "body_width_px": 460,
+     "body_height_px": 254,
+     "footprint_box": [
+      723,
+      91,
+      1184,
+      480
+     ],
+     "speed_zone_clearance_px": 52,
+     "energy_zone_clearance_px": 496,
+     "navigation_clearance_px": 38.900000000000006,
+     "trapezoid_mask_clearance_px": 654.9,
+     "bottom_clearance_px": 134
+    }
+   },
+   "phase_body_box_max_delta_px": 0,
+   "phase_width_delta_px": 0,
+   "phase_height_delta_px": 0,
+   "phase_footprint_max_delta_px": 87
+  },
+  "+10%": {
+   "scale": 1.199,
+   "selected": true,
+   "phases": {
+    "day": {
+     "body_box": [
+      718,
+      85,
+      1190,
+      346
+     ],
+     "body_width_px": 472,
+     "body_height_px": 261,
+     "footprint_box": [
+      626,
+      82,
+      1230,
+      458
+     ],
+     "speed_zone_clearance_px": 46,
+     "energy_zone_clearance_px": 490,
+     "navigation_clearance_px": 31.900000000000006,
+     "trapezoid_mask_clearance_px": 648.9,
+     "bottom_clearance_px": 134
+    },
+    "night": {
+     "body_box": [
+      718,
+      85,
+      1190,
+      346
+     ],
+     "body_width_px": 472,
+     "body_height_px": 261,
+     "footprint_box": [
+      718,
+      84,
+      1190,
+      480
+     ],
+     "speed_zone_clearance_px": 46,
+     "energy_zone_clearance_px": 490,
+     "navigation_clearance_px": 31.900000000000006,
+     "trapezoid_mask_clearance_px": 648.9,
+     "bottom_clearance_px": 134
+    }
+   },
+   "phase_body_box_max_delta_px": 0,
+   "phase_width_delta_px": 0,
+   "phase_height_delta_px": 0,
+   "phase_footprint_max_delta_px": 92
+  }
+ },
+ "awareness": {
+  "mirror_0": {
+   "max_channel_error": 0
+  },
+  "ghost_body_overlap_0": {
+   "overlap_pixels": 0,
+   "ghost_box": [
+    576,
+    285,
+    737,
+    356
+   ],
+   "body_box": [
+    718,
+    85,
+    1190,
+    346
+   ]
+  },
+  "mirror_80": {
+   "max_channel_error": 0
+  },
+  "ghost_body_overlap_80": {
+   "overlap_pixels": 0,
+   "ghost_box": [
+    576,
+    285,
+    737,
+    356
+   ],
+   "body_box": [
+    718,
+    85,
+    1190,
+    346
+   ]
+  },
+  "none_0": {
+   "changed_pixels": 0,
+   "box": null,
+   "information_band_overlap_pixels": 0
+  },
+  "left_turn_0": {
+   "changed_pixels": 30180,
+   "box": [
+    53,
+    53,
+    169,
+    472
+   ],
+   "information_band_overlap_pixels": 0
+  },
+  "left_blind_0": {
+   "changed_pixels": 33554,
+   "box": [
+    53,
+    53,
+    176,
+    473
+   ],
+   "information_band_overlap_pixels": 0
+  },
+  "left_conflict_0": {
+   "changed_pixels": 31523,
+   "box": [
+    53,
+    53,
+    172,
+    473
+   ],
+   "information_band_overlap_pixels": 0
+  },
+  "right_turn_0": {
+   "changed_pixels": 30180,
+   "box": [
+    1751,
+    53,
+    1867,
+    472
+   ],
+   "information_band_overlap_pixels": 0
+  },
+  "right_blind_0": {
+   "changed_pixels": 33554,
+   "box": [
+    1744,
+    53,
+    1867,
+    473
+   ],
+   "information_band_overlap_pixels": 0
+  },
+  "right_conflict_0": {
+   "changed_pixels": 31523,
+   "box": [
+    1748,
+    53,
+    1867,
+    473
+   ],
+   "information_band_overlap_pixels": 0
+  },
+  "both_blind_0": {
+   "changed_pixels": 67108,
+   "box": [
+    53,
+    53,
+    1867,
+    473
+   ],
+   "information_band_overlap_pixels": 0
+  },
+  "hazard_0": {
+   "changed_pixels": 60360,
+   "box": [
+    53,
+    53,
+    1867,
+    472
+   ],
+   "information_band_overlap_pixels": 0
+  },
+  "hazard_both_0": {
+   "changed_pixels": 63046,
+   "box": [
+    53,
+    53,
+    1867,
+    473
+   ],
+   "information_band_overlap_pixels": 0
+  },
+  "none_80": {
+   "changed_pixels": 0,
+   "box": null,
+   "information_band_overlap_pixels": 0
+  },
+  "left_turn_80": {
+   "changed_pixels": 30180,
+   "box": [
+    53,
+    53,
+    169,
+    472
+   ],
+   "information_band_overlap_pixels": 0
+  },
+  "left_blind_80": {
+   "changed_pixels": 33554,
+   "box": [
+    53,
+    53,
+    176,
+    473
+   ],
+   "information_band_overlap_pixels": 0
+  },
+  "left_conflict_80": {
+   "changed_pixels": 31523,
+   "box": [
+    53,
+    53,
+    172,
+    473
+   ],
+   "information_band_overlap_pixels": 0
+  },
+  "right_turn_80": {
+   "changed_pixels": 30180,
+   "box": [
+    1751,
+    53,
+    1867,
+    472
+   ],
+   "information_band_overlap_pixels": 0
+  },
+  "right_blind_80": {
+   "changed_pixels": 33554,
+   "box": [
+    1744,
+    53,
+    1867,
+    473
+   ],
+   "information_band_overlap_pixels": 0
+  },
+  "right_conflict_80": {
+   "changed_pixels": 31523,
+   "box": [
+    1748,
+    53,
+    1867,
+    473
+   ],
+   "information_band_overlap_pixels": 0
+  },
+  "both_blind_80": {
+   "changed_pixels": 67108,
+   "box": [
+    53,
+    53,
+    1867,
+    473
+   ],
+   "information_band_overlap_pixels": 0
+  },
+  "hazard_80": {
+   "changed_pixels": 60360,
+   "box": [
+    53,
+    53,
+    1867,
+    472
+   ],
+   "information_band_overlap_pixels": 0
+  },
+  "hazard_both_80": {
+   "changed_pixels": 63046,
+   "box": [
+    53,
+    53,
+    1867,
+    473
+   ],
+   "information_band_overlap_pixels": 0
+  }
+ },
+ "brake": {
+  "0": {
+   "changed_pixels": 10057,
+   "box": [
+    718,
+    88,
+    1175,
+    433
+   ],
+   "below_contact_changed_pixels": 8745
+  },
+  "30": {
+   "changed_pixels": 12573,
+   "box": [
+    723,
+    79,
+    1185,
+    433
+   ],
+   "below_contact_changed_pixels": 8477
+  },
+  "80": {
+   "changed_pixels": 10083,
+   "box": [
+    737,
+    86,
+    1170,
+    430
+   ],
+   "below_contact_changed_pixels": 8714
+  },
+  "120": {
+   "changed_pixels": 10212,
+   "box": [
+    741,
+    86,
+    1139,
+    428
+   ],
+   "below_contact_changed_pixels": 8716
+  }
+ },
+ "day_night": {
+  "day_0": {
+   "vehicle_box": [
+    626,
+    82,
+    1230,
+    458
+   ],
+   "footprint_width_px": 604,
+   "footprint_height_px": 376,
+   "body_box": [
+    718,
+    85,
+    1190,
+    346
+   ],
+   "body_width_px": 472,
+   "body_height_px": 261,
+   "yaw_deg": 0.0
+  },
+  "day_80": {
+   "vehicle_box": [
+    646,
+    83,
+    1214,
+    459
+   ],
+   "footprint_width_px": 568,
+   "footprint_height_px": 376,
+   "body_box": [
+    718,
+    85,
+    1190,
+    346
+   ],
+   "body_width_px": 472,
+   "body_height_px": 261,
+   "yaw_deg": 6.8
+  },
+  "night_0": {
+   "vehicle_box": [
+    718,
+    84,
+    1190,
+    480
+   ],
+   "footprint_width_px": 472,
+   "footprint_height_px": 396,
+   "body_box": [
+    718,
+    85,
+    1190,
+    346
+   ],
+   "body_width_px": 472,
+   "body_height_px": 261,
+   "yaw_deg": 0.0
+  },
+  "night_80": {
+   "vehicle_box": [
+    728,
+    83,
+    1172,
+    480
+   ],
+   "footprint_width_px": 444,
+   "footprint_height_px": 397,
+   "body_box": [
+    718,
+    85,
+    1190,
+    346
+   ],
+   "body_width_px": 472,
+   "body_height_px": 261,
+   "yaw_deg": 6.8
+  }
+ },
+ "selected_presentation_scale": 1.199,
+ "performance": {
+  "measurement_platform": "MAC MEASURED",
+  "device_estimate": "T113 ESTIMATED",
+  "device": "UNKNOWN_UNTIL_DEVICE_TEST",
+  "png_file_bytes_on_disk_is_not_ram": true,
+  "yaw_variant_sets": {
+   "yaw0_night": {
+    "decoded_rgba_bytes": 4665752,
+    "layers": 7
+   },
+   "yaw0_day": {
+    "decoded_rgba_bytes": 5819440,
+    "layers": 7
+   },
+   "yaw4_night": {
+    "decoded_rgba_bytes": 4811184,
+    "layers": 7
+   },
+   "yaw4_day": {
+    "decoded_rgba_bytes": 6078996,
+    "layers": 7
+   },
+   "yaw7_night": {
+    "decoded_rgba_bytes": 5000688,
+    "layers": 7
+   },
+   "yaw7_day": {
+    "decoded_rgba_bytes": 6275808,
+    "layers": 7
+   },
+   "yaw10_night": {
+    "decoded_rgba_bytes": 5230764,
+    "layers": 7
+   },
+   "yaw10_day": {
+    "decoded_rgba_bytes": 6521768,
+    "layers": 7
+   },
+   "yaw13_night": {
+    "decoded_rgba_bytes": 774312,
+    "layers": 1
+   },
+   "yaw13_day": {
+    "decoded_rgba_bytes": 968728,
+    "layers": 1
+   },
+   "yaw16_night": {
+    "decoded_rgba_bytes": 806832,
+    "layers": 1
+   },
+   "yaw16_day": {
+    "decoded_rgba_bytes": 1010264,
+    "layers": 1
+   }
+  },
+  "resident_if_night_standstill": {
+   "vehicle_layers_decoded_bytes": 4665752,
+   "vehicle_layers": 7,
+   "environment_plates_decoded_bytes": {
+    "night": 3686400,
+    "dawn": 3686400,
+    "day": 3686400,
+    "dusk": 3686400
+   },
+   "ground_band_decoded_bytes": {
+    "night": 2357760,
+    "day": 2357760,
+    "dawn": 2357760,
+    "dusk": 2357760
+   },
+   "awareness_assets_decoded_bytes": 4722600,
+   "ui_overlays_decoded_bytes": 8787540
+  },
+  "composited_layers_per_frame": "environment plate + ground band + one vehicle stack + motion overlays + awareness + UI; no runtime blur, no 3D, no resampling of the plate"
+ },
+ "gates": {
+  "yaw_zero_at_standstill": true,
+  "yaw_monotonic_with_speed": true,
+  "yaw_continuous": true,
+  "standstill_motion_residual_pixels": 0,
+  "yaw_sweep_anchor_drift_px": 0.0,
+  "yaw_sweep_footprint_drift_px": 7.5,
+  "band_shift_matches_declared": true,
+  "awareness_information_band_overlap_pixels": 0,
+  "phase_body_box_max_delta_px": {
+   "current": 0,
+   "+4%": 0,
+   "+7%": 0,
+   "+10%": 0
+  },
+  "ui_pixels_changed_by_camera_yaw": 0,
+  "awareness_mirror_max_channel_error": 0,
+  "ghost_body_overlap_pixels": 0,
+  "yaw_continuous_full_curve": true
+ }
+}

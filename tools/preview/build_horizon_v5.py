@@ -253,7 +253,10 @@ def side_awareness_components():
                                              "reaches the information"))
         ghost = assets.get(f"ghost_{side}")
         if ghost:
-            x = 612 if side == "left" else 1140
+            # Measured: at the presented +9 % body width the car's near flank
+            # reaches x 739, so a ghost at 612 overlapped the car itself by 37
+            # pixels. It sits beside the car, never on it.
+            x = 572 if side == "left" else 1180
             nodes.append(image(f"awareness.{side}.ghost", ghost["file"],
                                {"x": x, "y": 268, "w": ghost["size"][0],
                                 "h": ghost["size"][1]}, z=15, layer="dynamic",
@@ -373,6 +376,33 @@ def image(node_id, src, bounds, z, **kw):
     return node
 
 
+GROUND_BAND_REPORT = os.path.join(
+    REPO, "assets", "checkpoints", "horizon_v5",
+    "horizon_v55_ground_band.json")
+
+
+def load_ground_band():
+    """The baked near-ground band and the parallax curve that drives it.
+
+    The curve comes from the motion module rather than from numbers typed here,
+    so the band, the road flow, the wake and the camera yaw cannot disagree
+    about how fast the world is moving.
+    """
+    if not os.path.isfile(GROUND_BAND_REPORT):
+        return None
+    report = json.load(open(GROUND_BAND_REPORT))
+    night = (report.get("phases") or {}).get("night")
+    if not night:
+        return None
+    sys.path.insert(0, os.path.join(REPO, "tools", "assets"))
+    import horizon_v5_motion as motion
+    points = [[speed, motion.screen_motion_vector(speed)
+               ["environment_parallax_px"]["near"]]
+              for speed in motion.SPEEDS]
+    return {"file": night["file"], "band_top": night["band_top"],
+            "parallax_points": points}
+
+
 def build_tokens(measurements, ui_assets):
     palette = measurements.get("palette") or ["#040C14", "#04040C", "#0C141C"]
     accent = measurements.get("accent") or "#2496D8"
@@ -427,6 +457,22 @@ def build_tokens(measurements, ui_assets):
                       "state_fade_ms": 220, "navigation_fade_ms": 200,
                       "navigation_slide_px": 12, "indicator_ground_pulse_ms": 420,
                       "arc_ease_ms": 160},
+        # The awareness layer is a safety signal: its timing is declared here so
+        # the numbers exist in one place before any runtime animates them, and
+        # so safety semantics outrank cinematic motion. The host previewer still
+        # switches state for state; the device pass owns the fades.
+        "awareness_timing": {
+            "status": "DECLARED_NOT_IMPLEMENTED_IN_HOST_PREVIEW",
+            "field_fade_in_ms": 180,
+            "field_fade_out_ms": 220,
+            "conflict_attack_ms": 90,
+            "conflict_release_ms": 260,
+            "indicator_pulse": "follows the indicator cadence, never a "
+                               "fixed blink of its own",
+            "presence_breathing": "bounded, below the conflict attack, and "
+                                  "never used as the presence signal itself",
+            "why": "a safety field may not become slow because it is animated; "
+                   "conflict enters faster than it leaves"},
         "arc": {"start_deg": ARC_START_DEG, "end_deg": ARC_END_DEG,
                 "max_kph": ARC_MAX_KPH, "minor_ticks": ARC_MINOR_TICKS,
                 "centre_px": [ui_assets["dial"]["cx"], ui_assets["dial"]["cy"]],
@@ -483,6 +529,21 @@ def build_components(measurements, ui_assets, vehicle, alignment):
                             exempt_reason="the environment plate is the whole "
                                           "canvas and is itself clear of the "
                             "panel mask by construction"))
+    ground = load_ground_band()
+    if ground:
+        # The distance layer is the plate and does not move; this band is the
+        # same plate's ground, cut below the horizon, and it travels along the
+        # screen motion vector. Their difference is the parallax.
+        components.append(image(
+            "env.ground", ground["file"],
+            {"x": 0, "y": ground["band_top"], "w": 1920,
+             "h": 480 - ground["band_top"]}, z=1,
+            exempt_from_safe_area=True, role="environment",
+            offset_from={"binding": "speed",
+                         "points": ground["parallax_points"], "scale": 1.0},
+            exempt_reason="a crop of the environment plate's own ground, "
+                          "translated along the screen motion vector; it "
+                          "carries no information and is zero at standstill"))
     components.extend(side_awareness_components())
     # A glow is the element's own emission: it is strong at night and held back
     # in daylight, where the arc has to read as a shape rather than as light.

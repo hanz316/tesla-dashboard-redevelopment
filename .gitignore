@@ -52,6 +52,11 @@ assets/source/blender/*_master.blend1
 # Keep them local; the runtime/previewer read them from here when present.
 assets/rendered/vehicle/
 
+# Chase-camera measurement frames: working evidence for
+# assets/checkpoints/horizon_v55/. The sheets and the metrics next to them are
+# the review artifacts and are committed.
+assets/checkpoints/horizon_v55/frames/
+
 # A/B working renders (regenerable). Frozen checkpoint copies live in
 # assets/checkpoints/ and ARE committed.
 assets/rendered/ab/

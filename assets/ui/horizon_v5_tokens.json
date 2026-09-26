@@ -109,6 +109,16 @@
   "indicator_ground_pulse_ms": 420,
   "arc_ease_ms": 160
  },
+ "awareness_timing": {
+  "status": "DECLARED_NOT_IMPLEMENTED_IN_HOST_PREVIEW",
+  "field_fade_in_ms": 180,
+  "field_fade_out_ms": 220,
+  "conflict_attack_ms": 90,
+  "conflict_release_ms": 260,
+  "indicator_pulse": "follows the indicator cadence, never a fixed blink of its own",
+  "presence_breathing": "bounded, below the conflict attack, and never used as the presence signal itself",
+  "why": "a safety field may not become slow because it is animated; conflict enters faster than it leaves"
+ },
  "arc": {
   "start_deg": 135.0,
   "end_deg": 360.0,

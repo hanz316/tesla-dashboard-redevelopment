@@ -1,0 +1,262 @@
+{
+ "schema": "horizon-v5.5-yaw-selection v1",
+ "selection_rule": "smallest angle whose silhouette change is at least a third of the largest, anchor drift < 1 px, presented height within 2 %",
+ "phases": {},
+ "angles": {
+  "0": {
+   "night": {
+    "vehicle_box": [
+     718,
+     85,
+     1190,
+     480
+    ],
+    "width_px": 472,
+    "height_px": 395,
+    "centre_x_px": 954.0,
+    "contact_y_px": 480,
+    "silhouette_pixels": 131508,
+    "silhouette_change_pixels": 0,
+    "silhouette_change_fraction": 0.0,
+    "centre_drift_px": 0.0,
+    "height_ratio_vs_0": 1.0,
+    "body_centre_drift_px": 0.0,
+    "body_contact_drift_px": 0,
+    "body_height_ratio": 1.0
+   },
+   "day": {
+    "vehicle_box": [
+     655,
+     84,
+     1211,
+     440
+    ],
+    "width_px": 556,
+    "height_px": 356,
+    "centre_x_px": 933.0,
+    "contact_y_px": 440,
+    "silhouette_pixels": 122838,
+    "silhouette_change_pixels": 0,
+    "silhouette_change_fraction": 0.0,
+    "centre_drift_px": 0.0,
+    "height_ratio_vs_0": 1.0,
+    "body_centre_drift_px": 0.0,
+    "body_contact_drift_px": 0,
+    "body_height_ratio": 1.0
+   }
+  },
+  "4": {
+   "night": {
+    "vehicle_box": [
+     729,
+     85,
+     1179,
+     480
+    ],
+    "width_px": 450,
+    "height_px": 395,
+    "centre_x_px": 954.0,
+    "contact_y_px": 480,
+    "silhouette_pixels": 123529,
+    "silhouette_change_pixels": 16679,
+    "silhouette_change_fraction": 0.1228,
+    "centre_drift_px": 0.0,
+    "height_ratio_vs_0": 1.0,
+    "body_centre_drift_px": 0.0,
+    "body_contact_drift_px": 0,
+    "body_height_ratio": 1.0505
+   },
+   "day": {
+    "vehicle_box": [
+     680,
+     85,
+     1203,
+     440
+    ],
+    "width_px": 523,
+    "height_px": 355,
+    "centre_x_px": 941.5,
+    "contact_y_px": 440,
+    "silhouette_pixels": 116662,
+    "silhouette_change_pixels": 10342,
+    "silhouette_change_fraction": 0.0828,
+    "centre_drift_px": 8.5,
+    "height_ratio_vs_0": 0.9972,
+    "body_centre_drift_px": 0.0,
+    "body_contact_drift_px": 0,
+    "body_height_ratio": 1.0505
+   }
+  },
+  "7": {
+   "night": {
+    "vehicle_box": [
+     738,
+     84,
+     1171,
+     480
+    ],
+    "width_px": 433,
+    "height_px": 396,
+    "centre_x_px": 954.5,
+    "contact_y_px": 480,
+    "silhouette_pixels": 117747,
+    "silhouette_change_pixels": 24245,
+    "silhouette_change_fraction": 0.1773,
+    "centre_drift_px": 0.5,
+    "height_ratio_vs_0": 1.0025,
+    "body_centre_drift_px": 0.0,
+    "body_contact_drift_px": 0,
+    "body_height_ratio": 1.0917
+   },
+   "day": {
+    "vehicle_box": [
+     691,
+     84,
+     1193,
+     441
+    ],
+    "width_px": 502,
+    "height_px": 357,
+    "centre_x_px": 942.0,
+    "contact_y_px": 441,
+    "silhouette_pixels": 112537,
+    "silhouette_change_pixels": 15965,
+    "silhouette_change_fraction": 0.127,
+    "centre_drift_px": 9.0,
+    "height_ratio_vs_0": 1.0028,
+    "body_centre_drift_px": 0.0,
+    "body_contact_drift_px": 0,
+    "body_height_ratio": 1.0917
+   }
+  },
+  "10": {
+   "night": {
+    "vehicle_box": [
+     732,
+     85,
+     1161,
+     480
+    ],
+    "width_px": 429,
+    "height_px": 395,
+    "centre_x_px": 946.5,
+    "contact_y_px": 480,
+    "silhouette_pixels": 111618,
+    "silhouette_change_pixels": 30524,
+    "silhouette_change_fraction": 0.2231,
+    "centre_drift_px": 7.5,
+    "height_ratio_vs_0": 1.0,
+    "body_centre_drift_px": 0.0,
+    "body_contact_drift_px": 0,
+    "body_height_ratio": 1.1422
+   },
+   "day": {
+    "vehicle_box": [
+     708,
+     85,
+     1187,
+     442
+    ],
+    "width_px": 479,
+    "height_px": 357,
+    "centre_x_px": 947.5,
+    "contact_y_px": 442,
+    "silhouette_pixels": 107851,
+    "silhouette_change_pixels": 21459,
+    "silhouette_change_fraction": 0.1702,
+    "centre_drift_px": 14.5,
+    "height_ratio_vs_0": 1.0028,
+    "body_centre_drift_px": 0.0,
+    "body_contact_drift_px": 0,
+    "body_height_ratio": 1.1422
+   }
+  },
+  "13": {
+   "night": {
+    "vehicle_box": [
+     756,
+     84,
+     1153,
+     480
+    ],
+    "width_px": 397,
+    "height_px": 396,
+    "centre_x_px": 954.5,
+    "contact_y_px": 480,
+    "silhouette_pixels": 106168,
+    "silhouette_change_pixels": 36412,
+    "silhouette_change_fraction": 0.2657,
+    "centre_drift_px": 0.5,
+    "height_ratio_vs_0": 1.0025,
+    "body_centre_drift_px": 0.0,
+    "body_contact_drift_px": 0,
+    "body_height_ratio": 1.1927
+   },
+   "day": {
+    "vehicle_box": [
+     712,
+     84,
+     1179,
+     441
+    ],
+    "width_px": 467,
+    "height_px": 357,
+    "centre_x_px": 945.5,
+    "contact_y_px": 441,
+    "silhouette_pixels": 103942,
+    "silhouette_change_pixels": 25730,
+    "silhouette_change_fraction": 0.2038,
+    "centre_drift_px": 12.5,
+    "height_ratio_vs_0": 1.0028,
+    "body_centre_drift_px": 0.0,
+    "body_contact_drift_px": 0,
+    "body_height_ratio": 1.1927
+   }
+  },
+  "16": {
+   "night": {
+    "vehicle_box": [
+     742,
+     85,
+     1142,
+     475
+    ],
+    "width_px": 400,
+    "height_px": 390,
+    "centre_x_px": 942.0,
+    "contact_y_px": 475,
+    "silhouette_pixels": 100786,
+    "silhouette_change_pixels": 41158,
+    "silhouette_change_fraction": 0.301,
+    "centre_drift_px": 12.0,
+    "height_ratio_vs_0": 0.9873,
+    "body_centre_drift_px": 0.0,
+    "body_contact_drift_px": 0,
+    "body_height_ratio": 1.2523
+   },
+   "day": {
+    "vehicle_box": [
+     719,
+     85,
+     1164,
+     446
+    ],
+    "width_px": 445,
+    "height_px": 361,
+    "centre_x_px": 941.5,
+    "contact_y_px": 446,
+    "silhouette_pixels": 100728,
+    "silhouette_change_pixels": 30100,
+    "silhouette_change_fraction": 0.2373,
+    "centre_drift_px": 8.5,
+    "height_ratio_vs_0": 1.014,
+    "body_centre_drift_px": 0.0,
+    "body_contact_drift_px": 0,
+    "body_height_ratio": 1.2523
+   }
+  }
+ },
+ "silhouette_change_threshold": 0.1003,
+ "selected_yaw_deg": 7,
+ "selected_why": "smallest baked angle whose silhouette change clears a third of the largest change with the anchor and the presented height intact"
+}

@@ -1,0 +1,224 @@
+{
+ "schema": "horizon-v5.5-chase-boxes v1",
+ "why": "the projected width is pinned by the framing solver and the height foreshortens as the camera orbits; the ratio of the two is the correction that keeps the presented car the same size",
+ "phases": {
+  "night": {
+   "0": {
+    "box": [
+     757,
+     128,
+     1151,
+     346
+    ],
+    "width": 394,
+    "height": 218,
+    "centre_x": 954.0,
+    "contact_y": 346,
+    "source": "assets/rendered/vehicle/horizon_v5/car/base/000.png",
+    "height_ratio_vs_standstill": 1.0,
+    "width_ratio_vs_standstill": 1.0
+   },
+   "4": {
+    "box": [
+     757,
+     117,
+     1151,
+     346
+    ],
+    "width": 394,
+    "height": 229,
+    "centre_x": 954.0,
+    "contact_y": 346,
+    "source": "assets/rendered/vehicle/horizon_v5/chase/yaw04/night/car/base/000.png",
+    "height_ratio_vs_standstill": 1.0505,
+    "width_ratio_vs_standstill": 1.0
+   },
+   "7": {
+    "box": [
+     757,
+     108,
+     1151,
+     346
+    ],
+    "width": 394,
+    "height": 238,
+    "centre_x": 954.0,
+    "contact_y": 346,
+    "source": "assets/rendered/vehicle/horizon_v5/chase/yaw07/night/car/base/000.png",
+    "height_ratio_vs_standstill": 1.0917,
+    "width_ratio_vs_standstill": 1.0
+   },
+   "10": {
+    "box": [
+     757,
+     97,
+     1151,
+     346
+    ],
+    "width": 394,
+    "height": 249,
+    "centre_x": 954.0,
+    "contact_y": 346,
+    "source": "assets/rendered/vehicle/horizon_v5/chase/yaw10/night/car/base/000.png",
+    "height_ratio_vs_standstill": 1.1422,
+    "width_ratio_vs_standstill": 1.0
+   },
+   "13": {
+    "box": [
+     757,
+     86,
+     1151,
+     346
+    ],
+    "width": 394,
+    "height": 260,
+    "centre_x": 954.0,
+    "contact_y": 346,
+    "source": "assets/rendered/vehicle/horizon_v5/chase/yaw13/night/car/base/000.png",
+    "height_ratio_vs_standstill": 1.1927,
+    "width_ratio_vs_standstill": 1.0
+   },
+   "16": {
+    "box": [
+     757,
+     73,
+     1151,
+     346
+    ],
+    "width": 394,
+    "height": 273,
+    "centre_x": 954.0,
+    "contact_y": 346,
+    "source": "assets/rendered/vehicle/horizon_v5/chase/yaw16/night/car/base/000.png",
+    "height_ratio_vs_standstill": 1.2523,
+    "width_ratio_vs_standstill": 1.0
+   }
+  },
+  "day": {
+   "0": {
+    "box": [
+     757,
+     128,
+     1151,
+     346
+    ],
+    "width": 394,
+    "height": 218,
+    "centre_x": 954.0,
+    "contact_y": 346,
+    "source": "assets/rendered/vehicle/horizon_v5/day/car/base/000.png",
+    "height_ratio_vs_standstill": 1.0,
+    "width_ratio_vs_standstill": 1.0
+   },
+   "4": {
+    "box": [
+     757,
+     117,
+     1151,
+     346
+    ],
+    "width": 394,
+    "height": 229,
+    "centre_x": 954.0,
+    "contact_y": 346,
+    "source": "assets/rendered/vehicle/horizon_v5/chase/yaw04/day/car/base/000.png",
+    "height_ratio_vs_standstill": 1.0505,
+    "width_ratio_vs_standstill": 1.0
+   },
+   "7": {
+    "box": [
+     757,
+     108,
+     1151,
+     346
+    ],
+    "width": 394,
+    "height": 238,
+    "centre_x": 954.0,
+    "contact_y": 346,
+    "source": "assets/rendered/vehicle/horizon_v5/chase/yaw07/day/car/base/000.png",
+    "height_ratio_vs_standstill": 1.0917,
+    "width_ratio_vs_standstill": 1.0
+   },
+   "10": {
+    "box": [
+     757,
+     97,
+     1151,
+     346
+    ],
+    "width": 394,
+    "height": 249,
+    "centre_x": 954.0,
+    "contact_y": 346,
+    "source": "assets/rendered/vehicle/horizon_v5/chase/yaw10/day/car/base/000.png",
+    "height_ratio_vs_standstill": 1.1422,
+    "width_ratio_vs_standstill": 1.0
+   },
+   "13": {
+    "box": [
+     757,
+     86,
+     1151,
+     346
+    ],
+    "width": 394,
+    "height": 260,
+    "centre_x": 954.0,
+    "contact_y": 346,
+    "source": "assets/rendered/vehicle/horizon_v5/chase/yaw13/day/car/base/000.png",
+    "height_ratio_vs_standstill": 1.1927,
+    "width_ratio_vs_standstill": 1.0
+   },
+   "16": {
+    "box": [
+     757,
+     73,
+     1151,
+     346
+    ],
+    "width": 394,
+    "height": 273,
+    "centre_x": 954.0,
+    "contact_y": 346,
+    "source": "assets/rendered/vehicle/horizon_v5/chase/yaw16/day/car/base/000.png",
+    "height_ratio_vs_standstill": 1.2523,
+    "width_ratio_vs_standstill": 1.0
+   }
+  },
+  "dawn": {
+   "0": {
+    "box": [
+     757,
+     128,
+     1151,
+     346
+    ],
+    "width": 394,
+    "height": 218,
+    "centre_x": 954.0,
+    "contact_y": 346,
+    "source": "assets/rendered/vehicle/horizon_v5/dawn/car/base/000.png",
+    "height_ratio_vs_standstill": 1.0,
+    "width_ratio_vs_standstill": 1.0
+   }
+  },
+  "dusk": {
+   "0": {
+    "box": [
+     757,
+     128,
+     1151,
+     346
+    ],
+    "width": 394,
+    "height": 218,
+    "centre_x": 954.0,
+    "contact_y": 346,
+    "source": "assets/rendered/vehicle/horizon_v5/dusk/car/base/000.png",
+    "height_ratio_vs_standstill": 1.0,
+    "width_ratio_vs_standstill": 1.0
+   }
+  }
+ }
+}

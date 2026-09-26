@@ -12,10 +12,10 @@
         346
       ],
       "presented_body_box": [
-        739,
-        107,
-        1170,
-        346
+        718,
+        84,
+        1192,
+        347
       ],
       "alpha_pixels": 57590,
       "combined_layer_box": [
@@ -68,12 +68,12 @@
         "speed.value": {
           "full": {
             "ink_pixels": 2950,
-            "median_ratio": 3.53,
+            "median_ratio": 3.56,
             "p10_ratio": 3.41
           },
           "half": {
             "ink_pixels": 759,
-            "median_ratio": 3.56,
+            "median_ratio": 3.57,
             "p10_ratio": 2.52
           }
         },
@@ -93,36 +93,36 @@
           "full": {
             "ink_pixels": 367,
             "median_ratio": 3.24,
-            "p10_ratio": 2.8
+            "p10_ratio": 2.83
           },
           "half": {
             "ink_pixels": 113,
-            "median_ratio": 2.77,
-            "p10_ratio": 2.13
+            "median_ratio": 2.82,
+            "p10_ratio": 2.09
           }
         },
         "energy.power": {
           "full": {
             "ink_pixels": 530,
-            "median_ratio": 3.4,
-            "p10_ratio": 2.88
+            "median_ratio": 3.39,
+            "p10_ratio": 2.87
           },
           "half": {
             "ink_pixels": 158,
-            "median_ratio": 2.9,
-            "p10_ratio": 2.11
+            "median_ratio": 2.89,
+            "p10_ratio": 2.1
           }
         },
         "speed.unit": {
           "full": {
             "ink_pixels": 341,
-            "median_ratio": 3.26,
-            "p10_ratio": 2.81
+            "median_ratio": 3.18,
+            "p10_ratio": 2.76
           },
           "half": {
             "ink_pixels": 108,
-            "median_ratio": 2.79,
-            "p10_ratio": 2.07
+            "median_ratio": 2.7,
+            "p10_ratio": 2.04
           }
         },
         "energy.range.label": {
@@ -141,7 +141,7 @@
           "full": {
             "ink_pixels": 178,
             "median_ratio": 3.45,
-            "p10_ratio": 2.82
+            "p10_ratio": 2.81
           },
           "half": {
             "ink_pixels": 65,
@@ -153,7 +153,7 @@
           "full": {
             "ink_pixels": 313,
             "median_ratio": 3.44,
-            "p10_ratio": 2.92
+            "p10_ratio": 2.89
           },
           "half": {
             "ink_pixels": 103,
@@ -169,8 +169,8 @@
           },
           "half": {
             "ink_pixels": 87,
-            "median_ratio": 2.65,
-            "p10_ratio": 2.24
+            "median_ratio": 2.68,
+            "p10_ratio": 2.23
           }
         }
       },
@@ -185,10 +185,10 @@
         346
       ],
       "presented_body_box": [
-        739,
-        107,
-        1168,
-        346
+        718,
+        84,
+        1190,
+        347
       ],
       "alpha_pixels": 57540,
       "combined_layer_box": [
@@ -242,12 +242,12 @@
           "full": {
             "ink_pixels": 2950,
             "median_ratio": 15.9,
-            "p10_ratio": 12.82
+            "p10_ratio": 12.49
           },
           "half": {
             "ink_pixels": 759,
-            "median_ratio": 15.66,
-            "p10_ratio": 7.96
+            "median_ratio": 15.63,
+            "p10_ratio": 8.02
           }
         },
         "energy.range": {
@@ -266,12 +266,12 @@
           "full": {
             "ink_pixels": 367,
             "median_ratio": 16.58,
-            "p10_ratio": 11.88
+            "p10_ratio": 11.86
           },
           "half": {
             "ink_pixels": 113,
-            "median_ratio": 11.65,
-            "p10_ratio": 5.96
+            "median_ratio": 11.66,
+            "p10_ratio": 5.97
           }
         },
         "energy.power": {
@@ -282,19 +282,19 @@
           },
           "half": {
             "ink_pixels": 158,
-            "median_ratio": 11.89,
+            "median_ratio": 11.88,
             "p10_ratio": 5.65
           }
         },
         "speed.unit": {
           "full": {
             "ink_pixels": 341,
-            "median_ratio": 11.78,
-            "p10_ratio": 8.82
+            "median_ratio": 11.77,
+            "p10_ratio": 8.81
           },
           "half": {
             "ink_pixels": 108,
-            "median_ratio": 8.41,
+            "median_ratio": 8.43,
             "p10_ratio": 4.48
           }
         },
@@ -302,24 +302,24 @@
           "full": {
             "ink_pixels": 315,
             "median_ratio": 11.77,
-            "p10_ratio": 8.61
+            "p10_ratio": 8.64
           },
           "half": {
             "ink_pixels": 111,
-            "median_ratio": 6.25,
-            "p10_ratio": 4.27
+            "median_ratio": 6.26,
+            "p10_ratio": 4.25
           }
         },
         "energy.soc.label": {
           "full": {
             "ink_pixels": 178,
             "median_ratio": 11.94,
-            "p10_ratio": 7.99
+            "p10_ratio": 8.01
           },
           "half": {
             "ink_pixels": 65,
-            "median_ratio": 6.22,
-            "p10_ratio": 4.31
+            "median_ratio": 6.24,
+            "p10_ratio": 4.32
           }
         },
         "energy.power.label": {
@@ -342,8 +342,8 @@
           },
           "half": {
             "ink_pixels": 87,
-            "median_ratio": 6.44,
-            "p10_ratio": 4.46
+            "median_ratio": 6.52,
+            "p10_ratio": 4.44
           }
         }
       },
@@ -606,9 +606,9 @@
     "presence": {
       "changed_pixels": 9839,
       "combined_box": [
-        612,
+        572,
         282,
-        780,
+        740,
         359
       ],
       "other_side_changed_pixels": 0
@@ -616,9 +616,9 @@
     "conflict": {
       "changed_pixels": 10179,
       "combined_box": [
-        612,
+        572,
         281,
-        780,
+        740,
         360
       ],
       "other_side_changed_pixels": 0
@@ -649,5 +649,5 @@
   "awareness_symmetry_max_channel_error": 0,
   "body_box_max_delta_px": 1,
   "body_footprint_within_raster_tolerance": true,
-  "selected_scale": 1.09
+  "selected_scale": 1.199
 }

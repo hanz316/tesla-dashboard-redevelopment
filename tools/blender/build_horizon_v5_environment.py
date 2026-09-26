@@ -118,7 +118,35 @@ def parse_args():
                              "light and the sky change")
     parser.add_argument("--dry-run", action="store_true",
                         help="build the scene and print measurements only")
+    parser.add_argument("--yaw-deg", type=float, default=0.0,
+                        help="chase-camera yaw: orbit the camera around the "
+                             "target's vertical axis, in degrees. The framing "
+                             "solver still holds the projected width and the "
+                             "anchor, so a yaw changes the view and never the "
+                             "size or the position")
     return parser.parse_args(argv)
+
+
+def apply_chase_yaw(camera, yaw_deg):
+    """Orbit the car camera about the target's vertical axis.
+
+    The camera carries a TRACK_TO constraint, so moving its location keeps it
+    aimed at the car; only the azimuth around the car changes. Geometry, the
+    orthographic contract and the anchor are untouched: the framing solver runs
+    afterwards and re-solves the frame around the same measured width.
+    """
+    if not yaw_deg:
+        return 0.0
+    target = Vector(HORIZON_CAMERA["target"])
+    offset = Vector(camera.location) - target
+    angle = math.radians(yaw_deg)
+    cos_a, sin_a = math.cos(angle), math.sin(angle)
+    camera.location = target + Vector((
+        offset.x * cos_a - offset.y * sin_a,
+        offset.x * sin_a + offset.y * cos_a,
+        offset.z))
+    bpy.context.view_layer.update()
+    return yaw_deg
 
 
 def view_frame():
@@ -811,6 +839,7 @@ def main():
     configure_render(scene, args.samples, False, (width, height))
     report["environment_framing"] = solve_environment_framing(
         scene, env_camera, spec["environment_camera"])
+    report["yaw_deg"] = apply_chase_yaw(car_camera, args.yaw_deg)
     report["car_framing"] = solve_car_framing(scene, car_camera, car)
     if args.dry_run:
         print("[v5-env] dry run " + json.dumps(
@@ -874,6 +903,8 @@ def main():
             state_assets.setup_horizon_camera(scene)
             car_camera = bpy.data.objects[HORIZON_CAMERA["name"]]
             # Re-apply the V5 framing: setup_horizon_camera resets the camera.
+            # The chase yaw has to be re-applied for the same reason.
+            report["yaw_deg"] = apply_chase_yaw(car_camera, args.yaw_deg)
             report["car_framing"] = solve_car_framing(scene, car_camera, car)
             scene.camera = car_camera
             for name in args.states.split(","):
